@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:pompomtracker/core/hook/hook.dart';
 
 class ScreenSplash extends StatefulWidget {
   const ScreenSplash({super.key});
@@ -10,6 +10,8 @@ class ScreenSplash extends StatefulWidget {
 class _ScreenSplashState extends State<ScreenSplash> {
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return Scaffold(
+      body: Center(child: Text('bus splash')),
+    );
   }
 }
