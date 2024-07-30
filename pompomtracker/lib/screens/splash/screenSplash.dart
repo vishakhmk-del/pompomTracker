@@ -35,7 +35,7 @@ class _ScreenSplashState extends State<ScreenSplash> {
         child: Center(
           child: Lottie.asset(
             'assets/animatedsplash/Animation - bus.json',
-            width: MediaQuery.of(context).size.width / 2,
+            width: MediaQuery.of(context).size.width / 2.5,
             //height: MediaQuery.of(context).size.height/2
           ),
         ),

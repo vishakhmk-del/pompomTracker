@@ -1,7 +1,6 @@
-
 import 'package:pompomtracker/core/hook/hook.dart';
 
-class Approutes{
+class Approutes {
   PageTransition loginscreen = PageTransition(
     child: const ScreenLogin(),
     type: PageTransitionType.fade,
