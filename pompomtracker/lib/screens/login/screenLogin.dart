@@ -70,7 +70,14 @@ class ScreenLogin extends StatelessWidget {
                           style: TextStyle(color: Colors.white),
                         ),
                       ),
-                    )
+                    ),
+                    TextButton(
+                      onPressed: () {},
+                      child: Text('Forgot password?'),
+                      style: TextButton.styleFrom(
+                        foregroundColor: Colors.blue,
+                      ),
+                    ),
                   ],
                 ),
               ),
