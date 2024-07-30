@@ -6,13 +6,11 @@ class BackgroundColorGradient extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration:const BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topLeft,
-          end:Alignment.bottomRight,
-          colors: [Colors.white,Colors.orange]
-          )
-      ),
+      decoration: BoxDecoration(
+          gradient: LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              colors: [Colors.orange.shade50, Colors.orange])),
     );
   }
 }

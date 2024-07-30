@@ -8,6 +8,7 @@ export 'package:page_transition/page_transition.dart';
 /*provider*/
 export 'package:pompomtracker/provider/themeprovider.dart';
 export 'package:pompomtracker/core/routes/approute.dart';
+export 'package:pompomtracker/widgets/backgroundgradient/colorLineargrandient.dart';
 /**************************************/
 
 /*screens*/
