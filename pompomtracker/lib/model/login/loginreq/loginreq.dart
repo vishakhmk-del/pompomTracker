@@ -9,6 +9,7 @@ class Loginreq {
   String? pwd;
 
   Loginreq({this.userName, this.pwd});
+  Loginreq.req({required this.userName, required this.pwd});
 
   factory Loginreq.fromJson(Map<String, dynamic> json) {
     return _$LoginreqFromJson(json);

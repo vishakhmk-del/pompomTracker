@@ -10,7 +10,10 @@ class BackgroundColorGradient extends StatelessWidget {
           gradient: LinearGradient(
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
-              colors: [Colors.orange.shade50, Colors.orange])),
+              colors: [
+            Theme.of(context).colorScheme.primary,
+            Theme.of(context).colorScheme.secondary
+          ])),
     );
   }
 }

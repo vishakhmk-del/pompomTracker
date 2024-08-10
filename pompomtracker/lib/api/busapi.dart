@@ -3,6 +3,7 @@ import 'package:pompomtracker/core/hook/hook.dart';
 abstract class Apicalls {
   Future<Response<dynamic>?> login(Loginreq value);
 }
+
 class Busdata extends Apicalls {
   final dio = Dio();
   final url = Url();
@@ -26,6 +27,4 @@ class Busdata extends Apicalls {
       return ex.response;
     }
   }
-  
-
 }

@@ -1,90 +1,237 @@
 import 'package:pompomtracker/core/hook/hook.dart';
 
-class ScreenLogin extends StatelessWidget {
+class ScreenLogin extends StatefulWidget {
   const ScreenLogin({super.key});
 
   @override
+  State<ScreenLogin> createState() => _ScreenLoginState();
+}
+
+class _ScreenLoginState extends State<ScreenLogin> {
+  final _usercontroller = TextEditingController();
+
+  final _passcontroller = TextEditingController();
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
+  final _formkey = GlobalKey<FormState>();
+  bool passtoggle = true;
+  @override
   Widget build(BuildContext context) {
-    // final screenwidth = MediaQuery.of(context).size.width;
-    // final screenheight = MediaQuery.of(context).size.height;
+    
     return Stack(children: [
-      const BackgroundColorGradient(),
+      
       Scaffold(
-        backgroundColor: Colors.transparent,
+        key:_scaffoldKey,
+        
         body: Center(
           child: Card(
             margin: const EdgeInsets.all(50),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(8.0),
-            ),
-            elevation: 8,
-            shadowColor: Colors.orange,
+            elevation: 3,
+            shadowColor: Theme.of(context).colorScheme.primary,
             child: SizedBox(
               width: 300,
-              height: 400,
-              child: Padding(
-                padding: const EdgeInsets.all(20),
-                child: Column(
-                  // crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const CircleAvatar(
-                      //backgroundColor: Colors.red,
-                      backgroundImage: AssetImage('assets/login/login_bus.png'),
-                      radius: 50,
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    const TextField(
-                      decoration: InputDecoration(
-                        hintText: 'Username',
-                      ),
-                    ),
-                    const TextField(
-                      decoration: InputDecoration(
-                        hintText: 'Password',
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 40,
-                    ),
-                    Container(
-                      height: 35,
-                      width: 200,
-                      decoration: BoxDecoration(
-                        gradient: LinearGradient(
-                          begin: Alignment.topLeft,
-                          end: Alignment.bottomRight,
-                          colors: [Colors.orange.shade100, Colors.orange],
+              height: 450,
+              child: Container(
+                decoration: BoxDecoration(
+                  borderRadius:BorderRadius.circular(12),
+          gradient: LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              colors: [Theme.of(context).colorScheme.primary, Theme.of(context).colorScheme.secondary])),
+            child: Padding(
+              padding: const EdgeInsets.all(20),
+              child: SingleChildScrollView(
+                child: Form(
+                  key:_formkey,
+                  child: Theme(
+                    data:MyTheme.googleFormTheme,
+                    child: Column(
+                      // crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const CircleAvatar(
+                          //backgroundColor: Colors.red,
+                          backgroundImage: AssetImage('assets/login/login_bus.png'),
+                          radius: 50,
                         ),
-                        borderRadius: BorderRadius.circular(18.0),
-                      ),
-                      child: ElevatedButton(
-                        onPressed: () {},
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.transparent,
-                          shadowColor: Colors.transparent,
+                        const SizedBox(
+                          height: 20,
                         ),
-                        child: const Text(
-                          'LOGIN',
-                          style: TextStyle(color: Colors.white),
+                         SizedBox(
+                          width: MediaQuery.of(context).size.width,
+                           child: Padding(
+                             padding: const EdgeInsets.symmetric(vertical:0.0,horizontal:5),
+                             child: TextFormField(
+                              controller: _usercontroller,
+                              style: TextStyle(color: Theme.of(context).colorScheme.onPrimary,),
+                              decoration: InputDecoration(
+                                labelText: 'Username',
+                                labelStyle: Theme.of(context).textTheme.labelSmall
+                              ),
+                              
+                              validator: (value) {
+                                if (value!.isEmpty) {
+                                  return "Enter valid Username";
+                                } else if (value.contains('.') ||
+                                    value.contains("-") ||
+                                    value.contains(" ") ||
+                                    value.contains(",")) {
+                                  return "Enter valid Username";
+                                }
+                                return null;
+                              }
+                
+                              ),
+                           ),
+                         ),
+                         SizedBox(
+                          width: MediaQuery.of(context).size.width,
+                           child: Padding(
+                             padding: const EdgeInsets.symmetric(vertical: 10,horizontal:5),
+                             child: TextFormField(
+                               controller: _passcontroller,
+                               style: TextStyle(color: Theme.of(context).colorScheme.onPrimary,),
+                              decoration: InputDecoration(
+                                labelText: 'Password',
+                                labelStyle: Theme.of(context).textTheme.labelSmall,
+                                 prefixIcon: Theme(
+                                  data:MyTheme.appIconTheme,
+                                   child: const Icon(
+                                    Icons.lock,                                                               ),
+                                 ),
+                                suffixIcon: InkWell(
+                                  onTap: () {
+                                    setState(() {
+                                      passtoggle = !passtoggle;
+                                    });
+                                  },
+                                  child: Theme(
+                                    data:MyTheme.appIconTheme,
+                                    child: Icon(
+                                      passtoggle
+                                          ? Icons.visibility_off
+                                          : Icons.visibility,
+                                      
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              obscureText: passtoggle,
+                              textInputAction: TextInputAction.done,
+                              validator: (value) {
+                                if (value!.isEmpty) {
+                                  return 'Enter password';
+                                } else if (_passcontroller.text.length < 8) {
+                                  return 'Please enter atleast 8 characters';
+                                } else if (value.contains(' ')) {
+                                  return 'Remove space from password';
+                                }
+                                return null;
+                              }
+                            ),
+                           ),
+                         ),
+                        const SizedBox(
+                          height: 25,
                         ),
-                      ),
+                        Container(
+                          height: 35,
+                          width: 200,
+                          decoration: BoxDecoration(
+                            gradient:const LinearGradient(
+                              begin: Alignment.topLeft,
+                              end: Alignment.bottomRight,
+                              colors: [Colors.black54, Colors.black87],
+                            ),
+                            
+                            borderRadius: BorderRadius.circular(18.0),
+                          ),
+                          child: Theme(
+                            data: MyTheme.buttonStyleTheme,
+                            child: ElevatedButton(
+                              onPressed: () async{
+                                if(_formkey.currentState!.validate()){
+                                  await getlogin();
+                                }
+                
+                              },
+                              child:  Text(
+                                'LOGIN',
+                                style: Theme.of(context).textTheme.titleMedium,
+                              ),
+                            ),
+                          ),
+                        ),
+                        TextButton(
+                          onPressed: () {},
+                          child: Text('Forgot password?',
+                          style: Theme.of(context).textTheme.titleSmall,),
+                        ),
+                      ],
                     ),
-                    TextButton(
-                      onPressed: () {},
-                      child: Text('Forgot password?'),
-                      style: TextButton.styleFrom(
-                        foregroundColor: Colors.blue,
-                      ),
-                    ),
-                  ],
+                  ),
                 ),
               ),
+            ),
             ),
           ),
         ),
       ),
-    ]);
+      )
+    ]
+    );
+
   }
+  Future getlogin() async {
+    
+    final username = _usercontroller.text;
+    final password = _passcontroller.text;
+    
+    final logreq = Loginreq.req(userName: username, pwd: password);
+    
+    final loginResponse = await Busdata().login(logreq);
+    final resultAsjson = jsonDecode(loginResponse.toString());
+    final loginval = Loginresp.fromJson(resultAsjson as Map<String, dynamic>);
+    //factory Loginresp.fromJson(Map<String, dynamic> json)
+    //final status = loginval.status;
+
+    if (loginResponse == null) {
+      showLoginerror(_scaffoldKey.currentContext!, 1);
+    } else if (loginResponse.statusCode == 200 &&
+        loginval.status == 'success') {
+      //print('success');
+      Navigator.of(_scaffoldKey.currentContext!).push(
+        MaterialPageRoute(
+          builder: (context) => const ScreenSplash(),
+        ),
+      );
+
+      //showLoginerror(_scaffoldKey.currentContext!);
+    } else if (loginval.status == 'Failed') {
+      showLoginerror(_scaffoldKey.currentContext!, 2);
+    } else {
+      showLoginerror(_scaffoldKey.currentContext!, 3);
+    }
+  }
+
+  Future showLoginerror(BuildContext? context, stat) async {
+    //print('hi');
+    if (stat == 2) {
+      Fluttertoast.showToast(
+          msg: "Username or password incorrect",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.CENTER,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Colors.black,
+          textColor: Colors.white,
+          fontSize: 15.0);
+    } else {
+      Fluttertoast.showToast(
+          msg: "Something went wrong",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.CENTER,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Colors.black,
+          textColor: Colors.white,
+          fontSize: 15.0);
+    }
+}
 }
