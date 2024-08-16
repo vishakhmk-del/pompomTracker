@@ -1,5 +1,6 @@
 import 'package:pompomtracker/core/hook/hook.dart';
 
+const userLogedIn = 'UserLoggedIn';
 void main() {
   runApp(const MyApp());
 }

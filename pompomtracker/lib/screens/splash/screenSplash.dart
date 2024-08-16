@@ -1,4 +1,9 @@
 import 'package:pompomtracker/core/hook/hook.dart';
+import 'package:pompomtracker/main.dart';
+import 'package:pompomtracker/model/sharedpref/sharedpref.dart';
+import 'package:pompomtracker/provider/shared_preference/shared_preference_manage.dart';
+import 'package:pompomtracker/screens/Bus/ScreenBusMaster.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ScreenSplash extends StatefulWidget {
   const ScreenSplash({super.key});
@@ -10,8 +15,27 @@ class ScreenSplash extends StatefulWidget {
 class _ScreenSplashState extends State<ScreenSplash> {
   @override
   void initState() {
-    gotoLogin();
+    checkUserLogin();
+    // gotoLogin();
     super.initState();
+  }
+
+  Future<void> checkUserLogin() async {
+    final sharedpref = await SharedPreferences.getInstance();
+    final useLoggedin = sharedpref.getBool(userLogedIn);
+    if (useLoggedin == null && useLoggedin == false) {
+      gotoLogin();
+    } else {
+      final getLoginData = await SharedPrefManager().getSharedData();
+      // print(getLoginData);
+
+      await Future.delayed(const Duration(seconds: 3));
+      Navigator.of(_scaffoldKey.currentContext!).push(
+        MaterialPageRoute(
+          builder: (context) => const ScreenBusMater(),
+        ),
+      );
+    }
   }
 
   Future<void> gotoLogin() async {
