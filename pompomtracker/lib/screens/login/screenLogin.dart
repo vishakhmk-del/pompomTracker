@@ -16,12 +16,9 @@ class _ScreenLoginState extends State<ScreenLogin> {
   bool passtoggle = true;
   @override
   Widget build(BuildContext context) {
-    
     return Stack(children: [
-      
       Scaffold(
-        key:_scaffoldKey,
-        
+        key: _scaffoldKey,
         body: Center(
           child: Card(
             margin: const EdgeInsets.all(50),
@@ -32,161 +29,174 @@ class _ScreenLoginState extends State<ScreenLogin> {
               height: 450,
               child: Container(
                 decoration: BoxDecoration(
-                  borderRadius:BorderRadius.circular(12),
-          gradient: LinearGradient(
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-              colors: [Theme.of(context).colorScheme.primary, Theme.of(context).colorScheme.secondary])),
-            child: Padding(
-              padding: const EdgeInsets.all(20),
-              child: SingleChildScrollView(
-                child: Form(
-                  key:_formkey,
-                  child: Theme(
-                    data:MyTheme.googleFormTheme,
-                    child: Column(
-                      // crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const CircleAvatar(
-                          //backgroundColor: Colors.red,
-                          backgroundImage: AssetImage('assets/login/login_bus.png'),
-                          radius: 50,
-                        ),
-                        const SizedBox(
-                          height: 20,
-                        ),
-                         SizedBox(
-                          width: MediaQuery.of(context).size.width,
-                           child: Padding(
-                             padding: const EdgeInsets.symmetric(vertical:0.0,horizontal:5),
-                             child: TextFormField(
-                              controller: _usercontroller,
-                              style: TextStyle(color: Theme.of(context).colorScheme.onPrimary,),
-                              decoration: InputDecoration(
-                                labelText: 'Username',
-                                labelStyle: Theme.of(context).textTheme.labelSmall
-                              ),
-                              
-                              validator: (value) {
-                                if (value!.isEmpty) {
-                                  return "Enter valid Username";
-                                } else if (value.contains('.') ||
-                                    value.contains("-") ||
-                                    value.contains(" ") ||
-                                    value.contains(",")) {
-                                  return "Enter valid Username";
-                                }
-                                return null;
-                              }
-                
-                              ),
-                           ),
-                         ),
-                         SizedBox(
-                          width: MediaQuery.of(context).size.width,
-                           child: Padding(
-                             padding: const EdgeInsets.symmetric(vertical: 10,horizontal:5),
-                             child: TextFormField(
-                               controller: _passcontroller,
-                               style: TextStyle(color: Theme.of(context).colorScheme.onPrimary,),
-                              decoration: InputDecoration(
-                                labelText: 'Password',
-                                labelStyle: Theme.of(context).textTheme.labelSmall,
-                                 prefixIcon: Theme(
-                                  data:MyTheme.appIconTheme,
-                                   child: const Icon(
-                                    Icons.lock,                                                               ),
-                                 ),
-                                suffixIcon: InkWell(
-                                  onTap: () {
-                                    setState(() {
-                                      passtoggle = !passtoggle;
-                                    });
-                                  },
-                                  child: Theme(
-                                    data:MyTheme.appIconTheme,
-                                    child: Icon(
-                                      passtoggle
-                                          ? Icons.visibility_off
-                                          : Icons.visibility,
-                                      
+                    borderRadius: BorderRadius.circular(12),
+                    gradient: LinearGradient(
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                        colors: [
+                          Theme.of(context).colorScheme.primary,
+                          Theme.of(context).colorScheme.secondary
+                        ])),
+                child: Padding(
+                  padding: const EdgeInsets.all(20),
+                  child: SingleChildScrollView(
+                    child: Form(
+                      key: _formkey,
+                      child: Theme(
+                        data: MyTheme.googleFormTheme,
+                        child: Column(
+                          // crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const CircleAvatar(
+                              //backgroundColor: Colors.red,
+                              backgroundImage:
+                                  AssetImage('assets/login/login_bus.png'),
+                              radius: 50,
+                            ),
+                            const SizedBox(
+                              height: 20,
+                            ),
+                            SizedBox(
+                              width: MediaQuery.of(context).size.width,
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    vertical: 0.0, horizontal: 5),
+                                child: TextFormField(
+                                    controller: _usercontroller,
+                                    style: TextStyle(
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .onPrimary,
                                     ),
+                                    decoration: InputDecoration(
+                                        labelText: 'Username',
+                                        labelStyle: Theme.of(context)
+                                            .textTheme
+                                            .labelSmall),
+                                    validator: (value) {
+                                      if (value!.isEmpty) {
+                                        return "Enter valid Username";
+                                      } else if (value.contains('.') ||
+                                          value.contains("-") ||
+                                          value.contains(" ") ||
+                                          value.contains(",")) {
+                                        return "Enter valid Username";
+                                      }
+                                      return null;
+                                    }),
+                              ),
+                            ),
+                            SizedBox(
+                              width: MediaQuery.of(context).size.width,
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    vertical: 10, horizontal: 5),
+                                child: TextFormField(
+                                    controller: _passcontroller,
+                                    style: TextStyle(
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .onPrimary,
+                                    ),
+                                    decoration: InputDecoration(
+                                      labelText: 'Password',
+                                      labelStyle: Theme.of(context)
+                                          .textTheme
+                                          .labelSmall,
+                                      prefixIcon: Theme(
+                                        data: MyTheme.appIconTheme,
+                                        child: const Icon(
+                                          Icons.lock,
+                                        ),
+                                      ),
+                                      suffixIcon: InkWell(
+                                        onTap: () {
+                                          setState(() {
+                                            passtoggle = !passtoggle;
+                                          });
+                                        },
+                                        child: Theme(
+                                          data: MyTheme.appIconTheme,
+                                          child: Icon(
+                                            passtoggle
+                                                ? Icons.visibility_off
+                                                : Icons.visibility,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    obscureText: passtoggle,
+                                    textInputAction: TextInputAction.done,
+                                    validator: (value) {
+                                      if (value!.isEmpty) {
+                                        return 'Enter password';
+                                      } else if (_passcontroller.text.length <
+                                          8) {
+                                        return 'Please enter atleast 8 characters';
+                                      } else if (value.contains(' ')) {
+                                        return 'Remove space from password';
+                                      }
+                                      return null;
+                                    }),
+                              ),
+                            ),
+                            const SizedBox(
+                              height: 25,
+                            ),
+                            Container(
+                              height: 35,
+                              width: 200,
+                              decoration: BoxDecoration(
+                                gradient: const LinearGradient(
+                                  begin: Alignment.topLeft,
+                                  end: Alignment.bottomRight,
+                                  colors: [Colors.black54, Colors.black87],
+                                ),
+                                borderRadius: BorderRadius.circular(18.0),
+                              ),
+                              child: Theme(
+                                data: MyTheme.buttonStyleTheme,
+                                child: ElevatedButton(
+                                  onPressed: () async {
+                                    if (_formkey.currentState!.validate()) {
+                                      await getlogin();
+                                    }
+                                  },
+                                  child: Text(
+                                    'LOGIN',
+                                    style:
+                                        Theme.of(context).textTheme.titleMedium,
                                   ),
                                 ),
                               ),
-                              obscureText: passtoggle,
-                              textInputAction: TextInputAction.done,
-                              validator: (value) {
-                                if (value!.isEmpty) {
-                                  return 'Enter password';
-                                } else if (_passcontroller.text.length < 8) {
-                                  return 'Please enter atleast 8 characters';
-                                } else if (value.contains(' ')) {
-                                  return 'Remove space from password';
-                                }
-                                return null;
-                              }
                             ),
-                           ),
-                         ),
-                        const SizedBox(
-                          height: 25,
-                        ),
-                        Container(
-                          height: 35,
-                          width: 200,
-                          decoration: BoxDecoration(
-                            gradient:const LinearGradient(
-                              begin: Alignment.topLeft,
-                              end: Alignment.bottomRight,
-                              colors: [Colors.black54, Colors.black87],
-                            ),
-                            
-                            borderRadius: BorderRadius.circular(18.0),
-                          ),
-                          child: Theme(
-                            data: MyTheme.buttonStyleTheme,
-                            child: ElevatedButton(
-                              onPressed: () async{
-                                if(_formkey.currentState!.validate()){
-                                  await getlogin();
-                                }
-                
-                              },
-                              child:  Text(
-                                'LOGIN',
-                                style: Theme.of(context).textTheme.titleMedium,
+                            TextButton(
+                              onPressed: () {},
+                              child: Text(
+                                'Forgot password?',
+                                style: Theme.of(context).textTheme.titleSmall,
                               ),
                             ),
-                          ),
+                          ],
                         ),
-                        TextButton(
-                          onPressed: () {},
-                          child: Text('Forgot password?',
-                          style: Theme.of(context).textTheme.titleSmall,),
-                        ),
-                      ],
+                      ),
                     ),
                   ),
                 ),
               ),
             ),
-            ),
           ),
         ),
-      ),
       )
-    ]
-    );
-
+    ]);
   }
+
   Future getlogin() async {
-    
     final username = _usercontroller.text;
     final password = _passcontroller.text;
-    
+
     final logreq = Loginreq.req(userName: username, pwd: password);
-    
+
     final loginResponse = await Busdata().login(logreq);
     final resultAsjson = jsonDecode(loginResponse.toString());
     final loginval = Loginresp.fromJson(resultAsjson as Map<String, dynamic>);
@@ -233,5 +243,5 @@ class _ScreenLoginState extends State<ScreenLogin> {
           textColor: Colors.white,
           fontSize: 15.0);
     }
-}
+  }
 }

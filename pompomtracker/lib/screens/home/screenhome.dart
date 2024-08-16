@@ -1,12 +1,25 @@
 import 'dart:developer';
+import 'package:pompomtracker/provider/loading/loading_provider.dart';
+
 import '../../core/hook/hook.dart';
 
-class Screenhome extends StatelessWidget {
+class Screenhome extends StatefulWidget {
   const Screenhome({super.key});
 
   @override
+  State<Screenhome> createState() => _ScreenhomeState();
+}
+
+class _ScreenhomeState extends State<Screenhome> {
+  @override
+  void initState(){
+    super.initState();
+    weeklycollection();
+  }
+  
+
+  @override
   Widget build(BuildContext context) {
-    final themeProvider = Provider.of<ThemeProvider>(context);
     return PopScope(
       canPop: false,
       onPopInvoked: (bool didPop) async {
@@ -21,14 +34,49 @@ class Screenhome extends StatelessWidget {
           }
         }
       },
-      child: Stack(children: [
-        Scaffold(
-            appBar: AppBar(title: const Text("PomPomTracker")),
-            body: Center(
-              child: Text('home page'),
-            )),
-      ]),
+      child: Stack(
+        children: [
+          Scaffold(
+              // backgroundColor: Colors.black,
+              appBar: AppBar(
+                  title: Text(
+                "PomPomTracker",
+                style:
+                    TextStyle(color: Theme.of(context).colorScheme.onSecondary),
+              )),
+              body: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    Card(
+                      margin: const EdgeInsets.all(50),
+                      elevation: 3,
+                      shadowColor: Theme.of(context).colorScheme.primary,
+                      child: Container(
+                        width: MediaQuery.of(context).size.width,
+                        height: MediaQuery.of(context).size.height / 2,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(12),
+                            gradient: LinearGradient(
+                                begin: Alignment.topLeft,
+                                end: Alignment.bottomRight,
+                                colors: [
+                                  Theme.of(context).colorScheme.primary,
+                                  Theme.of(context).colorScheme.secondary
+                                ])),
+                        child: Linechartwidget(),
+                      ),
+                    ),
+                  ],
+                ),
+              )),
+        ],
+      ),
     );
+  }
+
+  Future<void> weeklycollection()async{
+    final loadingProvider = context.read<LoadingProvider>();
+    loadingProvider.toggleLoading();
   }
 
   Future<bool?> showWarning(BuildContext context) async => showDialog<bool>(

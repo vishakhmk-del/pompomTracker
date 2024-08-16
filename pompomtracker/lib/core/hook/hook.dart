@@ -31,6 +31,8 @@ export 'package:pompomtracker/provider/theme/theme_provider.dart';
 
 export 'package:pompomtracker/api/busapi.dart';
 
+export 'package:pompomtracker/widgets/LineChart/linechartwidget.dart';
+
 /**************************************/
 
 /*screens*/
@@ -45,5 +47,8 @@ export 'package:pompomtracker/screens/home/screenhome.dart';
 export 'package:pompomtracker/model/login/loginreq/loginreq.dart';
 
 export 'package:pompomtracker/model/login/loginresp/loginresp.dart';
+
+export 'package:pompomtracker/model/weeklycollection/collectionreq/weeklycollectionreq/weeklycollectionreq.dart';
+
 
 /**************************************/

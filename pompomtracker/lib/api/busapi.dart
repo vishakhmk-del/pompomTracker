@@ -1,7 +1,9 @@
 import 'package:pompomtracker/core/hook/hook.dart';
 
+
 abstract class Apicalls {
   Future<Response<dynamic>?> login(Loginreq value);
+  Future<Response<dynamic>?>weeklycollection(Weeklycollectionreq value);
 }
 
 class Busdata extends Apicalls {
@@ -20,6 +22,18 @@ class Busdata extends Apicalls {
     try {
       final result = await dio.post(
         url.loginUrl,
+        data: value.toJson(),
+      );
+      return result;
+    } on DioException catch (ex) {
+      return ex.response;
+    }
+  }
+   @override
+  Future<Response<dynamic>?> weeklycollection(Weeklycollectionreq value) async {
+    try {
+      final result = await dio.post(
+        url.weeklyUrl,
         data: value.toJson(),
       );
       return result;
