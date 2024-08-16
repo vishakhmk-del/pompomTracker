@@ -1,4 +1,6 @@
 import 'package:pompomtracker/core/hook/hook.dart';
+import 'package:pompomtracker/model/sharedpref/sharedpref.dart';
+import 'package:pompomtracker/provider/shared_preference/shared_preference_manage.dart';
 
 class ScreenLogin extends StatefulWidget {
   const ScreenLogin({super.key});
@@ -8,6 +10,8 @@ class ScreenLogin extends StatefulWidget {
 }
 
 class _ScreenLoginState extends State<ScreenLogin> {
+  final SharedPrefManager sharedprefmanager = SharedPrefManager();
+
   final _usercontroller = TextEditingController();
 
   final _passcontroller = TextEditingController();
@@ -69,10 +73,14 @@ class _ScreenLoginState extends State<ScreenLogin> {
                                           .onPrimary,
                                     ),
                                     decoration: InputDecoration(
-                                        labelText: 'Username',
-                                        labelStyle: Theme.of(context)
-                                            .textTheme
-                                            .labelSmall),
+
+
+                                      labelText: 'Username',
+                                      labelStyle: Theme.of(context)
+                                          .textTheme
+                                          .labelSmall,
+                                    ),
+
                                     validator: (value) {
                                       if (value!.isEmpty) {
                                         return "Enter valid Username";
@@ -130,10 +138,18 @@ class _ScreenLoginState extends State<ScreenLogin> {
                                     validator: (value) {
                                       if (value!.isEmpty) {
                                         return 'Enter password';
+
                                       } else if (_passcontroller.text.length <
                                           8) {
                                         return 'Please enter atleast 8 characters';
                                       } else if (value.contains(' ')) {
+
+                                      }
+                                      // else if (_passcontroller.text.length < 8) {
+                                      //   return 'Please enter atleast 8 characters';
+                                      // }
+                                      else if (value.contains(' ')) {
+
                                         return 'Remove space from password';
                                       }
                                       return null;
@@ -208,6 +224,9 @@ class _ScreenLoginState extends State<ScreenLogin> {
     } else if (loginResponse.statusCode == 200 &&
         loginval.status == 'success') {
       //print('success');
+      addLoginShareddata(loginval.status, loginval.userId, loginval.userType,
+          loginval.userName, loginval.ownerName);
+
       Navigator.of(_scaffoldKey.currentContext!).push(
         MaterialPageRoute(
           builder: (context) => const ScreenSplash(),
@@ -244,4 +263,22 @@ class _ScreenLoginState extends State<ScreenLogin> {
           fontSize: 15.0);
     }
   }
+
+
+  addLoginShareddata(status, userId, userType, userName, ownerName) async {
+    final sharedPrefLogin = Sharedpref(
+      status: status,
+      userId: userId,
+      userType: userType,
+      userName: userName,
+      ownerName: ownerName,
+    );
+
+    await SharedPrefManager().addSharedData(sharedPrefLogin);
+    // final getLoginData = await SharedPrefManager().getSharedData();
+    // for (var data in getLoginData) {
+    //   print(data.userId);
+    // }
+  }
+
 }
