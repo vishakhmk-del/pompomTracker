@@ -48,7 +48,7 @@ export 'package:pompomtracker/model/login/loginreq/loginreq.dart';
 
 export 'package:pompomtracker/model/login/loginresp/loginresp.dart';
 
-export 'package:pompomtracker/model/weeklycollection/collectionreq/weeklycollectionreq/weeklycollectionreq.dart';
+export 'package:pompomtracker/model/weeklycollection/weeklycollectionreq/weeklycollectionreq.dart';
 
 
 /**************************************/
