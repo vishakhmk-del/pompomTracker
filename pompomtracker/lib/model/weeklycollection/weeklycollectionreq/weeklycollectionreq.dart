@@ -10,6 +10,7 @@ class Weeklycollectionreq {
   String? curDate;
 
   Weeklycollectionreq({this.userId, this.curDate});
+  Weeklycollectionreq.req({required this.userId,required this.curDate});
 
   factory Weeklycollectionreq.fromJson(Map<String, dynamic> json) {
     return _$WeeklycollectionreqFromJson(json);

@@ -1,9 +1,5 @@
 import 'package:pompomtracker/core/hook/hook.dart';
-import 'package:pompomtracker/main.dart';
-import 'package:pompomtracker/model/sharedpref/sharedpref.dart';
-import 'package:pompomtracker/provider/shared_preference/shared_preference_manage.dart';
-import 'package:pompomtracker/screens/Bus/ScreenBusMaster.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+
 
 class ScreenSplash extends StatefulWidget {
   const ScreenSplash({super.key});
@@ -22,31 +18,27 @@ class _ScreenSplashState extends State<ScreenSplash> {
 
   Future<void> checkUserLogin() async {
     final sharedpref = await SharedPreferences.getInstance();
-    final useLoggedin = sharedpref.getBool(userLogedIn);
+    final useLoggedin = sharedpref.getBool(savekeyname);
     if (useLoggedin == null && useLoggedin == false) {
       gotoLogin();
     } else {
-      final getLoginData = await SharedPrefManager().getSharedData();
-      // print(getLoginData);
+      final value=await SharedPrefManager.instance.getSharedData();
 
-      await Future.delayed(const Duration(seconds: 3));
-      Navigator.of(_scaffoldKey.currentContext!).push(
-        MaterialPageRoute(
-          builder: (context) => const ScreenBusMater(),
-        ),
-      );
+      if(value!.userId!=''){
+        await Future.delayed(const Duration(seconds: 3));
+       Navigator.pushReplacement(
+        _scaffoldKey.currentContext!, Approutes().homescreen);
+      }else{
+        gotoLogin();
+      }
+      
     }
   }
 
   Future<void> gotoLogin() async {
     await Future.delayed(const Duration(seconds: 3));
     Navigator.pushReplacement(
-        _scaffoldKey.currentContext!, Approutes().homescreen);
-    //  Navigator.of(_scaffoldKey.currentContext!).pushReplacement(
-    //   MaterialPageRoute(
-    //     builder: (context) =>const Screenhome(),
-    //   ),
-    // );
+        _scaffoldKey.currentContext!, Approutes().loginscreen);
   }
 
   final _scaffoldKey = GlobalKey<ScaffoldState>();

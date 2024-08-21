@@ -1,4 +1,7 @@
 import 'dart:developer';
+import 'package:intl/intl.dart';
+import 'package:pompomtracker/model/weeklycollection/wklycollectnmdltyp2/buswklycollect.dart';
+import 'package:pompomtracker/model/weeklycollection/wklycollectnmdltyp2/buswklycollectmdl.dart';
 import 'package:pompomtracker/provider/loading/loading_provider.dart';
 
 import '../../core/hook/hook.dart';
@@ -11,11 +14,17 @@ class Screenhome extends StatefulWidget {
 }
 
 class _ScreenhomeState extends State<Screenhome> {
+
+  List<Buswklycollectlist> wklyclctlist=[];
   @override
   void initState(){
     super.initState();
-    weeklycollection();
+    // WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
+    //  wklyclctlist=await weeklycollection();
+    // });
+    
   }
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
   
 
   @override
@@ -37,6 +46,7 @@ class _ScreenhomeState extends State<Screenhome> {
       child: Stack(
         children: [
           Scaffold(
+             key: _scaffoldKey,
               // backgroundColor: Colors.black,
               appBar: AppBar(
                   title: Text(
@@ -63,7 +73,7 @@ class _ScreenhomeState extends State<Screenhome> {
                                   Theme.of(context).colorScheme.primary,
                                   Theme.of(context).colorScheme.secondary
                                 ])),
-                        child: Linechartwidget(),
+                        child: Linechartwidget(repDetails: wklyclctlist,),
                       ),
                     ),
                   ],
@@ -74,9 +84,61 @@ class _ScreenhomeState extends State<Screenhome> {
     );
   }
 
-  Future<void> weeklycollection()async{
+  Future<List<Buswklycollectlist>> weeklycollection()async{
     final loadingProvider = context.read<LoadingProvider>();
     loadingProvider.toggleLoading();
+    final sharevalue=await SharedPrefManager.instance.getSharedData();
+    DateTime now = DateTime.now();
+    String formattedDate = DateFormat('yyyy-MM-dd').format(now);
+    print(formattedDate);
+    final wklyrqst=Weeklycollectionreq.req(
+      userId: sharevalue!.userId,
+      curDate: '2024-06-29');
+      final wklyresp = await Busdata().weeklycollection(wklyrqst);
+      final resultAsjson = jsonDecode(wklyresp.toString());
+      final wklyrspval = Buswklycollction.fromJson(resultAsjson as Map<String, dynamic>);
+      if (wklyresp == null) {
+      showLoginerror(_scaffoldKey.currentContext!, 1);
+    } else if (wklyresp.statusCode == 200 &&
+        wklyrspval.status == 'success') {
+      
+      print('success');
+      final wklylist=wklyrspval.repDetails;
+
+     return wklylist;
+    } else if (wklyrspval.status == 'Failed') {
+      showLoginerror(_scaffoldKey.currentContext!, 2);
+      return [];
+    } else {
+      showLoginerror(_scaffoldKey.currentContext!, 3);
+      return [];
+    }
+    return [];
+  }
+
+  Future showLoginerror(BuildContext? context, stat) async {
+    
+    if (stat == 2) {
+      Fluttertoast.showToast(
+          msg: "NO DATA FOUND",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.CENTER,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Colors.black,
+          textColor: Colors.white,
+          fontSize: 15.0);
+    } else {
+      Fluttertoast.showToast(
+          msg: "Something went wrong",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.CENTER,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Colors.black,
+          textColor: Colors.white,
+          fontSize: 15.0);
+    }
+  }
+
   }
 
   Future<bool?> showWarning(BuildContext context) async => showDialog<bool>(
@@ -103,4 +165,4 @@ class _ScreenhomeState extends State<Screenhome> {
               ),
             ],
           ));
-}
+
