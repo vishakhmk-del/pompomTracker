@@ -3,6 +3,9 @@ import 'package:pompomtracker/model/bus_master/bus_master_req/bus_master_req.dar
 
 abstract class Apicalls {
   Future<Response<dynamic>?> login(Loginreq value);
+  Future<Response<dynamic>?> weeklycollection(Weeklycollectionreq value);
+  Future<Response<dynamic>?> getBusList();
+  Future<Response<dynamic>?> busMasterSave(BusMasterReq value);
 }
 
 class Busdata extends Apicalls {
@@ -29,6 +32,7 @@ class Busdata extends Apicalls {
     }
   }
 
+  @override
   Future<Response<dynamic>?> getBusList() async {
     try {
       final result = await dio.post(
@@ -40,10 +44,24 @@ class Busdata extends Apicalls {
     }
   }
 
+  @override
   Future<Response<dynamic>?> busMasterSave(BusMasterReq value) async {
     try {
       final result = await dio.post(
         url.busSave,
+        data: value.toJson(),
+      );
+      return result;
+    } on DioException catch (ex) {
+      return ex.response;
+    }
+  }
+
+  @override
+  Future<Response<dynamic>?> weeklycollection(Weeklycollectionreq value) async {
+    try {
+      final result = await dio.post(
+        url.weeklyUrl,
         data: value.toJson(),
       );
       return result;

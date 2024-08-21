@@ -21,6 +21,13 @@ class Sharedpref {
     this.userName,
     this.ownerName,
   });
+  Sharedpref.value({
+   this.status,
+   required this.userId,
+   required this.userType,
+   required this.userName,
+   required this.ownerName,
+  });
 
   factory Sharedpref.fromJson(Map<String, dynamic> json) {
     return _$SharedprefFromJson(json);

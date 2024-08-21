@@ -16,6 +16,8 @@ export 'package:provider/provider.dart';
 export 'dart:convert';
 
 export 'package:fluttertoast/fluttertoast.dart';
+
+export 'package:shared_preferences/shared_preferences.dart';
 /**************************************/
 
 /*core*/
@@ -31,6 +33,12 @@ export 'package:pompomtracker/provider/theme/theme_provider.dart';
 
 export 'package:pompomtracker/api/busapi.dart';
 
+export 'package:pompomtracker/widgets/LineChart/linechartwidget.dart';
+
+export 'package:pompomtracker/main.dart';
+
+export 'package:pompomtracker/core/shared_preference/shared_preference_manage.dart';
+
 /**************************************/
 
 /*screens*/
@@ -45,5 +53,11 @@ export 'package:pompomtracker/screens/home/screenhome.dart';
 export 'package:pompomtracker/model/login/loginreq/loginreq.dart';
 
 export 'package:pompomtracker/model/login/loginresp/loginresp.dart';
+
+export 'package:pompomtracker/model/weeklycollection/weeklycollectionreq/weeklycollectionreq.dart';
+
+export 'package:pompomtracker/model/sharedpref/sharedpref.dart';
+
+
 
 /**************************************/

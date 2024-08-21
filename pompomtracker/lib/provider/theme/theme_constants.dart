@@ -37,7 +37,7 @@ class MyTheme {
           primary: Color(0xff13bc91),
           onPrimary: Colors.white,
           secondary: Color(0xff12b2ba),
-          onSecondary: Colors.black),
+          onSecondary: Colors.white),
       textTheme: const TextTheme(
           labelSmall: TextStyle(
               color: Colors.white, fontSize: 14, fontFamily: 'Poppins-Medium'),
