@@ -32,7 +32,7 @@ class _ScreenSplashState extends State<ScreenSplash> {
       await Future.delayed(const Duration(seconds: 3));
       Navigator.of(_scaffoldKey.currentContext!).push(
         MaterialPageRoute(
-          builder: (context) => const ScreenBusMater(),
+          builder: (context) => const Screenhome(),
         ),
       );
     }
