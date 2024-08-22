@@ -26,7 +26,7 @@ class _ScreenSplashState extends State<ScreenSplash> {
       if (value!.userId != '') {
         await Future.delayed(const Duration(seconds: 3));
         Navigator.pushReplacement(
-            _scaffoldKey.currentContext!, Approutes().homescreen);
+            _scaffoldKey.currentContext!, Approutes().routemasterscreen);
       } else {
         gotoLogin();
       }

@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:pompomtracker/core/hook/hook.dart';
 
 const primaryColor = Colors.purple;
@@ -11,13 +12,17 @@ class MyTheme {
       brightness: Brightness.light,
       primaryColor: primaryColor,
       colorScheme: const ColorScheme.light(
-          primary: Color(0xff13bc91),
-          onPrimary: Colors.white,
-          secondary: Color(0xff12b2ba),
-          onSecondary: Colors.black),
+        primary: Color(0xff13bc91),
+        onPrimary: Colors.white,
+        secondary: Color(0xff12b2ba),
+        onSecondary: Colors.black,
+        primaryContainer: Color(0xFF5FE0BF),
+      ),
       textTheme: const TextTheme(
           labelSmall: TextStyle(
               color: Colors.white, fontSize: 14, fontFamily: 'Poppins-Medium'),
+          bodySmall: TextStyle(
+              color: Colors.black, fontSize: 14, fontFamily: 'Poppins-Medium'),
           titleSmall: TextStyle(
               color: Colors.white, fontSize: 14, fontFamily: 'Poppins-Medium'),
           titleMedium: TextStyle(
@@ -34,12 +39,16 @@ class MyTheme {
       brightness: Brightness.dark,
       primaryColor: secondaryColor,
       colorScheme: const ColorScheme.dark(
-          primary: Color(0xff13bc91),
-          onPrimary: Colors.white,
-          secondary: Color(0xff12b2ba),
-          onSecondary: Colors.white),
+        primary: Color(0xff13bc91),
+        onPrimary: Colors.white,
+        secondary: Color(0xff12b2ba),
+        onSecondary: Colors.white,
+        primaryContainer: Color(0xFF5FE0BF),
+      ),
       textTheme: const TextTheme(
           labelSmall: TextStyle(
+              color: Colors.white, fontSize: 14, fontFamily: 'Poppins-Medium'),
+          bodySmall: TextStyle(
               color: Colors.white, fontSize: 14, fontFamily: 'Poppins-Medium'),
           titleSmall: TextStyle(
               color: Colors.white, fontSize: 14, fontFamily: 'Poppins-Medium'),
@@ -49,19 +58,21 @@ class MyTheme {
               color: Colors.white,
               fontSize: 20,
               fontFamily: 'Poppins-Medium')));
+
+  //common theme
   static ThemeData get googleFormTheme => ThemeData(
         inputDecorationTheme: const InputDecorationTheme(
           floatingLabelBehavior: FloatingLabelBehavior.auto,
           border: OutlineInputBorder(
-            borderSide: BorderSide(color: Colors.black54, width: 1.0),
+            borderSide: BorderSide(color: Color(0xFFE1E1E1), width: 1.0),
             borderRadius: BorderRadius.all(Radius.circular(4.0)),
           ),
           enabledBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: Colors.black54, width: 1.0),
+            borderSide: BorderSide(color: Color(0xFFE1E1E1), width: 1.0),
             borderRadius: BorderRadius.all(Radius.circular(4.0)),
           ),
           focusedBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: Colors.black54, width: 2.0),
+            borderSide: BorderSide(color: Color(0xFFE1E1E1), width: 2.0),
             borderRadius: BorderRadius.all(Radius.circular(4.0)),
           ),
           errorBorder: OutlineInputBorder(
@@ -73,7 +84,7 @@ class MyTheme {
             borderRadius: BorderRadius.all(Radius.circular(4.0)),
           ),
           disabledBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: Colors.black54, width: 1.0),
+            borderSide: BorderSide(color: Color(0xFFE1E1E1), width: 1.0),
             borderRadius: BorderRadius.all(Radius.circular(4.0)),
           ),
         ),

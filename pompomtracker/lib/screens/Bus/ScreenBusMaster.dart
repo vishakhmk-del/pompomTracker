@@ -1,7 +1,6 @@
 import 'package:pompomtracker/core/hook/hook.dart';
 import 'package:pompomtracker/model/bus_master/bus_master_req/bus_master_req.dart';
 import 'package:pompomtracker/model/bus_master/bus_master_resp/bus_master_resp.dart';
-import 'package:pompomtracker/model/bustype/bus_list.dart';
 import 'package:pompomtracker/model/bustype/bustype.dart';
 
 class ScreenBusMater extends StatefulWidget {
@@ -42,12 +41,19 @@ class _MyWidgetState extends State<ScreenBusMater> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-          title: Text(
-        "Bus Master",
-        style: TextStyle(color: Theme.of(context).colorScheme.onSecondary),
-      )),
       key: _scafoldkey,
+      appBar: AppBar(
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back),
+            onPressed: () {
+              Navigator.pushReplacement(
+                  _scafoldkey.currentContext!, Approutes().homescreen);
+            },
+          ),
+          title: Text(
+            "Bus Master",
+            style: TextStyle(color: Theme.of(context).colorScheme.onSecondary),
+          )),
       body: Center(
           child: SingleChildScrollView(
         child: Card(
@@ -193,6 +199,13 @@ class _MyWidgetState extends State<ScreenBusMater> {
                               labelStyle:
                                   Theme.of(context).textTheme.labelSmall,
                             ),
+                            validator: (value) {
+                              if (value!.isEmpty) {
+                                return 'Select Bus Type';
+                              } else {
+                                return null;
+                              }
+                            },
                           ),
                           const SizedBox(
                             height: 10,
@@ -212,6 +225,13 @@ class _MyWidgetState extends State<ScreenBusMater> {
                             ),
                             onTap: () =>
                                 _selectDate(context, _dateValidController),
+                            validator: (value) {
+                              if (value!.isEmpty) {
+                                return 'Select Date';
+                              } else {
+                                return null;
+                              }
+                            },
                           ),
                           const SizedBox(
                             height: 10,
@@ -231,15 +251,24 @@ class _MyWidgetState extends State<ScreenBusMater> {
                             ),
                             onTap: () =>
                                 _selectDate(context, _dateToController),
+                            validator: (value) {
+                              if (value!.isEmpty) {
+                                return 'Select Date';
+                              } else {
+                                return null;
+                              }
+                            },
                           ),
                           const SizedBox(
                             height: 10,
                           ),
                           ElevatedButton(
-                            onPressed: () {
-                              busMasterSave();
+                            onPressed: () async {
+                              if (_formkey.currentState!.validate()) {
+                                await busMasterSave();
+                              }
                             },
-                            child: Text('SAVE'),
+                            child: const Text('SAVE'),
                           )
                         ],
                       ),
@@ -275,6 +304,9 @@ class _MyWidgetState extends State<ScreenBusMater> {
     final fromDate = _dateValidController.text;
     final toDate = _dateToController.text;
     final selectedBus = selectedBusType;
+    final value = SharedPrefManager.instance.getSharedData();
+    // print(value);
+
     final busMasterReq = BusMasterReq.req(
         busName: name,
         shName: shortName,
@@ -289,8 +321,45 @@ class _MyWidgetState extends State<ScreenBusMater> {
     final resultAsjson = jsonDecode(busMasterResp.toString());
     final busResponseValue =
         BusMasterResp.fromJson(resultAsjson as Map<String, dynamic>);
-    //print(busResponseValue.status);
-    if (busResponseValue.status == 'success' &&
-        busMasterResp!.statusCode == 200) {}
+    // print(busResponseValue.status);
+    if (busMasterResp == null) {
+      showLoginerror(_scafoldkey.currentContext!, 1);
+    } else if (busResponseValue.status == 'success') {
+      // print('sucess');
+      Fluttertoast.showToast(
+          msg: "Bus details saved successfully",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.CENTER,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Colors.white,
+          textColor: Colors.black,
+          fontSize: 15.0);
+    } else if (busResponseValue.status == 'Failed') {
+      showLoginerror(_scafoldkey.currentContext!, 2);
+    } else {
+      showLoginerror(_scafoldkey.currentContext!, 1);
+    }
+  }
+
+  showLoginerror(BuildContext? buildContext, stat) {
+    if (stat == 2) {
+      Fluttertoast.showToast(
+          msg: "Bus details  not saved",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.CENTER,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Colors.white,
+          textColor: Colors.black,
+          fontSize: 15.0);
+    } else {
+      Fluttertoast.showToast(
+          msg: "Something went wrong",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.CENTER,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Colors.white,
+          textColor: Colors.black,
+          fontSize: 15.0);
+    }
   }
 }
