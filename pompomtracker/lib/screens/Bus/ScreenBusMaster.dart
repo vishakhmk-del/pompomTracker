@@ -1,7 +1,6 @@
 import 'package:pompomtracker/core/hook/hook.dart';
 import 'package:pompomtracker/model/bus_master/bus_master_req/bus_master_req.dart';
 import 'package:pompomtracker/model/bus_master/bus_master_resp/bus_master_resp.dart';
-import 'package:pompomtracker/model/bustype/bus_list.dart';
 import 'package:pompomtracker/model/bustype/bustype.dart';
 
 class ScreenBusMater extends StatefulWidget {

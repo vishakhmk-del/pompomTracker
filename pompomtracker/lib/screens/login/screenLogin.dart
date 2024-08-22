@@ -1,5 +1,4 @@
 import 'package:pompomtracker/core/hook/hook.dart';
-import 'package:pompomtracker/function/dashboardfn/wklycollectfn.dart';
 
 class ScreenLogin extends StatefulWidget {
   const ScreenLogin({super.key});
@@ -229,7 +228,7 @@ class _ScreenLoginState extends State<ScreenLogin> {
           loginval.userName, loginval.ownerName);
       /*wklycollection function */    
 
-      await Wklycollectfn.instance.wklycolctfn();
+      
 
       /**************************/
       
