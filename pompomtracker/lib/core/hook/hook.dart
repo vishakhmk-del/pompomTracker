@@ -18,6 +18,9 @@ export 'dart:convert';
 export 'package:fluttertoast/fluttertoast.dart';
 
 export 'package:shared_preferences/shared_preferences.dart';
+
+export 'package:fl_chart/fl_chart.dart';
+
 /**************************************/
 
 /*core*/
@@ -27,17 +30,15 @@ export 'package:pompomtracker/provider/theme/theme_constants.dart';
 
 export 'package:pompomtracker/core/routes/approute.dart';
 
-export 'package:pompomtracker/widgets/backgroundgradient/colorLineargrandient.dart';
-
 export 'package:pompomtracker/provider/theme/theme_provider.dart';
 
 export 'package:pompomtracker/api/busapi.dart';
 
-export 'package:pompomtracker/widgets/LineChart/linechartwidget.dart';
-
 export 'package:pompomtracker/main.dart';
 
 export 'package:pompomtracker/core/shared_preference/shared_preference_manage.dart';
+
+export 'package:pompomtracker/provider/loading/loading_provider.dart';
 
 /**************************************/
 
@@ -58,6 +59,25 @@ export 'package:pompomtracker/model/weeklycollection/weeklycollectionreq/weeklyc
 
 export 'package:pompomtracker/model/sharedpref/sharedpref.dart';
 
+export 'package:pompomtracker/model/weeklycollection/buscollectionmdl/rep_detail.dart';
 
+export 'package:pompomtracker/model/weeklycollection/wklycollectnmdltyp2/buswklycollect.dart';
+
+export 'package:pompomtracker/model/weeklycollection/wklycollectnmdltyp2/buswklycollectmdl.dart';
+
+
+/**************************************/
+
+/*FUNCTION*/
+
+export 'package:pompomtracker/function/dashboardfn/wklycollectfn.dart';
+
+/**************************************/
+
+/*WIDGETS*/
+
+export 'package:pompomtracker/widgets/backgroundgradient/colorLineargrandient.dart';
+
+export 'package:pompomtracker/widgets/LineChart/linechartwidget.dart';
 
 /**************************************/

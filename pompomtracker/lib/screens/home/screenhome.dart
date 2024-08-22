@@ -1,9 +1,5 @@
 import 'dart:developer';
 import 'package:intl/intl.dart';
-import 'package:pompomtracker/model/weeklycollection/wklycollectnmdltyp2/buswklycollect.dart';
-import 'package:pompomtracker/model/weeklycollection/wklycollectnmdltyp2/buswklycollectmdl.dart';
-import 'package:pompomtracker/provider/loading/loading_provider.dart';
-
 import '../../core/hook/hook.dart';
 
 class Screenhome extends StatefulWidget {
@@ -15,13 +11,11 @@ class Screenhome extends StatefulWidget {
 
 class _ScreenhomeState extends State<Screenhome> {
 
-  List<Buswklycollectlist> wklyclctlist=[];
+
   @override
   void initState(){
     super.initState();
-    // WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
-    //  wklyclctlist=await weeklycollection();
-    // });
+
     
   }
   final _scaffoldKey = GlobalKey<ScaffoldState>();
@@ -52,33 +46,106 @@ class _ScreenhomeState extends State<Screenhome> {
                   title: Text(
                 "PomPomTracker",
                 style:
-                    TextStyle(color: Theme.of(context).colorScheme.onSecondary),
+                    Theme.of(context).textTheme.titleLarge,
               )),
-              body: SingleChildScrollView(
-                child: Column(
-                  children: [
-                    Card(
-                      margin: const EdgeInsets.all(50),
-                      elevation: 3,
-                      shadowColor: Theme.of(context).colorScheme.primary,
-                      child: Container(
-                        width: MediaQuery.of(context).size.width,
-                        height: MediaQuery.of(context).size.height / 2,
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(12),
-                            gradient: LinearGradient(
-                                begin: Alignment.topLeft,
-                                end: Alignment.bottomRight,
-                                colors: [
-                                  Theme.of(context).colorScheme.primary,
-                                  Theme.of(context).colorScheme.secondary
-                                ])),
-                        child: Linechartwidget(repDetails: wklyclctlist,),
+              body: ListView(
+                children: [
+                  Card(
+                    margin: const EdgeInsets.all(10),
+                    elevation: 3,
+                    shadowColor: Theme.of(context).colorScheme.primary,
+                    child: Container(
+                      // height: MediaQuery.of(context).size.height ,
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(12),
+                                  gradient: LinearGradient(
+                                      begin: Alignment.topLeft,
+                                      end: Alignment.bottomRight,
+                                      colors: [
+                                        Theme.of(context).colorScheme.surfaceContainer,
+                                        Theme.of(context).colorScheme.onPrimary
+                                      ])),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Padding(
+                            padding:const  EdgeInsets.only(top:30,left:10),
+                            child:  Text("Weekly Collection",style: Theme.of(context).textTheme.titleLarge,),
+                          ),
+                          Card(
+                            margin: const EdgeInsets.only(top:30,left:10,right:10),
+                            elevation: 3,
+                            
+                            child: Column(
+                              children: [
+                                Container(
+                                  //width: MediaQuery.of(context).size.width,
+                                  height: MediaQuery.of(context).size.height / 2,
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(12),
+                                          ),
+                                  child: const Linechartwidget(),
+                                ),
+                            Padding(
+                              padding: const EdgeInsets.all(15.0),
+                              child: Container(
+                                    height: 45,
+                                    width: 200,
+                                    decoration: BoxDecoration(
+                                      gradient:  LinearGradient(
+                                        begin: Alignment.topLeft,
+                                        end: Alignment.bottomRight,
+                                        colors: [
+                                          Theme.of(context).colorScheme.primary,
+                                          Theme.of(context).colorScheme.secondary
+                                          ],
+                                      ),
+                                      borderRadius: BorderRadius.circular(12.0),
+                                    ),
+                                    child: Theme(
+                                      data: MyTheme.buttonStyleTheme,
+                                      child: ElevatedButton(
+                                        onPressed: () async {
+                                        },
+                                        child: Text(
+                                          'Data Analysis',
+                                          style:
+                                              Theme.of(context).textTheme.titleMedium,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),                          
+                        ],
                       ),
                     ),
-                  ],
-                ),
-              )),
+                  ),
+
+                 Card(
+                    margin: const EdgeInsets.all(10),
+                    elevation: 3,
+                    shadowColor: Theme.of(context).colorScheme.primary,
+                    child: Container(
+                      // height: MediaQuery.of(context).size.height ,
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(12),
+                                  //border: Border.all(color:Theme.of(context).colorScheme.on),
+                                  gradient: LinearGradient(
+                                      begin: Alignment.topLeft,
+                                      end: Alignment.bottomRight,
+                                      colors: [
+                                        Theme.of(context).colorScheme.surfaceContainer,
+                                        Theme.of(context).colorScheme.onPrimary
+                                      ])),
+                                      //child: GridView(gridDelegate: gridDelegate),
+                          ))
+
+                ],
+              ),
+            ),
         ],
       ),
     );

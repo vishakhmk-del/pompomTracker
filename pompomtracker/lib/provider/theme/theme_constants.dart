@@ -17,8 +17,16 @@ class MyTheme {
         secondary: Color(0xff12b2ba),
         onSecondary: Colors.black,
         primaryContainer: Color(0xFF5FE0BF),
+        /***graph theme***/
+        primaryFixed: Colors.black38,
+        /*****************/
+        surfaceContainer: Color(0xffFF8096),
       ),
       textTheme: const TextTheme(
+          labelMedium: TextStyle(
+              color: Colors.black54,
+              fontSize: 10,
+              fontFamily: 'Poppins-Medium'),
           labelSmall: TextStyle(
               color: Colors.white, fontSize: 14, fontFamily: 'Poppins-Medium'),
           bodySmall: TextStyle(
@@ -28,7 +36,7 @@ class MyTheme {
           titleMedium: TextStyle(
               color: Colors.white, fontSize: 16, fontFamily: 'Poppins-Medium'),
           titleLarge: TextStyle(
-              color: Colors.black54,
+              color: Colors.black,
               fontSize: 20,
               fontFamily: 'Poppins-Medium')));
 
@@ -44,8 +52,14 @@ class MyTheme {
         secondary: Color(0xff12b2ba),
         onSecondary: Colors.white,
         primaryContainer: Color(0xFF5FE0BF),
+        /***graph theme***/
+        primaryFixed: Color(0Xff37434d),
+        /*****************/
+        surfaceContainer: Color(0xff4169E1),
       ),
       textTheme: const TextTheme(
+          labelMedium: TextStyle(
+              color: Colors.white, fontSize: 10, fontFamily: 'Poppins-Medium'),
           labelSmall: TextStyle(
               color: Colors.white, fontSize: 14, fontFamily: 'Poppins-Medium'),
           bodySmall: TextStyle(
@@ -89,6 +103,7 @@ class MyTheme {
           ),
         ),
       );
+
   static ThemeData get buttonStyleTheme => ThemeData(
           elevatedButtonTheme: ElevatedButtonThemeData(
               style: ElevatedButton.styleFrom(
@@ -101,57 +116,3 @@ class MyTheme {
         size: 20,
       ));
 }
-// appBarTheme: const AppBarTheme(
-//       backgroundColor: Colors.green,
-//       shadowColor: Colors.transparent,
-//       elevation: 0.0,
-//       centerTitle: false,
-//       scrolledUnderElevation: 10.0,
-//       toolbarHeight: 72.0,
-//       titleTextStyle: TextStyle(color: Colors.white, fontSize: 20.0, fontWeight: FontWeight.normal),
-//     // round corners
-//       shape: RoundedRectangleBorder(
-//         borderRadius: BorderRadius.only(bottomLeft: Radius.circular(20), bottomRight: Radius.circular(20)),
-//       ),
-//     // icons button theme
-//       actionsIconTheme: IconThemeData(color: Colors.white, size: 16.0),
-//     )
-// elevatedButtonTheme: ElevatedButtonThemeData(
-//   // style: ButtonStyle(
-//   // padding: WidgetStateProperty.all(const EdgeInsets.symmetric(vertical: 20,horizontal: 40),
-//   // ),
-//   // shape: WidgetStateProperty.all(RoundedRectangleBorder(
-//   //   borderRadius: BorderRadius.circular(20)
-//   // )),
-//   // backgroundColor: WidgetStateProperty.all(primaryColor),
-//   // ),
-//   style: ElevatedButton.styleFrom(
-//       elevation: 8.0,
-//       shadowColor: Colors.green,
-//     // define min size of the button in theme
-//       minimumSize: const Size(double.infinity, 56.0),
-//       backgroundColor: Colors.green,
-//       disabledBackgroundColor: Colors.green.withOpacity(0.4),
-//       disabledForegroundColor: Colors.grey,
-//       padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 16.0),
-//       textStyle: const TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
-//       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
-//     ),
-// ),
-// textTheme:const TextTheme(
-//   titleSmall:  TextStyle(
-//     color: Colors.white,
-//     fontSize: 12,
-//     fontFamily: 'Poppins-Medium'
-//   ),
-//   titleMedium:  TextStyle(
-//     color: Colors.white,
-//     fontSize: 16,
-//     fontFamily: 'Poppins-Medium'
-//   ),
-//   titleLarge:  TextStyle(
-//     color: Colors.white,
-//     fontSize: 20,
-//     fontFamily: 'Poppins-Medium'
-//   )
-// )
