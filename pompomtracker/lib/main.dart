@@ -11,24 +11,21 @@ class MyApp extends StatelessWidget {
 
   // This widget is the root of your application.
   @override
-  Widget build(BuildContext context) => MultiProvider(
-    providers: [
-      ChangeNotifierProvider<LoadingProvider>(
-              create: (context) => LoadingProvider()),
-      ChangeNotifierProvider<ThemeProvider>(
-        create: (context) => ThemeProvider(),
-        builder: (context,child) {
-          final themeProvider=Provider.of<ThemeProvider>(context);
-          return MaterialApp(
-            title: 'PomPomTracker',
-            themeMode: themeProvider.themeMode,
-            theme: themeProvider.lightScheme,
-            darkTheme: themeProvider.darkScheme,
-            home: const ScreenSplash(),
-          );
-        },
-        
-     ),
-   ]    
-  );
+  Widget build(BuildContext context) => MultiProvider(providers: [
+        ChangeNotifierProvider<LoadingProvider>(
+            create: (context) => LoadingProvider()),
+        ChangeNotifierProvider<ThemeProvider>(
+          create: (context) => ThemeProvider(),
+          builder: (context, child) {
+            final themeProvider = Provider.of<ThemeProvider>(context);
+            return MaterialApp(
+              title: 'PomPomTracker',
+              themeMode: themeProvider.themeMode,
+              theme: themeProvider.lightScheme,
+              darkTheme: themeProvider.darkScheme,
+              home: const ScreenSplash(),
+            );
+          },
+        ),
+      ]);
 }

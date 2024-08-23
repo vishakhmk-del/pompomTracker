@@ -269,7 +269,20 @@ class _MyWidgetState extends State<ScreenBusMater> {
                               }
                             },
                             child: const Text('SAVE'),
-                          )
+                          ),
+                          const SizedBox(height: 10),
+                          Consumer<LoadingProvider>(
+                              builder: (context, loadingProvider, child) {
+                            return loadingProvider.isLoading
+                                ? const Center(
+                                    child: CircularProgressIndicator(
+                                      valueColor: AlwaysStoppedAnimation<Color>(
+                                        Color.fromARGB(255, 2, 128, 6),
+                                      ),
+                                    ),
+                                  )
+                                : const SizedBox.shrink();
+                          }),
                         ],
                       ),
                     ),
@@ -297,10 +310,13 @@ class _MyWidgetState extends State<ScreenBusMater> {
   }
 
   Future busMasterSave() async {
+    final loadingProvider = _scafoldkey.currentContext!.read<LoadingProvider>();
+    //false to true
+    loadingProvider.toggleLoading();
     final name = _nameControler.text;
     final shortName = _shortnameControler.text;
     final registerNo = _registartionNoControler.text;
-    final permoitNo = _permitNoController.text;
+    final permitNo = _permitNoController.text;
     final fromDate = _dateValidController.text;
     final toDate = _dateToController.text;
     final selectedBus = selectedBusType;
@@ -312,7 +328,7 @@ class _MyWidgetState extends State<ScreenBusMater> {
         shName: shortName,
         regno: registerNo,
         busType: selectedBus,
-        permitno: permoitNo,
+        permitno: permitNo,
         vfrom: fromDate,
         vto: toDate,
         userId: 'OWN00001',
@@ -321,9 +337,11 @@ class _MyWidgetState extends State<ScreenBusMater> {
     final resultAsjson = jsonDecode(busMasterResp.toString());
     final busResponseValue =
         BusMasterResp.fromJson(resultAsjson as Map<String, dynamic>);
+    //True to false
+    loadingProvider.toggleLoading();
     // print(busResponseValue.status);
     if (busMasterResp == null) {
-      showLoginerror(_scafoldkey.currentContext!, 1);
+      showerror(_scafoldkey.currentContext!, 1);
     } else if (busResponseValue.status == 'success') {
       // print('sucess');
       Fluttertoast.showToast(
@@ -335,13 +353,13 @@ class _MyWidgetState extends State<ScreenBusMater> {
           textColor: Colors.black,
           fontSize: 15.0);
     } else if (busResponseValue.status == 'Failed') {
-      showLoginerror(_scafoldkey.currentContext!, 2);
+      showerror(_scafoldkey.currentContext!, 2);
     } else {
-      showLoginerror(_scafoldkey.currentContext!, 1);
+      showerror(_scafoldkey.currentContext!, 1);
     }
   }
 
-  showLoginerror(BuildContext? buildContext, stat) {
+  showerror(BuildContext? buildContext, stat) {
     if (stat == 2) {
       Fluttertoast.showToast(
           msg: "Bus details  not saved",

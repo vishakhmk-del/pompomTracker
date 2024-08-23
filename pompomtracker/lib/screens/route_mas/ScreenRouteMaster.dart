@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:pompomtracker/core/hook/hook.dart';
+import 'package:pompomtracker/model/bus_master/bus_master_resp/bus_master_resp.dart';
+import 'package:pompomtracker/model/route_master/route_master_req/route_master_req.dart';
+import 'package:pompomtracker/model/route_master/route_master_resp/route_master_resp.dart';
 
 class ScreenRoutemaster extends StatefulWidget {
   const ScreenRoutemaster({super.key});
@@ -118,14 +121,29 @@ class _MyWidgetState extends State<ScreenRoutemaster> {
                             data: MyTheme.buttonStyleTheme,
                             child: ElevatedButton(
                               onPressed: () async {
-                                if (_formKey.currentState!.validate()) {}
+                                if (_formKey.currentState!.validate()) {
+                                  routeMasterSave();
+                                }
                               },
                               child: Text('SAVE',
                                   style:
                                       Theme.of(context).textTheme.titleMedium),
                             ),
                           ),
-                        )
+                        ),
+                        const SizedBox(height: 10),
+                        Consumer<LoadingProvider>(
+                            builder: (context, loadingProvider, child) {
+                          return loadingProvider.isLoading
+                              ? const Center(
+                                  child: CircularProgressIndicator(
+                                    valueColor: AlwaysStoppedAnimation<Color>(
+                                      Color.fromARGB(255, 2, 128, 6),
+                                    ),
+                                  ),
+                                )
+                              : const SizedBox.shrink();
+                        }),
                       ],
                     ),
                   ),
@@ -134,5 +152,61 @@ class _MyWidgetState extends State<ScreenRoutemaster> {
             ),
           ),
         ));
+  }
+
+  Future routeMasterSave() async {
+    final loadingProvider = _scafoldkey.currentContext!.read<LoadingProvider>();
+    //False to true
+    loadingProvider.toggleLoading();
+
+    final fromStation = _fromController.text;
+    final toStation = _toController.text;
+    final via = _viaController.text;
+    final value = SharedPrefManager.instance.getSharedData();
+    final routeMasReq = RouteMasterReq(
+        from: fromStation, to: toStation, via: via, userId: 'OWN00001');
+    final routeMasterResp = await Busdata().routeMasterSave(routeMasReq);
+    final reultAsJson = jsonDecode(routeMasterResp.toString());
+    final resValue =
+        RouteMasterResp.fromJson(reultAsJson as Map<String, dynamic>);
+    //True to false
+    loadingProvider.toggleLoading();
+
+    if (resValue.status == 'success') {
+      Fluttertoast.showToast(
+          msg: "Route details saved successfully",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.CENTER,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Colors.white,
+          textColor: Colors.black,
+          fontSize: 15.0);
+    } else if (resValue.status == 'Failed') {
+      showerror(_scafoldkey.currentContext, 2);
+    } else {
+      showerror(_scafoldkey.currentContext, 3);
+    }
+  }
+
+  showerror(BuildContext? buildContext, stat) {
+    if (stat == 2) {
+      Fluttertoast.showToast(
+          msg: "Route details  not saved",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.CENTER,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Colors.white,
+          textColor: Colors.black,
+          fontSize: 15.0);
+    } else {
+      Fluttertoast.showToast(
+          msg: "Something went wrong",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.CENTER,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Colors.white,
+          textColor: Colors.black,
+          fontSize: 15.0);
+    }
   }
 }

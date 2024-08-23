@@ -71,14 +71,11 @@ class _ScreenLoginState extends State<ScreenLogin> {
                                           .onPrimary,
                                     ),
                                     decoration: InputDecoration(
-
-
                                       labelText: 'Username',
                                       labelStyle: Theme.of(context)
                                           .textTheme
                                           .labelSmall,
                                     ),
-
                                     validator: (value) {
                                       if (value!.isEmpty) {
                                         return "Enter valid Username";
@@ -136,20 +133,17 @@ class _ScreenLoginState extends State<ScreenLogin> {
                                     validator: (value) {
                                       if (value!.isEmpty) {
                                         return 'Enter password';
-
-                                      } 
+                                      }
                                       // else if (_passcontroller.text.length <
                                       //     8) {
                                       //   return 'Please enter atleast 8 characters';
                                       // }
-                                       else if (value.contains(' ')) {
-
+                                      else if (value.contains(' ')) {
                                       }
                                       // else if (_passcontroller.text.length < 8) {
                                       //   return 'Please enter atleast 8 characters';
                                       // }
                                       else if (value.contains(' ')) {
-
                                         return 'Remove space from password';
                                       }
                                       return null;
@@ -193,6 +187,20 @@ class _ScreenLoginState extends State<ScreenLogin> {
                                 style: Theme.of(context).textTheme.titleSmall,
                               ),
                             ),
+                            const SizedBox(height: 10),
+                            Consumer<LoadingProvider>(
+                                builder: (context, loadingProvider, child) {
+                              return loadingProvider.isLoading
+                                  ? const Center(
+                                      child: CircularProgressIndicator(
+                                        valueColor:
+                                            AlwaysStoppedAnimation<Color>(
+                                          Color.fromARGB(255, 2, 128, 6),
+                                        ),
+                                      ),
+                                    )
+                                  : const SizedBox.shrink();
+                            }),
                           ],
                         ),
                       ),
@@ -208,6 +216,10 @@ class _ScreenLoginState extends State<ScreenLogin> {
   }
 
   Future getlogin() async {
+    final loadingProvider =
+        _scaffoldKey.currentContext!.read<LoadingProvider>();
+    //False to true
+    loadingProvider.toggleLoading();
     final username = _usercontroller.text;
     final password = _passcontroller.text;
 
@@ -219,6 +231,8 @@ class _ScreenLoginState extends State<ScreenLogin> {
     //factory Loginresp.fromJson(Map<String, dynamic> json)
     //final status = loginval.status;
 
+    //True To False
+    loadingProvider.toggleLoading();
     if (loginResponse == null) {
       showLoginerror(_scaffoldKey.currentContext!, 1);
     } else if (loginResponse.statusCode == 200 &&
@@ -226,12 +240,10 @@ class _ScreenLoginState extends State<ScreenLogin> {
       //print('success');
       addLoginShareddata(loginval.status, loginval.userId, loginval.userType,
           loginval.userName, loginval.ownerName);
-      /*wklycollection function */    
-
-      
+      /*wklycollection function */
 
       /**************************/
-      
+
       Navigator.of(_scaffoldKey.currentContext!).push(
         MaterialPageRoute(
           builder: (context) => const Screenhome(),
@@ -269,7 +281,6 @@ class _ScreenLoginState extends State<ScreenLogin> {
     }
   }
 
-
   addLoginShareddata(status, userId, userType, userName, ownerName) async {
     final sharedPrefLogin = Sharedpref(
       status: status,
@@ -285,5 +296,4 @@ class _ScreenLoginState extends State<ScreenLogin> {
     //   print(data.userId);
     // }
   }
-
 }

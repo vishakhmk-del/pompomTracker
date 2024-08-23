@@ -1,8 +1,6 @@
 import 'package:pompomtracker/core/hook/hook.dart';
 
-
 class SharedPrefManager {
-  
   //---singleton-----
   SharedPrefManager._internal();
   static SharedPrefManager instance = SharedPrefManager._internal();
@@ -19,12 +17,12 @@ class SharedPrefManager {
     await sharedprefes.setString('USERNAME', value.userName!);
     await sharedprefes.setString('OWNERNAME', value.ownerName!);
     //final jsonString = json.encode(value.toJson());
-   // await prefs.setStringList(_key, login);
+    // await prefs.setStringList(_key, login);
   }
 
   Future<Sharedpref?> getSharedData() async {
     final sharedprefs = await SharedPreferences.getInstance();
-    
+
     final userid = sharedprefs.getString('USERID') ?? '';
 
     final usertype = sharedprefs.getString('USERTYPE') ?? '';
@@ -32,12 +30,11 @@ class SharedPrefManager {
     final username = sharedprefs.getString('USERNAME') ?? '';
 
     final ownername = sharedprefs.getString('OWNERNAME') ?? '';
-    final valshared=Sharedpref.value(
-      
-       userId: userid,
+    final valshared = Sharedpref.value(
+        userId: userid,
         userType: usertype,
-         userName: username,
-          ownerName: ownername);
-          return valshared;
+        userName: username,
+        ownerName: ownername);
+    return valshared;
   }
 }

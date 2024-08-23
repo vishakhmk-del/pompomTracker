@@ -17,7 +17,7 @@ class _ScreenSplashState extends State<ScreenSplash> {
 
   Future<void> checkUserLogin() async {
     await Wklycollectfn.instance.wklycolctfn();
-    
+
     final sharedpref = await SharedPreferences.getInstance();
     final useLoggedin = sharedpref.getBool(savekeyname);
     if (useLoggedin == null && useLoggedin == false) {

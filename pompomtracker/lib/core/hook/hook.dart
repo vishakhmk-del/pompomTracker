@@ -65,7 +65,6 @@ export 'package:pompomtracker/model/weeklycollection/wklycollectnmdltyp2/buswkly
 
 export 'package:pompomtracker/model/weeklycollection/wklycollectnmdltyp2/buswklycollectmdl.dart';
 
-
 /**************************************/
 
 /*FUNCTION*/
