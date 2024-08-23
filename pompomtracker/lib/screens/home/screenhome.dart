@@ -1,5 +1,6 @@
 import 'dart:developer';
 import 'package:intl/intl.dart';
+import 'package:pompomtracker/widgets/gridview/gridview.dart';
 import '../../core/hook/hook.dart';
 
 class Screenhome extends StatefulWidget {
@@ -129,18 +130,11 @@ class _ScreenhomeState extends State<Screenhome> {
                     elevation: 3,
                     shadowColor: Theme.of(context).colorScheme.primary,
                     child: Container(
-                      // height: MediaQuery.of(context).size.height ,
                               decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(12),
-                                  //border: Border.all(color:Theme.of(context).colorScheme.on),
-                                  gradient: LinearGradient(
-                                      begin: Alignment.topLeft,
-                                      end: Alignment.bottomRight,
-                                      colors: [
-                                        Theme.of(context).colorScheme.surfaceContainer,
-                                        Theme.of(context).colorScheme.onPrimary
-                                      ])),
-                                      //child: GridView(gridDelegate: gridDelegate),
+                                  border: Border.all(color:Theme.of(context).colorScheme.secondaryFixed),                                 
+                                      ),
+                                      child:const BusGridView(),
                           ))
 
                 ],

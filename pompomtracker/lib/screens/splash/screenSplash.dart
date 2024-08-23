@@ -16,7 +16,7 @@ class _ScreenSplashState extends State<ScreenSplash> {
   }
 
   Future<void> checkUserLogin() async {
-    await Wklycollectfn.instance.wklycolctfn();
+    
     
     final sharedpref = await SharedPreferences.getInstance();
     final useLoggedin = sharedpref.getBool(savekeyname);
@@ -27,8 +27,11 @@ class _ScreenSplashState extends State<ScreenSplash> {
 
       if (value!.userId != '') {
         await Future.delayed(const Duration(seconds: 3));
+        
+        await Wklycollectfn.instance.wklycolctfn();
+
         Navigator.pushReplacement(
-            _scaffoldKey.currentContext!, Approutes().routemasterscreen);
+            _scaffoldKey.currentContext!, Approutes().homescreen);
       } else {
         gotoLogin();
       }
