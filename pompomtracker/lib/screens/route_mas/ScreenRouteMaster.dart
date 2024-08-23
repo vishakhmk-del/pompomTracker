@@ -1,8 +1,4 @@
-import 'package:flutter/material.dart';
 import 'package:pompomtracker/core/hook/hook.dart';
-import 'package:pompomtracker/model/bus_master/bus_master_resp/bus_master_resp.dart';
-import 'package:pompomtracker/model/route_master/route_master_req/route_master_req.dart';
-import 'package:pompomtracker/model/route_master/route_master_resp/route_master_resp.dart';
 
 class ScreenRoutemaster extends StatefulWidget {
   const ScreenRoutemaster({super.key});
@@ -162,7 +158,8 @@ class _MyWidgetState extends State<ScreenRoutemaster> {
     final fromStation = _fromController.text;
     final toStation = _toController.text;
     final via = _viaController.text;
-    final value = SharedPrefManager.instance.getSharedData();
+    final value = await SharedPrefManager.instance.getSharedData();
+
     final routeMasReq = RouteMasterReq(
         from: fromStation, to: toStation, via: via, userId: 'OWN00001');
     final routeMasterResp = await Busdata().routeMasterSave(routeMasReq);

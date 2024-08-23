@@ -1,9 +1,6 @@
 import 'dart:developer';
-
 import 'package:intl/intl.dart';
 import 'package:pompomtracker/core/hook/hook.dart';
-import 'package:pompomtracker/model/weeklycollection/wklycollectnmdltyp2/buswklycollect.dart';
-import 'package:pompomtracker/model/weeklycollection/wklycollectnmdltyp2/buswklycollectmdl.dart';
 
 abstract class Commonfn {
   Future wklycolctfn();

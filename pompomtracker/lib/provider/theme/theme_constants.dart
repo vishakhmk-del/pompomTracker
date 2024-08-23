@@ -21,8 +21,11 @@ class MyTheme {
         primaryFixed: Colors.black38,
         /*****************/
         surfaceContainer: Color(0xffFF8096),
+        secondaryFixed: Color(0xFFE1E1E1)
       ),
       textTheme: const TextTheme(
+        labelLarge: TextStyle(
+              color: Colors.black, fontSize: 14, fontFamily: 'Poppins-Medium',fontWeight: FontWeight.w500),
           labelMedium: TextStyle(
               color: Colors.black54,
               fontSize: 10,
@@ -56,8 +59,11 @@ class MyTheme {
         primaryFixed: Color(0Xff37434d),
         /*****************/
         surfaceContainer: Color(0xff4169E1),
+        secondaryFixed: Color(0xFFE1E1E1)
       ),
       textTheme: const TextTheme(
+        labelLarge: TextStyle(
+              color: Colors.white, fontSize: 14, fontFamily: 'Poppins-Medium',fontWeight:FontWeight.w500),
           labelMedium: TextStyle(
               color: Colors.white, fontSize: 10, fontFamily: 'Poppins-Medium'),
           labelSmall: TextStyle(

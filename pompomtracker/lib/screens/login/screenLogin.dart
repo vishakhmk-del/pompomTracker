@@ -295,5 +295,7 @@ class _ScreenLoginState extends State<ScreenLogin> {
     // for (var data in getLoginData) {
     //   print(data.userId);
     // }
+
+    await Wklycollectfn.instance.wklycolctfn();
   }
 }

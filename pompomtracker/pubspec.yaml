@@ -78,6 +78,12 @@ flutter:
     - assets/login/login_bus.png
     - assets/bus/busmaster.png
     - assets/error/no-data.png
+    - assets/home/bus_ad.png
+    - assets/home/conductor.png
+    - assets/home/add_trip.png
+    - assets/home/add_stop.png
+    - assets/home/add_route.png
+    - assets/home/link_route.png
   fonts:
     - family: Poppins-Medium
       fonts: 
