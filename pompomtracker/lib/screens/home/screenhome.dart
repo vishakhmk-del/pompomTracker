@@ -48,16 +48,14 @@ class _ScreenhomeState extends State<Screenhome> {
                 Card(
                   margin: const EdgeInsets.all(10),
                   elevation: 3,
-                  shadowColor: Theme.of(context).colorScheme.primary,
                   child: Container(
-                    // height: MediaQuery.of(context).size.height ,
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(12),
                         gradient: LinearGradient(
                             begin: Alignment.topLeft,
                             end: Alignment.bottomRight,
                             colors: [
-                              Theme.of(context).colorScheme.surfaceContainer,
+                              Theme.of(context).colorScheme.onPrimaryFixed,
                               Theme.of(context).colorScheme.onPrimary
                             ])),
                     child: Column(
@@ -103,9 +101,12 @@ class _ScreenhomeState extends State<Screenhome> {
                                   child: Theme(
                                     data: MyTheme.buttonStyleTheme,
                                     child: ElevatedButton(
-                                      onPressed: () async {},
+                                      onPressed: () async {
+                                         Navigator.push(context,
+                                          Approutes().collectionscreen);
+                                      },
                                       child: Text(
-                                        'Data Analysis',
+                                        'More Details',
                                         style: Theme.of(context)
                                             .textTheme
                                             .titleMedium,

@@ -20,8 +20,9 @@ class MyTheme {
         /***graph theme***/
         primaryFixed: Colors.black38,
         /*****************/
-        surfaceContainer: Color(0xffFF8096),
-        secondaryFixed: Color(0xFFE1E1E1)
+        onPrimaryFixed: Color(0xffFF8096),
+        secondaryFixed: Color(0xFFE1E1E1),
+        onSecondaryFixed: Color(0xFF7B1FA2)
       ),
       textTheme: const TextTheme(
         labelLarge: TextStyle(
@@ -58,8 +59,9 @@ class MyTheme {
         /***graph theme***/
         primaryFixed: Color(0Xff37434d),
         /*****************/
-        surfaceContainer: Color(0xff4169E1),
-        secondaryFixed: Color(0xFFE1E1E1)
+        onPrimaryFixed: Color(0xff4169E1),
+        secondaryFixed: Color(0xFFE1E1E1),
+        onSecondaryFixed: Color(0xFF7B1FA2)
       ),
       textTheme: const TextTheme(
         labelLarge: TextStyle(

@@ -1,0 +1,5 @@
+
+enum StatementType{
+  collectionType,
+  cashType
+}

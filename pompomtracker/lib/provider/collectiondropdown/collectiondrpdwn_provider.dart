@@ -1,0 +1,12 @@
+import 'package:pompomtracker/core/hook/hook.dart';
+
+class CollectionDrpDwnProvider with ChangeNotifier {
+  String? _selectedVal=Dtwise;
+
+  String? get selectedVal => _selectedVal;
+
+  void changeSelectedVal(String? value) {
+    _selectedVal = value;
+    notifyListeners();
+  }
+}
