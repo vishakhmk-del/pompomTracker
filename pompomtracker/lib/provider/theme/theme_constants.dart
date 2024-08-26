@@ -20,13 +20,20 @@ class MyTheme {
         /***graph theme***/
         primaryFixed: Colors.black38,
         /*****************/
+
         onPrimaryFixed: Color(0xffFF8096),
         secondaryFixed: Color(0xFFE1E1E1),
-        onSecondaryFixed: Color(0xFF7B1FA2)
+        onSecondaryFixed: Color(0xFF7B1FA2),
+
+        tertiary: Colors.white,
+
       ),
       textTheme: const TextTheme(
-        labelLarge: TextStyle(
-              color: Colors.black, fontSize: 14, fontFamily: 'Poppins-Medium',fontWeight: FontWeight.w500),
+          labelLarge: TextStyle(
+              color: Colors.black,
+              fontSize: 14,
+              fontFamily: 'Poppins-Medium',
+              fontWeight: FontWeight.w500),
           labelMedium: TextStyle(
               color: Colors.black54,
               fontSize: 10,
@@ -59,13 +66,20 @@ class MyTheme {
         /***graph theme***/
         primaryFixed: Color(0Xff37434d),
         /*****************/
+
         onPrimaryFixed: Color(0xff4169E1),
         secondaryFixed: Color(0xFFE1E1E1),
-        onSecondaryFixed: Color(0xFF7B1FA2)
+        onSecondaryFixed: Color(0xFF7B1FA2),
+
+        tertiary: Colors.black,
+
       ),
       textTheme: const TextTheme(
-        labelLarge: TextStyle(
-              color: Colors.white, fontSize: 14, fontFamily: 'Poppins-Medium',fontWeight:FontWeight.w500),
+          labelLarge: TextStyle(
+              color: Colors.white,
+              fontSize: 14,
+              fontFamily: 'Poppins-Medium',
+              fontWeight: FontWeight.w500),
           labelMedium: TextStyle(
               color: Colors.white, fontSize: 10, fontFamily: 'Poppins-Medium'),
           labelSmall: TextStyle(
