@@ -15,7 +15,9 @@ class BusGridView extends StatelessWidget {
       children: [
         InkWell(
           splashColor: Theme.of(context).colorScheme.secondaryFixed,
-          onTap: () {},
+          onTap: () {
+            Navigator.pushReplacement(context, Approutes().busmasterscreen);
+          },
           child: Container(
             margin: const EdgeInsets.all(5),
             decoration: BoxDecoration(
@@ -50,7 +52,9 @@ class BusGridView extends StatelessWidget {
         ),
         InkWell(
           splashColor: Theme.of(context).colorScheme.secondaryFixed,
-          onTap: () {},
+          onTap: () {
+            Navigator.pushReplacement(context, Approutes().routemasterscreen);
+          },
           child: Container(
             margin: const EdgeInsets.all(5),
             decoration: BoxDecoration(
@@ -85,7 +89,9 @@ class BusGridView extends StatelessWidget {
         ),
         InkWell(
           splashColor: Theme.of(context).colorScheme.secondaryFixed,
-          onTap: () {},
+          onTap: () {
+            Navigator.pushReplacement(context, Approutes().tripmasterscreen);
+          },
           child: Container(
             margin: const EdgeInsets.all(5),
             decoration: BoxDecoration(

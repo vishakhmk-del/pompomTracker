@@ -161,7 +161,11 @@ class _MyWidgetState extends State<ScreenRoutemaster> {
     final value = await SharedPrefManager.instance.getSharedData();
 
     final routeMasReq = RouteMasterReq(
-        from: fromStation, to: toStation, via: via, userId: 'OWN00001');
+      from: fromStation,
+      to: toStation,
+      via: via,
+      userId: value!.userId,
+    );
     final routeMasterResp = await Busdata().routeMasterSave(routeMasReq);
     final reultAsJson = jsonDecode(routeMasterResp.toString());
     final resValue =

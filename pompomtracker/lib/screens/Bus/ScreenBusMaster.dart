@@ -31,7 +31,7 @@ class _MyWidgetState extends State<ScreenBusMater> {
     final busType = Bustype.fromJson(resultJson as Map<String, dynamic>);
 
     setState(() {
-      busTypeList = busType.busList!.map((bus) => bus.typeId!).toList();
+      busTypeList = busType.busList!.map((bus) => bus.typeId ?? "").toList();
     });
   }
 
@@ -179,7 +179,13 @@ class _MyWidgetState extends State<ScreenBusMater> {
                             items: busTypeList.map((valueItem) {
                               return DropdownMenuItem(
                                 value: valueItem,
-                                child: Text(valueItem),
+                                child: Text(
+                                  valueItem,
+                                  style: TextStyle(
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .onSecondary),
+                                ),
                               );
                             }).toList(),
                             onChanged: (newValue) {
@@ -189,13 +195,19 @@ class _MyWidgetState extends State<ScreenBusMater> {
                             },
                             value: selectedBusType,
                             style: TextStyle(
-                                color:
-                                    Theme.of(context).colorScheme.onSecondary),
+                                color: Theme.of(context).colorScheme.onPrimary),
+                            icon: Theme(
+                                data: MyTheme.appIconTheme,
+                                child: const Icon(
+                                  Icons.arrow_drop_down,
+                                )),
                             decoration: InputDecoration(
                               labelText: 'Bus Type',
                               labelStyle:
                                   Theme.of(context).textTheme.labelSmall,
                             ),
+                            dropdownColor:
+                                Theme.of(context).colorScheme.tertiary,
                             validator: (value) {
                               if (value!.isEmpty) {
                                 return 'Select Bus Type';
@@ -218,7 +230,11 @@ class _MyWidgetState extends State<ScreenBusMater> {
                               labelText: 'Valid From',
                               labelStyle:
                                   Theme.of(context).textTheme.labelSmall,
-                              suffixIcon: const Icon(Icons.calendar_today),
+                              suffixIcon: Theme(
+                                  data: MyTheme.appIconTheme,
+                                  child: const Icon(
+                                    Icons.calendar_today,
+                                  )),
                             ),
                             onTap: () =>
                                 _selectDate(context, _dateValidController),
@@ -244,7 +260,12 @@ class _MyWidgetState extends State<ScreenBusMater> {
                               labelText: 'Valid To',
                               labelStyle:
                                   Theme.of(context).textTheme.labelSmall,
-                              suffixIcon: const Icon(Icons.calendar_today),
+                              suffixIcon: Theme(
+                                data: MyTheme.appIconTheme,
+                                child: const Icon(
+                                  Icons.calendar_today,
+                                ),
+                              ),
                             ),
                             onTap: () =>
                                 _selectDate(context, _dateToController),
@@ -317,7 +338,7 @@ class _MyWidgetState extends State<ScreenBusMater> {
     final fromDate = _dateValidController.text;
     final toDate = _dateToController.text;
     final selectedBus = selectedBusType;
-    final value = SharedPrefManager.instance.getSharedData();
+    final value = await SharedPrefManager.instance.getSharedData();
     // print(value);
 
     final busMasterReq = BusMasterReq.req(
@@ -328,7 +349,7 @@ class _MyWidgetState extends State<ScreenBusMater> {
         permitno: permitNo,
         vfrom: fromDate,
         vto: toDate,
-        userId: 'OWN00001',
+        userId: value!.userId,
         active: '1');
     final busMasterResp = await Busdata().busMasterSave(busMasterReq);
     final resultAsjson = jsonDecode(busMasterResp.toString());
