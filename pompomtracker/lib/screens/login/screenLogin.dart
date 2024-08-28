@@ -244,7 +244,7 @@ class _ScreenLoginState extends State<ScreenLogin> {
 
       /**************************/
 
-      Navigator.of(_scaffoldKey.currentContext!).push(
+      Navigator.of(_scaffoldKey.currentContext!).pushReplacement(
         MaterialPageRoute(
           builder: (context) => const Screenhome(),
         ),
