@@ -1,5 +1,6 @@
 import 'package:pompomtracker/core/hook/hook.dart';
-import 'package:pompomtracker/provider/collectiondropdown/collectiondrpdwn_provider.dart';
+import 'package:pompomtracker/provider/cashStmntdropdown/cashstmntdrpdwn_provider.dart';
+import 'package:pompomtracker/provider/collectionStmntdropdown/collectiondrpdwn_provider.dart';
 
 const savekeyname = 'UserLoggedIn';
 void main() {
@@ -19,6 +20,8 @@ class MyApp extends StatelessWidget {
             create: (context) => RadiobuttonProvider()),
         ChangeNotifierProvider<CollectionDrpDwnProvider>(
             create: (context) => CollectionDrpDwnProvider()),
+        ChangeNotifierProvider<CashstmntDrpDwnProvider>(
+            create: (context) => CashstmntDrpDwnProvider()),
         ChangeNotifierProvider<ThemeProvider>(
           create: (context) => ThemeProvider(),
           builder: (context, child) {

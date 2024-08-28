@@ -23,7 +23,7 @@ class MyTheme {
 
         onPrimaryFixed: Color(0xffFF8096),
         secondaryFixed: Color(0xFFE1E1E1),
-        onSecondaryFixed: Color(0xFF7B1FA2),
+        //onSecondaryFixed: Color(0xFF7B1FA2),
 
         tertiary: Colors.white,
 
@@ -69,7 +69,7 @@ class MyTheme {
 
         onPrimaryFixed: Color(0xff4169E1),
         secondaryFixed: Color(0xFFE1E1E1),
-        onSecondaryFixed: Color(0xFF7B1FA2),
+       // onSecondaryFixed: Color(0xFF7B1FA2),
 
         tertiary: Colors.black,
 

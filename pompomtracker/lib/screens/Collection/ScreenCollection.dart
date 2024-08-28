@@ -1,8 +1,5 @@
 import 'dart:developer';
 import 'package:pompomtracker/core/hook/hook.dart';
-import 'package:pompomtracker/provider/collectiondropdown/collectiondrpdwn_provider.dart';
-
-
 
 class ScreenCollection extends StatefulWidget {
    const ScreenCollection({super.key});
@@ -12,13 +9,25 @@ class ScreenCollection extends StatefulWidget {
 }
 
 class _ScreenCollectionState extends State<ScreenCollection> {
-  final _dateFromoController = TextEditingController();
-  final _dateToController = TextEditingController();
-  String? dropdownvalue;
+  final _cldateFromController = TextEditingController();
+  final _cldateToController = TextEditingController();
+  final _clbusFromController = TextEditingController();
+  final _clbusToController = TextEditingController();
+  String? dropdownsearchvalue;
+  String? dropdownbusvalue;
+  String? dropdowncashvalue;
   final _list=[
-    Dtwise,
-    Bswise
+    dtWise,
+    bsWise
   ];
+  final _list1=[
+    exStatmnt,
+    chStatmnt
+  ];
+  @override
+  void initState(){
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -59,11 +68,8 @@ class _ScreenCollectionState extends State<ScreenCollection> {
                                   child: Column(
                                     children: [
                                       Container(
-                                        height: MediaQuery.of(context).size.height / 2,
+                                        height: MediaQuery.of(context).size.height /1.63,
                                         decoration: BoxDecoration(
-                                          // border: Border.all(
-                                          //   color:
-                                          //       Theme.of(context).colorScheme.secondaryFixed),
                                             borderRadius: BorderRadius.circular(12),
                                         ),
                                         child: Padding(
@@ -72,12 +78,15 @@ class _ScreenCollectionState extends State<ScreenCollection> {
                                               builder: (context, provider, child) {
                                                 if (provider.selectedType ==
                                                     StatementType.collectionType) {
-                                                  return  collectionForm(context);  // Replace with your Collection Form widget
+                                                  return  collectionForm(context);  
+                                                  // Replace with your Collection Form widget
                                                 } else if (provider.selectedType ==
                                                     StatementType.cashType) {
-                                                  return  cashForm();  // Replace with your Cash Form widget
+                                                  return  cashForm(context); 
+                                                   // Replace with your Cash Form widget
                                                 }
-                                                return Container();  // Or some default widget
+                                                return Container();  
+                                                // Or some default widget
                                               },
                                           ),
                                         ),
@@ -101,64 +110,119 @@ class _ScreenCollectionState extends State<ScreenCollection> {
 
 
   Widget collectionForm(BuildContext context){
-    return Theme(
-      data: MyTheme.googleFormTheme,
-      child: Column(
-        children: [
-          Text('Collection Statement',
-          style: Theme.of(context).textTheme.titleLarge,),
-          SizedBox(
-                width: MediaQuery.of(context).size.width,
-                child: Padding(
-                        padding: const EdgeInsets.only(
-                        top: 30, left: 5,right: 5),
-                        child: DropdownButtonFormField(
-                          //controller: _selectsearchtypedropdwn,
-                          //dropdownColor: Colors.blueGrey,
-                          icon: Icon(
-                            Icons.arrow_drop_down,
-                              color:Theme.of(context).colorScheme.onSecondary),
-                          style: TextStyle(
-                              color: Theme.of(context).colorScheme.onSecondary,
-                                  ),
-                                  decoration: InputDecoration(
-                                    labelText: 'Select Search Type',
-                                    labelStyle: Theme.of(context)
-                                        .textTheme
-                                        .labelLarge,
-                                  ),
-                                  items: _list.map((e){
-                                    return DropdownMenuItem(value:e,child: Text(e));
-                                  }).toList(),
-                                  onChanged: (newvalue){
-                                    log('Collection Statement:$newvalue');
-    
-                                    context.read<CollectionDrpDwnProvider>().changeSelectedVal(newvalue);
-    
-                                    setState(() {
-                                      dropdownvalue=newvalue;
-                                    });
-                                  },
-                                  value:dropdownvalue,
-                                  ),
-                            ),
-                          ),
-    
-                          Consumer<CollectionDrpDwnProvider>(
-                                            builder: (context, provider, child) {
-                                              if (provider.selectedVal ==
-                                                  Dtwise) {
-                                                return  datewiseForm(context);  // Replace with your Collection Form widget
-                                              } else if (provider.selectedVal ==
-                                                  Bswise) {
-                                                return  buswiseForm(context);  // Replace with your Cash Form widget
-                                              }
-                                              return Container();  // Or some default widget
-                                            },
+    return Column(
+      children: [
+              Text('Collection Statement',
+              style: Theme.of(context).textTheme.titleLarge,),
+              SizedBox(
+                    width: MediaQuery.of(context).size.width,
+                    child: Padding(
+                            padding: const EdgeInsets.only(
+                            top: 30, left: 5,right: 5),
+                            child: DropdownButtonFormField(
+                              //controller: _selectsearchtypedropdwn,
+                              dropdownColor: Theme.of(context).colorScheme.tertiary,
+                              icon: Icon(
+                                Icons.arrow_drop_down,
+                                  color:Theme.of(context).colorScheme.onSecondary),
+                              style: TextStyle(
+                                  color: Theme.of(context).colorScheme.onSecondary,
+                                      ),
+                                      decoration: InputDecoration(
+                                        floatingLabelBehavior: FloatingLabelBehavior.auto,
+                                          border:const OutlineInputBorder(
+                                            borderSide: BorderSide(color: Color(0xFFE1E1E1), width: 1.0),
+                                            borderRadius: BorderRadius.all(Radius.circular(4.0)),
+                                          ),
+                                          enabledBorder:const OutlineInputBorder(
+                                            borderSide: BorderSide(color: Color(0xFFE1E1E1), width: 1.0),
+                                            borderRadius: BorderRadius.all(Radius.circular(4.0)),
+                                          ),
+                                          focusedBorder:const OutlineInputBorder(
+                                            borderSide: BorderSide(color: Color(0xFFE1E1E1), width: 2.0),
+                                            borderRadius: BorderRadius.all(Radius.circular(4.0)),
+                                          ),
+                                          errorBorder:const OutlineInputBorder(
+                                            borderSide: BorderSide(color: Colors.red, width: 2.0),
+                                            borderRadius: BorderRadius.all(Radius.circular(4.0)),
+                                          ),
+                                          focusedErrorBorder:const OutlineInputBorder(
+                                            borderSide: BorderSide(color: Colors.red, width: 2.0),
+                                            borderRadius: BorderRadius.all(Radius.circular(4.0)),
+                                          ),
+                                          disabledBorder:const OutlineInputBorder(
+                                            borderSide: BorderSide(color: Color(0xFFE1E1E1), width: 1.0),
+                                            borderRadius: BorderRadius.all(Radius.circular(4.0)),
+                                          ),
+                                        labelText: 'Select Search Type',
+                                        labelStyle: Theme.of(context)
+                                            .textTheme
+                                            .labelLarge,
+                                      ),
+                                      items: _list.map((e){
+                                        return DropdownMenuItem(value:e,child: Text(e));
+                                      }).toList(),
+                                      onChanged: (newvalue){
+                                        log('Collection Statement:$newvalue');
+        
+                                        context.read<CollectionDrpDwnProvider>().changeSelectedVal(newvalue);
+        
+                                        setState(() {
+                                          dropdownsearchvalue=newvalue;
+                                        });
+                                      },
+                                      value:dropdownsearchvalue,
+                                      ),
+                                ),
+                              ),
+        
+                              Consumer<CollectionDrpDwnProvider>(
+                                                builder: (context, provider, child) {
+                                                  if (provider.selectedVal ==
+                                                      dtWise) {
+                                                    return  datewiseForm(context);  // Replace with your Collection Form widget
+                                                  } else if (provider.selectedVal ==
+                                                      bsWise) {
+                                                    return  buswiseForm(context);  // Replace with your Cash Form widget
+                                                  }
+                                                  return Container();  // Or some default widget
+                                                },
+                                            ),
+                          Padding(
+                                    padding: const EdgeInsets.all(25.0),
+                                    child: Container(
+                                      height: 45,
+                                      width: 200,
+                                      decoration: BoxDecoration(
+                                        gradient: LinearGradient(
+                                          begin: Alignment.topLeft,
+                                          end: Alignment.bottomRight,
+                                          colors: [
+                                            Theme.of(context).colorScheme.primary,
+                                            Theme.of(context).colorScheme.secondary
+                                          ],
                                         ),
-        ],
-          ),
-    );
+                                        borderRadius: BorderRadius.circular(12.0),
+                                      ),
+                                      child: Theme(
+                                        data: MyTheme.buttonStyleTheme,
+                                        child: ElevatedButton(
+                                          onPressed: () async {
+                                            Navigator.push(context,
+                                              Approutes().collectionscreen);
+                                          },
+                                          child: Text(
+                                            'Show',
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .titleMedium,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+              ],
+        );
   }
 
   Widget datewiseForm(BuildContext context){
@@ -171,39 +235,69 @@ class _ScreenCollectionState extends State<ScreenCollection> {
             width:MediaQuery.of(context).size.width,
              child:Padding(
                padding: const EdgeInsets.only(
-                        top: 30, left: 5,right: 5),
-               child: GestureDetector(onTap: () =>
-                                    _selectDate(context, _dateFromoController),
-                 child: AbsorbPointer(
-                   child: TextFormField(
-                                  controller: _dateFromoController,
-                                  style: TextStyle(
-                                      color: Theme.of(context).colorScheme.onSecondary),
-                                  decoration: InputDecoration(
-                                    labelText: 'From Date',
-                                    labelStyle:
-                                        Theme.of(context)
-                                            .textTheme
-                                            .labelLarge,
-                                    suffixIcon:  Icon(
-                                      Icons.calendar_today,
-                                      color:Theme.of(context).colorScheme.onSecondary
-                                      ),
+                        top: 20, left: 5,right: 5),
+               child: TextFormField(
+                              controller: _cldateFromController,
+                              style:  Theme.of(context)
+                                        .textTheme
+                                        .labelLarge,
+                              decoration: InputDecoration(
+                                labelText: 'From Date',
+                                labelStyle:
+                                    Theme.of(context)
+                                        .textTheme
+                                        .labelLarge,
+                                suffixIcon:  Icon(
+                                  Icons.calendar_today,
+                                  color:Theme.of(context).colorScheme.onSecondary
                                   ),
-                                  onTap: () =>
-                                      _selectDate(context, _dateFromoController),
-                                  validator: (value) {
-                                    if (value!.isEmpty) {
-                                      return 'Please Select Date';
-                                    } else {
-                                      return null;
-                                    }
-                                  },
-                                ),
-                 ),
-               ),
+                              ),
+                              onTap: () =>
+                                  _selectDate(context, _cldateFromController),
+                              validator: (value) {
+                                if (value!.isEmpty) {
+                                  return 'Please Select Date';
+                                } else {
+                                  return null;
+                                }
+                              },
+                            ),
              ),
-          )
+          ),
+          SizedBox(
+            width:MediaQuery.of(context).size.width,
+             child:Padding(
+               padding: const EdgeInsets.only(
+                        top: 20, left: 5,right: 5),
+               child: TextFormField(
+                              controller: _cldateToController,
+                              style: Theme.of(context)
+                                        .textTheme
+                                        .labelLarge,
+                              decoration: InputDecoration(
+                                labelText: 'To Date',
+                                labelStyle:
+                                    Theme.of(context)
+                                        .textTheme
+                                        .labelLarge,
+                                suffixIcon:  Icon(
+                                  Icons.calendar_today,
+                                  color:Theme.of(context).colorScheme.onSecondary
+                                  ),
+                              ),
+                              onTap: () =>
+                                  _selectDate(context, _cldateToController),
+                              validator: (value) {
+                                if (value!.isEmpty) {
+                                  return 'Please Select Date';
+                                } else {
+                                  return null;
+                                }
+                              },
+                            ),
+             ),
+          ),
+           
         ],
       ),
     ));
@@ -211,12 +305,479 @@ class _ScreenCollectionState extends State<ScreenCollection> {
 
   Widget buswiseForm(BuildContext context){
    return Form(
-    child: Column(
-      children: [],
+    child: Theme(
+      data: MyTheme.googleFormTheme,
+      child: Column(
+        children: [
+                SizedBox(
+                        width: MediaQuery.of(context).size.width,
+                        child: Padding(
+                                padding: const EdgeInsets.only(
+                                top: 30, left: 5,right: 5),
+                                child: DropdownButtonFormField(
+                                  //controller: _selectsearchtypedropdwn,
+                                  dropdownColor: Theme.of(context).colorScheme.tertiary,
+                                  icon: Icon(
+                                    Icons.arrow_drop_down,
+                                      color:Theme.of(context).colorScheme.onSecondary),
+                                  style: TextStyle(
+                                      color: Theme.of(context).colorScheme.onSecondary,
+                                          ),
+                                          decoration: InputDecoration(
+                                            labelText: 'Select Bus',
+                                            labelStyle: Theme.of(context)
+                                                .textTheme
+                                                .labelLarge,
+                                          ),
+                                          items: _list.map((e){
+                                            return DropdownMenuItem(value:e,child: Text(e));
+                                          }).toList(),
+                                          onChanged: (newvalue){
+                                            log('Bus :$newvalue');
+            
+                                            context.read<CollectionDrpDwnProvider>().changeSelectedVal(newvalue);
+            
+                                            setState(() {
+                                              dropdownbusvalue=newvalue;
+                                            });
+                                          },
+                                          value:dropdownbusvalue,
+                                          ),
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    width:MediaQuery.of(context).size.width,
+                                    child:Padding(
+                                      padding: const EdgeInsets.only(
+                                                top: 20, left: 5,right: 5),
+                                      child: TextFormField(
+                                                      controller: _clbusFromController,
+                                                      style:  Theme.of(context)
+                                                                .textTheme
+                                                                .labelLarge,
+                                                      decoration: InputDecoration(
+                                                        labelText: 'From Date',
+                                                        labelStyle:
+                                                            Theme.of(context)
+                                                                .textTheme
+                                                                .labelLarge,
+                                                        suffixIcon:  Icon(
+                                                          Icons.calendar_today,
+                                                          color:Theme.of(context).colorScheme.onSecondary
+                                                          ),
+                                                      ),
+                                                      onTap: () =>
+                                                          _selectDate(context, _clbusFromController),
+                                                      validator: (value) {
+                                                        if (value!.isEmpty) {
+                                                          return 'Please Select Date';
+                                                        } else {
+                                                          return null;
+                                                        }
+                                                      },
+                                                    ),
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    width:MediaQuery.of(context).size.width,
+                                    child:Padding(
+                                      padding: const EdgeInsets.only(
+                                                top: 20, left: 5,right: 5),
+                                      child: TextFormField(
+                                                      controller: _clbusToController,
+                                                      style: Theme.of(context)
+                                                                .textTheme
+                                                                .labelLarge,
+                                                      decoration: InputDecoration(
+                                                        labelText: 'To Date',
+                                                        labelStyle:
+                                                            Theme.of(context)
+                                                                .textTheme
+                                                                .labelLarge,
+                                                        suffixIcon:  Icon(
+                                                          Icons.calendar_today,
+                                                          color:Theme.of(context).colorScheme.onSecondary
+                                                          ),
+                                                      ),
+                                                      onTap: () =>
+                                                          _selectDate(context, _clbusToController),
+                                                      validator: (value) {
+                                                        if (value!.isEmpty) {
+                                                          return 'Please Select Date';
+                                                        } else {
+                                                          return null;
+                                                        }
+                                                      },
+                                                    ),
+                                    ),
+                                  ),
+           
+        ],
+      ),
     ));
   }
 
-    Future<void> _selectDate(
+    
+
+/// **********************************************************************
+
+
+
+/// ************************ Cash Form *************************
+
+    Widget cashForm(BuildContext context){
+    return Column(
+      children: [
+              Text('Cash Statement',
+              style: Theme.of(context).textTheme.titleLarge,),
+              SizedBox(
+                    width: MediaQuery.of(context).size.width,
+                    child: Padding(
+                            padding: const EdgeInsets.only(
+                            top: 30, left: 5,right: 5),
+                            child: DropdownButtonFormField(
+                              //controller: _selectsearchtypedropdwn,
+                              dropdownColor: Theme.of(context).colorScheme.tertiary,
+                              icon: Icon(
+                                Icons.arrow_drop_down,
+                                  color:Theme.of(context).colorScheme.onSecondary),
+                              style: TextStyle(
+                                  color: Theme.of(context).colorScheme.onSecondary,
+                                      ),
+                                      decoration: InputDecoration(
+                                        floatingLabelBehavior: FloatingLabelBehavior.auto,
+                                          border:const OutlineInputBorder(
+                                            borderSide: BorderSide(color: Color(0xFFE1E1E1), width: 1.0),
+                                            borderRadius: BorderRadius.all(Radius.circular(4.0)),
+                                          ),
+                                          enabledBorder:const OutlineInputBorder(
+                                            borderSide: BorderSide(color: Color(0xFFE1E1E1), width: 1.0),
+                                            borderRadius: BorderRadius.all(Radius.circular(4.0)),
+                                          ),
+                                          focusedBorder:const OutlineInputBorder(
+                                            borderSide: BorderSide(color: Color(0xFFE1E1E1), width: 2.0),
+                                            borderRadius: BorderRadius.all(Radius.circular(4.0)),
+                                          ),
+                                          errorBorder:const OutlineInputBorder(
+                                            borderSide: BorderSide(color: Colors.red, width: 2.0),
+                                            borderRadius: BorderRadius.all(Radius.circular(4.0)),
+                                          ),
+                                          focusedErrorBorder:const OutlineInputBorder(
+                                            borderSide: BorderSide(color: Colors.red, width: 2.0),
+                                            borderRadius: BorderRadius.all(Radius.circular(4.0)),
+                                          ),
+                                          disabledBorder:const OutlineInputBorder(
+                                            borderSide: BorderSide(color: Color(0xFFE1E1E1), width: 1.0),
+                                            borderRadius: BorderRadius.all(Radius.circular(4.0)),
+                                          ),
+                                        labelText: 'Select Search Type',
+                                        labelStyle: Theme.of(context)
+                                            .textTheme
+                                            .labelLarge,
+                                      ),
+                                      items: _list1.map((e){
+                                        return DropdownMenuItem(value:e,child: Text(e));
+                                      }).toList(),
+                                      onChanged: (newvalue){
+                                        log('Collection Statement:$newvalue');
+        
+                                        context.read<CashstmntDrpDwnProvider>().changeSelectedVal(newvalue);
+        
+                                        setState(() {
+                                          dropdowncashvalue=newvalue;
+                                        });
+                                      },
+                                      value:dropdowncashvalue,
+                                      ),
+                                ),
+                              ),
+                              Form(
+                                    child: Theme(
+                                      data: MyTheme.googleFormTheme,
+                                      child: Column(
+                                        children: [
+                                          SizedBox(
+                                            width:MediaQuery.of(context).size.width,
+                                            child:Padding(
+                                              padding: const EdgeInsets.only(
+                                                        top: 20, left: 5,right: 5),
+                                              child: TextFormField(
+                                                              controller: _cldateFromController,
+                                                              style:  Theme.of(context)
+                                                                        .textTheme
+                                                                        .labelLarge,
+                                                              decoration: InputDecoration(
+                                                                labelText: 'From Date',
+                                                                labelStyle:
+                                                                    Theme.of(context)
+                                                                        .textTheme
+                                                                        .labelLarge,
+                                                                suffixIcon:  Icon(
+                                                                  Icons.calendar_today,
+                                                                  color:Theme.of(context).colorScheme.onSecondary
+                                                                  ),
+                                                              ),
+                                                              onTap: () =>
+                                                                  _selectDate(context, _cldateFromController),
+                                                              validator: (value) {
+                                                                if (value!.isEmpty) {
+                                                                  return 'Please Select Date';
+                                                                } else {
+                                                                  return null;
+                                                                }
+                                                              },
+                                                            ),
+                                            ),
+                                          ),
+                                          SizedBox(
+                                            width:MediaQuery.of(context).size.width,
+                                            child:Padding(
+                                              padding: const EdgeInsets.only(
+                                                        top: 20, left: 5,right: 5),
+                                              child: TextFormField(
+                                                              controller: _cldateToController,
+                                                              style: Theme.of(context)
+                                                                        .textTheme
+                                                                        .labelLarge,
+                                                              decoration: InputDecoration(
+                                                                labelText: 'To Date',
+                                                                labelStyle:
+                                                                    Theme.of(context)
+                                                                        .textTheme
+                                                                        .labelLarge,
+                                                                suffixIcon:  Icon(
+                                                                  Icons.calendar_today,
+                                                                  color:Theme.of(context).colorScheme.onSecondary
+                                                                  ),
+                                                              ),
+                                                              onTap: () =>
+                                                                  _selectDate(context, _cldateToController),
+                                                              validator: (value) {
+                                                                if (value!.isEmpty) {
+                                                                  return 'Please Select Date';
+                                                                } else {
+                                                                  return null;
+                                                                }
+                                                              },
+                                                            ),
+                                            ),
+                                          ),
+                                          Padding(
+                                                      padding: const EdgeInsets.all(25.0),
+                                                      child: Container(
+                                                        height: 45,
+                                                        width: 200,
+                                                        decoration: BoxDecoration(
+                                                          gradient: LinearGradient(
+                                                            begin: Alignment.topLeft,
+                                                            end: Alignment.bottomRight,
+                                                            colors: [
+                                                              Theme.of(context).colorScheme.primary,
+                                                              Theme.of(context).colorScheme.secondary
+                                                            ],
+                                                          ),
+                                                          borderRadius: BorderRadius.circular(12.0),
+                                                        ),
+                                                        child: Theme(
+                                                          data: MyTheme.buttonStyleTheme,
+                                                          child: ElevatedButton(
+                                                            onPressed: () async {
+                                                              Navigator.push(context,
+                                                                Approutes().collectionscreen);
+                                                            },
+                                                            child: Text(
+                                                              'Show',
+                                                              style: Theme.of(context)
+                                                                  .textTheme
+                                                                  .titleMedium,
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ),
+           
+                              ],
+                            ),
+
+                          )),
+                              // Consumer<CashstmntDrpDwnProvider>(
+                              //                   builder: (context, provider, child) {
+                              //                     if (provider.selectedVal ==
+                              //                         exStatmnt) {
+                              //                       return  expensestmtForm(context);  // Replace with your Collection Form widget
+                              //                     } else if (provider.selectedVal ==
+                              //                         chStatmnt) {
+                              //                       return  cashstmtForm(context);  // Replace with your Cash Form widget
+                              //                     }
+                              //                     return Container();  // Or some default widget
+                              //                   },
+                              //               ),
+                                            
+              ],
+        );
+  }
+
+  Widget expensestmtForm(BuildContext context){
+   return Form(
+    child: Theme(
+      data: MyTheme.googleFormTheme,
+      child: Column(
+        children: [
+          SizedBox(
+            width:MediaQuery.of(context).size.width,
+             child:Padding(
+               padding: const EdgeInsets.only(
+                        top: 20, left: 5,right: 5),
+               child: TextFormField(
+                              controller: _cldateFromController,
+                              style:  Theme.of(context)
+                                        .textTheme
+                                        .labelLarge,
+                              decoration: InputDecoration(
+                                labelText: 'From Date',
+                                labelStyle:
+                                    Theme.of(context)
+                                        .textTheme
+                                        .labelLarge,
+                                suffixIcon:  Icon(
+                                  Icons.calendar_today,
+                                  color:Theme.of(context).colorScheme.onSecondary
+                                  ),
+                              ),
+                              onTap: () =>
+                                  _selectDate(context, _cldateFromController),
+                              validator: (value) {
+                                if (value!.isEmpty) {
+                                  return 'Please Select Date';
+                                } else {
+                                  return null;
+                                }
+                              },
+                            ),
+             ),
+          ),
+          SizedBox(
+            width:MediaQuery.of(context).size.width,
+             child:Padding(
+               padding: const EdgeInsets.only(
+                        top: 20, left: 5,right: 5),
+               child: TextFormField(
+                              controller: _cldateToController,
+                              style: Theme.of(context)
+                                        .textTheme
+                                        .labelLarge,
+                              decoration: InputDecoration(
+                                labelText: 'To Date',
+                                labelStyle:
+                                    Theme.of(context)
+                                        .textTheme
+                                        .labelLarge,
+                                suffixIcon:  Icon(
+                                  Icons.calendar_today,
+                                  color:Theme.of(context).colorScheme.onSecondary
+                                  ),
+                              ),
+                              onTap: () =>
+                                  _selectDate(context, _cldateToController),
+                              validator: (value) {
+                                if (value!.isEmpty) {
+                                  return 'Please Select Date';
+                                } else {
+                                  return null;
+                                }
+                              },
+                            ),
+             ),
+          ),
+           
+        ],
+      ),
+    ));
+  }
+
+  Widget cashstmtForm(BuildContext context){
+   return Form(
+    child: Theme(
+      data: MyTheme.googleFormTheme,
+      child: Column(
+        children: [
+                
+                            SizedBox(
+                                    width:MediaQuery.of(context).size.width,
+                                    child:Padding(
+                                      padding: const EdgeInsets.only(
+                                                top: 20, left: 5,right: 5),
+                                      child: TextFormField(
+                                                      controller: _clbusFromController,
+                                                      style:  Theme.of(context)
+                                                                .textTheme
+                                                                .labelLarge,
+                                                      decoration: InputDecoration(
+                                                        labelText: 'From Date',
+                                                        labelStyle:
+                                                            Theme.of(context)
+                                                                .textTheme
+                                                                .labelLarge,
+                                                        suffixIcon:  Icon(
+                                                          Icons.calendar_today,
+                                                          color:Theme.of(context).colorScheme.onSecondary
+                                                          ),
+                                                      ),
+                                                      onTap: () =>
+                                                          _selectDate(context, _clbusFromController),
+                                                      validator: (value) {
+                                                        if (value!.isEmpty) {
+                                                          return 'Please Select Date';
+                                                        } else {
+                                                          return null;
+                                                        }
+                                                      },
+                                                    ),
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    width:MediaQuery.of(context).size.width,
+                                    child:Padding(
+                                      padding: const EdgeInsets.only(
+                                                top: 20, left: 5,right: 5),
+                                      child: TextFormField(
+                                                      controller: _clbusToController,
+                                                      style: Theme.of(context)
+                                                                .textTheme
+                                                                .labelLarge,
+                                                      decoration: InputDecoration(
+                                                        labelText: 'To Date',
+                                                        labelStyle:
+                                                            Theme.of(context)
+                                                                .textTheme
+                                                                .labelLarge,
+                                                        suffixIcon:  Icon(
+                                                          Icons.calendar_today,
+                                                          color:Theme.of(context).colorScheme.onSecondary
+                                                          ),
+                                                      ),
+                                                      onTap: () =>
+                                                          _selectDate(context, _clbusToController),
+                                                      validator: (value) {
+                                                        if (value!.isEmpty) {
+                                                          return 'Please Select Date';
+                                                        } else {
+                                                          return null;
+                                                        }
+                                                      },
+                                                    ),
+                                    ),
+                                  ),
+           
+        ],
+      ),
+    ));
+  }
+
+/// **********************************************************************
+  
+
+Future<void> _selectDate(
       BuildContext context, TextEditingController controller) async {
     final DateTime? picked = await showDatePicker(
       context: context,
@@ -234,17 +795,6 @@ class _ScreenCollectionState extends State<ScreenCollection> {
       });
     }
   }
-/// **********************************************************************
 
 
-
-
-  Widget cashForm(){
-    return Form(
-      child: Column(
-        children: [
-          TextFormField(),
-        ],
-    ));
-  }
 }

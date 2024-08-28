@@ -42,7 +42,9 @@ export 'package:pompomtracker/provider/loading/loading_provider.dart';
 
 export 'package:pompomtracker/provider/radiobutton/radiobutton_provider.dart';
 
+export 'package:pompomtracker/provider/collectionStmntdropdown/collectiondrpdwn_provider.dart';
 
+export 'package:pompomtracker/provider/cashStmntdropdown/cashstmntdrpdwn_provider.dart';
 /**************************************/
 
 /*screens*/

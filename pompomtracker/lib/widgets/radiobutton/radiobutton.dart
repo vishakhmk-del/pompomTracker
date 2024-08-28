@@ -1,5 +1,4 @@
 import 'package:pompomtracker/core/hook/hook.dart';
-import 'package:pompomtracker/model/enum/statements/statementType.dart';
 
 ValueNotifier<StatementType> selectedTaskNotifier =
     ValueNotifier(StatementType.collectionType);

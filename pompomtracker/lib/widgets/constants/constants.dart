@@ -1,2 +1,4 @@
-const String Dtwise='Date Wise';
-const String Bswise='Bus Wise';
+const String dtWise='Date Wise';
+const String bsWise='Bus Wise';
+const String exStatmnt='Expense Statement';
+const String chStatmnt='Cash Statement';
