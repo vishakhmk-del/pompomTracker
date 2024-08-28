@@ -8,6 +8,8 @@ class Url {
   String getBusUrl = '/Master_C/get_bustype';
   String busSave = '/Master_C/bus_save';
   String routeSave = '/Master_C/route_save';
+  String getBusList = '/Master_C/get_buslist';
+  String getRoute = '/Master_C/get_route';
 
   String weeklyUrl = '/Owner_C/rep_datewise';
 }

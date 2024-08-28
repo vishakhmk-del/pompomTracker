@@ -4,10 +4,10 @@ class ScreenBusMater extends StatefulWidget {
   const ScreenBusMater({super.key});
 
   @override
-  State<ScreenBusMater> createState() => _MyWidgetState();
+  State<ScreenBusMater> createState() => _ScreenBusMaterState();
 }
 
-class _MyWidgetState extends State<ScreenBusMater> {
+class _ScreenBusMaterState extends State<ScreenBusMater> {
   final _formkey = GlobalKey<FormState>();
   final _scafoldkey = GlobalKey<ScaffoldState>();
   final _nameControler = TextEditingController();

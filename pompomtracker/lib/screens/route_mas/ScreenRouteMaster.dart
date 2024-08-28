@@ -4,10 +4,10 @@ class ScreenRoutemaster extends StatefulWidget {
   const ScreenRoutemaster({super.key});
 
   @override
-  State<ScreenRoutemaster> createState() => _MyWidgetState();
+  State<ScreenRoutemaster> createState() => _ScreenRoutemasterState();
 }
 
-class _MyWidgetState extends State<ScreenRoutemaster> {
+class _ScreenRoutemasterState extends State<ScreenRoutemaster> {
   final _scafoldkey = GlobalKey<ScaffoldState>();
   final _formKey = GlobalKey<FormState>();
   final _fromController = TextEditingController();
@@ -34,7 +34,7 @@ class _MyWidgetState extends State<ScreenRoutemaster> {
           child: SingleChildScrollView(
             child: Container(
               height: MediaQuery.of(context).size.height * .6,
-              margin: EdgeInsets.all(15),
+              margin: const EdgeInsets.all(15),
               decoration: BoxDecoration(
                   border: Border.all(
                       color: Theme.of(context).colorScheme.onSecondary),

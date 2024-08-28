@@ -75,6 +75,9 @@ export 'package:pompomtracker/model/route_master/route_master_req/route_master_r
 
 export 'package:pompomtracker/model/route_master/route_master_resp/route_master_resp.dart';
 
+export 'package:pompomtracker/model/Registration_List/registration_req/registration_req.dart';
+export 'package:pompomtracker/model/Registration_List/registration_resp/registration_resp.dart';
+
 /**************************************/
 
 /*FUNCTION*/
