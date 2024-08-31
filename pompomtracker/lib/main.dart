@@ -12,8 +12,7 @@ class MyApp extends StatelessWidget {
 
   // This widget is the root of your application.
   @override
-  Widget build(BuildContext context) => MultiProvider(
-    providers: [
+  Widget build(BuildContext context) => MultiProvider(providers: [
         ChangeNotifierProvider<LoadingProvider>(
             create: (context) => LoadingProvider()),
         ChangeNotifierProvider<RadiobuttonProvider>(

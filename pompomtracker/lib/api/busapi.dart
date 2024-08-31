@@ -1,5 +1,6 @@
 import 'package:pompomtracker/core/hook/hook.dart';
 import 'package:pompomtracker/model/Registration_List/registration_req/registration_req.dart';
+import 'package:pompomtracker/model/Trip_master/trip_master_req/trip_master_req.dart';
 import 'package:pompomtracker/model/bus_master/bus_master_req/bus_master_req.dart';
 import 'package:pompomtracker/model/getRoute/get_route_req/get_route_req.dart';
 import 'package:pompomtracker/model/route_master/route_master_req/route_master_req.dart';
@@ -12,6 +13,7 @@ abstract class Apicalls {
   Future<Response<dynamic>?> routeMasterSave(RouteMasterReq value);
   Future<Response<dynamic>?> getBusRegistartionList(RegistrationReq value);
   Future<Response<dynamic>?> getRouteList(GetRouteReq value);
+  Future<Response<dynamic>?> tripMasterSave(TripMasterReq value);
 }
 
 class Busdata extends Apicalls {
@@ -108,6 +110,18 @@ class Busdata extends Apicalls {
     try {
       final result = await dio.post(
         url.getRoute,
+        data: value.toJson(),
+      );
+      return result;
+    } on DioException catch (ex) {
+      return ex.response;
+    }
+  }
+
+  Future<Response<dynamic>?> tripMasterSave(TripMasterReq value) async {
+    try {
+      final result = await dio.post(
+        url.tripSave,
         data: value.toJson(),
       );
       return result;
