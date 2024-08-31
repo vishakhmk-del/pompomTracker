@@ -84,6 +84,8 @@ flutter:
     - assets/home/add_stop.png
     - assets/home/add_route.png
     - assets/home/link_route.png
+    - assets/home/no_data_found.png
+    - assets/home/nodatafound1.png
   fonts:
     - family: Poppins-Medium
       fonts: 

@@ -2,6 +2,7 @@ import 'package:pompomtracker/core/hook/hook.dart';
 import 'package:pompomtracker/screens/Bus/ScreenBusMaster.dart';
 import 'package:pompomtracker/screens/Collection/ScreenCollection.dart';
 import 'package:pompomtracker/screens/route_mas/ScreenRouteMaster.dart';
+import 'package:pompomtracker/screens/stop/ScreenStopMaster.dart';
 import 'package:pompomtracker/screens/trip/ScreenTrip.dart';
 
 class Approutes {
@@ -44,6 +45,13 @@ class Approutes {
 
   PageTransition tripmasterscreen = PageTransition(
     child: const ScreenTrip(),
+    type: PageTransitionType.fade,
+    alignment: Alignment.center,
+    curve: Curves.easeInOutBack,
+    duration: const Duration(microseconds: 500),
+  );
+  PageTransition stoppmasterscreen = PageTransition(
+    child: const ScreenStopMaster(),
     type: PageTransitionType.fade,
     alignment: Alignment.center,
     curve: Curves.easeInOutBack,

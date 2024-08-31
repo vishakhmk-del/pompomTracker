@@ -11,6 +11,7 @@ class Url {
   String getBusList = '/Master_C/get_buslist';
   String getRoute = '/Master_C/get_route';
   String tripSave = '/Owner_C/save_trip';
-
   String weeklyUrl = '/Owner_C/rep_datewise';
+  String dateWiseUrl = '/Master_C/get_datewise';
+  String busWiseUrl = '/Master_C/get_buswise';
 }

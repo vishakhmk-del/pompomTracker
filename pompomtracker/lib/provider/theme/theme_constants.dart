@@ -41,6 +41,11 @@ class MyTheme {
               color: Colors.white, fontSize: 14, fontFamily: 'Poppins-Medium'),
           bodySmall: TextStyle(
               color: Colors.black, fontSize: 14, fontFamily: 'Poppins-Medium'),
+          bodyLarge: TextStyle(
+              color: Colors.black,
+              fontSize: 16,
+              fontFamily: 'Poppins-Medium',
+              fontWeight: FontWeight.w500),
           titleSmall: TextStyle(
               color: Colors.white, fontSize: 14, fontFamily: 'Poppins-Medium'),
           titleMedium: TextStyle(
@@ -84,6 +89,11 @@ class MyTheme {
               color: Colors.white, fontSize: 14, fontFamily: 'Poppins-Medium'),
           bodySmall: TextStyle(
               color: Colors.white, fontSize: 14, fontFamily: 'Poppins-Medium'),
+          bodyLarge: TextStyle(
+              color: Colors.white,
+              fontSize: 16,
+              fontFamily: 'Poppins-Medium',
+              fontWeight: FontWeight.w500),
           titleSmall: TextStyle(
               color: Colors.white, fontSize: 14, fontFamily: 'Poppins-Medium'),
           titleMedium: TextStyle(

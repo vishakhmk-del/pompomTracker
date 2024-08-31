@@ -1,4 +1,4 @@
-import 'package:pompomtracker/model/weeklycollection/wklycollectnmdltyp2/buswklycollect.dart';
+import 'package:pompomtracker/core/hook/hook.dart';
 
 class Buswklycollction {
   String? status;

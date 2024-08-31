@@ -16,6 +16,7 @@ class _ScreenTriptState extends State<ScreenTrip> {
   String? selectedBusList;
   String? selectedRouteList;
   int? selectedRouteId;
+  List<BusRegList>? busreglist = [];
   final _fromController = TextEditingController();
   final _toController = TextEditingController();
   final _startTimeController = TextEditingController();
@@ -25,28 +26,36 @@ class _ScreenTriptState extends State<ScreenTrip> {
   @override
   void initState() {
     super.initState();
-    fetchBusregistraionList();
-    fetchRouteList();
-  }
-
-  void fetchBusregistraionList() async {
-    final value = await SharedPrefManager.instance.getSharedData();
-    RegistrationReq registrationReq = RegistrationReq(userId: value!.userId);
-    final getRegList = await Busdata().getBusRegistartionList(registrationReq);
-    if (getRegList == null) {
-    } else {
-      final resultAsJson = jsonDecode(getRegList.toString());
-      final registrationList =
-          RegistrationResp.fromJson(resultAsJson as Map<String, dynamic>);
-      //this is the registraion response model (main model)
-
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      fetchRouteList();
+      busreglist = await Wklycollectfn.instance.busReglistfn();
       setState(() {
-        registarionlst = registrationList.busList!
+        registarionlst = busreglist!
             .map((bus) => bus.registrationNo ?? "")
             .toList(); //calling registarion list  from main model
       });
-    }
+    });
+    //fetchBusregistraionList();
   }
+
+  // void fetchBusregistraionList() async {
+  //   final value = await SharedPrefManager.instance.getSharedData();
+  //   RegistrationReq registrationReq = RegistrationReq(userId: value!.userId);
+  //   final getRegList = await Busdata().getBusRegistartionList(registrationReq);
+  //   if (getRegList == null) {
+  //   } else {
+  //     final resultAsJson = jsonDecode(getRegList.toString());
+  //     final registrationList =
+  //         RegistrationResp.fromJson(resultAsJson as Map<String, dynamic>);
+  //     //this is the registraion response model (main model)
+
+  //     setState(() {
+  //       registarionlst = registrationList.busList!
+  //           .map((bus) => bus.registrationNo ?? "")
+  //           .toList(); //calling registarion list  from main model
+  //     });
+  //   }
+  // }
 
   void fetchRouteList() async {
     final value = await SharedPrefManager.instance.getSharedData();

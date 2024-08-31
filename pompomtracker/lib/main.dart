@@ -1,6 +1,4 @@
 import 'package:pompomtracker/core/hook/hook.dart';
-import 'package:pompomtracker/provider/cashStmntdropdown/cashstmntdrpdwn_provider.dart';
-import 'package:pompomtracker/provider/collectionStmntdropdown/collectiondrpdwn_provider.dart';
 
 const savekeyname = 'UserLoggedIn';
 void main() {
@@ -21,6 +19,8 @@ class MyApp extends StatelessWidget {
             create: (context) => CollectionDrpDwnProvider()),
         ChangeNotifierProvider<CashstmntDrpDwnProvider>(
             create: (context) => CashstmntDrpDwnProvider()),
+        ChangeNotifierProvider<ElevatedBtnProvider>(
+            create: (context) => ElevatedBtnProvider()),
         ChangeNotifierProvider<ThemeProvider>(
           create: (context) => ThemeProvider(),
           builder: (context, child) {

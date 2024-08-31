@@ -11,7 +11,7 @@ RegistrationResp _$RegistrationRespFromJson(Map<String, dynamic> json) =>
       status: json['status'] as String?,
       message: json['message'] as String?,
       busList: (json['bus_list'] as List<dynamic>?)
-          ?.map((e) => BusList.fromJson(e as Map<String, dynamic>))
+          ?.map((e) => BusRegList.fromJson(e as Map<String, dynamic>))
           .toList(),
     );
 

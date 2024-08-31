@@ -126,7 +126,9 @@ class BusGridView extends StatelessWidget {
         ),
         InkWell(
           splashColor: Theme.of(context).colorScheme.secondaryFixed,
-          onTap: () {},
+          onTap: () {
+            Navigator.pushReplacement(context, Approutes().stoppmasterscreen);
+          },
           child: Container(
             margin: const EdgeInsets.all(5),
             decoration: BoxDecoration(

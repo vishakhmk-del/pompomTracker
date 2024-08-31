@@ -24,6 +24,13 @@ class RadioButton extends StatelessWidget {
                     return;
                   }
                   ctx.read<RadiobuttonProvider>().changeSelectedType(value);
+
+                  context
+                      .read<CollectionDrpDwnProvider>()
+                      .changeSelectedVal(dtWise);
+
+                  context.read<ElevatedBtnProvider>().changeSelectedVal(false);
+
                   selectedTaskNotifier.value = value;
                   selectedTaskNotifier.notifyListeners();
                 },
