@@ -10,6 +10,7 @@ class Url {
   String routeSave = '/Master_C/route_save';
   String getBusList = '/Master_C/get_buslist';
   String getRoute = '/Master_C/get_route';
-
   String weeklyUrl = '/Owner_C/rep_datewise';
+  String dateWiseUrl = '/Master_C/get_datewise';
+  String busWiseUrl = '/Master_C/get_buswise';
 }

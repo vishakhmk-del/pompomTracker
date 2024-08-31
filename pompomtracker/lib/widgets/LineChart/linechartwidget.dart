@@ -16,7 +16,30 @@ class Linechartwidget extends StatelessWidget {
         builder: (BuildContext context, List<Buswklycollectlist> newList,
             Widget? _) {
           return newList.isEmpty
-              ? Container()
+              ? Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: Container(
+                    width: MediaQuery.of(context).size.width,
+                    margin: const EdgeInsets.all(5),
+                    child: Column(
+                      //crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Container(
+                          width:200,
+                          height: 200,
+                          decoration: BoxDecoration(
+                              color: Theme.of(context).colorScheme.tertiary,
+                              shape: BoxShape.circle,
+                              image: const DecorationImage(
+                                image: AssetImage('assets/home/no_data_found.png'),
+                                fit: BoxFit.scaleDown,
+                              )),
+                        ),
+                      ],
+                    ),
+                  ),
+                )
               : LineChart(LineChartData(
                   minX: 0,
                   maxX: (newList.length - 1).toDouble(),

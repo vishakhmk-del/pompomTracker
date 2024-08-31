@@ -102,8 +102,8 @@ class _ScreenhomeState extends State<Screenhome> {
                                     data: MyTheme.buttonStyleTheme,
                                     child: ElevatedButton(
                                       onPressed: () async {
-                                         Navigator.push(context,
-                                          Approutes().collectionscreen);
+                                        Navigator.push(context,
+                                            Approutes().collectionscreen);
                                       },
                                       child: Text(
                                         'More Details',

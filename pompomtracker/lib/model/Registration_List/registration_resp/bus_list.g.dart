@@ -6,10 +6,11 @@ part of 'bus_list.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-BusList _$BusListFromJson(Map<String, dynamic> json) => BusList(
+BusRegList _$BusRegListFromJson(Map<String, dynamic> json) => BusRegList(
       registrationNo: json['registration_no'] as String?,
     );
 
-Map<String, dynamic> _$BusListToJson(BusList instance) => <String, dynamic>{
+Map<String, dynamic> _$BusRegListToJson(BusRegList instance) =>
+    <String, dynamic>{
       'registration_no': instance.registrationNo,
     };

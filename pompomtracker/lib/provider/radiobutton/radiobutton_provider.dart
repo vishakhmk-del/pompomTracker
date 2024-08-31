@@ -1,6 +1,5 @@
 import 'package:pompomtracker/core/hook/hook.dart';
 
-
 class RadiobuttonProvider with ChangeNotifier {
   StatementType _selectedType = StatementType.collectionType;
 

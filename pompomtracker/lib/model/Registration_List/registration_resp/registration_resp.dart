@@ -9,7 +9,7 @@ class RegistrationResp {
   String? status;
   String? message;
   @JsonKey(name: 'bus_list')
-  List<BusList>? busList;
+  List<BusRegList>? busList;
 
   RegistrationResp({this.status, this.message, this.busList});
 

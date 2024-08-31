@@ -26,7 +26,6 @@ class MyTheme {
         //onSecondaryFixed: Color(0xFF7B1FA2),
 
         tertiary: Colors.white,
-
       ),
       textTheme: const TextTheme(
           labelLarge: TextStyle(
@@ -42,6 +41,11 @@ class MyTheme {
               color: Colors.white, fontSize: 14, fontFamily: 'Poppins-Medium'),
           bodySmall: TextStyle(
               color: Colors.black, fontSize: 14, fontFamily: 'Poppins-Medium'),
+          bodyLarge: TextStyle(
+              color: Colors.black,
+              fontSize: 16,
+              fontFamily: 'Poppins-Medium',
+              fontWeight: FontWeight.w500),
           titleSmall: TextStyle(
               color: Colors.white, fontSize: 14, fontFamily: 'Poppins-Medium'),
           titleMedium: TextStyle(
@@ -69,10 +73,9 @@ class MyTheme {
 
         onPrimaryFixed: Color(0xff4169E1),
         secondaryFixed: Color(0xFFE1E1E1),
-       // onSecondaryFixed: Color(0xFF7B1FA2),
+        // onSecondaryFixed: Color(0xFF7B1FA2),
 
         tertiary: Colors.black,
-
       ),
       textTheme: const TextTheme(
           labelLarge: TextStyle(
@@ -86,6 +89,11 @@ class MyTheme {
               color: Colors.white, fontSize: 14, fontFamily: 'Poppins-Medium'),
           bodySmall: TextStyle(
               color: Colors.white, fontSize: 14, fontFamily: 'Poppins-Medium'),
+          bodyLarge: TextStyle(
+              color: Colors.white,
+              fontSize: 16,
+              fontFamily: 'Poppins-Medium',
+              fontWeight: FontWeight.w500),
           titleSmall: TextStyle(
               color: Colors.white, fontSize: 14, fontFamily: 'Poppins-Medium'),
           titleMedium: TextStyle(

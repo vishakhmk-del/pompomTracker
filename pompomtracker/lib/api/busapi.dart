@@ -1,8 +1,4 @@
 import 'package:pompomtracker/core/hook/hook.dart';
-import 'package:pompomtracker/model/Registration_List/registration_req/registration_req.dart';
-import 'package:pompomtracker/model/bus_master/bus_master_req/bus_master_req.dart';
-import 'package:pompomtracker/model/getRoute/get_route_req/get_route_req.dart';
-import 'package:pompomtracker/model/route_master/route_master_req/route_master_req.dart';
 
 abstract class Apicalls {
   Future<Response<dynamic>?> login(Loginreq value);
@@ -12,6 +8,8 @@ abstract class Apicalls {
   Future<Response<dynamic>?> routeMasterSave(RouteMasterReq value);
   Future<Response<dynamic>?> getBusRegistartionList(RegistrationReq value);
   Future<Response<dynamic>?> getRouteList(GetRouteReq value);
+  Future<Response<dynamic>?> getDatewiseStmnt(Datewisereq value);
+  Future<Response<dynamic>?> getBuswiseStmnt(Datewisereq value);
 }
 
 class Busdata extends Apicalls {
@@ -108,6 +106,32 @@ class Busdata extends Apicalls {
     try {
       final result = await dio.post(
         url.getRoute,
+        data: value.toJson(),
+      );
+      return result;
+    } on DioException catch (ex) {
+      return ex.response;
+    }
+  }
+
+  @override
+  Future<Response?> getDatewiseStmnt(Datewisereq value) async {
+    try {
+      final result = await dio.post(
+        url.dateWiseUrl,
+        data: value.toJson(),
+      );
+      return result;
+    } on DioException catch (ex) {
+      return ex.response;
+    }
+  }
+
+  @override
+  Future<Response?> getBuswiseStmnt(Datewisereq value) async {
+    try {
+      final result = await dio.post(
+        url.busWiseUrl,
         data: value.toJson(),
       );
       return result;
