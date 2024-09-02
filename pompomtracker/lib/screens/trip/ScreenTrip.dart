@@ -370,7 +370,19 @@ class _ScreenTriptState extends State<ScreenTrip> {
                               ),
                             ),
                           ),
-
+                          const SizedBox(height: 10),
+                          Consumer<LoadingProvider>(
+                              builder: (context, loadingProvider, child) {
+                            return loadingProvider.isLoading
+                                ? const Center(
+                                    child: CircularProgressIndicator(
+                                      valueColor: AlwaysStoppedAnimation<Color>(
+                                        Color.fromARGB(255, 2, 128, 6),
+                                      ),
+                                    ),
+                                  )
+                                : const SizedBox.shrink();
+                          }),
                           // showTimePicker(context: _scafoldkey.currentContext, initialTime:TimeOfDay(hour: 7, minute: 15)),
                         ],
                       ),
@@ -384,6 +396,8 @@ class _ScreenTriptState extends State<ScreenTrip> {
   }
 
   Future tripMasterSave() async {
+    final loadingProvider = _scafoldkey.currentContext!.read<LoadingProvider>();
+    loadingProvider.toggleLoading();
     final registrationNo = selectedBusList;
     // final routeId = selectedRouteList;
     // print(routeId);
@@ -405,6 +419,7 @@ class _ScreenTriptState extends State<ScreenTrip> {
     // print(resultAsjson);
     final resValue =
         TripMasterResp.fromJson(resultAsjson as Map<String, dynamic>);
+    loadingProvider.toggleLoading();
     //print(resValue.status);
     if (resValue.status == 'success') {
       Fluttertoast.showToast(
