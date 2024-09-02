@@ -38,7 +38,8 @@ class StatementFunctions {
         userType: sharevalue.userType,
         fromdate: fmdt,
         todate: todt,
-        regNo: val.type);
+        regNo: val.type,
+        summary: val.summary);
 
     if (selectedValue == dtWise) {
       dtwiseresp = await Busdata().getDatewiseStmnt(dtwiserqst);
