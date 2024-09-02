@@ -47,6 +47,8 @@ export 'package:pompomtracker/provider/collectionStmntdropdown/collectiondrpdwn_
 export 'package:pompomtracker/provider/cashStmntdropdown/cashstmntdrpdwn_provider.dart';
 
 export 'package:pompomtracker/provider/elevatedbtn/elevatedbtn_provider.dart';
+
+export 'package:pompomtracker/provider/checkbox/checkbox_provider.dart';
 /**************************************/
 
 /*screens*/

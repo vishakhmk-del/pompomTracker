@@ -53,7 +53,21 @@ class MyTheme {
           titleLarge: TextStyle(
               color: Colors.black,
               fontSize: 20,
-              fontFamily: 'Poppins-Medium')));
+              fontFamily: 'Poppins-Medium')),
+        checkboxTheme: CheckboxThemeData(
+            fillColor: WidgetStateProperty.resolveWith<Color>((states) {
+              if (states.contains(WidgetState.selected)) {
+                return const Color(0xff12b2ba); // Inside color when checked in light mode
+              }
+              return Colors.white; // Inside color when unchecked in light mode
+            }),
+            checkColor: WidgetStateProperty.all<Color>(Colors.white), // Checkmark color in light mode
+            side: const BorderSide(
+              color: Colors.black, // Border color when unchecked in light mode
+              width: 2, // Border width
+            ),
+            ),      
+              );
 
   static final darkTheme = ThemeData(
       useMaterial3: true,
@@ -101,7 +115,22 @@ class MyTheme {
           titleLarge: TextStyle(
               color: Colors.white,
               fontSize: 20,
-              fontFamily: 'Poppins-Medium')));
+              fontFamily: 'Poppins-Medium')),
+      checkboxTheme: CheckboxThemeData(
+                fillColor: WidgetStateProperty.resolveWith<Color>((states) {
+                  if (states.contains(WidgetState.selected)) {
+                    return const Color(0xff12b2ba); // Inside color when checked in dark mode
+                  }
+                  return Colors.black; // Inside color when unchecked in dark mode
+                }),
+                checkColor: WidgetStateProperty.all<Color>(Colors.black), // Checkmark color in dark mode
+                side: const BorderSide(
+                  color: Colors.white, // Border color when unchecked in dark mode
+                  width: 2, // Border width
+                ),
+              ),
+             
+              );
 
   //common theme
   static ThemeData get googleFormTheme => ThemeData(

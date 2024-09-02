@@ -1,5 +1,6 @@
 import 'package:pompomtracker/core/hook/hook.dart';
 
+
 const savekeyname = 'UserLoggedIn';
 void main() {
   runApp(const MyApp());
@@ -21,6 +22,8 @@ class MyApp extends StatelessWidget {
             create: (context) => CashstmntDrpDwnProvider()),
         ChangeNotifierProvider<ElevatedBtnProvider>(
             create: (context) => ElevatedBtnProvider()),
+        ChangeNotifierProvider<CheckProvider>(
+            create: (context) => CheckProvider()),            
         ChangeNotifierProvider<ThemeProvider>(
           create: (context) => ThemeProvider(),
           builder: (context, child) {
