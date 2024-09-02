@@ -1,5 +1,6 @@
 import 'dart:developer';
 import 'package:intl/intl.dart';
+
 import '../../core/hook/hook.dart';
 
 class Screenhome extends StatefulWidget {
@@ -37,6 +38,7 @@ class _ScreenhomeState extends State<Screenhome> {
         children: [
           Scaffold(
             key: _scaffoldKey,
+            drawer: const Navbar(),
             // backgroundColor: Colors.black,
             appBar: AppBar(
                 title: Text(

@@ -117,6 +117,7 @@ class Busdata extends Apicalls {
     }
   }
 
+  @override
   Future<Response<dynamic>?> tripMasterSave(TripMasterReq value) async {
     try {
       final result = await dio.post(

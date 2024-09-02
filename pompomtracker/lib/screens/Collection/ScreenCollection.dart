@@ -35,7 +35,9 @@ class _ScreenCollectionState extends State<ScreenCollection> {
     super.initState();
     Future.delayed(Duration.zero, () {
       var po = context.read<CheckProvider>();
+
       po.reset();
+      context.read<ElevatedBtnProvider>().changeSelectedVal(false);
     });
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       busreglist = await Wklycollectfn.instance.busReglistfn();
@@ -89,7 +91,7 @@ class _ScreenCollectionState extends State<ScreenCollection> {
                               children: [
                                 Container(
                                   height:
-                                      MediaQuery.of(context).size.height / 1.63,
+                                      MediaQuery.of(context).size.height / 1.6,
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(12),
                                   ),
