@@ -8,6 +8,9 @@ abstract class Apicalls {
   Future<Response<dynamic>?> routeMasterSave(RouteMasterReq value);
   Future<Response<dynamic>?> getBusRegistartionList(RegistrationReq value);
   Future<Response<dynamic>?> getRouteList(GetRouteReq value);
+
+  Future<Response<dynamic>?> tripMasterSave(TripMasterReq value);
+
   Future<Response<dynamic>?> getDatewiseStmnt(Datewisereq value);
   Future<Response<dynamic>?> getBuswiseStmnt(Datewisereq value);
 }
@@ -106,6 +109,18 @@ class Busdata extends Apicalls {
     try {
       final result = await dio.post(
         url.getRoute,
+        data: value.toJson(),
+      );
+      return result;
+    } on DioException catch (ex) {
+      return ex.response;
+    }
+  }
+
+  Future<Response<dynamic>?> tripMasterSave(TripMasterReq value) async {
+    try {
+      final result = await dio.post(
+        url.tripSave,
         data: value.toJson(),
       );
       return result;

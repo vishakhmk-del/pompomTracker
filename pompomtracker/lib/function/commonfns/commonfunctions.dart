@@ -65,6 +65,7 @@ class Wklycollectfn implements Commonfn {
     final sharevalue = await SharedPrefManager.instance.getSharedData();
 
     List<BusRegList>? busreglist = [];
+
     final regrqst = RegistrationReq(
       userId: sharevalue!.userId,
     );

@@ -90,11 +90,14 @@ export 'package:pompomtracker/model/Registration_List/registration_resp/registra
 
 export 'package:pompomtracker/model/enum/statements/statementType.dart';
 
+export 'package:pompomtracker/model/Trip_master/trip_master_req/trip_master_req.dart';
+export 'package:pompomtracker/model/Trip_master/trip_master_resp/trip_master_resp.dart';
+export 'package:pompomtracker/model/getRoute/ger_route_resp/ger_route_resp.dart';
+export 'package:pompomtracker/model/getRoute/get_route_req/get_route_req.dart';
+
 export 'package:pompomtracker/widgets/constants/constants.dart';
 
 export 'package:pompomtracker/model/Registration_List/registration_resp/bus_list.dart';
-
-export 'package:pompomtracker/model/getRoute/get_route_req/get_route_req.dart';
 
 export 'package:pompomtracker/model/Statements/datewise/datewisereq/datewisereq.dart';
 
