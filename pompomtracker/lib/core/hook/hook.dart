@@ -57,6 +57,21 @@ export 'package:pompomtracker/screens/splash/screenSplash.dart';
 export 'package:pompomtracker/screens/login/screenLogin.dart';
 
 export 'package:pompomtracker/screens/home/screenhome.dart';
+export 'package:pompomtracker/screens/Bus/BusList.dart';
+export 'package:pompomtracker/screens/Bus/ScreenBusMaster.dart';
+export 'package:pompomtracker/screens/Collection/ScreenCollection.dart';
+
+export 'package:pompomtracker/screens/Conductor/ScreenConductor.dart';
+export 'package:pompomtracker/screens/LinkBusRoute/ScreenLinkBusRoute.dart';
+
+export 'package:pompomtracker/screens/Conductor/ConductorList.dart';
+export 'package:pompomtracker/screens/route_mas/BusRouteList.dart';
+
+export 'package:pompomtracker/screens/route_mas/ScreenRouteMaster.dart';
+export 'package:pompomtracker/screens/stop/ScreenStopMaster.dart';
+export 'package:pompomtracker/screens/stop/StopList.dart';
+export 'package:pompomtracker/screens/trip/ScreenTrip.dart';
+export 'package:pompomtracker/screens/trip/TripList.dart';
 /**************************************/
 
 /*model*/
@@ -94,8 +109,6 @@ export 'package:pompomtracker/model/Trip_master/trip_master_req/trip_master_req.
 export 'package:pompomtracker/model/Trip_master/trip_master_resp/trip_master_resp.dart';
 export 'package:pompomtracker/model/getRoute/ger_route_resp/ger_route_resp.dart';
 export 'package:pompomtracker/model/getRoute/get_route_req/get_route_req.dart';
-
-export 'package:pompomtracker/widgets/constants/constants.dart';
 
 export 'package:pompomtracker/model/Registration_List/registration_resp/bus_list.dart';
 
@@ -138,4 +151,8 @@ export 'package:pompomtracker/widgets/radiobutton/radiobutton.dart';
 export 'package:pompomtracker/widgets/scrollablewidget/scrollableWidget.dart';
 
 export 'package:pompomtracker/widgets/statementTable_Utils/stmnt_tble_Utils.dart';
+
+export 'package:pompomtracker/widgets/constants/constants.dart';
+
+export 'package:pompomtracker/widgets/navBar/navbar.dart';
 /**************************************/
