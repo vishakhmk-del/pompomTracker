@@ -107,6 +107,14 @@ export 'package:pompomtracker/model/Statements/datewise/datewiseresp/ticket_list
 export 'package:pompomtracker/model/Statements/datewise/datewiseresp/datewise_stmnt.dart';
 
 export 'package:pompomtracker/model/Statements/function/stmntfnparameter/stmntfnparameter.dart';
+export 'package:pompomtracker/model/getRoute/ger_route_resp/route_list.dart';
+
+export 'package:pompomtracker/model/stop_master/stop_master_req/stop_master_req.dart';
+export 'package:pompomtracker/model/stop_master/stop_master_resp/stop_master_resp.dart';
+
+export 'package:pompomtracker/model/link_route_master/bus_route_link_req/bus_route_link_req.dart';
+export 'package:pompomtracker/model/link_route_master/bus_route_link_resp/bus_route_link_resp.dart';
+
 /**************************************/
 
 /*FUNCTION*/

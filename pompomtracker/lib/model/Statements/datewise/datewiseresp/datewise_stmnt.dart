@@ -1,6 +1,5 @@
 import 'package:pompomtracker/core/hook/hook.dart';
 
-
 class DatewiseStmnt {
   String? status;
   String? message;

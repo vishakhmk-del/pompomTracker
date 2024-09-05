@@ -126,9 +126,9 @@ class _ScreenCollectionState extends State<ScreenCollection> {
                           return Container();
                           // Replace with your Collection Form widget
                         } else if (provider.selectedVal == true) {
-                        //   WidgetsBinding.instance.addPostFrameCallback((_) {
-                        //   _scrollToBottom(); // Call the function to scroll down
-                        // });
+                          //   WidgetsBinding.instance.addPostFrameCallback((_) {
+                          //   _scrollToBottom(); // Call the function to scroll down
+                          // });
                           return ScrollableWidget(child: buildStmntTbl());
                           // Replace with your Cash Form widget
                         }
@@ -290,31 +290,28 @@ class _ScreenCollectionState extends State<ScreenCollection> {
                 ),
               ),
               SizedBox(
-              width: MediaQuery.of(context).size.width,
-              child: Row(
-                children: <Widget>[
-                 Theme(
-                    data: Theme.of(context),
-                    child: Consumer<CheckProvider>(
-                      builder: (context, check, _) => Checkbox(
-                          value: check.isAccepted,
-                        
-                          onChanged: (value) {
-                            
-                            check.setAccepted(value);
-                          
-                          }),
+                width: MediaQuery.of(context).size.width,
+                child: Row(
+                  children: <Widget>[
+                    Theme(
+                      data: Theme.of(context),
+                      child: Consumer<CheckProvider>(
+                        builder: (context, check, _) => Checkbox(
+                            value: check.isAccepted,
+                            onChanged: (value) {
+                              check.setAccepted(value);
+                            }),
+                      ),
                     ),
-                  ),
-                   Expanded(
-                      child: Text(
-                    "Summary",
-                    textAlign: TextAlign.left,
-                    style: Theme.of(context).textTheme.labelLarge,
-                  ))
-                ],
+                    Expanded(
+                        child: Text(
+                      "Summary",
+                      textAlign: TextAlign.left,
+                      style: Theme.of(context).textTheme.labelLarge,
+                    ))
+                  ],
+                ),
               ),
-            ),
               Padding(
                 padding: const EdgeInsets.all(25.0),
                 child: Container(
@@ -338,15 +335,15 @@ class _ScreenCollectionState extends State<ScreenCollection> {
                         context
                             .read<ElevatedBtnProvider>()
                             .changeSelectedVal(true);
-                        
+
                         if (_formkey1.currentState!.validate()) {
                           final frmdt = _cldateFromController.text;
                           final todt = _cldateToController.text;
                           var pro = context.read<CheckProvider>();
                           final val = pro.isAccepted;
 
-                          final value =
-                              Stmntfnparameter(fromdate: frmdt, todate: todt,summary: val);
+                          final value = Stmntfnparameter(
+                              fromdate: frmdt, todate: todt, summary: val);
 
                           fetchclstatement(context, value);
                         }
@@ -798,31 +795,30 @@ class _ScreenCollectionState extends State<ScreenCollection> {
     return ValueListenableBuilder(
         valueListenable: StatementFunctions.instance.getDatewiseStmntNotifier,
         builder: (BuildContext context, List<TicketList> newList, Widget? _) {
-        //   if (newList.isNotEmpty) {
-        //   WidgetsBinding.instance.addPostFrameCallback((_) {
-        //     _verticalScrollController.jumpTo(0);
-        //   });
-        // }
-          
+          //   if (newList.isNotEmpty) {
+          //   WidgetsBinding.instance.addPostFrameCallback((_) {
+          //     _verticalScrollController.jumpTo(0);
+          //   });
+          // }
+
           return DataTable(
             columns: getColumns(
                 Provider.of<CollectionDrpDwnProvider>(context, listen: false)
                             .selectedVal ==
                         dtWise
                     ? Provider.of<CheckProvider>(context, listen: false)
-                    .isAccepted ==
-                false?
-                columns = [
-                        'Reg No',
-                        'Date',
-                        'Mode',
-                        'Amount',
-                      ]:columns = [
-                        
-                        'Payment Date',
-                        
-                        'Amount',
-                      ]
+                                .isAccepted ==
+                            false
+                        ? columns = [
+                            'Reg No',
+                            'Date',
+                            'Mode',
+                            'Amount',
+                          ]
+                        : columns = [
+                            'Payment Date',
+                            'Amount',
+                          ]
                     : columns = [
                         'Reg No',
                         'Date',
@@ -849,20 +845,18 @@ class _ScreenCollectionState extends State<ScreenCollection> {
         Provider.of<CollectionDrpDwnProvider>(context, listen: false)
                     .selectedVal ==
                 dtWise
-            ? Provider.of<CheckProvider>(context, listen: false)
-                    .isAccepted ==
-                false?
-                cells = [
-                task.regNo,
-                task.payDate,
-                task.mode,
-                task.amount,
-              ]:cells = [
-                
-                task.payDate,
-                
-                task.amount,
-              ]
+            ? Provider.of<CheckProvider>(context, listen: false).isAccepted ==
+                    false
+                ? cells = [
+                    task.regNo,
+                    task.payDate,
+                    task.mode,
+                    task.amount,
+                  ]
+                : cells = [
+                    task.payDate,
+                    task.amount,
+                  ]
             : cells = [
                 task.regNo,
                 task.payDate,
@@ -932,8 +926,7 @@ class _ScreenCollectionState extends State<ScreenCollection> {
   }
 
   /// ************************ Statement fetch Function end *******************************
-  
-  
+
   void _scrollToBottom() {
     _listViewController.animateTo(
       _listViewController.position.maxScrollExtent,
@@ -941,5 +934,4 @@ class _ScreenCollectionState extends State<ScreenCollection> {
       curve: Curves.easeOut,
     );
   }
-
 }

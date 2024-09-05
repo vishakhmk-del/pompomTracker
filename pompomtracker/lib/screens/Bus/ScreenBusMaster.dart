@@ -48,267 +48,278 @@ class _ScreenBusMaterState extends State<ScreenBusMater> {
             },
           ),
           title: Text(
-            "Bus Master",
+            "Add Bus",
             style: TextStyle(color: Theme.of(context).colorScheme.onSecondary),
           )),
       body: Center(
-          child: SingleChildScrollView(
-        child: Card(
-          margin: const EdgeInsets.all(20),
-          elevation: 50,
-          shadowColor: Theme.of(context).colorScheme.primary,
-          child: SizedBox(
-            width: 500,
-            height: MediaQuery.of(context).size.height,
-            child: Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10),
-                color: Theme.of(context).colorScheme.primary,
-              ),
-              child: Form(
-                  key: _formkey,
-                  child: Padding(
-                    padding: const EdgeInsets.all(20.0),
-                    child: Theme(
-                      data: MyTheme.googleFormTheme,
-                      child: Column(
-                        children: [
-                          const CircleAvatar(
-                            backgroundImage:
-                                AssetImage('assets/bus/busmaster.png'),
-                            radius: 50,
-                          ),
-                          const SizedBox(height: 10),
-                          SizedBox(
-                            width: MediaQuery.of(context).size.width,
-                            child: TextFormField(
-                              controller: _nameControler,
-                              style: TextStyle(
-                                  color:
-                                      Theme.of(context).colorScheme.onPrimary),
-                              decoration: InputDecoration(
-                                labelText: 'Name',
-                                labelStyle:
-                                    Theme.of(context).textTheme.labelSmall,
+        child: ListView(
+            //scrollDirection: Axis.horizontal,
+            // physics: const BouncingScrollPhysics(),
+            // scrollDirection: Axis.vertical,
+            children: [
+              SingleChildScrollView(
+                child: Container(
+                  height: MediaQuery.of(context).size.height * .9,
+                  margin: const EdgeInsets.all(15),
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                        color: Theme.of(context).colorScheme.onSecondary),
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: Form(
+                      key: _formkey,
+                      child: Padding(
+                        padding: const EdgeInsets.all(15.0),
+                        child: Theme(
+                          data: MyTheme.googleFormTheme,
+                          child: Column(
+                            children: [
+                              const CircleAvatar(
+                                backgroundImage:
+                                    AssetImage('assets/bus/busmaster.png'),
+                                radius: 50,
                               ),
-                              validator: (value) {
-                                if (value!.isEmpty) {
-                                  return 'Enter name';
-                                } else {
-                                  return null;
-                                }
-                              },
-                            ),
-                          ),
-                          const SizedBox(
-                            height: 10,
-                          ),
-                          SizedBox(
-                            width: MediaQuery.of(context).size.width,
-                            child: TextFormField(
-                              controller: _shortnameControler,
-                              style: TextStyle(
-                                  color:
-                                      Theme.of(context).colorScheme.onPrimary),
-                              decoration: InputDecoration(
-                                labelText: 'Short Name',
-                                labelStyle:
-                                    Theme.of(context).textTheme.labelSmall,
-                              ),
-                              validator: (value) {
-                                if (value!.isEmpty) {
-                                  return 'Enter Short Name';
-                                } else {
-                                  return null;
-                                }
-                              },
-                            ),
-                          ),
-                          const SizedBox(
-                            height: 10,
-                          ),
-                          SizedBox(
-                            width: MediaQuery.of(context).size.width,
-                            child: TextFormField(
-                              controller: _registartionNoControler,
-                              style: TextStyle(
-                                  color:
-                                      Theme.of(context).colorScheme.onPrimary),
-                              decoration: InputDecoration(
-                                labelText: 'Registartion No',
-                                labelStyle:
-                                    Theme.of(context).textTheme.labelSmall,
-                              ),
-                              validator: (value) {
-                                if (value!.isEmpty) {
-                                  return 'Enter Registartion No';
-                                } else {
-                                  return null;
-                                }
-                              },
-                            ),
-                          ),
-                          const SizedBox(
-                            height: 10,
-                          ),
-                          SizedBox(
-                            width: MediaQuery.of(context).size.width,
-                            child: TextFormField(
-                              controller: _permitNoController,
-                              style: TextStyle(
-                                  color:
-                                      Theme.of(context).colorScheme.onPrimary),
-                              decoration: InputDecoration(
-                                labelText: 'Permit No',
-                                labelStyle:
-                                    Theme.of(context).textTheme.labelSmall,
-                              ),
-                              validator: (value) {
-                                if (value!.isEmpty) {
-                                  return 'Enter Permit No';
-                                } else {
-                                  return null;
-                                }
-                              },
-                            ),
-                          ),
-                          const SizedBox(
-                            height: 10,
-                          ),
-                          DropdownButtonFormField(
-                            items: busTypeList.map((valueItem) {
-                              return DropdownMenuItem(
-                                value: valueItem,
-                                child: Text(
-                                  valueItem,
-                                  style: TextStyle(
-                                      color: Theme.of(context)
-                                          .colorScheme
-                                          .onSecondary),
-                                ),
-                              );
-                            }).toList(),
-                            onChanged: (newValue) {
-                              setState(() {
-                                selectedBusType = newValue;
-                              });
-                            },
-                            value: selectedBusType,
-                            style: TextStyle(
-                                color: Theme.of(context).colorScheme.onPrimary),
-                            icon: Theme(
-                                data: MyTheme.appIconTheme,
-                                child: const Icon(
-                                  Icons.arrow_drop_down,
-                                )),
-                            decoration: InputDecoration(
-                              labelText: 'Bus Type',
-                              labelStyle:
-                                  Theme.of(context).textTheme.labelSmall,
-                            ),
-                            dropdownColor:
-                                Theme.of(context).colorScheme.tertiary,
-                            validator: (value) {
-                              if (value!.isEmpty) {
-                                return 'Select Bus Type';
-                              } else {
-                                return null;
-                              }
-                            },
-                          ),
-                          const SizedBox(
-                            height: 10,
-                          ),
-                          SizedBox(
-                            width: MediaQuery.of(context).size.width,
-                          ),
-                          TextFormField(
-                            controller: _dateValidController,
-                            style: TextStyle(
-                                color: Theme.of(context).colorScheme.onPrimary),
-                            decoration: InputDecoration(
-                              labelText: 'Valid From',
-                              labelStyle:
-                                  Theme.of(context).textTheme.labelSmall,
-                              suffixIcon: Theme(
-                                  data: MyTheme.appIconTheme,
-                                  child: const Icon(
-                                    Icons.calendar_today,
-                                  )),
-                            ),
-                            onTap: () =>
-                                _selectDate(context, _dateValidController),
-                            validator: (value) {
-                              if (value!.isEmpty) {
-                                return 'Select Date';
-                              } else {
-                                return null;
-                              }
-                            },
-                          ),
-                          const SizedBox(
-                            height: 10,
-                          ),
-                          SizedBox(
-                            width: MediaQuery.of(context).size.width,
-                          ),
-                          TextFormField(
-                            controller: _dateToController,
-                            style: TextStyle(
-                                color: Theme.of(context).colorScheme.onPrimary),
-                            decoration: InputDecoration(
-                              labelText: 'Valid To',
-                              labelStyle:
-                                  Theme.of(context).textTheme.labelSmall,
-                              suffixIcon: Theme(
-                                data: MyTheme.appIconTheme,
-                                child: const Icon(
-                                  Icons.calendar_today,
+                              const SizedBox(height: 10),
+                              SizedBox(
+                                width: MediaQuery.of(context).size.width,
+                                child: TextFormField(
+                                  controller: _nameControler,
+                                  style: Theme.of(context).textTheme.bodySmall,
+                                  decoration: InputDecoration(
+                                      labelText: 'Name',
+                                      labelStyle: Theme.of(context)
+                                          .textTheme
+                                          .bodySmall),
+                                  validator: (value) {
+                                    if (value!.isEmpty) {
+                                      return 'Enter name';
+                                    } else {
+                                      return null;
+                                    }
+                                  },
                                 ),
                               ),
-                            ),
-                            onTap: () =>
-                                _selectDate(context, _dateToController),
-                            validator: (value) {
-                              if (value!.isEmpty) {
-                                return 'Select Date';
-                              } else {
-                                return null;
-                              }
-                            },
-                          ),
-                          const SizedBox(
-                            height: 10,
-                          ),
-                          ElevatedButton(
-                            onPressed: () async {
-                              if (_formkey.currentState!.validate()) {
-                                await busMasterSave();
-                              }
-                            },
-                            child: const Text('SAVE'),
-                          ),
-                          const SizedBox(height: 10),
-                          Consumer<LoadingProvider>(
-                              builder: (context, loadingProvider, child) {
-                            return loadingProvider.isLoading
-                                ? const Center(
-                                    child: CircularProgressIndicator(
-                                      valueColor: AlwaysStoppedAnimation<Color>(
-                                        Color.fromARGB(255, 2, 128, 6),
-                                      ),
+                              const SizedBox(
+                                height: 10,
+                              ),
+                              SizedBox(
+                                width: MediaQuery.of(context).size.width,
+                                child: TextFormField(
+                                  controller: _shortnameControler,
+                                  style: Theme.of(context).textTheme.bodySmall,
+                                  decoration: InputDecoration(
+                                      labelText: 'Short Name',
+                                      labelStyle: Theme.of(context)
+                                          .textTheme
+                                          .bodySmall),
+                                  validator: (value) {
+                                    if (value!.isEmpty) {
+                                      return 'Enter Short Name';
+                                    } else {
+                                      return null;
+                                    }
+                                  },
+                                ),
+                              ),
+                              const SizedBox(
+                                height: 10,
+                              ),
+                              SizedBox(
+                                width: MediaQuery.of(context).size.width,
+                                child: TextFormField(
+                                  controller: _registartionNoControler,
+                                  style: Theme.of(context).textTheme.bodySmall,
+                                  decoration: InputDecoration(
+                                      labelText: 'Registration No',
+                                      labelStyle: Theme.of(context)
+                                          .textTheme
+                                          .bodySmall),
+                                  validator: (value) {
+                                    if (value!.isEmpty) {
+                                      return 'Enter Registartion No';
+                                    } else {
+                                      return null;
+                                    }
+                                  },
+                                ),
+                              ),
+                              const SizedBox(
+                                height: 10,
+                              ),
+                              SizedBox(
+                                width: MediaQuery.of(context).size.width,
+                                child: TextFormField(
+                                  controller: _permitNoController,
+                                  style: Theme.of(context).textTheme.bodySmall,
+                                  decoration: InputDecoration(
+                                      labelText: 'Permit No',
+                                      labelStyle: Theme.of(context)
+                                          .textTheme
+                                          .bodySmall),
+                                  validator: (value) {
+                                    if (value!.isEmpty) {
+                                      return 'Enter Permit No';
+                                    } else {
+                                      return null;
+                                    }
+                                  },
+                                ),
+                              ),
+                              const SizedBox(
+                                height: 10,
+                              ),
+                              DropdownButtonFormField(
+                                items: busTypeList.map((valueItem) {
+                                  return DropdownMenuItem(
+                                    value: valueItem,
+                                    child: Text(
+                                      valueItem,
+                                      style: TextStyle(
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .onSecondary),
                                     ),
-                                  )
-                                : const SizedBox.shrink();
-                          }),
-                        ],
-                      ),
-                    ),
-                  )),
-            ),
-          ),
-        ),
-      )),
+                                  );
+                                }).toList(),
+                                onChanged: (newValue) {
+                                  setState(() {
+                                    selectedBusType = newValue;
+                                  });
+                                },
+                                value: selectedBusType,
+                                style: TextStyle(
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .onPrimary),
+                                icon: Theme(
+                                    data: Theme.of(context),
+                                    child: const Icon(
+                                      Icons.arrow_drop_down,
+                                    )),
+                                decoration: InputDecoration(
+                                  labelText: 'Bus Type',
+                                  labelStyle:
+                                      Theme.of(context).textTheme.bodySmall,
+                                ),
+                                dropdownColor:
+                                    Theme.of(context).colorScheme.tertiary,
+                                validator: (value) {
+                                  if (value!.isEmpty) {
+                                    return 'Select Bus Type';
+                                  } else {
+                                    return null;
+                                  }
+                                },
+                              ),
+                              const SizedBox(
+                                height: 10,
+                              ),
+                              SizedBox(
+                                width: MediaQuery.of(context).size.width,
+                              ),
+                              TextFormField(
+                                controller: _dateValidController,
+                                style: Theme.of(context).textTheme.bodySmall,
+                                decoration: InputDecoration(
+                                  labelText: 'Valid From',
+                                  labelStyle:
+                                      Theme.of(context).textTheme.bodySmall,
+                                  suffixIcon: Theme(
+                                      data: Theme.of(context),
+                                      child: const Icon(
+                                        Icons.calendar_today,
+                                      )),
+                                ),
+                                onTap: () =>
+                                    _selectDate(context, _dateValidController),
+                                validator: (value) {
+                                  if (value!.isEmpty) {
+                                    return 'Select Date';
+                                  } else {
+                                    return null;
+                                  }
+                                },
+                              ),
+                              const SizedBox(
+                                height: 10,
+                              ),
+                              SizedBox(
+                                width: MediaQuery.of(context).size.width,
+                              ),
+                              TextFormField(
+                                controller: _dateToController,
+                                style: Theme.of(context).textTheme.bodySmall,
+                                decoration: InputDecoration(
+                                  labelText: 'Name',
+                                  labelStyle:
+                                      Theme.of(context).textTheme.bodySmall,
+                                  suffixIcon: Theme(
+                                    data: Theme.of(context),
+                                    child: const Icon(
+                                      Icons.calendar_today,
+                                    ),
+                                  ),
+                                ),
+                                onTap: () =>
+                                    _selectDate(context, _dateToController),
+                                validator: (value) {
+                                  if (value!.isEmpty) {
+                                    return 'Select Date';
+                                  } else {
+                                    return null;
+                                  }
+                                },
+                              ),
+                              const SizedBox(
+                                height: 10,
+                              ),
+                              Container(
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10),
+                                  gradient: LinearGradient(
+                                    begin: Alignment.topLeft,
+                                    end: Alignment.bottomRight,
+                                    colors: [
+                                      Theme.of(context).colorScheme.primary,
+                                      Theme.of(context).colorScheme.secondary,
+                                    ],
+                                  ),
+                                ),
+                                child: Theme(
+                                  data: MyTheme.buttonStyleTheme,
+                                  child: ElevatedButton(
+                                    onPressed: () {
+                                      busMasterSave();
+                                    },
+                                    child: Text('SAVE',
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .titleMedium),
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(height: 10),
+                              Consumer<LoadingProvider>(
+                                  builder: (context, loadingProvider, child) {
+                                return loadingProvider.isLoading
+                                    ? const Center(
+                                        child: CircularProgressIndicator(
+                                          valueColor:
+                                              AlwaysStoppedAnimation<Color>(
+                                            Color.fromARGB(255, 2, 128, 6),
+                                          ),
+                                        ),
+                                      )
+                                    : const SizedBox.shrink();
+                              }),
+                            ],
+                          ),
+                        ),
+                      )),
+                ),
+              ),
+            ]),
+      ),
     );
   }
 

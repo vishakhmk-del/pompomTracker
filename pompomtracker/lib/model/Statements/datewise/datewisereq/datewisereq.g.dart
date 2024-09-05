@@ -22,5 +22,5 @@ Map<String, dynamic> _$DatewisereqToJson(Datewisereq instance) =>
       'fromdate': instance.fromdate,
       'todate': instance.todate,
       'reg_no': instance.regNo,
-      'summary':instance.summary
+      'summary': instance.summary,
     };

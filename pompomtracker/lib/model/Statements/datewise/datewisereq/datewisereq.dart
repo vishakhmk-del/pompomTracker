@@ -16,7 +16,12 @@ class Datewisereq {
   bool? summary;
 
   Datewisereq(
-      {this.userId, this.userType, this.fromdate, this.todate, this.regNo,this.summary});
+      {this.userId,
+      this.userType,
+      this.fromdate,
+      this.todate,
+      this.regNo,
+      this.summary});
 
   Datewisereq.req(
       {required this.userId,
@@ -24,8 +29,7 @@ class Datewisereq {
       required this.fromdate,
       required this.todate,
       this.regNo,
-      this.summary
-      });
+      this.summary});
 
   factory Datewisereq.fromJson(Map<String, dynamic> json) {
     return _$DatewisereqFromJson(json);

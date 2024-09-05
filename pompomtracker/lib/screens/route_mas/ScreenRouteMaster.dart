@@ -26,7 +26,7 @@ class _ScreenRoutemasterState extends State<ScreenRoutemaster> {
               },
               icon: const Icon(Icons.arrow_back)),
           title: Text(
-            'Route Master',
+            'Add Route',
             style: TextStyle(color: Theme.of(context).colorScheme.onSecondary),
           ),
         ),

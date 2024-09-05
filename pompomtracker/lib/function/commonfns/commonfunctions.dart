@@ -1,6 +1,7 @@
 import 'dart:developer';
 import 'package:intl/intl.dart';
 import 'package:pompomtracker/core/hook/hook.dart';
+import 'package:pompomtracker/model/getRoute/ger_route_resp/route_list.dart';
 
 abstract class Commonfn {
   Future wklycolctfn();
@@ -98,5 +99,38 @@ class Wklycollectfn implements Commonfn {
     return busreglist;
   }
 
-  //seect time
+  Future<dynamic> fetchRouteList() async {
+    final value = await SharedPrefManager.instance.getSharedData();
+    GetRouteReq routeReq =
+        GetRouteReq(userId: value!.userId, userType: value.userType);
+    final getRouteList = await Busdata().getRouteList(routeReq);
+
+    List<RouteList>? routeDetailslist = [];
+
+    if (getRouteList == null) {
+      routeDetailslist = routeDetailslist;
+      return routeDetailslist;
+    } else if (getRouteList.statusCode == 200) {
+      final resultAsjson = jsonDecode(getRouteList.toString());
+      final regrspval =
+          GerRouteResp.fromJson(resultAsjson as Map<String, dynamic>);
+
+      if (regrspval.status == 'success') {
+        log('Route  data fetch success');
+        final routeList = regrspval.routeList;
+        routeDetailslist = routeList;
+        return routeDetailslist;
+      } else if (regrspval.status == 'Failed') {
+        log('Route data fetch failed');
+        final routeList = regrspval.routeList;
+        routeDetailslist = routeList;
+        return routeDetailslist;
+      }
+    } else {
+      log('Route data fetch exception');
+      routeDetailslist = routeDetailslist;
+      return routeDetailslist;
+    }
+    return routeDetailslist;
+  }
 }
