@@ -1,7 +1,9 @@
 import 'package:pompomtracker/core/hook/hook.dart';
 
 class ScreenBusMater extends StatefulWidget {
-  const ScreenBusMater({super.key});
+  final String? regNo;
+  final int flag;
+  const ScreenBusMater({super.key, this.regNo, required this.flag});
 
   @override
   State<ScreenBusMater> createState() => _ScreenBusMaterState();
@@ -18,10 +20,27 @@ class _ScreenBusMaterState extends State<ScreenBusMater> {
   final _dateToController = TextEditingController();
   String? selectedBusType;
   List<String> busTypeList = [];
+
   @override
   void initState() {
     super.initState();
     fetchBusList();
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      if (widget.flag == 1 && widget.regNo != null) {
+        setState(() async {
+          final buslistDet = await BusListFunctions.instance
+              .fetchBusEditDetails(widget.regNo!);
+          _nameControler.text = buslistDet?[0].busName ?? "";
+          _shortnameControler.text = buslistDet?[0].shortName ?? "";
+          _registartionNoControler.text = buslistDet?[0].registrationNo ?? "";
+          _permitNoController.text = buslistDet?[0].permitNo ?? "";
+          _dateValidController.text = buslistDet?[0].validFrom ?? "";
+          _dateToController.text = buslistDet?[0].validTo ?? "";
+          selectedBusType = buslistDet?[0].busType ?? "";
+          // print(selectedBusType);
+        });
+      }
+    });
   }
 
   void fetchBusList() async {
@@ -34,6 +53,26 @@ class _ScreenBusMaterState extends State<ScreenBusMater> {
       busTypeList = busType.busList!.map((bus) => bus.typeId ?? "").toList();
     });
   }
+
+  // void fetchBusEditDetails(String regNo) async {
+  //   BusEditReq busEditReq = BusEditReq(regNo: regNo);
+  //   final getEditDet = await Busdata().fetchBusEditDetails(busEditReq);
+  //   if (getEditDet != null) {
+  //     final resultJson = jsonDecode(getEditDet.toString());
+  //     final Details = BusEditResp.fromJson(resultJson as Map<String, dynamic>);
+  //     final buslist_det = Details.busDetails;
+
+  //     setState(() {
+  //       _nameControler.text = buslist_det?[0].busName ?? "";
+  //       _shortnameControler.text = buslist_det?[0].shortName ?? "";
+  //       _registartionNoControler.text = buslist_det?[0].registrationNo ?? "";
+  //       _permitNoController.text = buslist_det?[0].permitNo ?? "";
+  //       _dateValidController.text = buslist_det?[0].validFrom ?? "";
+  //       _dateToController.text = buslist_det?[0].validTo ?? "";
+  //       selectedBusType = buslist_det?[0].busType ?? "";
+  //     });
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -141,6 +180,7 @@ class _ScreenBusMaterState extends State<ScreenBusMater> {
                                       return null;
                                     }
                                   },
+                                  enabled: widget.flag == 0,
                                 ),
                               ),
                               const SizedBox(
@@ -163,6 +203,7 @@ class _ScreenBusMaterState extends State<ScreenBusMater> {
                                       return null;
                                     }
                                   },
+                                  enabled: widget.flag == 0,
                                 ),
                               ),
                               const SizedBox(
@@ -291,7 +332,8 @@ class _ScreenBusMaterState extends State<ScreenBusMater> {
                                     onPressed: () {
                                       busMasterSave();
                                     },
-                                    child: Text('SAVE',
+                                    child: Text(
+                                        widget.flag == 0 ? 'SAVE' : 'UPDATE',
                                         style: Theme.of(context)
                                             .textTheme
                                             .titleMedium),
@@ -351,7 +393,7 @@ class _ScreenBusMaterState extends State<ScreenBusMater> {
     final selectedBus = selectedBusType;
     final value = await SharedPrefManager.instance.getSharedData();
     // print(value);
-
+    dynamic busMasterResp;
     final busMasterReq = BusMasterReq.req(
         busName: name,
         shName: shortName,
@@ -362,7 +404,14 @@ class _ScreenBusMaterState extends State<ScreenBusMater> {
         vto: toDate,
         userId: value!.userId,
         active: '1');
-    final busMasterResp = await Busdata().busMasterSave(busMasterReq);
+
+    if (widget.flag == 0) {
+      busMasterResp = await Busdata().busMasterSave(busMasterReq);
+    } else {
+      //print('pdate');
+      busMasterResp = await Busdata().updateBus(busMasterReq);
+    }
+
     final resultAsjson = jsonDecode(busMasterResp.toString());
     final busResponseValue =
         BusMasterResp.fromJson(resultAsjson as Map<String, dynamic>);
@@ -374,7 +423,8 @@ class _ScreenBusMaterState extends State<ScreenBusMater> {
     } else if (busResponseValue.status == 'success') {
       // print('sucess');
       Fluttertoast.showToast(
-          msg: "Bus details saved successfully",
+          msg:
+              "Bus details ${widget.flag == 0 ? 'saved' : 'updated'} successfully",
           toastLength: Toast.LENGTH_SHORT,
           gravity: ToastGravity.CENTER,
           timeInSecForIosWeb: 1,

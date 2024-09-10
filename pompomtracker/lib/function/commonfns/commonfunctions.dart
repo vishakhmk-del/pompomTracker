@@ -1,7 +1,6 @@
 import 'dart:developer';
 import 'package:intl/intl.dart';
 import 'package:pompomtracker/core/hook/hook.dart';
-import 'package:pompomtracker/model/getRoute/ger_route_resp/route_list.dart';
 
 abstract class Commonfn {
   Future wklycolctfn();

@@ -1,5 +1,3 @@
-
-
 import 'package:pompomtracker/core/hook/hook.dart';
 
 class ScreenBusRouteList extends StatefulWidget {
@@ -12,6 +10,6 @@ class ScreenBusRouteList extends StatefulWidget {
 class _ScreenBusRouteListState extends State<ScreenBusRouteList> {
   @override
   Widget build(BuildContext context) {
-    return Center(child:Text('Bus Route List'));
+    return Center(child: Text('Bus Route List'));
   }
 }

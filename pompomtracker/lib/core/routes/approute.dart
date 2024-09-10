@@ -15,13 +15,13 @@ class Approutes {
     curve: Curves.easeInOutBack,
     duration: const Duration(microseconds: 500),
   );
-  PageTransition busmasterscreen = PageTransition(
-    child: const ScreenBusMater(),
-    type: PageTransitionType.fade,
-    alignment: Alignment.center,
-    curve: Curves.easeInOutBack,
-    duration: const Duration(microseconds: 500),
-  );
+  // PageTransition busmasterscreen = PageTransition(
+  //   child: const ScreenBusMater(),
+  //   type: PageTransitionType.fade,
+  //   alignment: Alignment.center,
+  //   curve: Curves.easeInOutBack,
+  //   duration: const Duration(microseconds: 500),
+  // );
   PageTransition routemasterscreen = PageTransition(
     child: const ScreenRoutemaster(),
     type: PageTransitionType.fade,

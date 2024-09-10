@@ -1,4 +1,8 @@
 import 'package:pompomtracker/core/hook/hook.dart';
+import 'package:pompomtracker/model/bus_master/bus_edit/bus_edit_req/bus_edit_req.dart';
+import 'package:pompomtracker/model/bus_master/bus_list_req/bus_list_req.dart';
+import 'package:pompomtracker/model/conductor_master/conductor_list/conductor_ist_resp/conductor_ist_resp.dart';
+import 'package:pompomtracker/model/conductor_master/conductor_list/conductor_list_req/conductor_list_req.dart';
 import 'package:pompomtracker/model/conductor_master/conductor_req/conductor_req.dart';
 
 abstract class Apicalls {
@@ -17,6 +21,10 @@ abstract class Apicalls {
   Future<Response<dynamic>?> stopMasterSave(StopMasterReq value);
   Future<Response<dynamic>?> busRouteLinkMasterSave(BusRouteLinkReq value);
   Future<Response<dynamic>?> conductorMasterSave(ConductorReq value);
+  Future<Response<dynamic>?> fetchBusList(BusListReq value);
+  Future<Response<dynamic>?> fetchBusEditDetails(BusEditReq value);
+  Future<Response<dynamic>?> updateBus(BusMasterReq value);
+  Future<Response<dynamic>?> fetchConductorList(ConductorListReq value);
 }
 
 class Busdata extends Apicalls {
@@ -191,6 +199,58 @@ class Busdata extends Apicalls {
     try {
       final result = await dio.post(
         url.conductorSave,
+        data: value.toJson(),
+      );
+      return result;
+    } on DioException catch (ex) {
+      return ex.response;
+    }
+  }
+
+  @override
+  Future<Response?> fetchBusList(BusListReq value) async {
+    try {
+      final result = await dio.post(
+        url.fetchBusList,
+        data: value.toJson(),
+      );
+      return result;
+    } on DioException catch (ex) {
+      return ex.response;
+    }
+  }
+
+  @override
+  Future<Response?> fetchBusEditDetails(BusEditReq value) async {
+    try {
+      final result = await dio.post(
+        url.fetchBusEditList,
+        data: value.toJson(),
+      );
+      return result;
+    } on DioException catch (ex) {
+      return ex.response;
+    }
+  }
+
+  @override
+  Future<Response?> updateBus(BusMasterReq value) async {
+    try {
+      final result = await dio.post(
+        url.updateBus,
+        data: value.toJson(),
+      );
+      return result;
+    } on DioException catch (ex) {
+      return ex.response;
+    }
+  }
+
+  @override
+  Future<Response?> fetchConductorList(ConductorListReq value) async {
+    try {
+      final result = await dio.post(
+        url.fetchCondutorList,
         data: value.toJson(),
       );
       return result;

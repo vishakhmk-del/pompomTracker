@@ -1,5 +1,3 @@
-
-
 import 'package:pompomtracker/core/hook/hook.dart';
 
 class Navbar extends StatefulWidget {
@@ -11,7 +9,6 @@ class Navbar extends StatefulWidget {
 }
 
 class _NavbarState extends State<Navbar> {
-  
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   String username = '';
   String brname = '';
@@ -21,13 +18,10 @@ class _NavbarState extends State<Navbar> {
   void initState() {
     //checkUserLoggedIn();
     super.initState();
-
-    
-    
   }
   // void buildversion() async {
   //   final value = await Sharedata.instance.getdeviceinfo();
-  
+
   //  final devversion=value.appversion;
   //  final devicever=devversion!.split('+');
   //  final versionval=devicever[0];
@@ -38,44 +32,36 @@ class _NavbarState extends State<Navbar> {
   // }
 
   Future<bool?> popscreen(BuildContext context) async {
-    
-      Navigator.of(context).pushReplacement(
+    Navigator.of(context).pushReplacement(
       MaterialPageRoute(
-        builder: (context) =>const Screenhome(),
+        builder: (context) => const Screenhome(),
       ),
     );
-    
-    
+
     return true;
-    
-    
-    }
-    
-    
-  
+  }
 
   @override
   Widget build(BuildContext context) {
-   
     return PopScope(
-          canPop: false,
-          onPopInvoked: (bool didPop) async {
-            if (!didPop){
-              if (didPop) return;
-               await popscreen(context);
-            
-            } 
-          },
+      canPop: false,
+      onPopInvoked: (bool didPop) async {
+        if (!didPop) {
+          if (didPop) return;
+          await popscreen(context);
+        }
+      },
       child: Drawer(
         key: _scaffoldKey,
         child: ListView(
           padding: EdgeInsets.zero,
           children: [
             UserAccountsDrawerHeader(
-              accountName: Text( 'PomPomTracker',style:Theme.of(context).textTheme.titleLarge,
-               
+              accountName: Text(
+                'PomPomTracker',
+                style: Theme.of(context).textTheme.titleLarge,
               ),
-              accountEmail:  Text('Version:$version'),
+              accountEmail: Text('Version:$version'),
               currentAccountPicture: CircleAvatar(
                 child: ClipOval(
                   child: Image.asset(
@@ -86,26 +72,26 @@ class _NavbarState extends State<Navbar> {
                   ),
                 ),
               ),
-              decoration:  BoxDecoration(
-                gradient: LinearGradient(
-                            begin: Alignment.topLeft,
-                            end: Alignment.bottomRight,
-                            colors: [
-                              Theme.of(context).colorScheme.onPrimaryFixed,
-                              Theme.of(context).colorScheme.onPrimary
-                            ])
-              ),
+              decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                      colors: [
+                    Theme.of(context).colorScheme.onPrimaryFixed,
+                    Theme.of(context).colorScheme.onPrimary
+                  ])),
             ),
             ListTile(
                 leading: const Icon(
                   Icons.bus_alert,
                   color: Color(0xff13bc91),
                 ),
-                title: Text("Bus List",style: Theme.of(context)
-                                            .textTheme
-                                            .titleMedium,),
+                title: Text(
+                  "Bus List",
+                  style: Theme.of(context).textTheme.titleMedium,
+                ),
                 onTap: () {
-                   Navigator.push(context, Approutes().busListScreen);
+                  Navigator.push(context, Approutes().busListScreen);
                 }),
             ListTile(
                 leading: const Icon(
@@ -113,54 +99,48 @@ class _NavbarState extends State<Navbar> {
                   //color: Appcolors.labelclr,
                 ),
                 title: Text(
-                  "Conductor List",style: Theme.of(context)
-                                            .textTheme
-                                            .titleMedium,
+                  "Conductor List",
+                  style: Theme.of(context).textTheme.titleMedium,
                 ),
                 onTap: () {
-                 Navigator.push(context, Approutes().conductorListScreen);
+                  Navigator.push(context, Approutes().conductorListScreen);
                 }),
-                const Divider(),
+            const Divider(),
             ListTile(
                 leading: const Icon(
                   Icons.trip_origin,
                   //color: Appcolors.labelclr,
                 ),
-                title: Text("Trip List",style: Theme.of(context)
-                                            .textTheme
-                                            .titleMedium,),
-               
+                title: Text(
+                  "Trip List",
+                  style: Theme.of(context).textTheme.titleMedium,
+                ),
                 onTap: () {
-                  
                   Navigator.push(context, Approutes().tripListScreen);
                 }),
-            
             ListTile(
                 leading: const Icon(
                   Icons.route,
                   //color: Appcolors.labelclr,
                 ),
                 title: Text(
-                  "Bus-Route List",style: Theme.of(context)
-                                            .textTheme
-                                            .titleMedium,
+                  "Bus-Route List",
+                  style: Theme.of(context).textTheme.titleMedium,
                 ),
                 onTap: () {
                   Navigator.push(context, Approutes().busRouteListScreen);
                 }),
-            
-                ListTile(
+            ListTile(
                 leading: const Icon(
                   Icons.stop_circle_outlined,
                   //color: Appcolors.labelclr,
                 ),
                 title: Text(
-                  "Stop List",style: Theme.of(context)
-                                            .textTheme
-                                            .titleMedium,
+                  "Stop List",
+                  style: Theme.of(context).textTheme.titleMedium,
                 ),
                 onTap: () {
-                 Navigator.push(context, Approutes().stopListScreen);
+                  Navigator.push(context, Approutes().stopListScreen);
                 }),
           ],
         ),
@@ -172,5 +152,4 @@ class _NavbarState extends State<Navbar> {
   void dispose() {
     super.dispose();
   }
-
 }
