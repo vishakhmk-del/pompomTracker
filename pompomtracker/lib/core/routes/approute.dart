@@ -1,14 +1,4 @@
 import 'package:pompomtracker/core/hook/hook.dart';
-import 'package:pompomtracker/screens/Bus/BusList.dart';
-import 'package:pompomtracker/screens/Bus/ScreenBusMaster.dart';
-import 'package:pompomtracker/screens/Collection/ScreenCollection.dart';
-import 'package:pompomtracker/screens/Conductor/ConductorList.dart';
-import 'package:pompomtracker/screens/route_mas/BusRouteList.dart';
-import 'package:pompomtracker/screens/route_mas/ScreenRouteMaster.dart';
-import 'package:pompomtracker/screens/stop/ScreenStopMaster.dart';
-import 'package:pompomtracker/screens/stop/StopList.dart';
-import 'package:pompomtracker/screens/trip/ScreenTrip.dart';
-import 'package:pompomtracker/screens/trip/TripList.dart';
 
 class Approutes {
   PageTransition loginscreen = PageTransition(
@@ -63,8 +53,24 @@ class Approutes {
     duration: const Duration(microseconds: 500),
   );
 
+  PageTransition linkbusroutescreen = PageTransition(
+    child: const ScreenLinkBusRoute(),
+    type: PageTransitionType.fade,
+    alignment: Alignment.center,
+    curve: Curves.easeInOutBack,
+    duration: const Duration(microseconds: 500),
+  );
+
   PageTransition busListScreen = PageTransition(
     child: const ScreenBusList(),
+    type: PageTransitionType.fade,
+    alignment: Alignment.center,
+    curve: Curves.easeInOutBack,
+    duration: const Duration(microseconds: 500),
+  );
+
+  PageTransition conductoscreen = PageTransition(
+    child: const ScreenConductor(),
     type: PageTransitionType.fade,
     alignment: Alignment.center,
     curve: Curves.easeInOutBack,

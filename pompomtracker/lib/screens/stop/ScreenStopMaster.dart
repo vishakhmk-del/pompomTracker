@@ -14,29 +14,77 @@ class _ScreenStopMasterState extends State<ScreenStopMaster> {
   final _stopNameController = TextEditingController();
   final _kiloMeterController = TextEditingController();
   final _arrivingController = TextEditingController();
+  int? isstage;
   TimeOfDay _time = const TimeOfDay(hour: 7, minute: 15);
   bool isChecked = true;
+  List<Map<String, Object>> routelist = [];
+  String? selectedRouteList;
+  int? selectedRouteId;
+  List<RouteList>? routeDetailslist = [];
+
+  Future<void> _selectTime(
+      BuildContext context, TextEditingController controller) async {
+    final DateFormat timeFormat = DateFormat('HH:mm');
+    final TimeOfDay? newTime = await showTimePicker(
+      context: context,
+      initialTime: _time,
+    );
+    if (newTime != null) {
+      setState(() {
+        _time = newTime;
+        final now = DateTime.now();
+        final DateTime formattedTime = DateTime(
+          now.year,
+          now.month,
+          now.day,
+          newTime.hour,
+          newTime.minute,
+        );
+        controller.text = timeFormat.format(formattedTime);
+      });
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      routeDetailslist = await Wklycollectfn.instance.fetchRouteList();
+      setState(() {
+        routelist = routeDetailslist!.map((bus) {
+          String routeDisplay = bus.routeName ?? "";
+          String viaDisplay =
+              bus.via != null && bus.via!.isNotEmpty ? " via - ${bus.via}" : "";
+          return {
+            'routeId': bus.routeId!, // routeId as int
+            'display': routeDisplay + viaDisplay, // Display label
+          };
+        }).toList();
+      });
+    });
+    //fetchBusregistraionList();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        key: _scafoldkey,
         appBar: AppBar(
           leading: IconButton(
-            icon: const Icon(Icons.arrow_back),
-            onPressed: () {
-              Navigator.pushReplacement(
-                  _scafoldkey.currentContext!, Approutes().homescreen);
-            },
-          ),
+              onPressed: () {
+                Navigator.pushReplacement(
+                    _scafoldkey.currentContext!, Approutes().homescreen);
+              },
+              icon: const Icon(Icons.arrow_back)),
           title: Text(
-            'Stop Master',
+            'Add Stop',
             style: TextStyle(color: Theme.of(context).colorScheme.onSecondary),
           ),
         ),
         body: Center(
           child: SingleChildScrollView(
             child: Container(
-              height: MediaQuery.of(context).size.height * .6,
+              height: MediaQuery.of(context).size.height * .7,
               margin: const EdgeInsets.all(15),
               decoration: BoxDecoration(
                   border: Border.all(
@@ -54,6 +102,64 @@ class _ScreenStopMasterState extends State<ScreenStopMaster> {
                           backgroundImage:
                               AssetImage('assets/bus/busmaster.png'),
                           radius: 50,
+                        ),
+
+                        const SizedBox(height: 10),
+                        SizedBox(
+                          width: MediaQuery.of(context).size.width,
+                          child: DropdownButtonFormField(
+                            items: routelist.map((busMap) {
+                              return DropdownMenuItem<String>(
+                                value: busMap['routeId'] as String,
+                                // Use routeId as the value
+                                child: ConstrainedBox(
+                                  constraints:
+                                      const BoxConstraints(maxWidth: 200),
+                                  child: Text(
+                                    busMap['display']
+                                        as String, // Display the route name and via
+                                    overflow: TextOverflow.ellipsis,
+                                    style: TextStyle(
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .onSecondary,
+                                    ),
+                                  ),
+                                ),
+                              );
+                            }).toList(),
+                            onChanged: (newValue) {
+                              setState(() {
+                                selectedRouteList = newValue;
+                                selectedRouteId = int.parse(newValue!);
+                                // Store the selected routeId
+                              });
+                            },
+                            value: selectedRouteList,
+                            // Use the selected routeId
+                            style: TextStyle(
+                              color: Theme.of(context).colorScheme.onPrimary,
+                            ),
+                            icon: Theme(
+                              data: Theme.of(context),
+                              child: const Icon(
+                                Icons.arrow_drop_down,
+                              ),
+                            ),
+                            decoration: InputDecoration(
+                              labelText: 'Select Route',
+                              labelStyle: Theme.of(context).textTheme.bodySmall,
+                            ),
+                            dropdownColor:
+                                Theme.of(context).colorScheme.tertiary,
+                            validator: (value) {
+                              if (value == null) {
+                                return 'Select Route';
+                              } else {
+                                return null;
+                              }
+                            },
+                          ),
                         ),
                         const SizedBox(height: 10),
                         TextFormField(
@@ -92,16 +198,25 @@ class _ScreenStopMasterState extends State<ScreenStopMaster> {
                               },
                             ),
                           ),
-                          Checkbox(
-                            checkColor: Colors.white,
-                            //fillColor: MaterialStateProperty.resolveWith(getColor),
-                            value: isChecked,
-                            onChanged: (bool? value) {
-                              setState(() {
-                                isChecked = value!;
-                              });
-                            },
+                          Theme(
+                            data: Theme.of(context),
+                            child: Checkbox(
+                              checkColor: Colors.white,
+                              //fillColor: MaterialStateProperty.resolveWith(getColor),
+                              value: isChecked,
+                              onChanged: (bool? value) {
+                                setState(() {
+                                  isChecked = value!;
+                                });
+                              },
+                            ),
                           ),
+                          Expanded(
+                              child: Text(
+                            "Is Stage",
+                            textAlign: TextAlign.left,
+                            style: Theme.of(context).textTheme.labelLarge,
+                          ))
                         ]),
                         // const SizedBox(height: 20),
 
@@ -113,7 +228,7 @@ class _ScreenStopMasterState extends State<ScreenStopMaster> {
                               labelText: 'Arriving Time',
                               labelStyle: Theme.of(context).textTheme.bodySmall,
                               suffixIcon: Theme(
-                                  data: MyTheme.appIconTheme,
+                                  data: Theme.of(context),
                                   child: const Icon(Icons.timer))),
                           onTap: () =>
                               _selectTime(context, _arrivingController),
@@ -143,7 +258,7 @@ class _ScreenStopMasterState extends State<ScreenStopMaster> {
                             child: ElevatedButton(
                               onPressed: () async {
                                 if (_formKey.currentState!.validate()) {
-                                  // stopMasterSave();
+                                  stopMasterSaveFun();
                                 }
                               },
                               child: Text('SAVE',
@@ -175,26 +290,74 @@ class _ScreenStopMasterState extends State<ScreenStopMaster> {
         ));
   }
 
-  Future<void> _selectTime(
-      BuildContext context, TextEditingController controller) async {
-    final DateFormat timeFormat = DateFormat('HH:mm');
-    final TimeOfDay? newTime = await showTimePicker(
-      context: context,
-      initialTime: _time,
-    );
-    if (newTime != null) {
-      setState(() {
-        _time = newTime;
-        final now = DateTime.now();
-        final DateTime formattedTime = DateTime(
-          now.year,
-          now.month,
-          now.day,
-          newTime.hour,
-          newTime.minute,
-        );
-        controller.text = timeFormat.format(formattedTime);
-      });
+  Future stopMasterSaveFun() async {
+    final loadingProvider = _scafoldkey.currentContext!.read<LoadingProvider>();
+    //False to true
+    loadingProvider.toggleLoading();
+
+    final stopName = _stopNameController.text;
+    final kiloMeter = _kiloMeterController.text;
+    final arriving = _arrivingController.text;
+    final routrId = selectedRouteId;
+
+    final value = await SharedPrefManager.instance.getSharedData();
+
+    if (isChecked == true) {
+      isstage = flag1;
+    } else {
+      isstage = flag0;
+    }
+
+    final stopMasReq = StopMasterReq(
+        tripId: routrId,
+        kilometer: kiloMeter,
+        isStage: isstage,
+        stop: stopName,
+        userId: value!.userId,
+        arrivingTime: arriving);
+    // print(stopMasReq);
+    final stopMasterResp = await Busdata().stopMasterSave(stopMasReq);
+    final reultAsJson = jsonDecode(stopMasterResp.toString());
+    final resValue =
+        StopMasterResp.fromJson(reultAsJson as Map<String, dynamic>);
+    //True to false
+    loadingProvider.toggleLoading();
+
+    if (resValue.status == 'success') {
+      Fluttertoast.showToast(
+          msg: "Stop details saved successfully",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.CENTER,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Colors.white,
+          textColor: Colors.black,
+          fontSize: 15.0);
+    } else if (resValue.status == 'Failed') {
+      showerror(_scafoldkey.currentContext, 2);
+    } else {
+      showerror(_scafoldkey.currentContext, 3);
+    }
+  }
+
+  showerror(BuildContext? buildContext, stat) {
+    if (stat == 2) {
+      Fluttertoast.showToast(
+          msg: "Stop details  not saved",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.CENTER,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Colors.white,
+          textColor: Colors.black,
+          fontSize: 15.0);
+    } else {
+      Fluttertoast.showToast(
+          msg: "Something went wrong",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.CENTER,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Colors.white,
+          textColor: Colors.black,
+          fontSize: 15.0);
     }
   }
 }

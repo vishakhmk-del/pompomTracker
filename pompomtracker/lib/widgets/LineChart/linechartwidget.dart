@@ -26,13 +26,14 @@ class Linechartwidget extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Container(
-                          width:200,
+                          width: 200,
                           height: 200,
                           decoration: BoxDecoration(
                               color: Theme.of(context).colorScheme.tertiary,
                               shape: BoxShape.circle,
                               image: const DecorationImage(
-                                image: AssetImage('assets/home/no_data_found.png'),
+                                image:
+                                    AssetImage('assets/home/no_data_found.png'),
                                 fit: BoxFit.scaleDown,
                               )),
                         ),

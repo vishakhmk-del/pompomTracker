@@ -8,7 +8,7 @@ part of 'trip_master_req.dart';
 
 TripMasterReq _$TripMasterReqFromJson(Map<String, dynamic> json) =>
     TripMasterReq(
-      routeId: json['route_id'] as int?,
+      routeId: (json['route_id'] as num?)?.toInt(),
       regNo: json['reg_no'] as String?,
       from: json['from'] as String?,
       to: json['to'] as String?,

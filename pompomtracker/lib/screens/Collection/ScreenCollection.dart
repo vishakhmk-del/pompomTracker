@@ -1040,7 +1040,7 @@ class _ScreenCollectionState extends State<ScreenCollection> {
             ? Provider.of<CheckProvider>(context, listen: false)
                     .isAccepted ==false
             ?cells = [
-                task.payDate,
+              task.payDate,
                 task.regNo,
                 task.expensehead,
                 task.expense,

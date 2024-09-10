@@ -1,4 +1,5 @@
 import 'package:pompomtracker/core/hook/hook.dart';
+import 'package:pompomtracker/model/conductor_master/conductor_req/conductor_req.dart';
 
 abstract class Apicalls {
   Future<Response<dynamic>?> login(Loginreq value);
@@ -14,8 +15,14 @@ abstract class Apicalls {
   Future<Response<dynamic>?> getDatewiseStmnt(Datewisereq value);
   Future<Response<dynamic>?> getBuswiseStmnt(Datewisereq value);
 
+
   Future<Response<dynamic>?> getCashStmnt(Datewisereq value);
   Future<Response<dynamic>?> getExpenseStmnt(Datewisereq value);
+
+  Future<Response<dynamic>?> stopMasterSave(StopMasterReq value);
+  Future<Response<dynamic>?> busRouteLinkMasterSave(BusRouteLinkReq value);
+  Future<Response<dynamic>?> conductorMasterSave(ConductorReq value);
+
 }
 
 class Busdata extends Apicalls {
@@ -158,6 +165,7 @@ class Busdata extends Apicalls {
       return ex.response;
     }
   }
+
   
   @override
   Future<Response?> getCashStmnt(Datewisereq value)async {
@@ -171,12 +179,55 @@ class Busdata extends Apicalls {
       return ex.response;
     }
   }
+
+
+  @override
+  Future<Response?> stopMasterSave(StopMasterReq value) async {
+    try {
+      final result = await dio.post(
+        url.stopSave,
+
+        data: value.toJson(),
+      );
+      return result;
+    } on DioException catch (ex) {
+      return ex.response;
+    }
+  }
+
   
   @override
   Future<Response?> getExpenseStmnt(Datewisereq value) async{
     try {
       final result = await dio.post(
         url.getExpenseUrl,
+        data: value.toJson(),
+      );
+      return result;
+    } on DioException catch (ex) {
+      return ex.response;
+    }
+  }
+
+  @override
+  Future<Response?> busRouteLinkMasterSave(BusRouteLinkReq value) async {
+    try {
+      final result = await dio.post(
+        url.linkBusRouteSave,
+        data: value.toJson(),
+      );
+      return result;
+    } on DioException catch (ex) {
+      return ex.response;
+    }
+  }
+
+  @override
+  Future<Response?> conductorMasterSave(ConductorReq value) async {
+    try {
+      final result = await dio.post(
+        url.conductorSave,
+
         data: value.toJson(),
       );
       return result;

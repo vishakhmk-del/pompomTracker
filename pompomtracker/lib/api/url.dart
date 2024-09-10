@@ -9,11 +9,15 @@ class Url {
   String busSave = '/Master_C/bus_save';
   String routeSave = '/Master_C/route_save';
   String getBusList = '/Master_C/get_buslist';
-  String getRoute = '/Master_C/get_route';
+  String getRoute = '/Master_C/get_route_name';
   String tripSave = '/Owner_C/save_trip';
   String weeklyUrl = '/Owner_C/rep_datewise';
   String dateWiseUrl = '/Master_C/get_datewise';
   String busWiseUrl = '/Master_C/get_buswise';
   String getCashstmntUrl='/Master_C/get_cash_statement';
   String getExpenseUrl='/Master_C/expense_report';
+  String stopSave = '/Owner_C/save_stop';
+  String linkBusRouteSave = '/Master_C/bus_route_link';
+  String conductorSave = '/Master_C/conductor_save';
+
 }
