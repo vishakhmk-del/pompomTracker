@@ -13,6 +13,7 @@ Datewisereq _$DatewisereqFromJson(Map<String, dynamic> json) => Datewisereq(
       todate: json['todate'] as String?,
       regNo: json['reg_no'] as String?,
       summary: json['summary'] as bool?,
+      mode: json['mode'] as String?
     );
 
 Map<String, dynamic> _$DatewisereqToJson(Datewisereq instance) =>
@@ -22,5 +23,6 @@ Map<String, dynamic> _$DatewisereqToJson(Datewisereq instance) =>
       'fromdate': instance.fromdate,
       'todate': instance.todate,
       'reg_no': instance.regNo,
-      'summary': instance.summary,
+      'summary':instance.summary,
+      'mode':instance.mode
     };

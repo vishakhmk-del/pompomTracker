@@ -14,9 +14,12 @@ class Url {
   String weeklyUrl = '/Owner_C/rep_datewise';
   String dateWiseUrl = '/Master_C/get_datewise';
   String busWiseUrl = '/Master_C/get_buswise';
+  String getCashstmntUrl = '/Master_C/get_cash_statement';
+  String getExpenseUrl = '/Master_C/expense_report';
   String stopSave = '/Owner_C/save_stop';
   String linkBusRouteSave = '/Master_C/bus_route_link';
   String conductorSave = '/Master_C/conductor_save';
+
   String fetchBusList = '/Owner_C/bus_view';
   String fetchBusEditList = '/Owner_C/bus_details';
   String updateBus = '/Owner_C/update_bus';
