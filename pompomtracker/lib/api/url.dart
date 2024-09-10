@@ -14,4 +14,6 @@ class Url {
   String weeklyUrl = '/Owner_C/rep_datewise';
   String dateWiseUrl = '/Master_C/get_datewise';
   String busWiseUrl = '/Master_C/get_buswise';
+  String getCashstmntUrl='/Master_C/get_cash_statement';
+  String getExpenseUrl='/Master_C/expense_report';
 }

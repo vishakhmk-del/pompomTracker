@@ -39,12 +39,17 @@ class StatementFunctions {
         fromdate: fmdt,
         todate: todt,
         regNo: val.type,
-        summary: val.summary);
+        summary: val.summary,
+        mode: val.mode);
 
     if (selectedValue == dtWise) {
       dtwiseresp = await Busdata().getDatewiseStmnt(dtwiserqst);
     } else if (selectedValue == bsWise) {
       dtwiseresp = await Busdata().getBuswiseStmnt(dtwiserqst);
+    }else if(selectedValue==exStatmnt){
+      dtwiseresp = await Busdata().getExpenseStmnt(dtwiserqst);
+    }else if(selectedValue==chStatmnt){
+      dtwiseresp = await Busdata().getCashStmnt(dtwiserqst);
     }
 
     if (dtwiseresp == null) {

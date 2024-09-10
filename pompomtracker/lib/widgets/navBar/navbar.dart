@@ -103,7 +103,7 @@ class _NavbarState extends State<Navbar> {
                 ),
                 title: Text("Bus List",style: Theme.of(context)
                                             .textTheme
-                                            .titleMedium,),
+                                            .bodyLarge,),
                 onTap: () {
                    Navigator.push(context, Approutes().busListScreen);
                 }),
@@ -115,7 +115,7 @@ class _NavbarState extends State<Navbar> {
                 title: Text(
                   "Conductor List",style: Theme.of(context)
                                             .textTheme
-                                            .titleMedium,
+                                            .bodyLarge,
                 ),
                 onTap: () {
                  Navigator.push(context, Approutes().conductorListScreen);
@@ -128,7 +128,7 @@ class _NavbarState extends State<Navbar> {
                 ),
                 title: Text("Trip List",style: Theme.of(context)
                                             .textTheme
-                                            .titleMedium,),
+                                            .bodyLarge,),
                
                 onTap: () {
                   
@@ -138,12 +138,12 @@ class _NavbarState extends State<Navbar> {
             ListTile(
                 leading: const Icon(
                   Icons.route,
-                  //color: Appcolors.labelclr,
+                  
                 ),
                 title: Text(
                   "Bus-Route List",style: Theme.of(context)
                                             .textTheme
-                                            .titleMedium,
+                                            .bodyLarge,
                 ),
                 onTap: () {
                   Navigator.push(context, Approutes().busRouteListScreen);
@@ -157,7 +157,7 @@ class _NavbarState extends State<Navbar> {
                 title: Text(
                   "Stop List",style: Theme.of(context)
                                             .textTheme
-                                            .titleMedium,
+                                            .bodyLarge,
                 ),
                 onTap: () {
                  Navigator.push(context, Approutes().stopListScreen);

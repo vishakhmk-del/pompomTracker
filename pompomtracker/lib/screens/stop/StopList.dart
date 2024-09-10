@@ -10,6 +10,6 @@ class ScreenStopList extends StatefulWidget {
 class _ScreenStopListState extends State<ScreenStopList> {
   @override
   Widget build(BuildContext context) {
-    return Center(child:Text('Stop List'));
+    return Scaffold(body: Center(child:Text('Stop List')));
   }
 }

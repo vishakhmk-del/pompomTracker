@@ -12,6 +12,6 @@ class ScreenBusList extends StatefulWidget {
 class _ScreenBusListState extends State<ScreenBusList> {
   @override
   Widget build(BuildContext context) {
-    return Center(child:Text('Buslist'));
+    return Scaffold(body: Center(child:Text('Buslist')));
   }
 }

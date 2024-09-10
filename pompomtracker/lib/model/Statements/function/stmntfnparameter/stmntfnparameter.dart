@@ -8,8 +8,9 @@ class Stmntfnparameter {
   String? fromdate;
   String? todate;
   bool? summary;
+  String? mode;
 
-  Stmntfnparameter({this.type, this.fromdate, this.todate,this.summary});
+  Stmntfnparameter({this.type, this.fromdate, this.todate,this.summary,this.mode});
 
   factory Stmntfnparameter.fromJson(Map<String, dynamic> json) {
     return _$StmntfnparameterFromJson(json);

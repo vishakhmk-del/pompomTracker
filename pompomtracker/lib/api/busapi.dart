@@ -13,6 +13,9 @@ abstract class Apicalls {
 
   Future<Response<dynamic>?> getDatewiseStmnt(Datewisereq value);
   Future<Response<dynamic>?> getBuswiseStmnt(Datewisereq value);
+
+  Future<Response<dynamic>?> getCashStmnt(Datewisereq value);
+  Future<Response<dynamic>?> getExpenseStmnt(Datewisereq value);
 }
 
 class Busdata extends Apicalls {
@@ -148,6 +151,32 @@ class Busdata extends Apicalls {
     try {
       final result = await dio.post(
         url.busWiseUrl,
+        data: value.toJson(),
+      );
+      return result;
+    } on DioException catch (ex) {
+      return ex.response;
+    }
+  }
+  
+  @override
+  Future<Response?> getCashStmnt(Datewisereq value)async {
+    try {
+      final result = await dio.post(
+        url.getCashstmntUrl,
+        data: value.toJson(),
+      );
+      return result;
+    } on DioException catch (ex) {
+      return ex.response;
+    }
+  }
+  
+  @override
+  Future<Response?> getExpenseStmnt(Datewisereq value) async{
+    try {
+      final result = await dio.post(
+        url.getExpenseUrl,
         data: value.toJson(),
       );
       return result;

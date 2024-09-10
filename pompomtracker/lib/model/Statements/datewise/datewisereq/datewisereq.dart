@@ -14,9 +14,11 @@ class Datewisereq {
   String? regNo;
   @JsonKey(name: 'summary')
   bool? summary;
+  @JsonKey(name: 'mode')
+  String? mode;
 
   Datewisereq(
-      {this.userId, this.userType, this.fromdate, this.todate, this.regNo,this.summary});
+      {this.userId, this.userType, this.fromdate, this.todate, this.regNo,this.summary,this.mode});
 
   Datewisereq.req(
       {required this.userId,
@@ -24,7 +26,8 @@ class Datewisereq {
       required this.fromdate,
       required this.todate,
       this.regNo,
-      this.summary
+      this.summary,
+      this.mode
       });
 
   factory Datewisereq.fromJson(Map<String, dynamic> json) {

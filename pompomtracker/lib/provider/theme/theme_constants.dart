@@ -169,6 +169,7 @@ class MyTheme {
         backgroundColor: Colors.transparent,
         shadowColor: Colors.transparent,
       )));
+      
   static ThemeData get appIconTheme => ThemeData(
           iconTheme: const IconThemeData(
         color: Colors.white,

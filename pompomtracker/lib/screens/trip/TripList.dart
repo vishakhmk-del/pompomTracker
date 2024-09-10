@@ -10,6 +10,6 @@ class ScreenTripList extends StatefulWidget {
 class _ScreenTripListState extends State<ScreenTripList> {
   @override
   Widget build(BuildContext context) {
-    return Center(child:Text('Trip List'));
+    return Scaffold(body: Center(child:Text('Trip List')));
   }
 }

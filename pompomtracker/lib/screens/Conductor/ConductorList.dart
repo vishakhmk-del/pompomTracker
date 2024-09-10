@@ -12,6 +12,6 @@ class ScreenConductorList extends StatefulWidget {
 class _ScreenConductorListState extends State<ScreenConductorList> {
   @override
   Widget build(BuildContext context) {
-    return Center(child:Text('Conductor List'));
+    return Scaffold(body: Center(child:Text('Conductor List')));
   }
 }
