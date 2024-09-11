@@ -103,7 +103,7 @@ export 'package:pompomtracker/model/Registration_List/registration_req/registrat
 
 export 'package:pompomtracker/model/Registration_List/registration_resp/registration_resp.dart';
 
-export 'package:pompomtracker/model/enum/statements/statementType.dart';
+export 'package:pompomtracker/model/common_models/enum/statements/statementType.dart';
 
 export 'package:pompomtracker/model/Trip_master/trip_master_req/trip_master_req.dart';
 export 'package:pompomtracker/model/Trip_master/trip_master_resp/trip_master_resp.dart';

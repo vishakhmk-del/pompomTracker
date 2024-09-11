@@ -1,12 +1,12 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'conductor_req.dart';
+part of 'list_req.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-ConductorReq _$ConductorReqFromJson(Map<String, dynamic> json) => ConductorReq(
+MasterListReq _$MasterListReqFromJson(Map<String, dynamic> json) => MasterListReq(
       cname: json['cname'] as String?,
       caddress: json['caddress'] as String?,
       mobNo: json['mob_no'] as String?,
@@ -16,9 +16,10 @@ ConductorReq _$ConductorReqFromJson(Map<String, dynamic> json) => ConductorReq(
       accNo: json['acc_no'] as String?,
       userId: json['user_id'] as String?,
       ownerId: json['owner_id'] as String?,
+      usertype: json['user_type'] as String?,
     );
 
-Map<String, dynamic> _$ConductorReqToJson(ConductorReq instance) =>
+Map<String, dynamic> _$MasterListReqToJson(MasterListReq instance) =>
     <String, dynamic>{
       'cname': instance.cname,
       'caddress': instance.caddress,
@@ -29,4 +30,5 @@ Map<String, dynamic> _$ConductorReqToJson(ConductorReq instance) =>
       'acc_no': instance.accNo,
       'user_id': instance.userId,
       'owner_id': instance.ownerId,
+      'user_type':instance.usertype
     };

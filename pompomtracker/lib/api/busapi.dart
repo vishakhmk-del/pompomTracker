@@ -3,7 +3,7 @@ import 'package:pompomtracker/model/bus_master/bus_edit/bus_edit_req/bus_edit_re
 import 'package:pompomtracker/model/bus_master/bus_list_req/bus_list_req.dart';
 import 'package:pompomtracker/model/conductor_master/conductor_list/conductor_ist_resp/conductor_ist_resp.dart';
 import 'package:pompomtracker/model/conductor_master/conductor_list/conductor_list_req/conductor_list_req.dart';
-import 'package:pompomtracker/model/conductor_master/conductor_req/conductor_req.dart';
+import 'package:pompomtracker/model/common_models/list_model_req/list_req.dart';
 
 abstract class Apicalls {
   Future<Response<dynamic>?> login(Loginreq value);
@@ -24,7 +24,7 @@ abstract class Apicalls {
 
   Future<Response<dynamic>?> stopMasterSave(StopMasterReq value);
   Future<Response<dynamic>?> busRouteLinkMasterSave(BusRouteLinkReq value);
-  Future<Response<dynamic>?> conductorMasterSave(ConductorReq value);
+  Future<Response<dynamic>?> conductorMasterSave(MasterListReq value);
 
   Future<Response<dynamic>?> fetchBusList(BusListReq value);
   Future<Response<dynamic>?> fetchBusEditDetails(BusEditReq value);
@@ -226,7 +226,7 @@ class Busdata extends Apicalls {
   }
 
   @override
-  Future<Response?> conductorMasterSave(ConductorReq value) async {
+  Future<Response?> conductorMasterSave(MasterListReq value) async {
     try {
       final result = await dio.post(
         url.conductorSave,

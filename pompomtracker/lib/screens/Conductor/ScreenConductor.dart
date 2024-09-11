@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pompomtracker/core/hook/hook.dart';
-import 'package:pompomtracker/model/conductor_master/conductor_req/conductor_req.dart';
+import 'package:pompomtracker/model/common_models/list_model_req/list_req.dart';
 import 'package:pompomtracker/model/conductor_master/conductor_resp/conductor_resp.dart';
 
 class ScreenConductor extends StatefulWidget {
@@ -357,7 +357,7 @@ class _ScreenconductorState extends State<ScreenConductor> {
     final emailId = _emailController.text;
     //print(routeId);
     final value = await SharedPrefManager.instance.getSharedData();
-    final conductorMasterRequst = ConductorReq(
+    final conductorMasterRequst = MasterListReq(
         cname: cname,
         caddress: caddress,
         mobNo: mobNo,
