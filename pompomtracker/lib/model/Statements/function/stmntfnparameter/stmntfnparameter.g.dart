@@ -12,7 +12,7 @@ Stmntfnparameter _$StmntfnparameterFromJson(Map<String, dynamic> json) =>
       fromdate: json['fromdate'] as String?,
       todate: json['todate'] as String?,
       summary: json['summary'] as bool?,
-      mode:json['mode'] as String
+      mode: json['mode'] as String?,
     );
 
 Map<String, dynamic> _$StmntfnparameterToJson(Stmntfnparameter instance) =>
@@ -20,6 +20,6 @@ Map<String, dynamic> _$StmntfnparameterToJson(Stmntfnparameter instance) =>
       'type': instance.type,
       'fromdate': instance.fromdate,
       'todate': instance.todate,
-      'summary':instance.summary,
-      'mode':instance.mode
+      'summary': instance.summary,
+      'mode': instance.mode,
     };

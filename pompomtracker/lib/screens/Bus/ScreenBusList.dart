@@ -8,16 +8,13 @@ class ScreenBusList extends StatefulWidget {
 }
 
 class _ScreenBusListState extends State<ScreenBusList> {
-  final _scafoldkey = GlobalKey<ScaffoldState>();
   List<String> columns = [];
   List<String?> cells = [];
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      setState(() async {
-        await BusListFunctions.instance.getBusDetails();
-      });
+      await BusListFunctions.instance.getBusDetails();
     });
   }
 
@@ -28,8 +25,7 @@ class _ScreenBusListState extends State<ScreenBusList> {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
-            Navigator.pushReplacement(
-                _scafoldkey.currentContext!, Approutes().homescreen);
+            Navigator.pushReplacement(context, Approutes().homescreen);
           },
         ),
         title: Text(
@@ -116,7 +112,10 @@ class _ScreenBusListState extends State<ScreenBusList> {
                       ),
                     );
                   },
-                  icon: const Icon(Icons.edit)),
+                  icon: Icon(
+                    Icons.edit,
+                    color: Theme.of(context).colorScheme.primary,
+                  )),
             ),
           ),
         ],

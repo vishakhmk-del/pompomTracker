@@ -1,7 +1,6 @@
 import 'dart:developer';
 import 'package:pompomtracker/core/hook/hook.dart';
 
-
 class ScreenCollection extends StatefulWidget {
   const ScreenCollection({super.key});
 
@@ -56,10 +55,10 @@ class _ScreenCollectionState extends State<ScreenCollection> {
       });
     });
   }
-  
+
   Future<bool?> popscreen(BuildContext context) async {
-    selectedTaskNotifier.value=StatementType.collectionType;
-    selectedModeNotifier.value=StatementType.both;
+    selectedTaskNotifier.value = StatementType.collectionType;
+    selectedModeNotifier.value = StatementType.both;
     Navigator.push(context, Approutes().collectionscreen);
     return true;
   }
@@ -68,34 +67,32 @@ class _ScreenCollectionState extends State<ScreenCollection> {
   Widget build(BuildContext context) {
     return PopScope(
       canPop: false,
-          onPopInvoked: (bool didPop) async {
-            if (!didPop){
-              if (didPop) return;
-               await popscreen(context);
-            
-            } 
-             log('BackButton pressed!');
-          },
+      onPopInvoked: (bool didPop) async {
+        if (!didPop) {
+          if (didPop) return;
+          await popscreen(context);
+        }
+        log('BackButton pressed!');
+      },
       child: Stack(
         children: [
           Scaffold(
               appBar: AppBar(
-                  title: Text(
-                "Statements",
-                style: Theme.of(context).textTheme.titleLarge,
-              ),
-              leading: IconButton(
-                onPressed: (){
+                title: Text(
+                  "Statements",
+                  style: Theme.of(context).textTheme.titleLarge,
+                ),
+                leading: IconButton(
+                    onPressed: () {
+                      selectedTaskNotifier.value = StatementType.collectionType;
+                      selectedModeNotifier.value = StatementType.both;
 
-                  selectedTaskNotifier.value=StatementType.collectionType;
-                  selectedModeNotifier.value=StatementType.both;
-
-                  Navigator.of(context).pushAndRemoveUntil(
-                    MaterialPageRoute(builder: (context)=>const Screenhome()),
-                    (Route<dynamic>route)=>false);
-                  
-                },
-                 icon:const Icon(Icons.arrow_back)),
+                      Navigator.of(context).pushAndRemoveUntil(
+                          MaterialPageRoute(
+                              builder: (context) => const Screenhome()),
+                          (Route<dynamic> route) => false);
+                    },
+                    icon: const Icon(Icons.arrow_back)),
               ),
               body: ListView(
                 controller: _listViewController,
@@ -128,8 +125,8 @@ class _ScreenCollectionState extends State<ScreenCollection> {
                               child: Column(
                                 children: [
                                   Container(
-                                    height:
-                                        MediaQuery.of(context).size.height / 1.52,
+                                    height: MediaQuery.of(context).size.height /
+                                        1.52,
                                     decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(12),
                                     ),
@@ -166,13 +163,10 @@ class _ScreenCollectionState extends State<ScreenCollection> {
                             return Container();
                             // Replace with your Collection Form widget
                           } else if (provider.selectedVal == true) {
-                          //   WidgetsBinding.instance.addPostFrameCallback((_) {
-                          //   _scrollToBottom(); // Call the function to scroll down
-                          // });
-                            return ScrollableWidget(
-                              child:
-                             buildStmntTbl()
-                            );
+                            //   WidgetsBinding.instance.addPostFrameCallback((_) {
+                            //   _scrollToBottom(); // Call the function to scroll down
+                            // });
+                            return ScrollableWidget(child: buildStmntTbl());
                             // Replace with your Cash Form widget
                           }
                           return Container();
@@ -263,16 +257,17 @@ class _ScreenCollectionState extends State<ScreenCollection> {
             ),
           ),
         ),
-      const  SizedBox(height: 10,),
-      const Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  
-                  ModeRadioButton(title: 'Both',type: StatementType.both),
-                  ModeRadioButton(title: 'Online',type: StatementType.on),
-                  ModeRadioButton(title: 'Offline',type: StatementType.off),
-                ],
-              ),
+        const SizedBox(
+          height: 10,
+        ),
+        const Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            ModeRadioButton(title: 'Both', type: StatementType.both),
+            ModeRadioButton(title: 'Online', type: StatementType.on),
+            ModeRadioButton(title: 'Offline', type: StatementType.off),
+          ],
+        ),
         Consumer<CollectionDrpDwnProvider>(
           builder: (context, provider, child) {
             if (provider.selectedVal == dtWise) {
@@ -284,7 +279,6 @@ class _ScreenCollectionState extends State<ScreenCollection> {
             return Container(); // Or some default widget
           },
         ),
-        
       ],
     );
   }
@@ -297,7 +291,6 @@ class _ScreenCollectionState extends State<ScreenCollection> {
           child: Column(
             //crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-             
               SizedBox(
                 width: MediaQuery.of(context).size.width,
                 child: Padding(
@@ -347,31 +340,28 @@ class _ScreenCollectionState extends State<ScreenCollection> {
                 ),
               ),
               SizedBox(
-              width: MediaQuery.of(context).size.width,
-              child: Row(
-                children: <Widget>[
-                 Theme(
-                    data: Theme.of(context),
-                    child: Consumer<CheckProvider>(
-                      builder: (context, check, _) => Checkbox(
-                          value: check.isAccepted,
-                        
-                          onChanged: (value) {
-                            
-                            check.setAccepted(value);
-                          
-                          }),
+                width: MediaQuery.of(context).size.width,
+                child: Row(
+                  children: <Widget>[
+                    Theme(
+                      data: Theme.of(context),
+                      child: Consumer<CheckProvider>(
+                        builder: (context, check, _) => Checkbox(
+                            value: check.isAccepted,
+                            onChanged: (value) {
+                              check.setAccepted(value);
+                            }),
+                      ),
                     ),
-                  ),
-                   Expanded(
-                      child: Text(
-                    "Summary",
-                    textAlign: TextAlign.left,
-                    style: Theme.of(context).textTheme.labelLarge,
-                  ))
-                ],
+                    Expanded(
+                        child: Text(
+                      "Summary",
+                      textAlign: TextAlign.left,
+                      style: Theme.of(context).textTheme.labelLarge,
+                    ))
+                  ],
+                ),
               ),
-            ),
               Padding(
                 padding: const EdgeInsets.all(25.0),
                 child: Container(
@@ -395,7 +385,7 @@ class _ScreenCollectionState extends State<ScreenCollection> {
                         context
                             .read<ElevatedBtnProvider>()
                             .changeSelectedVal(true);
-                        
+
                         if (_formkey1.currentState!.validate()) {
                           final frmdt = _cldateFromController.text;
                           final todt = _cldateToController.text;
@@ -403,18 +393,21 @@ class _ScreenCollectionState extends State<ScreenCollection> {
                           final val = pro.isAccepted;
 
                           var proval = context.read<RadiobuttonProvider>();
-                          final mode=proval.selectedMode;
+                          final mode = proval.selectedMode;
                           String? stmntmode;
-                          if(mode==StatementType.both){
-                            stmntmode=stmntall;
-                          }else if(mode==StatementType.on){
-                            stmntmode=stmntonline;
-                          }else if(mode==StatementType.off){
-                            stmntmode=stmntoffline;
+                          if (mode == StatementType.both) {
+                            stmntmode = stmntall;
+                          } else if (mode == StatementType.on) {
+                            stmntmode = stmntonline;
+                          } else if (mode == StatementType.off) {
+                            stmntmode = stmntoffline;
                           }
 
-                          final value =
-                              Stmntfnparameter(fromdate: frmdt, todate: todt,summary: val,mode: stmntmode);
+                          final value = Stmntfnparameter(
+                              fromdate: frmdt,
+                              todate: todt,
+                              summary: val,
+                              mode: stmntmode);
 
                           fetchclstatement(context, value);
                         }
@@ -640,31 +633,30 @@ class _ScreenCollectionState extends State<ScreenCollection> {
             ),
           ),
         ),
-        
         Consumer<CashstmntDrpDwnProvider>(
-                          builder: (context, provider, child) {
-                            if (provider.selectedVal ==
-                                exStatmnt) {
-                              return  expensestmtForm(context);  // Replace with your Collection Form widget
-                            } else if (provider.selectedVal ==
-                                chStatmnt) {
-                              return  cashstmtForm(context);  // Replace with your Cash Form widget
-                            }
-                            return Container();  // Or some default widget
-                          },
-                      ),
+          builder: (context, provider, child) {
+            if (provider.selectedVal == exStatmnt) {
+              return expensestmtForm(
+                  context); // Replace with your Collection Form widget
+            } else if (provider.selectedVal == chStatmnt) {
+              return cashstmtForm(
+                  context); // Replace with your Cash Form widget
+            }
+            return Container(); // Or some default widget
+          },
+        ),
       ],
     );
   }
 
   Widget expensestmtForm(BuildContext context) {
     return Form(
-      key: _formkey3,
+        key: _formkey3,
         child: Theme(
-      data: MyTheme.googleFormTheme,
-      child: Column(
-        children: [
-          SizedBox(
+          data: MyTheme.googleFormTheme,
+          child: Column(
+            children: [
+              SizedBox(
                 width: MediaQuery.of(context).size.width,
                 child: Padding(
                   padding: const EdgeInsets.only(top: 10, left: 5, right: 5),
@@ -682,12 +674,13 @@ class _ScreenCollectionState extends State<ScreenCollection> {
                     ),
                     items: [
                       ...registarionlst.map((e) {
-                      return DropdownMenuItem(value: e, child: Text(e));
-                    }).toList(),
-                    const  DropdownMenuItem(
-                      value: 'all',
-                      child: Text('All'),
-                    ),],
+                        return DropdownMenuItem(value: e, child: Text(e));
+                      }).toList(),
+                      const DropdownMenuItem(
+                        value: 'all',
+                        child: Text('All'),
+                      ),
+                    ],
                     onChanged: (newvalue) {
                       log('Bus :$newvalue');
 
@@ -701,81 +694,78 @@ class _ScreenCollectionState extends State<ScreenCollection> {
                   ),
                 ),
               ),
-          SizedBox(
-            width: MediaQuery.of(context).size.width,
-            child: Padding(
-              padding: const EdgeInsets.only(top: 20, left: 5, right: 5),
-              child: TextFormField(
-                controller: _expdateFromController,
-                style: Theme.of(context).textTheme.labelLarge,
-                decoration: InputDecoration(
-                  labelText: 'From Date',
-                  labelStyle: Theme.of(context).textTheme.labelLarge,
-                  suffixIcon: Icon(Icons.calendar_today,
-                      color: Theme.of(context).colorScheme.onSecondary),
-                ),
-                onTap: () => _selectDate(context, _expdateFromController),
-                validator: (value) {
-                  if (value!.isEmpty) {
-                    return 'Please Select Date';
-                  } else {
-                    return null;
-                  }
-                },
-              ),
-            ),
-          ),
-          SizedBox(
-            width: MediaQuery.of(context).size.width,
-            child: Padding(
-              padding: const EdgeInsets.only(top: 20, left: 5, right: 5),
-              child: TextFormField(
-                controller: _expdateToController,
-                style: Theme.of(context).textTheme.labelLarge,
-                decoration: InputDecoration(
-                  labelText: 'To Date',
-                  labelStyle: Theme.of(context).textTheme.labelLarge,
-                  suffixIcon: Icon(Icons.calendar_today,
-                      color: Theme.of(context).colorScheme.onSecondary),
-                ),
-                onTap: () => _selectDate(context, _expdateToController),
-                validator: (value) {
-                  if (value!.isEmpty) {
-                    return 'Please Select Date';
-                  } else {
-                    return null;
-                  }
-                },
-              ),
-            ),
-          ),
-          SizedBox(
-              width: MediaQuery.of(context).size.width,
-              child: Row(
-                children: <Widget>[
-                 Theme(
-                    data: Theme.of(context),
-                    child: Consumer<CheckProvider>(
-                      builder: (context, check, _) => Checkbox(
-                          value: check.isAccepted,
-                        
-                          onChanged: (value) {
-                            
-                            check.setAccepted(value);
-                          
-                          }),
-                    ),
-                  ),
-                   Expanded(
-                      child: Text(
-                    "Summary",
-                    textAlign: TextAlign.left,
+              SizedBox(
+                width: MediaQuery.of(context).size.width,
+                child: Padding(
+                  padding: const EdgeInsets.only(top: 20, left: 5, right: 5),
+                  child: TextFormField(
+                    controller: _expdateFromController,
                     style: Theme.of(context).textTheme.labelLarge,
-                  ))
-                ],
+                    decoration: InputDecoration(
+                      labelText: 'From Date',
+                      labelStyle: Theme.of(context).textTheme.labelLarge,
+                      suffixIcon: Icon(Icons.calendar_today,
+                          color: Theme.of(context).colorScheme.onSecondary),
+                    ),
+                    onTap: () => _selectDate(context, _expdateFromController),
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        return 'Please Select Date';
+                      } else {
+                        return null;
+                      }
+                    },
+                  ),
+                ),
               ),
-            ),
-          Padding(
+              SizedBox(
+                width: MediaQuery.of(context).size.width,
+                child: Padding(
+                  padding: const EdgeInsets.only(top: 20, left: 5, right: 5),
+                  child: TextFormField(
+                    controller: _expdateToController,
+                    style: Theme.of(context).textTheme.labelLarge,
+                    decoration: InputDecoration(
+                      labelText: 'To Date',
+                      labelStyle: Theme.of(context).textTheme.labelLarge,
+                      suffixIcon: Icon(Icons.calendar_today,
+                          color: Theme.of(context).colorScheme.onSecondary),
+                    ),
+                    onTap: () => _selectDate(context, _expdateToController),
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        return 'Please Select Date';
+                      } else {
+                        return null;
+                      }
+                    },
+                  ),
+                ),
+              ),
+              SizedBox(
+                width: MediaQuery.of(context).size.width,
+                child: Row(
+                  children: <Widget>[
+                    Theme(
+                      data: Theme.of(context),
+                      child: Consumer<CheckProvider>(
+                        builder: (context, check, _) => Checkbox(
+                            value: check.isAccepted,
+                            onChanged: (value) {
+                              check.setAccepted(value);
+                            }),
+                      ),
+                    ),
+                    Expanded(
+                        child: Text(
+                      "Summary",
+                      textAlign: TextAlign.left,
+                      style: Theme.of(context).textTheme.labelLarge,
+                    ))
+                  ],
+                ),
+              ),
+              Padding(
                 padding: const EdgeInsets.all(25.0),
                 child: Container(
                   height: 45,
@@ -791,28 +781,26 @@ class _ScreenCollectionState extends State<ScreenCollection> {
                     ),
                     borderRadius: BorderRadius.circular(12.0),
                   ),
-                  child: Theme(               
+                  child: Theme(
                     data: MyTheme.buttonStyleTheme,
                     child: ElevatedButton(
                       onPressed: () async {
                         context
                             .read<ElevatedBtnProvider>()
                             .changeSelectedVal(true);
-                        
-                        if (_formkey3.currentState!.validate()) {
 
+                        if (_formkey3.currentState!.validate()) {
                           final frmdt = _expdateFromController.text;
                           final todt = _expdateToController.text;
                           var pro = context.read<CheckProvider>();
-                          final val = pro.isAccepted;                        
-                          final regno=dropdownbusvalue;
+                          final val = pro.isAccepted;
+                          final regno = dropdownbusvalue;
 
-                          final value =
-                              Stmntfnparameter(
-                                fromdate: frmdt,
-                                 todate: todt,
-                                 summary: val,
-                                 type:regno );
+                          final value = Stmntfnparameter(
+                              fromdate: frmdt,
+                              todate: todt,
+                              summary: val,
+                              type: regno);
 
                           fetchcashstatement(context, value);
                         }
@@ -825,67 +813,67 @@ class _ScreenCollectionState extends State<ScreenCollection> {
                   ),
                 ),
               ),
-        ],
-      ),
-    ));
+            ],
+          ),
+        ));
   }
 
   Widget cashstmtForm(BuildContext context) {
     return Form(
-      key: _formkey4,
+        key: _formkey4,
         child: Theme(
-      data: MyTheme.googleFormTheme,
-      child: Column(
-        children: [
-          SizedBox(
-            width: MediaQuery.of(context).size.width,
-            child: Padding(
-              padding: const EdgeInsets.only(top: 20, left: 5, right: 5),
-              child: TextFormField(
-                controller: _cashFromController,
-                style: Theme.of(context).textTheme.labelLarge,
-                decoration: InputDecoration(
-                  labelText: 'From Date',
-                  labelStyle: Theme.of(context).textTheme.labelLarge,
-                  suffixIcon: Icon(Icons.calendar_today,
-                      color: Theme.of(context).colorScheme.onSecondary),
+          data: MyTheme.googleFormTheme,
+          child: Column(
+            children: [
+              SizedBox(
+                width: MediaQuery.of(context).size.width,
+                child: Padding(
+                  padding: const EdgeInsets.only(top: 20, left: 5, right: 5),
+                  child: TextFormField(
+                    controller: _cashFromController,
+                    style: Theme.of(context).textTheme.labelLarge,
+                    decoration: InputDecoration(
+                      labelText: 'From Date',
+                      labelStyle: Theme.of(context).textTheme.labelLarge,
+                      suffixIcon: Icon(Icons.calendar_today,
+                          color: Theme.of(context).colorScheme.onSecondary),
+                    ),
+                    onTap: () => _selectDate(context, _cashFromController),
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        return 'Please Select Date';
+                      } else {
+                        return null;
+                      }
+                    },
+                  ),
                 ),
-                onTap: () => _selectDate(context, _cashFromController),
-                validator: (value) {
-                  if (value!.isEmpty) {
-                    return 'Please Select Date';
-                  } else {
-                    return null;
-                  }
-                },
               ),
-            ),
-          ),
-          SizedBox(
-            width: MediaQuery.of(context).size.width,
-            child: Padding(
-              padding: const EdgeInsets.only(top: 20, left: 5, right: 5),
-              child: TextFormField(
-                controller: _cashToController,
-                style: Theme.of(context).textTheme.labelLarge,
-                decoration: InputDecoration(
-                  labelText: 'To Date',
-                  labelStyle: Theme.of(context).textTheme.labelLarge,
-                  suffixIcon: Icon(Icons.calendar_today,
-                      color: Theme.of(context).colorScheme.onSecondary),
+              SizedBox(
+                width: MediaQuery.of(context).size.width,
+                child: Padding(
+                  padding: const EdgeInsets.only(top: 20, left: 5, right: 5),
+                  child: TextFormField(
+                    controller: _cashToController,
+                    style: Theme.of(context).textTheme.labelLarge,
+                    decoration: InputDecoration(
+                      labelText: 'To Date',
+                      labelStyle: Theme.of(context).textTheme.labelLarge,
+                      suffixIcon: Icon(Icons.calendar_today,
+                          color: Theme.of(context).colorScheme.onSecondary),
+                    ),
+                    onTap: () => _selectDate(context, _cashToController),
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        return 'Please Select Date';
+                      } else {
+                        return null;
+                      }
+                    },
+                  ),
                 ),
-                onTap: () => _selectDate(context, _cashToController),
-                validator: (value) {
-                  if (value!.isEmpty) {
-                    return 'Please Select Date';
-                  } else {
-                    return null;
-                  }
-                },
               ),
-            ),
-          ),
-          Padding(
+              Padding(
                 padding: const EdgeInsets.all(25.0),
                 child: Container(
                   height: 45,
@@ -901,27 +889,25 @@ class _ScreenCollectionState extends State<ScreenCollection> {
                     ),
                     borderRadius: BorderRadius.circular(12.0),
                   ),
-                  child: Theme(               
+                  child: Theme(
                     data: MyTheme.buttonStyleTheme,
                     child: ElevatedButton(
                       onPressed: () async {
                         context
                             .read<ElevatedBtnProvider>()
                             .changeSelectedVal(true);
-                        
-                        if (_formkey4.currentState!.validate()) {
 
+                        if (_formkey4.currentState!.validate()) {
                           final frmdt = _cashFromController.text;
                           final todt = _cashToController.text;
                           // var pro = context.read<CheckProvider>();
-                          // final val = pro.isAccepted;                        
+                          // final val = pro.isAccepted;
                           // final regno=dropdownbusvalue;
 
-                          final value =
-                              Stmntfnparameter(
-                                 fromdate: frmdt,
-                                 todate: todt,
-                                 );
+                          final value = Stmntfnparameter(
+                            fromdate: frmdt,
+                            todate: todt,
+                          );
 
                           fetchcashstatement(context, value);
                         }
@@ -934,9 +920,9 @@ class _ScreenCollectionState extends State<ScreenCollection> {
                   ),
                 ),
               ),
-        ],
-      ),
-    ));
+            ],
+          ),
+        ));
   }
 
   /// **************************** Cash Form end *********************************
@@ -947,48 +933,49 @@ class _ScreenCollectionState extends State<ScreenCollection> {
     return ValueListenableBuilder(
         valueListenable: StatementFunctions.instance.getDatewiseStmntNotifier,
         builder: (BuildContext context, List<TicketList> newList, Widget? _) {
-            return DataTable(
-            columns: getColumns(
-              Provider.of<RadiobuttonProvider>(context, listen: false)
-                            .selectedType == StatementType.collectionType
-
-                ?Provider.of<CollectionDrpDwnProvider>(context, listen: false)
+          return DataTable(
+            columns: getColumns(Provider.of<RadiobuttonProvider>(context,
+                            listen: false)
+                        .selectedType ==
+                    StatementType.collectionType
+                ? Provider.of<CollectionDrpDwnProvider>(context, listen: false)
                             .selectedVal ==
                         dtWise
                     ? Provider.of<CheckProvider>(context, listen: false)
-                    .isAccepted ==false
-                        ?columns = [
-                          'Reg No',
-                          'Date',
-                          'Mode',
-                          'Amount',
+                                .isAccepted ==
+                            false
+                        ? columns = [
+                            'Reg No',
+                            'Date',
+                            'Mode',
+                            'Amount',
                           ]
-                        :columns = [
-                        
+                        : columns = [
                             'Payment Date',
-                            
                             'Amount',
                           ]
                     : columns = [
                         'Reg No',
                         'Date',
                         'Amount',
-                    ]
-                :Provider.of<CashstmntDrpDwnProvider>(context, listen: false)
-                            .selectedVal ==exStatmnt
-                    ? Provider.of<CheckProvider>(context, listen: false)
-                    .isAccepted ==false
-                    ?columns = [
-                        'Date',
-                        'Reg No',
-                        'Category',
-                        'Expense',                        
                       ]
-                    :columns = [                      
-                        'Date',
-                        'Expense',
-                    ]
-                    :columns = [
+                : Provider.of<CashstmntDrpDwnProvider>(context, listen: false)
+                            .selectedVal ==
+                        exStatmnt
+                    ? Provider.of<CheckProvider>(context, listen: false)
+                                .isAccepted ==
+                            false
+                        ? columns = [
+                            'Date',
+                            'Reg No',
+                            'Category',
+                            'Expense',
+                          ]
+                        : columns = [
+                            'Date',
+                            'Expense',
+                          ]
+                    : columns = [
                         'Date',
                         'Income',
                         'Expense',
@@ -1011,51 +998,50 @@ class _ScreenCollectionState extends State<ScreenCollection> {
 
   List<DataRow> getRows(List<TicketList> newList) =>
       newList.map((TicketList task) {
-      Provider.of<RadiobuttonProvider>(context, listen: false)
-                            .selectedType == StatementType.collectionType
-
-        ? Provider.of<CollectionDrpDwnProvider>(context, listen: false)
-                    .selectedVal ==dtWise
-            ? Provider.of<CheckProvider>(context, listen: false)
-                    .isAccepted ==
-                false?
-                cells = [
-                task.regNo,
-                task.payDate,
-                task.mode,
-                task.amount,
-              ]:cells = [
-                
-                task.payDate,
-                
-                task.amount,
-              ]
-            : cells = [
-                task.regNo,
-                task.payDate,
-                task.amount,
-              ]
-          :Provider.of<CashstmntDrpDwnProvider>(context, listen: false)
-                            .selectedVal ==exStatmnt
-            ? Provider.of<CheckProvider>(context, listen: false)
-                    .isAccepted ==false
-            ?cells = [
-              task.payDate,
-                task.regNo,
-                task.expensehead,
-                task.expense,
-                
-              ]
-            :cells = [
-                
-                task.payDate,
-                task.expense,
-              ]
-            :cells = [
-                task.payDate,
-                task.totalIncome,
-                task.totalExpense,
-              ];
+        Provider.of<RadiobuttonProvider>(context, listen: false).selectedType ==
+                StatementType.collectionType
+            ? Provider.of<CollectionDrpDwnProvider>(context, listen: false)
+                        .selectedVal ==
+                    dtWise
+                ? Provider.of<CheckProvider>(context, listen: false)
+                            .isAccepted ==
+                        false
+                    ? cells = [
+                        task.regNo,
+                        task.payDate,
+                        task.mode,
+                        task.amount,
+                      ]
+                    : cells = [
+                        task.payDate,
+                        task.amount,
+                      ]
+                : cells = [
+                    task.regNo,
+                    task.payDate,
+                    task.amount,
+                  ]
+            : Provider.of<CashstmntDrpDwnProvider>(context, listen: false)
+                        .selectedVal ==
+                    exStatmnt
+                ? Provider.of<CheckProvider>(context, listen: false)
+                            .isAccepted ==
+                        false
+                    ? cells = [
+                        task.payDate,
+                        task.regNo,
+                        task.expensehead,
+                        task.expense,
+                      ]
+                    : cells = [
+                        task.payDate,
+                        task.expense,
+                      ]
+                : cells = [
+                    task.payDate,
+                    task.totalIncome,
+                    task.totalExpense,
+                  ];
 
         return DataRow(
           cells: Utils.modelBuilder(cells, (index, cell) {
@@ -1082,9 +1068,6 @@ class _ScreenCollectionState extends State<ScreenCollection> {
       }).toList();
 
   /// ***************************** Statement Table end ***************************************
-
-
-
 
   /// ************************ Date selection function *************************
 
@@ -1134,8 +1117,4 @@ class _ScreenCollectionState extends State<ScreenCollection> {
   }
 
   /// ************************ Statement fetch Function end *******************************
-  
-  
-
-
 }

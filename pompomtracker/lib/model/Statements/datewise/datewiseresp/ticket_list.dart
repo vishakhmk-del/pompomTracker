@@ -19,16 +19,15 @@ class TicketList {
   @JsonKey(name: 'expense_head')
   String? expensehead;
 
-  TicketList({
-    this.amount,
-     this.mode,
+  TicketList(
+      {this.amount,
+      this.mode,
       this.payDate,
-       this.regNo,
-       this.totalIncome,
-       this.totalExpense,
-       this.expense,
-       this.expensehead
-       });
+      this.regNo,
+      this.totalIncome,
+      this.totalExpense,
+      this.expense,
+      this.expensehead});
 
   factory TicketList.fromJson(Map<String, dynamic> json) {
     return _$TicketListFromJson(json);

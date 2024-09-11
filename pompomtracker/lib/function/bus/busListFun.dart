@@ -10,12 +10,15 @@ class BusListFunctions {
   }
 
   ValueNotifier<List<BusList>> getBusListNotifier = ValueNotifier([]);
+
   Future getBusDetails() async {
     Response<dynamic>? busListResp;
     final sharevalue = await SharedPrefManager.instance.getSharedData();
     final busreq =
         BusListReq(userId: sharevalue!.userId, userType: sharevalue.userType);
+
     busListResp = await Busdata().fetchBusList(busreq);
+
     if (busListResp == null) {
       getBusListNotifier.value.clear();
       getBusListNotifier.value.addAll([]);

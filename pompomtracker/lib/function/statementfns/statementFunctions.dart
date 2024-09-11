@@ -46,9 +46,9 @@ class StatementFunctions {
       dtwiseresp = await Busdata().getDatewiseStmnt(dtwiserqst);
     } else if (selectedValue == bsWise) {
       dtwiseresp = await Busdata().getBuswiseStmnt(dtwiserqst);
-    }else if(selectedValue==exStatmnt){
+    } else if (selectedValue == exStatmnt) {
       dtwiseresp = await Busdata().getExpenseStmnt(dtwiserqst);
-    }else if(selectedValue==chStatmnt){
+    } else if (selectedValue == chStatmnt) {
       dtwiseresp = await Busdata().getCashStmnt(dtwiserqst);
     }
 

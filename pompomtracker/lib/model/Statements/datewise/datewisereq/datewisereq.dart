@@ -26,6 +26,7 @@ class Datewisereq {
       this.regNo,
       this.summary,
       this.mode});
+      
   Datewisereq.req(
       {required this.userId,
       this.userType,

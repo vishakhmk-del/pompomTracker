@@ -8,7 +8,5 @@ const String stmntall = 'all';
 const String stmntonline = 'on';
 const String stmntoffline = 'off';
 
-
 const int flag1 = 1;
 const int flag0 = 0;
-

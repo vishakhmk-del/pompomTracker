@@ -29,7 +29,7 @@ class StmntRadioButton extends StatelessWidget {
                   context
                       .read<CollectionDrpDwnProvider>()
                       .changeSelectedVal(dtWise);
-                  
+
                   context
                       .read<CashstmntDrpDwnProvider>()
                       .changeSelectedVal(exStatmnt);

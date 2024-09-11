@@ -8,7 +8,6 @@ class ScreenConductorList extends StatefulWidget {
 }
 
 class _ScreenConductorListState extends State<ScreenConductorList> {
-  final _scafoldkey = GlobalKey<ScaffoldState>();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -16,8 +15,7 @@ class _ScreenConductorListState extends State<ScreenConductorList> {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
-            Navigator.pushReplacement(
-                _scafoldkey.currentContext!, Approutes().homescreen);
+            Navigator.pushReplacement(context, Approutes().homescreen);
           },
         ),
         title: Text(

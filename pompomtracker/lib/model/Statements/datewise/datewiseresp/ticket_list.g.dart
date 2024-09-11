@@ -23,8 +23,8 @@ Map<String, dynamic> _$TicketListToJson(TicketList instance) =>
       'mode': instance.mode,
       'pay_date': instance.payDate,
       'reg_no': instance.regNo,
-      'total_income':instance.totalIncome,
-      'total_expense':instance.totalExpense,
-      'expense':instance.expense,
-      'expense_head':instance.expensehead
+      'total_income': instance.totalIncome,
+      'total_expense': instance.totalExpense,
+      'expense': instance.expense,
+      'expense_head': instance.expensehead,
     };

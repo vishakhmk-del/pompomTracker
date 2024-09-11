@@ -1,8 +1,1 @@
-
-enum StatementType { 
-  collectionType, 
-  cashType,
-  both,
-  on,
-  off
-}
+enum StatementType { collectionType, cashType, both, on, off }
