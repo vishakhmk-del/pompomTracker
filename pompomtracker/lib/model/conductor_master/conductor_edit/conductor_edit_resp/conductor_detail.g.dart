@@ -1,23 +1,25 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'conductor_list.dart';
+part of 'conductor_detail.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-ConductorList _$ConductorListFromJson(Map<String, dynamic> json) =>
-    ConductorList(
+ConductorDetail _$ConductorDetailFromJson(Map<String, dynamic> json) =>
+    ConductorDetail(
       conductorId: json['conductor_id'] as String?,
       name: json['name'] as String?,
       address: json['address'] as String?,
       accountNo: json['account_no'] as String?,
       mobileNo: json['mobile_no'] as String?,
       status: json['status'] as String?,
+      busName: json['bus_name'] as String?,
       registrationNo: json['registration_no'] as String?,
+      emailId: json['email_id'] as String?,
     );
 
-Map<String, dynamic> _$ConductorListToJson(ConductorList instance) =>
+Map<String, dynamic> _$ConductorDetailToJson(ConductorDetail instance) =>
     <String, dynamic>{
       'conductor_id': instance.conductorId,
       'name': instance.name,
@@ -25,5 +27,7 @@ Map<String, dynamic> _$ConductorListToJson(ConductorList instance) =>
       'account_no': instance.accountNo,
       'mobile_no': instance.mobileNo,
       'status': instance.status,
+      'bus_name': instance.busName,
       'registration_no': instance.registrationNo,
+      'email_id': instance.emailId,
     };

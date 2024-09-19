@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:pompomtracker/core/hook/hook.dart';
+import 'package:pompomtracker/function/conductor/conductorListFun.dart';
 import 'package:pompomtracker/model/conductor_master/conductor_req/conductor_req.dart';
 import 'package:pompomtracker/model/conductor_master/conductor_resp/conductor_resp.dart';
 
 class ScreenConductor extends StatefulWidget {
-  const ScreenConductor({super.key});
+  // ignore: non_constant_identifier_names
+  final String? conductor_id;
+  final int flag;
+
+  const ScreenConductor({super.key, this.conductor_id, required this.flag});
 
   @override
   State<ScreenConductor> createState() => _ScreenconductorState();
@@ -29,13 +34,29 @@ class _ScreenconductorState extends State<ScreenConductor> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      // fetchRouteList();
+      // Fetch the bus registration list
       busreglist = await Wklycollectfn.instance.busReglistfn();
 
       setState(() {
         registarionlst =
             busreglist!.map((bus) => bus.registrationNo ?? "").toList();
       });
+      //conducor edit display
+      if (widget.conductor_id != null && widget.flag == 1) {
+        final buslistDet = await ConductorListFunctions.instance
+            .fetchCondcutorEditDetails(widget.conductor_id!);
+        print(buslistDet?[0].status);
+        
+        setState(() {
+          //  selectedStatus = buslistDet?[0].status ?? "";
+          selectedBusList = buslistDet?[0].registrationNo ?? "";
+          _nameController.text = buslistDet?[0].name ?? "";
+          _addressController.text = buslistDet?[0].address ?? "";
+          _accountNosController.text = buslistDet?[0].accountNo ?? "";
+          _mobileNosController.text = buslistDet?[0].mobileNo ?? "";
+          _emailController.text = buslistDet?[0].emailId ?? "";
+        });
+      }
     });
   }
 
@@ -57,9 +78,9 @@ class _ScreenconductorState extends State<ScreenConductor> {
           )),
       body: Center(
         child: ListView(
-          //scrollDirection: Axis.horizontal,
-          // physics: const BouncingScrollPhysics(),
-          // scrollDirection: Axis.vertical,
+          scrollDirection: Axis.horizontal,
+          physics: const BouncingScrollPhysics(),
+          //scrollDirection: Axis.vertical,
           children: [
             SingleChildScrollView(
               child: Container(
@@ -188,7 +209,7 @@ class _ScreenconductorState extends State<ScreenConductor> {
                                 dropdownColor:
                                     Theme.of(context).colorScheme.tertiary,
                                 validator: (value) {
-                                  if (value!.isEmpty) {
+                                  if (value == null || value.isEmpty) {
                                     return 'Select Bus Type';
                                   } else {
                                     return null;
@@ -248,7 +269,7 @@ class _ScreenconductorState extends State<ScreenConductor> {
                                 items: <String>['Active', 'Inactive']
                                     .map((String value) {
                                   return DropdownMenuItem(
-                                    value: value,
+                                    value: value == 'Active' ? 1 : 0,
                                     child: Text(
                                       value,
                                       style: TextStyle(
@@ -260,7 +281,7 @@ class _ScreenconductorState extends State<ScreenConductor> {
                                 }).toList(),
                                 onChanged: (newValue) {
                                   setState(() {
-                                    selectedStatus = newValue;
+                                    selectedStatus = newValue as String?;
                                   });
                                 },
                                 value: selectedStatus,
@@ -281,13 +302,13 @@ class _ScreenconductorState extends State<ScreenConductor> {
                                 ),
                                 dropdownColor:
                                     Theme.of(context).colorScheme.tertiary,
-                                validator: (value) {
-                                  if (value!.isEmpty) {
-                                    return 'Select Status';
-                                  } else {
-                                    return null;
-                                  }
-                                },
+                                // validator: (value) {
+                                //   if (value!.isEmpty) {
+                                //     return 'Select Status';
+                                //   } else {
+                                //     return null;
+                                //   }
+                                // },
                               ),
                             ),
                             const SizedBox(
@@ -356,6 +377,7 @@ class _ScreenconductorState extends State<ScreenConductor> {
     final mobNo = _mobileNosController.text;
     final emailId = _emailController.text;
     //print(routeId);
+    dynamic conductorMasterSavevar;
     final value = await SharedPrefManager.instance.getSharedData();
     final conductorMasterRequst = ConductorReq(
         cname: cname,
@@ -367,8 +389,12 @@ class _ScreenconductorState extends State<ScreenConductor> {
         accNo: accNo,
         userId: value!.userId,
         ownerId: value.userId);
-    final conductorMasterSavevar =
-        await Busdata().conductorMasterSave(conductorMasterRequst);
+    if (widget.flag == 0) {
+      conductorMasterSavevar =
+          await Busdata().conductorMasterSave(conductorMasterRequst);
+    } else {
+      await Busdata().conductorMasterSave(conductorMasterRequst);
+    }
     final resultAsjson = jsonDecode(conductorMasterSavevar.toString());
     // print(resultAsjson);
     final resValue =
@@ -378,7 +404,8 @@ class _ScreenconductorState extends State<ScreenConductor> {
     final message = resValue.message.toString();
     if (resValue.status == 'success') {
       Fluttertoast.showToast(
-          msg: 'Saved Succesfully',
+          msg:
+              "Conductor details ${widget.flag == 0 ? 'saved' : 'updated'} successfully",
           toastLength: Toast.LENGTH_SHORT,
           gravity: ToastGravity.CENTER,
           timeInSecForIosWeb: 1,

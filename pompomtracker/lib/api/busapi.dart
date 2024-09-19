@@ -1,9 +1,5 @@
 import 'package:pompomtracker/core/hook/hook.dart';
-import 'package:pompomtracker/model/bus_master/bus_edit/bus_edit_req/bus_edit_req.dart';
-import 'package:pompomtracker/model/bus_master/bus_list_req/bus_list_req.dart';
-import 'package:pompomtracker/model/conductor_master/conductor_list/conductor_ist_resp/conductor_ist_resp.dart';
-import 'package:pompomtracker/model/conductor_master/conductor_list/conductor_list_req/conductor_list_req.dart';
-import 'package:pompomtracker/model/conductor_master/conductor_req/conductor_req.dart';
+import 'package:pompomtracker/model/conductor_master/conductor_edit/conductor_edit_req/conductor_edit_re.dart';
 
 abstract class Apicalls {
   Future<Response<dynamic>?> login(Loginreq value);
@@ -29,7 +25,8 @@ abstract class Apicalls {
   Future<Response<dynamic>?> fetchBusList(BusListReq value);
   Future<Response<dynamic>?> fetchBusEditDetails(BusEditReq value);
   Future<Response<dynamic>?> updateBus(BusMasterReq value);
-  Future<Response<dynamic>?> fetchConductorList(ConductorListReq value);
+  Future<Response<dynamic>?> fetchConductorList(MasterListReq value);
+  Future<Response<dynamic>?> fetchConEditDetails(ConductorEditRe value);
 }
 
 class Busdata extends Apicalls {
@@ -278,10 +275,36 @@ class Busdata extends Apicalls {
   }
 
   @override
-  Future<Response?> fetchConductorList(ConductorListReq value) async {
+  Future<Response?> fetchConductorList(MasterListReq value) async {
     try {
       final result = await dio.post(
         url.fetchCondutorList,
+        data: value.toJson(),
+      );
+      return result;
+    } on DioException catch (ex) {
+      return ex.response;
+    }
+  }
+
+  @override
+  Future<Response?> fetchConEditDetails(ConductorEditRe value) async {
+    try {
+      final result = await dio.post(
+        url.fetchCondutorEditList,
+        data: value.toJson(),
+      );
+      return result;
+    } on DioException catch (ex) {
+      return ex.response;
+    }
+  }
+
+  @override
+  Future<Response?> updateConductortDetails(ConductorEditRe value) async {
+    try {
+      final result = await dio.post(
+        url.updateCon,
         data: value.toJson(),
       );
       return result;

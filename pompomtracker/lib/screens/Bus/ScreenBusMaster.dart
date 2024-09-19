@@ -27,18 +27,16 @@ class _ScreenBusMaterState extends State<ScreenBusMater> {
     fetchBusList();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       if (widget.flag == 1 && widget.regNo != null) {
-        setState(() async {
-          final buslistDet = await BusListFunctions.instance
-              .fetchBusEditDetails(widget.regNo!);
-          _nameControler.text = buslistDet?[0].busName ?? "";
-          _shortnameControler.text = buslistDet?[0].shortName ?? "";
-          _registartionNoControler.text = buslistDet?[0].registrationNo ?? "";
-          _permitNoController.text = buslistDet?[0].permitNo ?? "";
-          _dateValidController.text = buslistDet?[0].validFrom ?? "";
-          _dateToController.text = buslistDet?[0].validTo ?? "";
-          selectedBusType = buslistDet?[0].busType ?? "";
-          // print(selectedBusType);
-        });
+        final buslistDet =
+            await BusListFunctions.instance.fetchBusEditDetails(widget.regNo!);
+        _nameControler.text = buslistDet?[0].busName ?? "";
+        _shortnameControler.text = buslistDet?[0].shortName ?? "";
+        _registartionNoControler.text = buslistDet?[0].registrationNo ?? "";
+        _permitNoController.text = buslistDet?[0].permitNo ?? "";
+        _dateValidController.text = buslistDet?[0].validFrom ?? "";
+        _dateToController.text = buslistDet?[0].validTo ?? "";
+        selectedBusType = buslistDet?[0].busType ?? "";
+        // print(selectedBusType);
       }
     });
   }

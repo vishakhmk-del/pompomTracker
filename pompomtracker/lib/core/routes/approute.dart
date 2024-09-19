@@ -70,7 +70,7 @@ class Approutes {
   );
 
   PageTransition conductoscreen = PageTransition(
-    child: const ScreenConductor(),
+    child: const ScreenConductor(flag: 0),
     type: PageTransitionType.fade,
     alignment: Alignment.center,
     curve: Curves.easeInOutBack,

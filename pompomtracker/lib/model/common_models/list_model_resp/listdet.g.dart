@@ -11,6 +11,13 @@ Listdet _$ListdetFromJson(Map<String, dynamic> json) => Listdet(
       via: json['via'],
       tripId: json['trip_id'] as String?,
       startTime: json['start_time'] as String?,
+      cname: json['name'] as String?,
+      mobileNo: json['mobile_no'] as String?,
+      address: json['address'] as String?,
+      conductorId: json['conductor_id'] as String?,
+      accountNo: json['account_no'] as String?,
+      status: json['status'] as String?,
+      registratioNo: json['registration_no'] as String?,
     );
 
 Map<String, dynamic> _$ListdetToJson(Listdet instance) => <String, dynamic>{
@@ -18,4 +25,11 @@ Map<String, dynamic> _$ListdetToJson(Listdet instance) => <String, dynamic>{
       'via': instance.via,
       'trip_id': instance.tripId,
       'start_time': instance.startTime,
+      'name': instance.cname,
+      'mobile_no': instance.mobileNo,
+      'address': instance.address,
+      'conductor_id': instance.conductorId,
+      'account_no': instance.accountNo,
+      'status': instance.status,
+      'registration_no': instance.registratioNo,
     };
