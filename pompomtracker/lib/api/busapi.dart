@@ -1,9 +1,5 @@
 import 'package:pompomtracker/core/hook/hook.dart';
-import 'package:pompomtracker/model/bus_master/bus_edit/bus_edit_req/bus_edit_req.dart';
-import 'package:pompomtracker/model/bus_master/bus_list_req/bus_list_req.dart';
-import 'package:pompomtracker/model/conductor_master/conductor_list/conductor_ist_resp/conductor_ist_resp.dart';
-import 'package:pompomtracker/model/conductor_master/conductor_list/conductor_list_req/conductor_list_req.dart';
-import 'package:pompomtracker/model/common_models/list_model_req/list_req.dart';
+
 
 abstract class Apicalls {
   Future<Response<dynamic>?> login(Loginreq value);
@@ -30,6 +26,10 @@ abstract class Apicalls {
   Future<Response<dynamic>?> fetchBusEditDetails(BusEditReq value);
   Future<Response<dynamic>?> updateBus(BusMasterReq value);
   Future<Response<dynamic>?> fetchConductorList(ConductorListReq value);
+
+  Future<Response<dynamic>?> getTripdet(MasterListReq value);
+
+  Future<Response<dynamic>?> getStopdet(MasterListReq value);
 }
 
 class Busdata extends Apicalls {
@@ -282,6 +282,32 @@ class Busdata extends Apicalls {
     try {
       final result = await dio.post(
         url.fetchCondutorList,
+        data: value.toJson(),
+      );
+      return result;
+    } on DioException catch (ex) {
+      return ex.response;
+    }
+  }
+  
+  @override
+  Future<Response?> getTripdet(MasterListReq value) async{
+   try {
+      final result = await dio.post(
+        url.getTripdetUrl,
+        data: value.toJson(),
+      );
+      return result;
+    } on DioException catch (ex) {
+      return ex.response;
+    }
+  }
+  
+  @override
+  Future<Response?> getStopdet(MasterListReq value) async{
+   try {
+      final result = await dio.post(
+        url.getStopUrl,
         data: value.toJson(),
       );
       return result;

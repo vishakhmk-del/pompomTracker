@@ -1,6 +1,4 @@
-import 'package:flutter/material.dart';
 import 'package:pompomtracker/core/hook/hook.dart';
-import 'package:pompomtracker/model/common_models/list_model_req/list_req.dart';
 import 'package:pompomtracker/model/conductor_master/conductor_resp/conductor_resp.dart';
 
 class ScreenConductor extends StatefulWidget {
