@@ -1,9 +1,6 @@
 import 'dart:developer';
 
 import 'package:pompomtracker/core/hook/hook.dart';
-import 'package:pompomtracker/model/conductor_master/conductor_edit/conductor_edit_req/conductor_edit_re.dart';
-import 'package:pompomtracker/model/conductor_master/conductor_edit/conductor_edit_resp/conductor_detail.dart';
-import 'package:pompomtracker/model/conductor_master/conductor_edit/conductor_edit_resp/conductor_edit_resp.dart';
 
 class ConductorListFunctions {
   ConductorListFunctions._internal();
@@ -19,7 +16,7 @@ class ConductorListFunctions {
     Response<dynamic>? conductorListRespVar;
     final sharedValue = await SharedPrefManager.instance.getSharedData();
     final condutorReq = MasterListReq(
-        userId: sharedValue!.userId, userType: sharedValue.userType);
+        userId: sharedValue!.userId, usertype: sharedValue.userType);
     conductorListRespVar = await Busdata().fetchConductorList(condutorReq);
     if (conductorListRespVar == null) {
 //print('null');
@@ -62,7 +59,7 @@ class ConductorListFunctions {
       final Details =
           ConductorEditResp.fromJson(resultJson as Map<String, dynamic>);
       if (Details.status == 'success') {
-        log('Bus edit  data fetch success');
+        log('Conductor edit  data fetch success');
         final conlistDet = Details.conductorDetails;
         conDetailslist = conlistDet;
         return conDetailslist;

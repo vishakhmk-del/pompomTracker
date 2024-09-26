@@ -1,5 +1,5 @@
 import 'package:pompomtracker/core/hook/hook.dart';
-import 'package:pompomtracker/function/conductor/conductorListFun.dart';
+
 
 class ScreenConductorList extends StatefulWidget {
   const ScreenConductorList({super.key});

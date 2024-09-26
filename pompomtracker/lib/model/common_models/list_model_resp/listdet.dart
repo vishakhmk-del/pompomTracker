@@ -11,6 +11,7 @@ class Listdet {
   String? tripId;
   @JsonKey(name: 'start_time')
   String? startTime;
+
   @JsonKey(name: 'name')
   String? cname;
   @JsonKey(name: 'mobile_no')
@@ -25,19 +26,31 @@ class Listdet {
   String? status;
   @JsonKey(name: 'registration_no')
   String? registratioNo;
+  @JsonKey(name: 'route_name')
+  String? routeName;
+  @JsonKey(name: 'route_id')
+  String? routeId;
+  @JsonKey(name: 'bus_id')
+  String? busId;
 
-  Listdet(
-      {this.tripName,
-      this.via,
-      this.tripId,
-      this.startTime,
-      this.cname,
-      this.mobileNo,
-      this.address,
-      this.conductorId,
-      this.accountNo,
-      this.status,
-      this.registratioNo});
+  Listdet({
+    this.tripName,
+    this.via,
+    this.tripId,
+    this.startTime,
+    this.cname,
+    this.mobileNo,
+    this.address,
+    this.conductorId,
+    this.accountNo,
+    this.status,
+    this.registratioNo,
+    this.routeName,
+    this.routeId,
+    this.busId,
+  });
+
+  //Listdet({this.tripName, this.via, this.tripId, this.startTime});
 
   factory Listdet.fromJson(Map<String, dynamic> json) {
     return _$ListdetFromJson(json);

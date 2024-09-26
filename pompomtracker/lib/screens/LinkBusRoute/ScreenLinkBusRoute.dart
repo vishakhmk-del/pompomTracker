@@ -1,7 +1,11 @@
 import 'package:pompomtracker/core/hook/hook.dart';
 
 class ScreenLinkBusRoute extends StatefulWidget {
-  const ScreenLinkBusRoute({super.key});
+  final String? registrationNumber;
+  final String? routeId;
+  final int flag;
+  const ScreenLinkBusRoute(
+      {super.key, this.registrationNumber, this.routeId, required this.flag});
 
   @override
   State<ScreenLinkBusRoute> createState() => _ScreenLinkBusRouteState();
@@ -39,6 +43,12 @@ class _ScreenLinkBusRouteState extends State<ScreenLinkBusRoute> {
             'display': routeDisplay + viaDisplay, // Display label
           };
         }).toList();
+        if (widget.registrationNumber != null && widget.flag == 1) {
+          setState(() {
+            selectedBusList = widget.registrationNumber;
+            selectedRouteList = widget.routeId;
+          });
+        }
       });
     });
     //fetchBusregistraionList();
@@ -70,7 +80,7 @@ class _ScreenLinkBusRouteState extends State<ScreenLinkBusRoute> {
               child: Padding(
                 padding: const EdgeInsets.only(top: 45.0),
                 child: Container(
-                  height: MediaQuery.of(context).size.height * .5,
+                  height: MediaQuery.of(context).size.height * .7,
                   margin: const EdgeInsets.all(15),
                   decoration: BoxDecoration(
                     border: Border.all(
@@ -224,7 +234,8 @@ class _ScreenLinkBusRouteState extends State<ScreenLinkBusRoute> {
                                     onPressed: () {
                                       linkRouteMasterSave();
                                     },
-                                    child: Text('LINK',
+                                    child: Text(
+                                        widget.flag == 0 ? 'LINK' : 'UPDATE',
                                         style: Theme.of(context)
                                             .textTheme
                                             .titleMedium),
@@ -264,13 +275,26 @@ class _ScreenLinkBusRouteState extends State<ScreenLinkBusRoute> {
     loadingProvider.toggleLoading();
     final registrationNo = selectedBusList;
     final routeId = selectedRouteId;
-    //print(routeId);
 
+    // print(widget.routeId);
+    // print(routeId);
     final value = await SharedPrefManager.instance.getSharedData();
     final linkRouteMasterRequst = BusRouteLinkReq(
         regNo: registrationNo, routeId: routeId, userId: value!.userId);
-    final linkRouteMasterSavevar =
-        await Busdata().busRouteLinkMasterSave(linkRouteMasterRequst);
+    final linkRouteMasterRequstUpdate = BusRouteLinkReq(
+        regNo: registrationNo,
+        routeId: routeId,
+        userId: value!.userId,
+        oldRouteId: widget.routeId);
+    dynamic linkRouteMasterSavevar;
+
+    if (widget.flag == 0) {
+      linkRouteMasterSavevar =
+          await Busdata().busRouteLinkMasterSave(linkRouteMasterRequst);
+    } else {
+      linkRouteMasterSavevar =
+          await Busdata().updateBusRouteList(linkRouteMasterRequstUpdate);
+    }
     final resultAsjson = jsonDecode(linkRouteMasterSavevar.toString());
     // print(resultAsjson);
     final resValue =
@@ -279,7 +303,7 @@ class _ScreenLinkBusRouteState extends State<ScreenLinkBusRoute> {
     //print(resValue.status);
     if (resValue.status == 'success') {
       Fluttertoast.showToast(
-          msg: "Details saved successfully",
+          msg: "Details ${widget.flag == 0 ? 'saved' : 'updated'} successfully",
           toastLength: Toast.LENGTH_SHORT,
           gravity: ToastGravity.CENTER,
           timeInSecForIosWeb: 1,

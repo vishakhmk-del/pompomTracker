@@ -1,8 +1,4 @@
-import 'package:flutter/material.dart';
 import 'package:pompomtracker/core/hook/hook.dart';
-import 'package:pompomtracker/function/conductor/conductorListFun.dart';
-import 'package:pompomtracker/model/conductor_master/conductor_req/conductor_req.dart';
-import 'package:pompomtracker/model/conductor_master/conductor_resp/conductor_resp.dart';
 
 class ScreenConductor extends StatefulWidget {
   // ignore: non_constant_identifier_names
@@ -45,8 +41,8 @@ class _ScreenconductorState extends State<ScreenConductor> {
       if (widget.conductor_id != null && widget.flag == 1) {
         final buslistDet = await ConductorListFunctions.instance
             .fetchCondcutorEditDetails(widget.conductor_id!);
-        print(buslistDet?[0].status);
-        
+        // print(buslistDet?[0].status);
+
         setState(() {
           //  selectedStatus = buslistDet?[0].status ?? "";
           selectedBusList = buslistDet?[0].registrationNo ?? "";
@@ -84,7 +80,7 @@ class _ScreenconductorState extends State<ScreenConductor> {
           children: [
             SingleChildScrollView(
               child: Container(
-                height: MediaQuery.of(context).size.height * .9,
+                height: MediaQuery.of(context).size.height,
                 margin: const EdgeInsets.all(15),
                 decoration: BoxDecoration(
                   border: Border.all(
@@ -269,7 +265,7 @@ class _ScreenconductorState extends State<ScreenConductor> {
                                 items: <String>['Active', 'Inactive']
                                     .map((String value) {
                                   return DropdownMenuItem(
-                                    value: value == 'Active' ? 1 : 0,
+                                    value: value,
                                     child: Text(
                                       value,
                                       style: TextStyle(
@@ -281,7 +277,7 @@ class _ScreenconductorState extends State<ScreenConductor> {
                                 }).toList(),
                                 onChanged: (newValue) {
                                   setState(() {
-                                    selectedStatus = newValue as String?;
+                                    selectedStatus = newValue;
                                   });
                                 },
                                 value: selectedStatus,
@@ -332,7 +328,8 @@ class _ScreenconductorState extends State<ScreenConductor> {
                                   onPressed: () {
                                     conductorMasterSave();
                                   },
-                                  child: Text('SAVE',
+                                  child: Text(
+                                      widget.flag == 0 ? 'SAVE' : 'UPDATE',
                                       style: Theme.of(context)
                                           .textTheme
                                           .titleMedium),
@@ -378,27 +375,43 @@ class _ScreenconductorState extends State<ScreenConductor> {
     final emailId = _emailController.text;
     //print(routeId);
     dynamic conductorMasterSavevar;
+    late MasterListReq conductorMasterRequst;
     final value = await SharedPrefManager.instance.getSharedData();
-    final conductorMasterRequst = ConductorReq(
-        cname: cname,
-        caddress: caddress,
-        mobNo: mobNo,
-        busRegNo: busRegNo,
-        emailId: emailId,
-        status: status,
-        accNo: accNo,
-        userId: value!.userId,
-        ownerId: value.userId);
     if (widget.flag == 0) {
+      conductorMasterRequst = MasterListReq(
+          cname: cname,
+          caddress: caddress,
+          mobNo: mobNo,
+          busRegNo: busRegNo,
+          emailId: emailId,
+          status: status,
+          accNo: accNo,
+          userId: value!.userId,
+          ownerId: value.userId);
       conductorMasterSavevar =
           await Busdata().conductorMasterSave(conductorMasterRequst);
     } else {
-      await Busdata().conductorMasterSave(conductorMasterRequst);
+      conductorMasterRequst = MasterListReq(
+          conductorId: widget.conductor_id,
+          cname: cname,
+          caddress: caddress,
+          mobNo: mobNo,
+          busRegNo: busRegNo,
+          emailId: emailId,
+          status: status,
+          accNo: accNo,
+          userId: value!.userId,
+          ownerId: value.userId);
+      conductorMasterSavevar =
+          await Busdata().updateConductortDetails(conductorMasterRequst);
     }
+
+    print(conductorMasterSavevar);
     final resultAsjson = jsonDecode(conductorMasterSavevar.toString());
     // print(resultAsjson);
     final resValue =
         ConductorResp.fromJson(resultAsjson as Map<String, dynamic>);
+    //print(resValue.status);
     loadingProvider.toggleLoading();
     //print(resValue.status);
     final message = resValue.message.toString();

@@ -1,0 +1,79 @@
+import 'dart:developer';
+
+import 'package:pompomtracker/core/hook/hook.dart';
+
+
+class BusRouteListFunctions {
+  BusRouteListFunctions._internal();
+  static BusRouteListFunctions instance = BusRouteListFunctions._internal();
+  BusRouteListFunctions factory() {
+    return instance;
+  }
+
+  ValueNotifier<List<Listdet>> getBusRouteListNotifier = ValueNotifier([]);
+
+  Future getBusRouteList() async {
+    // print('nnn');
+    Response<dynamic>? conductorListRespVar;
+    final sharedValue = await SharedPrefManager.instance.getSharedData();
+    final condutorReq =
+    conductorListRespVar = await Busdata().fetchConductorList(condutorReq);
+    if (conductorListRespVar == null) {
+//print('null');
+      getConductoristNotifier.value.clear();
+      getConductoristNotifier.value.addAll([]);
+      getConductoristNotifier.notifyListeners();
+    } else if (conductorListRespVar.statusCode == 200) {
+      final resultAsJson = jsonDecode(conductorListRespVar.toString());
+      final conductorListRespVal =
+          MasterListMdl.fromJson(resultAsJson as Map<String, dynamic>);
+      if (conductorListRespVal.status == 'success') {
+        //print('sucess');
+        final item_det = conductorListRespVal.listDet;
+        //print(item_det.);
+        getConductoristNotifier.value.clear();
+        getConductoristNotifier.value.addAll(item_det);
+        getConductoristNotifier.notifyListeners();
+      } else if (conductorListRespVal.status == 'Failed') {
+        final item_det = conductorListRespVal.listDet;
+        getConductoristNotifier.value.clear();
+        getConductoristNotifier.value.addAll(item_det);
+        getConductoristNotifier.notifyListeners();
+      }
+    }
+  }
+
+  Future fetchCondcutorEditDetails(String conductorId) async {
+    List<ConductorDetail>? conDetailslist = [];
+    final sharedValue = await SharedPrefManager.instance.getSharedData();
+    ConductorEditRe conEditReq = ConductorEditRe(
+        conductorId: conductorId,
+        userId: sharedValue!.userId,
+        userType: sharedValue.userType);
+    final getEditDet = await Busdata().fetchConEditDetails(conEditReq);
+    if (getEditDet == null) {
+      conDetailslist = conDetailslist;
+      return conDetailslist;
+    } else if (getEditDet.statusCode == 200) {
+      final resultJson = jsonDecode(getEditDet.toString());
+      final Details =
+          ConductorEditResp.fromJson(resultJson as Map<String, dynamic>);
+      if (Details.status == 'success') {
+        log('Conductor edit  data fetch success');
+        final conlistDet = Details.conductorDetails;
+        conDetailslist = conlistDet;
+        return conDetailslist;
+      } else if (Details.status == 'Failed') {
+        log('Bus edit  data fetch failed');
+        final conlistDet = Details.conductorDetails;
+        conDetailslist = conlistDet;
+        return conDetailslist;
+      }
+    } else {
+      log('Route data fetch exception');
+      conDetailslist = conDetailslist;
+      return conDetailslist;
+    }
+    return conDetailslist;
+  }
+}

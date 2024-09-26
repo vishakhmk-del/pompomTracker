@@ -1,4 +1,5 @@
 import 'package:pompomtracker/core/hook/hook.dart';
+import 'package:pompomtracker/screens/LinkBusRoute/BusRouteList.dart';
 
 class Approutes {
   PageTransition loginscreen = PageTransition(
@@ -15,13 +16,15 @@ class Approutes {
     curve: Curves.easeInOutBack,
     duration: const Duration(microseconds: 500),
   );
-  // PageTransition busmasterscreen = PageTransition(
-  //   child: const ScreenBusMater(),
-  //   type: PageTransitionType.fade,
-  //   alignment: Alignment.center,
-  //   curve: Curves.easeInOutBack,
-  //   duration: const Duration(microseconds: 500),
-  // );
+  PageTransition busmasterscreen = PageTransition(
+    child: const ScreenBusMater(
+      flag: 0,
+    ),
+    type: PageTransitionType.fade,
+    alignment: Alignment.center,
+    curve: Curves.easeInOutBack,
+    duration: const Duration(microseconds: 500),
+  );
   PageTransition routemasterscreen = PageTransition(
     child: const ScreenRoutemaster(),
     type: PageTransitionType.fade,
@@ -54,7 +57,9 @@ class Approutes {
   );
 
   PageTransition linkbusroutescreen = PageTransition(
-    child: const ScreenLinkBusRoute(),
+    child: const ScreenLinkBusRoute(
+      flag: 0,
+    ),
     type: PageTransitionType.fade,
     alignment: Alignment.center,
     curve: Curves.easeInOutBack,
@@ -94,7 +99,7 @@ class Approutes {
   );
 
   PageTransition busRouteListScreen = PageTransition(
-    child: const ScreenBusRouteList(),
+    child: const BusRouteList(),
     type: PageTransitionType.fade,
     alignment: Alignment.center,
     curve: Curves.easeInOutBack,

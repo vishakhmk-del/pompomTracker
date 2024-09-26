@@ -26,4 +26,6 @@ class Url {
   String fetchCondutorList = '/Owner_C/conductor_view';
   String fetchCondutorEditList = '/Owner_C/conductor_details';
   String updateCon = '/Owner_C/update_conductor';
+  String fetchBusRouteList = '/Owner_C/bus_route_view';
+  String updateBusRouteList = '/Master_C/bus_route_link_update';
 }

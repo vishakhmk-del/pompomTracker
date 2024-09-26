@@ -11,6 +11,7 @@ BusRouteLinkReq _$BusRouteLinkReqFromJson(Map<String, dynamic> json) =>
       regNo: json['reg_no'] as String?,
       routeId: (json['route_id'] as num?)?.toInt(),
       userId: json['user_id'] as String?,
+      oldRouteId: json['old_route_id'] as String?,
     );
 
 Map<String, dynamic> _$BusRouteLinkReqToJson(BusRouteLinkReq instance) =>
@@ -18,4 +19,5 @@ Map<String, dynamic> _$BusRouteLinkReqToJson(BusRouteLinkReq instance) =>
       'reg_no': instance.regNo,
       'route_id': instance.routeId,
       'user_id': instance.userId,
+      'old_route_id': instance.oldRouteId,
     };
