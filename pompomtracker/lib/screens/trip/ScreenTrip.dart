@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:pompomtracker/core/hook/hook.dart';
+import 'package:pompomtracker/function/trip/TripListFun.dart';
 
 class ScreenTrip extends StatefulWidget {
-  const ScreenTrip({super.key});
+  final String? trip_id;
+  final String? regNo;
+
+  final int flag;
+  const ScreenTrip({super.key, this.trip_id, this.regNo, required this.flag});
 
   @override
   State<ScreenTrip> createState() => _ScreenTriptState();
@@ -47,7 +52,16 @@ class _ScreenTriptState extends State<ScreenTrip> {
           };
         }).toList();
       });
+      if (widget.regNo != null && widget.flag == 1) {
+        TripListFuntions.instance
+            .TripEditFun(widget.regNo as String, widget.trip_id as int);
+        setState(() {
+          selectedBusList = widget.regNo;
+          //  selectedRouteList = widget.trip_id;
+        });
+      }
     });
+
     //fetchBusregistraionList();
   }
 

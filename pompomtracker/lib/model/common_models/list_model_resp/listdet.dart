@@ -33,22 +33,25 @@ class Listdet {
   @JsonKey(name: 'bus_id')
   String? busId;
 
-  Listdet({
-    this.tripName,
-    this.via,
-    this.tripId,
-    this.startTime,
-    this.cname,
-    this.mobileNo,
-    this.address,
-    this.conductorId,
-    this.accountNo,
-    this.status,
-    this.registratioNo,
-    this.routeName,
-    this.routeId,
-    this.busId,
-  });
+  @JsonKey(name: 'end_time')
+  String? endTime;
+
+  Listdet(
+      {this.tripName,
+      this.via,
+      this.tripId,
+      this.startTime,
+      this.cname,
+      this.mobileNo,
+      this.address,
+      this.conductorId,
+      this.accountNo,
+      this.status,
+      this.registratioNo,
+      this.routeName,
+      this.routeId,
+      this.busId,
+      this.endTime});
 
   //Listdet({this.tripName, this.via, this.tripId, this.startTime});
 
