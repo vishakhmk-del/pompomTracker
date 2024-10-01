@@ -4,7 +4,11 @@ part 'list_req.g.dart';
 
 @JsonSerializable()
 class MasterListReq {
+  @JsonKey(name: 'conductor_id')
+  String? conductorId;
+  @JsonKey(name: 'cname')
   String? cname;
+  @JsonKey(name: 'caddress')
   String? caddress;
   @JsonKey(name: 'mob_no')
   String? mobNo;
@@ -12,6 +16,7 @@ class MasterListReq {
   String? busRegNo;
   @JsonKey(name: 'email_id')
   String? emailId;
+  @JsonKey(name: 'status')
   String? status;
   @JsonKey(name: 'acc_no')
   String? accNo;
@@ -23,8 +28,26 @@ class MasterListReq {
   String? usertype;
   @JsonKey(name: 'trip_id')
   String? tripId;
-
+  @JsonKey(name: 'arriving_time')
+  String? arrivingTime;
+  @JsonKey(name: 'stop_name')
+  String? stopName;
+  @JsonKey(name: 'stop_name_old')
+  String? stopNameOld;
+  @JsonKey(name: 'stop_id')
+  String? stopId;
+  @JsonKey(name: 'km')
+  String? km;
+  @JsonKey(name: 'after')
+  int? after;
+  @JsonKey(name: 'latitude')
+  String? latitude;
+  @JsonKey(name: 'longitude')
+  String? longitude;
+  @JsonKey(name: 'is_stage')
+  int? isStage;
   MasterListReq({
+    this.conductorId,
      this.cname,
     this.caddress,
     this.mobNo,
@@ -35,9 +58,18 @@ class MasterListReq {
     this.userId,
     this.ownerId,
     this.usertype,
-    this.tripId
-
+    this.tripId,
+    this.arrivingTime,
+    this.stopName,
+    this.stopNameOld,
+    this.stopId,
+    this.km,
+    this.after,
+    this.latitude,
+    this.longitude,
+    this.isStage
   });
+
 
   factory MasterListReq.fromJson(Map<String, dynamic> json) {
     return _$MasterListReqFromJson(json);

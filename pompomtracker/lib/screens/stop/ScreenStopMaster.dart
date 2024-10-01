@@ -147,14 +147,14 @@ class _ScreenStopMasterState extends State<ScreenStopMaster> {
                               ),
                             ),
                             decoration: InputDecoration(
-                              labelText: 'Select Route',
+                              labelText: 'Select Trip',
                               labelStyle: Theme.of(context).textTheme.bodySmall,
                             ),
                             dropdownColor:
                                 Theme.of(context).colorScheme.tertiary,
                             validator: (value) {
                               if (value == null) {
-                                return 'Select Route';
+                                return 'Select Trip';
                               } else {
                                 return null;
                               }
@@ -198,25 +198,22 @@ class _ScreenStopMasterState extends State<ScreenStopMaster> {
                               },
                             ),
                           ),
-                          Theme(
+                            Theme(
                             data: Theme.of(context),
-                            child: Checkbox(
-                              checkColor: Colors.white,
-                              //fillColor: MaterialStateProperty.resolveWith(getColor),
-                              value: isChecked,
-                              onChanged: (bool? value) {
-                                setState(() {
-                                  isChecked = value!;
-                                });
-                              },
+                            child: Consumer<CheckProvider>(
+                              builder: (context, check, _) => Checkbox(
+                                  value: check.isAccepted,
+                                  onChanged: (value) {
+                                    check.setAccepted(value);
+                                  }),
                             ),
                           ),
                           Expanded(
                               child: Text(
-                            "Is Stage",
+                            "Is stage",
                             textAlign: TextAlign.left,
                             style: Theme.of(context).textTheme.labelLarge,
-                          ))
+                          )),
                         ]),
                         // const SizedBox(height: 20),
 
