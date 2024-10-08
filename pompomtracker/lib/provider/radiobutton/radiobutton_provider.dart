@@ -5,8 +5,11 @@ class RadiobuttonProvider with ChangeNotifier {
 
   StatementType _selectedMode = StatementType.both;
 
+  StatementType _selectedFormat = StatementType.before;
+
   StatementType get selectedType => _selectedType;
   StatementType get selectedMode => _selectedMode;
+  StatementType get selectedFormat=> _selectedFormat;
 
   void changeSelectedType(StatementType type) {
     _selectedType = type;
@@ -18,10 +21,15 @@ class RadiobuttonProvider with ChangeNotifier {
     notifyListeners();
   }
 
+  void changeSelectedFormat(StatementType type) {
+    _selectedFormat = type;
+    notifyListeners();
+  }
+
   void reset() {
     _selectedMode = StatementType.both;
     _selectedType = StatementType.collectionType;
-
+    _selectedFormat=StatementType.before;
     notifyListeners();
   }
 }

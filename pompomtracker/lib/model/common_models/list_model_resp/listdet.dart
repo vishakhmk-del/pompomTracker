@@ -11,6 +11,18 @@ class Listdet {
   String? tripId;
   @JsonKey(name: 'start_time')
   String? startTime;
+  @JsonKey(name: 'stop_name')
+  String? stopName;
+  @JsonKey(name: 'stop_id')
+  String? stopId;
+  @JsonKey(name: 'stage_id')
+  String? stageId;
+  @JsonKey(name: 'is_stage')
+  String? isStage;
+  @JsonKey(name: 'km')
+  String? km;
+  @JsonKey(name: 'arriving_time')
+  String? arrivingTime;
 
   @JsonKey(name: 'name')
   String? cname;
@@ -45,6 +57,12 @@ class Listdet {
       this.via,
       this.tripId,
       this.startTime,
+      this.stopName,
+      this.stopId,
+      this.stageId,
+      this.isStage,
+      this.km,
+      this.arrivingTime,
       this.cname,
       this.mobileNo,
       this.address,

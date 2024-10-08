@@ -20,6 +20,15 @@ MasterListReq _$MasterListReqFromJson(Map<String, dynamic> json) =>
       ownerId: json['owner_id'] as String?,
       usertype: json['user_type'] as String?,
       tripId: json['trip_id'] as String?,
+      arrivingTime: json['arriving_time'] as String?,
+      stopName: json['stop_name'] as String?,
+      stopNameOld: json['stop_name_old'] as String?,
+      stopId: json['stop_id'] as String?,
+      km: json['km'] as String?,
+      after: json['after'] as int?,
+      latitude: json['latitude'] as String?,
+      longitude: json['longitude'] as String?,
+      isStage: json['is_stage'] as int?,
     );
 
 Map<String, dynamic> _$MasterListReqToJson(MasterListReq instance) =>
@@ -35,5 +44,14 @@ Map<String, dynamic> _$MasterListReqToJson(MasterListReq instance) =>
       'user_id': instance.userId,
       'owner_id': instance.ownerId,
       'user_type': instance.usertype,
-      'trip_id': instance.tripId
+      'trip_id': instance.tripId,
+      'arriving_time': instance.arrivingTime,
+      'stop_name': instance.stopName,
+      'stop_name_old': instance.stopNameOld,
+      'stop_id': instance.stopId,
+      'km': instance.km,
+      'after': instance.after,
+      'latitude': instance.latitude,
+      'longitude': instance.longitude,
+      'is_stage': instance.isStage
     };

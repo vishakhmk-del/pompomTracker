@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:pompomtracker/core/hook/hook.dart';
 import 'package:pompomtracker/function/trip/TripListFun.dart';
@@ -72,46 +71,6 @@ class _ScreenTriptState extends State<ScreenTrip> {
     //fetchBusregistraionList();
   }
 
-  // void fetchBusregistraionList() async {
-  //   final value = await SharedPrefManager.instance.getSharedData();
-  //   RegistrationReq registrationReq = RegistrationReq(userId: value!.userId);
-  //   final getRegList = await Busdata().getBusRegistartionList(registrationReq);
-  //   if (getRegList == null) {
-  //   } else {
-  //     final resultAsJson = jsonDecode(getRegList.toString());
-  //     final registrationList =
-  //         RegistrationResp.fromJson(resultAsJson as Map<String, dynamic>);
-  //     //this is the registraion response model (main model)
-
-  //     setState(() {
-  //       registarionlst = registrationList.busList!
-  //           .map((bus) => bus.registrationNo ?? "")
-  //           .toList(); //calling registarion list  from main model
-  //     });
-  //   }
-  // }
-
-  /*void fetchRouteList() async {
-    final value = await SharedPrefManager.instance.getSharedData();
-    GetRouteReq routeReq = GetRouteReq(userId: value!.userId, userType: '3');
-    final getRouteList = await Busdata().getRouteList(routeReq);
-    final resultAsJson = jsonDecode(getRouteList.toString());
-    final routeList =
-        GerRouteResp.fromJson(resultAsJson as Map<String, dynamic>);
-
-    setState(() {
-      routelist = routeList.routeList!.map((bus) {
-        String routeDisplay = bus.routeName ?? "";
-        String viaDisplay =
-            bus.via != null && bus.via!.isNotEmpty ? " via - ${bus.via}" : "";
-        return {
-          'routeId': bus.routeId!, // routeId as int
-          'display': routeDisplay + viaDisplay, // Display label
-        };
-      }).toList();
-    });
-  }
-*/
   Future<void> _selectTime(
       BuildContext context, TextEditingController controller) async {
     final DateFormat timeFormat = DateFormat('HH:mm');
@@ -158,9 +117,6 @@ class _ScreenTriptState extends State<ScreenTrip> {
           )),
       body: Center(
         child: ListView(
-          //scrollDirection: Axis.horizontal,
-          // physics: const BouncingScrollPhysics(),
-          // scrollDirection: Axis.vertical,
           children: [
             SingleChildScrollView(
               child: Container(

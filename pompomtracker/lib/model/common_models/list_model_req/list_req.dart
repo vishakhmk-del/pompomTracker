@@ -29,6 +29,24 @@ class MasterListReq {
   @JsonKey(name: 'trip_id')
   String? tripId;
 
+  @JsonKey(name: 'arriving_time')
+  String? arrivingTime;
+  @JsonKey(name: 'stop_name')
+  String? stopName;
+  @JsonKey(name: 'stop_name_old')
+  String? stopNameOld;
+  @JsonKey(name: 'stop_id')
+  String? stopId;
+  @JsonKey(name: 'km')
+  String? km;
+  @JsonKey(name: 'after')
+  int? after;
+  @JsonKey(name: 'latitude')
+  String? latitude;
+  @JsonKey(name: 'longitude')
+  String? longitude;
+  @JsonKey(name: 'is_stage')
+  int? isStage;
   MasterListReq(
       {this.conductorId,
       this.cname,
@@ -41,7 +59,16 @@ class MasterListReq {
       this.userId,
       this.ownerId,
       this.usertype,
-      this.tripId});
+      this.tripId,
+      this.arrivingTime,
+      this.stopName,
+      this.stopNameOld,
+      this.stopId,
+      this.km,
+      this.after,
+      this.latitude,
+      this.longitude,
+      this.isStage});
 
   factory MasterListReq.fromJson(Map<String, dynamic> json) {
     return _$MasterListReqFromJson(json);

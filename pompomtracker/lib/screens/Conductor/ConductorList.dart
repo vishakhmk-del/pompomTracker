@@ -11,6 +11,8 @@ class ScreenConductorList extends StatefulWidget {
 class _ScreenConductorListState extends State<ScreenConductorList> {
   List<String> columns = [];
   List<String?> cells = [];
+  
+  @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
