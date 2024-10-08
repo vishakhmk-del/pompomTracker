@@ -91,7 +91,7 @@ class Approutes {
   );
 
   PageTransition tripListScreen = PageTransition(
-    child: const ScreenTripList(),
+    child: const ScreenTripMaster(),
     type: PageTransitionType.fade,
     alignment: Alignment.center,
     curve: Curves.easeInOutBack,
