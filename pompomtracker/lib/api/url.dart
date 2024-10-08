@@ -29,4 +29,6 @@ class Url {
   String fetchBusRouteList = '/Owner_C/bus_route_view';
   String updateBusRouteList = '/Master_C/bus_route_link_update';
   String fetchTripList = '/Owner_C/trip_view';
+  String fetchTripEdit = '/Master_C/get_routeTripEdit';
+  String tripUpdate = '/Owner_C/update_trip';
 }

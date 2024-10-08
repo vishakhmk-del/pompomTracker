@@ -26,6 +26,8 @@ class MasterListReq {
   String? ownerId;
   @JsonKey(name: 'user_type')
   String? usertype;
+  @JsonKey(name: 'trip_id')
+  String? tripId;
 
   MasterListReq(
       {this.conductorId,
@@ -38,7 +40,8 @@ class MasterListReq {
       this.accNo,
       this.userId,
       this.ownerId,
-      this.usertype});
+      this.usertype,
+      this.tripId});
 
   factory MasterListReq.fromJson(Map<String, dynamic> json) {
     return _$MasterListReqFromJson(json);

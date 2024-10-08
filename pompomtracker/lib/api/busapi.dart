@@ -32,6 +32,8 @@ abstract class Apicalls {
   Future<Response<dynamic>?> fetchBusRouteList(MasterListReq value);
   Future<Response<dynamic>?> updateBusRouteList(BusRouteLinkReq value);
   Future<Response<dynamic>?> fetchTripList(MasterListReq value);
+  Future<Response<dynamic>?> fetchTripEdit(MasterListReq value);
+  Future<Response<dynamic>?> tripMasterUpdate(TripMasterReq value);
 }
 
 class Busdata extends Apicalls {
@@ -349,6 +351,32 @@ class Busdata extends Apicalls {
     try {
       final result = await dio.post(
         url.fetchTripList,
+        data: value.toJson(),
+      );
+      return result;
+    } on DioException catch (ex) {
+      return ex.response;
+    }
+  }
+
+  @override
+  Future<Response?> fetchTripEdit(MasterListReq value) async {
+    try {
+      final result = await dio.post(
+        url.fetchTripEdit,
+        data: value.toJson(),
+      );
+      return result;
+    } on DioException catch (ex) {
+      return ex.response;
+    }
+  }
+
+  @override
+  Future<Response?> tripMasterUpdate(TripMasterReq value) async {
+    try {
+      final result = await dio.post(
+        url.tripUpdate,
         data: value.toJson(),
       );
       return result;

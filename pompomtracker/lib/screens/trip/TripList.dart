@@ -12,10 +12,19 @@ class ScreenTripList extends StatefulWidget {
 class _ScreenTripListState extends State<ScreenTripList> {
   List<String> columns = [];
   List<String?> cells = [];
+  List<BusRegList>? busreglist = [];
+  List<String> registarionlst = [];
+  String? selectedBusList;
+  // final _formKey = GlobalKey<FormState>();
+  @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      await TripListFuntions.instance.getTripList();
+      busreglist = await Wklycollectfn.instance.busReglistfn();
+      setState(() {
+        registarionlst =
+            busreglist!.map((bus) => bus.registrationNo ?? "").toList();
+      });
     });
   }
 
@@ -34,25 +43,139 @@ class _ScreenTripListState extends State<ScreenTripList> {
           style: TextStyle(color: Theme.of(context).colorScheme.onSecondary),
         ),
       ),
-      body: SingleChildScrollView(
-        scrollDirection: Axis.horizontal,
-        child: ValueListenableBuilder(
-            valueListenable: TripListFuntions.instance.getTripListNotifier,
-            builder: (BuildContext context, List<Listdet> newList, Widget? _) {
-              return DataTable(
-                columns: getColumns(columns = [
-                  'S.No',
-                  'Reg No',
-                  'Trip',
-                  'Start T',
-                  'End T',
-                  'Action',
-                ]),
-                rows: getRows(newList),
-              );
-            }),
+      body: ListView(
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Container(
+              decoration: BoxDecoration(
+                border: Border.all(
+                    color: Theme.of(context).colorScheme.onSecondary),
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: Padding(
+                  padding: const EdgeInsets.all(15.0),
+                  child: Theme(
+                      data: MyTheme.googleFormTheme,
+                      child: Column(children: [
+                        SizedBox(
+                          width: MediaQuery.of(context).size.width,
+                          child: DropdownButtonFormField(
+                            items: registarionlst.map((valueItem) {
+                              return DropdownMenuItem(
+                                value: valueItem,
+                                child: Text(
+                                  valueItem,
+                                  style: TextStyle(
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .onSecondary),
+                                ),
+                              );
+                            }).toList(),
+                            onChanged: (newValue) {
+                              setState(() {
+                                selectedBusList = newValue;
+
+                                //TripListFuntions.instance.getTripList();
+                              });
+                            },
+                            value: selectedBusList,
+                            style: TextStyle(
+                                color: Theme.of(context).colorScheme.onPrimary),
+                            icon: Theme(
+                              data: Theme.of(context),
+                              child: const Icon(
+                                Icons.arrow_drop_down,
+                              ),
+                            ),
+                            decoration: InputDecoration(
+                              labelText: 'Select Bus',
+                              labelStyle: Theme.of(context).textTheme.bodySmall,
+                            ),
+                            dropdownColor:
+                                Theme.of(context).colorScheme.tertiary,
+                            validator: (value) {
+                              if (value == null) {
+                                return 'Select Bus Type';
+                              } else {
+                                return null;
+                              }
+                            },
+                          ),
+                        ),
+                        const SizedBox(height: 10),
+                        Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            gradient: LinearGradient(
+                              begin: Alignment.topLeft,
+                              end: Alignment.bottomRight,
+                              colors: [
+                                Theme.of(context).colorScheme.primary,
+                                Theme.of(context).colorScheme.secondary,
+                              ],
+                            ),
+                          ),
+                          child: Theme(
+                            data: MyTheme.buttonStyleTheme,
+                            child: ElevatedButton(
+                              onPressed: () {
+                                context
+                                    .read<ElevatedBtnProvider>()
+                                    .changeSelectedVal(false);
+                                TripListFuntions.instance
+                                    .getTripList(selectedBusList);
+                                context
+                                    .read<ElevatedBtnProvider>()
+                                    .changeSelectedVal(true);
+                              },
+                              child: Text('SHOW',
+                                  style:
+                                      Theme.of(context).textTheme.titleMedium),
+                            ),
+                          ),
+                        ),
+                      ]))),
+            ),
+          ),
+          Consumer<ElevatedBtnProvider>(
+              builder: (context, widgetProvider, child) {
+            if (widgetProvider.selectedVal == false) {
+              return Container();
+            } else if (widgetProvider.selectedVal == true) {
+              return ScrollableWidget(child: tableDispay());
+            }
+            return Container();
+          }),
+        ],
       ),
     );
+  }
+
+  Widget tableDispay() {
+    return ValueListenableBuilder(
+        valueListenable: TripListFuntions.instance.getTripListNotifier,
+        builder: (BuildContext context, List<Listdet> newList, Widget? _) {
+          return Container(
+            decoration: BoxDecoration(
+              border:
+                  Border.all(color: Theme.of(context).colorScheme.onSecondary),
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: DataTable(
+              columns: getColumns(columns = [
+                'S.No',
+                'Reg No',
+                'Trip',
+                'Start T',
+                'End T',
+                'Action',
+              ]),
+              rows: getRows(newList),
+            ),
+          );
+        });
   }
 
   List<DataColumn> getColumns(List<String> columns) {
@@ -82,7 +205,9 @@ class _ScreenTripListState extends State<ScreenTripList> {
             Center(
               child: Text(
                 '$index', // Display the serial number
-                style: const TextStyle(fontWeight: FontWeight.bold),
+                style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: Theme.of(context).colorScheme.onSecondary),
               ),
             ),
           ),
@@ -95,7 +220,9 @@ class _ScreenTripListState extends State<ScreenTripList> {
                         ? const TextStyle(
                             fontWeight: FontWeight.bold,
                             color: Color.fromARGB(255, 88, 147, 250))
-                        : const TextStyle(fontWeight: FontWeight.normal)),
+                        : TextStyle(
+                            fontWeight: FontWeight.normal,
+                            color: Theme.of(context).colorScheme.onSecondary)),
               ),
             );
           }),

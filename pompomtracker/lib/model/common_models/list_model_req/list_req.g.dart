@@ -19,6 +19,7 @@ MasterListReq _$MasterListReqFromJson(Map<String, dynamic> json) =>
       userId: json['user_id'] as String?,
       ownerId: json['owner_id'] as String?,
       usertype: json['user_type'] as String?,
+      tripId: json['trip_id'] as String?,
     );
 
 Map<String, dynamic> _$MasterListReqToJson(MasterListReq instance) =>
@@ -33,5 +34,6 @@ Map<String, dynamic> _$MasterListReqToJson(MasterListReq instance) =>
       'acc_no': instance.accNo,
       'user_id': instance.userId,
       'owner_id': instance.ownerId,
-      'user_type': instance.usertype
+      'user_type': instance.usertype,
+      'trip_id': instance.tripId
     };

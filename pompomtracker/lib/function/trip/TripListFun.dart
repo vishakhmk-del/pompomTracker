@@ -8,12 +8,14 @@ class TripListFuntions {
   }
 
   ValueNotifier<List<Listdet>> getTripListNotifier = ValueNotifier([]);
-  Future getTripList() async {
+  Future getTripList(selectedBusList) async {
     // print('nnn');
     Response<dynamic>? tripListRespVar;
     final sharedValue = await SharedPrefManager.instance.getSharedData();
     final tripReq = MasterListReq(
-        userId: sharedValue!.userId, usertype: sharedValue.userType);
+        userId: sharedValue!.userId,
+        usertype: sharedValue.userType,
+        busRegNo: selectedBusList);
     tripListRespVar = await Busdata().fetchTripList(tripReq);
     if (tripListRespVar == null) {
 //print('null');
@@ -40,5 +42,35 @@ class TripListFuntions {
     }
   }
 
-  Future TripEditFun(String regNo, int tripId) async {}
+  Future tripEditFun(regNo, tripId) async {
+    List<Listdet>? tripDetailslist = [];
+    final sharedValue = await SharedPrefManager.instance.getSharedData();
+    final tripEdit = MasterListReq(
+        userId: sharedValue!.userId,
+        usertype: sharedValue.userType,
+        busRegNo: regNo,
+        tripId: tripId);
+    Response<dynamic>? tripEditResp;
+    tripEditResp = await Busdata().fetchTripEdit(tripEdit);
+    if (tripEditResp == null) {
+      tripDetailslist = tripDetailslist;
+      return tripDetailslist;
+    } else if (tripEditResp.statusCode == 200) {
+      //  print(tripEditResp);
+      final resultAsJson = jsonDecode(tripEditResp.toString());
+      final Details =
+          MasterListMdl.fromJson(resultAsJson as Map<String, dynamic>);
+      if (Details.status == 'success') {
+        tripDetailslist = Details.listDet;
+        return tripDetailslist;
+      } else if (Details.status == 'Failed') {
+        tripDetailslist = Details.listDet;
+        return tripDetailslist;
+      }
+    } else {
+      tripDetailslist = tripDetailslist;
+      return tripDetailslist;
+    }
+    return tripDetailslist;
+  }
 }
