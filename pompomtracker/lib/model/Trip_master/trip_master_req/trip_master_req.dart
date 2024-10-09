@@ -14,16 +14,18 @@ class TripMasterReq {
   String? ttime;
   @JsonKey(name: 'user_id')
   String? userId;
+  @JsonKey(name: 'trip_id')
+  String? tripId;
 
-  TripMasterReq({
-    required this.routeId,
-    required this.regNo,
-    required this.from,
-    required this.to,
-    required this.ftime,
-    required this.ttime,
-    required this.userId,
-  });
+  TripMasterReq(
+      {required this.routeId,
+      required this.regNo,
+      required this.from,
+      required this.to,
+      required this.ftime,
+      required this.ttime,
+      required this.userId,
+      this.tripId});
 
   factory TripMasterReq.fromJson(Map<String, dynamic> json) {
     return _$TripMasterReqFromJson(json);

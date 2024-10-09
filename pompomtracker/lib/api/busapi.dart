@@ -1,9 +1,6 @@
 import 'package:pompomtracker/core/hook/hook.dart';
 
 
-import 'package:pompomtracker/model/conductor_master/conductor_edit/conductor_edit_req/conductor_edit_re.dart';
-
-
 abstract class Apicalls {
   Future<Response<dynamic>?> login(Loginreq value);
   Future<Response<dynamic>?> weeklycollection(Weeklycollectionreq value);
@@ -29,7 +26,6 @@ abstract class Apicalls {
   Future<Response<dynamic>?> fetchBusEditDetails(BusEditReq value);
   Future<Response<dynamic>?> updateBus(BusMasterReq value);
 
-
   Future<Response<dynamic>?> getTripdet(MasterListReq value);
 
   Future<Response<dynamic>?> getStopdet(MasterListReq value);
@@ -39,11 +35,17 @@ abstract class Apicalls {
   Future<Response<dynamic>?> updateConductortDetails(MasterListReq value);
   Future<Response<dynamic>?> fetchBusRouteList(MasterListReq value);
   Future<Response<dynamic>?> updateBusRouteList(BusRouteLinkReq value);
+
+  Future<Response<dynamic>?> fetchTripList(MasterListReq value);
+  Future<Response<dynamic>?> fetchTripEdit(MasterListReq value);
+  Future<Response<dynamic>?> tripMasterUpdate(TripMasterReq value);
+
   Future<Response<dynamic>?> stopNameChang(MasterListReq value);
   Future<Response<dynamic>?> deleteStop(MasterListReq value);
   Future<Response<dynamic>?> getStopname(MasterListReq value);
   Future<Response<dynamic>?> addNewStop(MasterListReq value);
-
+  Future<Response<dynamic>?> sortedRoute(MasterListReq value);
+  Future<Response<dynamic>?> fromToStaton(MasterListReq value);
 }
 
 class Busdata extends Apicalls {
@@ -304,10 +306,9 @@ class Busdata extends Apicalls {
     }
   }
 
-  
   @override
-  Future<Response?> getTripdet(MasterListReq value) async{
-   try {
+  Future<Response?> getTripdet(MasterListReq value) async {
+    try {
       final result = await dio.post(
         url.getTripdetUrl,
         data: value.toJson(),
@@ -318,13 +319,11 @@ class Busdata extends Apicalls {
     }
   }
 
-
   @override
   Future<Response?> fetchConEditDetails(ConductorEditRe value) async {
     try {
       final result = await dio.post(
         url.fetchCondutorEditList,
-
         data: value.toJson(),
       );
       return result;
@@ -333,10 +332,9 @@ class Busdata extends Apicalls {
     }
   }
 
-  
   @override
-  Future<Response?> getStopdet(MasterListReq value) async{
-   try {
+  Future<Response?> getStopdet(MasterListReq value) async {
+    try {
       final result = await dio.post(
         url.getStopUrl,
         data: value.toJson(),
@@ -346,7 +344,6 @@ class Busdata extends Apicalls {
       return ex.response;
     }
   }
-
 
   @override
   Future<Response?> updateConductortDetails(MasterListReq value) async {
@@ -379,7 +376,6 @@ class Busdata extends Apicalls {
     try {
       final result = await dio.post(
         url.updateBusRouteList,
-
         data: value.toJson(),
       );
       return result;
@@ -387,13 +383,12 @@ class Busdata extends Apicalls {
       return ex.response;
     }
   }
-  
+
   @override
-  Future<Response?> stopNameChang(MasterListReq value)async {
+  Future<Response?> stopNameChang(MasterListReq value) async {
     try {
       final result = await dio.post(
         url.stopNameChangeUrl,
-
         data: value.toJson(),
       );
       return result;
@@ -401,13 +396,12 @@ class Busdata extends Apicalls {
       return ex.response;
     }
   }
-  
+
   @override
-  Future<Response?> deleteStop(MasterListReq value) async{
-   try {
+  Future<Response?> deleteStop(MasterListReq value) async {
+    try {
       final result = await dio.post(
         url.deleteStopUrl,
-
         data: value.toJson(),
       );
       return result;
@@ -415,13 +409,64 @@ class Busdata extends Apicalls {
       return ex.response;
     }
   }
-  
+
   @override
-  Future<Response?> getStopname(MasterListReq value) async{
+  Future<Response?> getStopname(MasterListReq value) async {
     try {
       final result = await dio.post(
         url.getStopNameUrl,
+        data: value.toJson(),
+      );
+      return result;
+    } on DioException catch (ex) {
+      return ex.response;
+    }
+  }
 
+  @override
+  Future<Response?> addNewStop(MasterListReq value) async {
+    try {
+      final result = await dio.post(
+        url.addNewStopUrl,
+        data: value.toJson(),
+      );
+      return result;
+    } on DioException catch (ex) {
+      return ex.response;
+    }
+  }
+
+  @override
+  Future<Response?> fetchTripList(MasterListReq value) async {
+    try {
+      final result = await dio.post(
+        url.fetchTripList,
+        data: value.toJson(),
+      );
+      return result;
+    } on DioException catch (ex) {
+      return ex.response;
+    }
+  }
+
+  @override
+  Future<Response?> fetchTripEdit(MasterListReq value) async {
+    try {
+      final result = await dio.post(
+        url.fetchTripEdit,
+        data: value.toJson(),
+      );
+      return result;
+    } on DioException catch (ex) {
+      return ex.response;
+    }
+  }
+
+  @override
+  Future<Response?> tripMasterUpdate(TripMasterReq value) async {
+    try {
+      final result = await dio.post(
+        url.tripUpdate,
         data: value.toJson(),
       );
       return result;
@@ -431,11 +476,23 @@ class Busdata extends Apicalls {
   }
   
   @override
-  Future<Response?> addNewStop(MasterListReq value) async{
+  Future<Response?> sortedRoute(MasterListReq value) async{
     try {
       final result = await dio.post(
-        url.addNewStopUrl,
-
+        url.sortRouteUrl,
+        data: value.toJson(),
+      );
+      return result;
+    } on DioException catch (ex) {
+      return ex.response;
+    }
+  }
+  
+  @override
+  Future<Response?> fromToStaton(MasterListReq value) async{
+    try {
+      final result = await dio.post(
+        url.fromtoStnUrl,
         data: value.toJson(),
       );
       return result;
@@ -444,4 +501,3 @@ class Busdata extends Apicalls {
     }
   }
 }
-

@@ -80,8 +80,13 @@ class _ScreenBusMaterState extends State<ScreenBusMater> {
           leading: IconButton(
             icon: const Icon(Icons.arrow_back),
             onPressed: () {
-              Navigator.pushReplacement(
-                  _scafoldkey.currentContext!, Approutes().homescreen);
+              if (widget.flag == 0) {
+                Navigator.pushReplacement(
+                    _scafoldkey.currentContext!, Approutes().homescreen);
+              } else {
+                Navigator.pushReplacement(
+                    _scafoldkey.currentContext!, Approutes().busListScreen);
+              }
             },
           ),
           title: Text(

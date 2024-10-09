@@ -1,6 +1,7 @@
 import 'package:intl/intl.dart';
 import 'package:pompomtracker/core/hook/hook.dart';
 
+
 class ScreenTripMaster extends StatefulWidget {
   const ScreenTripMaster({super.key});
 
@@ -15,9 +16,13 @@ class _ScreenTripMasterState extends State<ScreenTripMaster> {
   List<Map<String, Object>> routelist = [];
   String? selectedBusList;
   String? selectedRouteList;
+  String? selectedFromList;
+  String? selectedToList;
   int? selectedRouteId;
+  List<String> stnlst = [];
   List<BusRegList>? busreglist = [];
-  List<RouteList>? routeDetailslist = [];
+  List<Listdet>? routeDetailslist = [];
+  List<Listdet>? stationlist = [];
   final _fromController = TextEditingController();
   final _toController = TextEditingController();
   final _startTimeController = TextEditingController();
@@ -30,21 +35,9 @@ class _ScreenTripMasterState extends State<ScreenTripMaster> {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       // fetchRouteList();
       busreglist = await Wklycollectfn.instance.busReglistfn();
-      routeDetailslist = await Wklycollectfn.instance.fetchRouteList();
       setState(() {
         registarionlst =
             busreglist!.map((bus) => bus.registrationNo ?? "").toList();
-        //calling registarion list  from main model
-
-        routelist = routeDetailslist!.map((bus) {
-          String routeDisplay = bus.routeName ?? "";
-          String viaDisplay =
-              bus.via != null && bus.via!.isNotEmpty ? " via - ${bus.via}" : "";
-          return {
-            'routeId': bus.routeId!, // routeId as int
-            'display': routeDisplay + viaDisplay, // Display label
-          };
-        }).toList();
       });
     });
     //fetchBusregistraionList();
@@ -96,7 +89,7 @@ class _ScreenTripMasterState extends State<ScreenTripMaster> {
           children: [
             SingleChildScrollView(
               child: Container(
-                height: MediaQuery.of(context).size.height * .9,
+                height: MediaQuery.of(context).size.height*1.05,
                 margin: const EdgeInsets.all(15),
                 decoration: BoxDecoration(
                   border: Border.all(
@@ -138,6 +131,8 @@ class _ScreenTripMasterState extends State<ScreenTripMaster> {
                                   setState(() {
                                     selectedBusList = newValue;
                                   });
+                                  selectedRouteList=null;
+                                  fetchroute(newValue);
                                 },
                                 value: selectedBusList,
                                 style: TextStyle(
@@ -173,24 +168,46 @@ class _ScreenTripMasterState extends State<ScreenTripMaster> {
                             SizedBox(
                               width: MediaQuery.of(context).size.width,
                               child: DropdownButtonFormField(
+                                isExpanded: true,
                                 items: routelist.map((busMap) {
+                                  final routeText = (busMap['display'] as String).split(' - via - ');
+                                  final routeName = routeText[0]; // First part
+                                  final viaPart = routeText.length > 1 ? '- via - ${routeText[1]}' : '';
                                   return DropdownMenuItem<String>(
+                                    
                                     value: busMap['routeId'] as String,
                                     // Use routeId as the value
-                                    child: ConstrainedBox(
-                                      constraints:
-                                          const BoxConstraints(maxWidth: 200),
-                                      child: Text(
-                                        busMap['display']
-                                            as String, // Display the route name and via
-                                        overflow: TextOverflow.ellipsis,
+                                    child: RichText(
+                                      text:TextSpan(
+                                      style: TextStyle(
+                                       color: Theme.of(context)
+                                            .colorScheme
+                                            .onSecondary,
+                                      ), children: [
+                                      TextSpan(
+                                        text: '$routeName\n', // Route name on the first line
+                                      ),
+                                      TextSpan(
+                                        text: viaPart, // "via" part on the second line
                                         style: TextStyle(
                                           color: Theme.of(context)
-                                              .colorScheme
-                                              .onSecondary,
+                                            .colorScheme
+                                            .onSecondary,
                                         ),
                                       ),
-                                    ),
+                                    ],
+                                    ),)
+                                    // Text(
+                                    //   (busMap['display'] as String)
+                                    //   .replaceFirst(' - via - ', '\nvia - '), // Display the route name and via
+                                    //   maxLines: null, // Allow multiple lines
+                                    //   softWrap: true,
+                                    //   style: TextStyle(
+                                    //     color: Theme.of(context)
+                                    //         .colorScheme
+                                    //         .onSecondary,
+                                    //   ),
+                                    // ),
                                   );
                                 }).toList(),
                                 onChanged: (newValue) {
@@ -199,6 +216,8 @@ class _ScreenTripMasterState extends State<ScreenTripMaster> {
                                     selectedRouteId = int.parse(newValue!);
                                     // Store the selected routeId
                                   });
+                                  fetchfromtostn(selectedRouteId);
+                                  //selectedRouteList ?? 'Others';
                                 },
                                 value: selectedRouteList,
                                 // Use the selected routeId
@@ -228,7 +247,65 @@ class _ScreenTripMasterState extends State<ScreenTripMaster> {
                                 },
                               ),
                             ),
+                            const SizedBox(
+                              height: 20,
+                            ),
+                            SizedBox(
+                              width: MediaQuery.of(context).size.width,
+                              child: DropdownButtonFormField(
+                                items:[ ...stnlst.map((valueItem) {
+                                  return DropdownMenuItem(
+                                    value: valueItem,
+                                    child: Text(
+                                      valueItem,
+                                      style: TextStyle(
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .onSecondary),
+                                    ),
+                                  );
+                                }).toList(),
+                                const DropdownMenuItem(
+                                  value: 'Others',
+                                  child: Text('Others'),
+                                ),],
+                                onChanged: (newValue) {
+                                  setState(() {
+                                    selectedFromList = newValue;
+                                  });
+                                  //selectedRouteList=null;
+                                 // fetchroute(newValue);
+                                },
+                                value: selectedFromList,
+                                style: TextStyle(
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .onPrimary),
+                                icon: Theme(
+                                  data: Theme.of(context),
+                                  child: const Icon(
+                                    Icons.arrow_drop_down,
+                                  ),
+                                ),
+                                decoration: InputDecoration(
+                                  labelText: 'From Station',
+                                  labelStyle:
+                                      Theme.of(context).textTheme.bodySmall,
+                                ),
+                                dropdownColor:
+                                    Theme.of(context).colorScheme.tertiary,
+                                    
+                                validator: (value) {
+                                  if (value!.isEmpty) {
+                                    return 'Select From Station';
+                                  } else {
+                                    return null;
+                                  }
+                                },
+                              ),
+                            ),
                             const SizedBox(height: 20),
+                          selectedFromList=='Others' ? 
                             SizedBox(
                               width: MediaQuery.of(context).size.width,
                               child: TextFormField(
@@ -246,8 +323,64 @@ class _ScreenTripMasterState extends State<ScreenTripMaster> {
                                   }
                                 },
                               ),
+                            ):const SizedBox.shrink(),
+                            const SizedBox(height: 20),
+                             SizedBox(
+                              width: MediaQuery.of(context).size.width,
+                              child: DropdownButtonFormField(
+                                items:[ ...stnlst.map((valueItem) {
+                                  return DropdownMenuItem(
+                                    value: valueItem,
+                                    child: Text(
+                                      valueItem,
+                                      style: TextStyle(
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .onSecondary),
+                                    ),
+                                  );
+                                }).toList(),
+                                const DropdownMenuItem(
+                                  value: 'Others',
+                                  child: Text('Others'),
+                                ),],
+                                onChanged: (newValue) {
+                                  setState(() {
+                                    selectedToList = newValue;
+                                  });
+                                  //selectedRouteList=null;
+                                 // fetchroute(newValue);
+                                },
+                                value: selectedToList,
+                                style: TextStyle(
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .onPrimary),
+                                icon: Theme(
+                                  data: Theme.of(context),
+                                  child: const Icon(
+                                    Icons.arrow_drop_down,
+                                  ),
+                                ),
+                                decoration: InputDecoration(
+                                  labelText: 'To Station',
+                                  labelStyle:
+                                      Theme.of(context).textTheme.bodySmall,
+                                ),
+                                dropdownColor:
+                                    Theme.of(context).colorScheme.tertiary,
+                                    
+                                validator: (value) {
+                                  if (value!.isEmpty) {
+                                    return 'Select To Station';
+                                  } else {
+                                    return null;
+                                  }
+                                },
+                              ),
                             ),
                             const SizedBox(height: 20),
+                            selectedToList=='Others'?
                             SizedBox(
                               width: MediaQuery.of(context).size.width,
                               child: TextFormField(
@@ -265,7 +398,7 @@ class _ScreenTripMasterState extends State<ScreenTripMaster> {
                                   }
                                 },
                               ),
-                            ),
+                            ):const SizedBox.shrink(),
 
                             const SizedBox(height: 20),
                             SizedBox(
@@ -335,7 +468,10 @@ class _ScreenTripMasterState extends State<ScreenTripMaster> {
                                 data: MyTheme.buttonStyleTheme,
                                 child: ElevatedButton(
                                   onPressed: () {
-                                    tripMasterSave();
+                                    if (_formKey.currentState!.validate()) {
+                                                  tripMasterSave();
+                                              }
+                                   
                                   },
                                   child: Text('SAVE',
                                       style: Theme.of(context)
@@ -377,16 +513,20 @@ class _ScreenTripMasterState extends State<ScreenTripMaster> {
     final registrationNo = selectedBusList;
     // final routeId = selectedRouteList;
     // print(routeId);
-    final fromStation = _fromController.text;
-    final toStation = _toController.text;
+    String? fromStn;
+    String? toStn;
+    fromStn=selectedFromList=='Others'? _fromController.text:selectedFromList;
+    toStn=selectedToList=='Others'? _toController.text:selectedToList;
+    // final fromStation = _fromController.text;
+    // final toStation = _toController.text;
     final startTime = _startTimeController.text;
     final endTime = _endTimeController.text;
     final value = await SharedPrefManager.instance.getSharedData();
     final tripMasterRequst = TripMasterReq(
         routeId: selectedRouteId,
         regNo: registrationNo,
-        from: fromStation,
-        to: toStation,
+        from: fromStn,
+        to: toStn,
         ftime: startTime,
         ttime: endTime,
         userId: value!.userId);
@@ -406,6 +546,8 @@ class _ScreenTripMasterState extends State<ScreenTripMaster> {
           backgroundColor: Colors.white,
           textColor: Colors.black,
           fontSize: 15.0);
+          Navigator.pushReplacement(
+                  _scafoldkey.currentContext!, Approutes().homescreen);
     } else if (resValue.status == 'Failed') {
       showerror(_scafoldkey.currentContext, 2);
     } else {
@@ -434,4 +576,91 @@ class _ScreenTripMasterState extends State<ScreenTripMaster> {
           fontSize: 15.0);
     }
   }
+
+  fetchroute(String? regid)async{
+      routeDetailslist = await TripListFuntions.instance.sortedrouteList(regid);
+      setState(() {
+        
+        routelist = routeDetailslist!.map((bus) {
+          String routeDisplay = bus.routeName ?? "";
+          String viaDisplay =
+              bus.via != null && bus.via!.isNotEmpty ? "- via - ${bus.via}" : "";
+          return {
+            'routeId': bus.routeId!, // routeId as int
+            'display': routeDisplay + viaDisplay, // Display label
+          };
+        }).toList();
+        routelist.isEmpty?linkRoute(context):routelist;
+      });
+  }
+
+   fetchfromtostn(int? routeid)async{
+      stationlist = await TripListFuntions.instance.stationList(routeid);
+      setState(() {
+        
+        stnlst =
+                stationlist!.map((bus) => bus.station ?? "").toList();
+      });
+  }
+  
+  linkRoute(BuildContext context) async => showDialog<bool>(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) => PopScope(
+        canPop: false,
+        child: AlertDialog(
+              title: Container(
+                 height: MediaQuery.of(context).size.height/5,
+                 width: MediaQuery.of(context).size.width,
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                    color: Theme.of(context).colorScheme.onSecondary),
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical:20,horizontal: 10),
+                      child: Text("Please link your bus with Route",
+                          style: Theme.of(context).textTheme.titleLarge),
+                    ),
+                        Padding(
+                                              padding: const EdgeInsets.symmetric(vertical: 10.0),
+                                              child: Container(
+                                                height: 30,
+                                                width: 100,
+                                                decoration: BoxDecoration(
+                                                  gradient: LinearGradient(
+                                                    begin: Alignment.topLeft,
+                                                    end: Alignment.bottomRight,
+                                                    colors: [
+                                                      Theme.of(context).colorScheme.primary,
+                                                      Theme.of(context).colorScheme.secondary
+                                                    ],
+                                                  ),
+                                                  borderRadius: BorderRadius.circular(12.0),
+                                                ),
+                                                child: Theme(
+                                                  data: MyTheme.buttonStyleTheme,
+                                                  child: ElevatedButton(
+                                                    onPressed: () async {
+                                                        // StopFunctions.instance.deleteStop(tripid, stopid); 
+                                                        Navigator.pushReplacement(context, Approutes().linkbusroutescreen);                                       
+                                                        //  Navigator.pop(context, false);
+                                                    },
+                                                    child: Text(
+                                                      'OK',
+                                                      style: Theme.of(context).textTheme.titleMedium,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                            )
+                  ],
+                ),
+              ),
+              
+            ),
+      ));
 }

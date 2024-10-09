@@ -25,20 +25,23 @@ class Url {
   String updateBus = '/Owner_C/update_bus';
   String fetchCondutorList = '/Owner_C/conductor_view';
 
-
   String getTripdetUrl = '/RouteMaster_C/get_trip_name_list';
 
   String getStopUrl = '/Master_C/get_stop_details';
-  
-
 
   String fetchCondutorEditList = '/Owner_C/conductor_details';
   String updateCon = '/Owner_C/update_conductor';
   String fetchBusRouteList = '/Owner_C/bus_route_view';
   String updateBusRouteList = '/Master_C/bus_route_link_update';
-  String stopNameChangeUrl='/RouteMaster_C/get_stop_name_update';
-  String deleteStopUrl='/RouteMaster_C/get_stop_delete';
-  String getStopNameUrl='/RouteMaster_C/get_stop_name';
-  String addNewStopUrl='/RouteMaster_C/get_stop_adding';
-  
+
+  String fetchTripList = '/Owner_C/trip_view';
+  String fetchTripEdit = '/Master_C/get_routeTripEdit';
+  String tripUpdate = '/Owner_C/update_trip';
+
+  String stopNameChangeUrl = '/RouteMaster_C/get_stop_name_update';
+  String deleteStopUrl = '/RouteMaster_C/get_stop_delete';
+  String getStopNameUrl = '/RouteMaster_C/get_stop_name';
+  String addNewStopUrl = '/RouteMaster_C/get_stop_adding';
+  String sortRouteUrl = '/Master_C/get_linked_route';
+  String fromtoStnUrl = '/Master_C/get_existing_tripname';
 }

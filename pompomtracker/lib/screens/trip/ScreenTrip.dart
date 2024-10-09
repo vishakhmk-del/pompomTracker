@@ -1,8 +1,13 @@
 import 'package:intl/intl.dart';
 import 'package:pompomtracker/core/hook/hook.dart';
+import 'package:pompomtracker/function/trip/TripListFun.dart';
 
 class ScreenTrip extends StatefulWidget {
-  const ScreenTrip({super.key});
+  final String? trip_id;
+  final String? regNo;
+
+  final int flag;
+  const ScreenTrip({super.key, this.trip_id, this.regNo, required this.flag});
 
   @override
   State<ScreenTrip> createState() => _ScreenTriptState();
@@ -46,11 +51,26 @@ class _ScreenTriptState extends State<ScreenTrip> {
           };
         }).toList();
       });
+      if (widget.regNo != null && widget.flag == 1) {
+        final triplistDet = await TripListFuntions.instance
+            .tripEditFun(widget.regNo, widget.trip_id);
+        setState(() {
+          // print(widget.regNo);
+          // print(triplistDet?[0].routeId);
+          selectedBusList = widget.regNo;
+          selectedRouteList = triplistDet?[0].routeId ?? "";
+          _fromController.text = triplistDet?[0].fromStation ?? "";
+          _toController.text = triplistDet?[0].toStation ?? "";
+          _startTimeController.text = triplistDet?[0].startTime ?? "";
+          _endTimeController.text = triplistDet?[0].endTime ?? "";
+          selectedRouteId = int.parse(triplistDet?[0].routeId ?? "");
+        });
+      }
     });
+
     //fetchBusregistraionList();
   }
 
-  
   Future<void> _selectTime(
       BuildContext context, TextEditingController controller) async {
     final DateFormat timeFormat = DateFormat('HH:mm');
@@ -82,8 +102,13 @@ class _ScreenTriptState extends State<ScreenTrip> {
           leading: IconButton(
             icon: const Icon(Icons.arrow_back),
             onPressed: () {
-              Navigator.pushReplacement(
-                  _scafoldkey.currentContext!, Approutes().homescreen);
+              if (widget.flag == 0) {
+                Navigator.pushReplacement(
+                    _scafoldkey.currentContext!, Approutes().homescreen);
+              } else {
+                Navigator.pushReplacement(
+                    _scafoldkey.currentContext!, Approutes().tripListScreen);
+              }
             },
           ),
           title: Text(
@@ -92,7 +117,6 @@ class _ScreenTriptState extends State<ScreenTrip> {
           )),
       body: Center(
         child: ListView(
-          
           children: [
             SingleChildScrollView(
               child: Container(
@@ -121,50 +145,52 @@ class _ScreenTriptState extends State<ScreenTrip> {
                             ),
                             SizedBox(
                               width: MediaQuery.of(context).size.width,
-                              child: DropdownButtonFormField(
-                                items: registarionlst.map((valueItem) {
-                                  return DropdownMenuItem(
-                                    value: valueItem,
-                                    child: Text(
-                                      valueItem,
-                                      style: TextStyle(
-                                          color: Theme.of(context)
-                                              .colorScheme
-                                              .onSecondary),
+                              child: IgnorePointer(
+                                ignoring: widget.flag == 0 ? false : true,
+                                child: DropdownButtonFormField(
+                                  items: registarionlst.map((valueItem) {
+                                    return DropdownMenuItem(
+                                      value: valueItem,
+                                      child: Text(
+                                        valueItem,
+                                        style: TextStyle(
+                                            color: Theme.of(context)
+                                                .colorScheme
+                                                .onSecondary),
+                                      ),
+                                    );
+                                  }).toList(),
+                                  onChanged: (newValue) {
+                                    setState(() {
+                                      selectedBusList = newValue;
+                                    });
+                                  },
+                                  value: selectedBusList,
+                                  style: TextStyle(
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .onPrimary),
+                                  icon: Theme(
+                                    data: Theme.of(context),
+                                    child: const Icon(
+                                      Icons.arrow_drop_down,
                                     ),
-                                  );
-                                }).toList(),
-                                onChanged: (newValue) {
-                                  setState(() {
-                                    selectedBusList = newValue;
-                                  });
-                                },
-                                value: selectedBusList,
-                                style: TextStyle(
-                                    color: Theme.of(context)
-                                        .colorScheme
-                                        .onPrimary),
-                                icon: Theme(
-                                  data: Theme.of(context),
-                                  child: const Icon(
-                                    Icons.arrow_drop_down,
                                   ),
+                                  decoration: InputDecoration(
+                                    labelText: 'Select Bus',
+                                    labelStyle:
+                                        Theme.of(context).textTheme.bodySmall,
+                                  ),
+                                  dropdownColor:
+                                      Theme.of(context).colorScheme.tertiary,
+                                  validator: (value) {
+                                    if (value!.isEmpty) {
+                                      return 'Select Bus Type';
+                                    } else {
+                                      return null;
+                                    }
+                                  },
                                 ),
-                                decoration: InputDecoration(
-                                  labelText: 'Select Bus',
-                                  labelStyle:
-                                      Theme.of(context).textTheme.bodySmall,
-                                ),
-                                dropdownColor:
-                                    Theme.of(context).colorScheme.tertiary,
-                                    
-                                validator: (value) {
-                                  if (value!.isEmpty) {
-                                    return 'Select Bus Type';
-                                  } else {
-                                    return null;
-                                  }
-                                },
                               ),
                             ),
                             const SizedBox(
@@ -172,60 +198,63 @@ class _ScreenTriptState extends State<ScreenTrip> {
                             ),
                             SizedBox(
                               width: MediaQuery.of(context).size.width,
-                              child: DropdownButtonFormField(
-                                items: routelist.map((busMap) {
-                                  return DropdownMenuItem<String>(
-                                    value: busMap['routeId'] as String,
-                                    // Use routeId as the value
-                                    child: ConstrainedBox(
-                                      constraints:
-                                          const BoxConstraints(maxWidth: 200),
-                                      child: Text(
-                                        busMap['display']
-                                            as String, // Display the route name and via
-                                        overflow: TextOverflow.ellipsis,
-                                        style: TextStyle(
-                                          color: Theme.of(context)
-                                              .colorScheme
-                                              .onSecondary,
+                              child: IgnorePointer(
+                                ignoring: widget.flag == 0 ? false : true,
+                                child: DropdownButtonFormField(
+                                  items: routelist.map((busMap) {
+                                    return DropdownMenuItem<String>(
+                                      value: busMap['routeId'] as String,
+                                      // Use routeId as the value
+                                      child: ConstrainedBox(
+                                        constraints:
+                                            const BoxConstraints(maxWidth: 200),
+                                        child: Text(
+                                          busMap['display']
+                                              as String, // Display the route name and via
+                                          overflow: TextOverflow.ellipsis,
+                                          style: TextStyle(
+                                            color: Theme.of(context)
+                                                .colorScheme
+                                                .onSecondary,
+                                          ),
                                         ),
                                       ),
-                                    ),
-                                  );
-                                }).toList(),
-                                onChanged: (newValue) {
-                                  setState(() {
-                                    selectedRouteList = newValue;
-                                    selectedRouteId = int.parse(newValue!);
-                                    // Store the selected routeId
-                                  });
-                                },
-                                value: selectedRouteList,
-                                // Use the selected routeId
-                                style: TextStyle(
-                                  color:
-                                      Theme.of(context).colorScheme.onPrimary,
-                                ),
-                                icon: Theme(
-                                  data: Theme.of(context),
-                                  child: const Icon(
-                                    Icons.arrow_drop_down,
+                                    );
+                                  }).toList(),
+                                  onChanged: (newValue) {
+                                    setState(() {
+                                      selectedRouteList = newValue;
+                                      selectedRouteId = int.parse(newValue!);
+                                      // Store the selected routeId
+                                    });
+                                  },
+                                  value: selectedRouteList,
+                                  // Use the selected routeId
+                                  style: TextStyle(
+                                    color:
+                                        Theme.of(context).colorScheme.onPrimary,
                                   ),
+                                  icon: Theme(
+                                    data: Theme.of(context),
+                                    child: const Icon(
+                                      Icons.arrow_drop_down,
+                                    ),
+                                  ),
+                                  decoration: InputDecoration(
+                                    labelText: 'Select Route',
+                                    labelStyle:
+                                        Theme.of(context).textTheme.bodySmall,
+                                  ),
+                                  dropdownColor:
+                                      Theme.of(context).colorScheme.tertiary,
+                                  validator: (value) {
+                                    if (value == null) {
+                                      return 'Select Route';
+                                    } else {
+                                      return null;
+                                    }
+                                  },
                                 ),
-                                decoration: InputDecoration(
-                                  labelText: 'Select Route',
-                                  labelStyle:
-                                      Theme.of(context).textTheme.bodySmall,
-                                ),
-                                dropdownColor:
-                                    Theme.of(context).colorScheme.tertiary,
-                                validator: (value) {
-                                  if (value == null) {
-                                    return 'Select Route';
-                                  } else {
-                                    return null;
-                                  }
-                                },
                               ),
                             ),
                             const SizedBox(height: 20),
@@ -337,7 +366,8 @@ class _ScreenTriptState extends State<ScreenTrip> {
                                   onPressed: () {
                                     tripMasterSave();
                                   },
-                                  child: Text('SAVE',
+                                  child: Text(
+                                      widget.flag == 0 ? 'SAVE' : 'UPDATE',
                                       style: Theme.of(context)
                                           .textTheme
                                           .titleMedium),
@@ -375,22 +405,38 @@ class _ScreenTriptState extends State<ScreenTrip> {
     final loadingProvider = _scafoldkey.currentContext!.read<LoadingProvider>();
     loadingProvider.toggleLoading();
     final registrationNo = selectedBusList;
-    // final routeId = selectedRouteList;
-    // print(routeId);
+    final routeId = selectedRouteId;
+    print(routeId);
     final fromStation = _fromController.text;
     final toStation = _toController.text;
     final startTime = _startTimeController.text;
     final endTime = _endTimeController.text;
     final value = await SharedPrefManager.instance.getSharedData();
-    final tripMasterRequst = TripMasterReq(
-        routeId: selectedRouteId,
-        regNo: registrationNo,
-        from: fromStation,
-        to: toStation,
-        ftime: startTime,
-        ttime: endTime,
-        userId: value!.userId);
-    final tripMasterSave = await Busdata().tripMasterSave(tripMasterRequst);
+    dynamic tripMasterSave;
+    late TripMasterReq tripMasterRequst;
+    if (widget.flag == 0) {
+      tripMasterRequst = TripMasterReq(
+          routeId: routeId,
+          regNo: registrationNo,
+          from: fromStation,
+          to: toStation,
+          ftime: startTime,
+          ttime: endTime,
+          userId: value!.userId);
+      tripMasterSave = await Busdata().tripMasterSave(tripMasterRequst);
+    } else {
+      tripMasterRequst = TripMasterReq(
+          routeId: routeId,
+          regNo: registrationNo,
+          from: fromStation,
+          to: toStation,
+          ftime: startTime,
+          ttime: endTime,
+          userId: value!.userId,
+          tripId: widget.trip_id);
+      tripMasterSave = await Busdata().tripMasterUpdate(tripMasterRequst);
+    }
+
     final resultAsjson = jsonDecode(tripMasterSave.toString());
     // print(resultAsjson);
     final resValue =
@@ -399,7 +445,8 @@ class _ScreenTriptState extends State<ScreenTrip> {
     //print(resValue.status);
     if (resValue.status == 'success') {
       Fluttertoast.showToast(
-          msg: "Trip details saved successfully",
+          msg:
+              "Trip details ${widget.flag == 0 ? 'saved' : 'updated'} successfully",
           toastLength: Toast.LENGTH_SHORT,
           gravity: ToastGravity.CENTER,
           timeInSecForIosWeb: 1,

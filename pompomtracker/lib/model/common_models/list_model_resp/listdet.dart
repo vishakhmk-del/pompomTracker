@@ -11,19 +11,18 @@ class Listdet {
   String? tripId;
   @JsonKey(name: 'start_time')
   String? startTime;
-   @JsonKey(name: 'stop_name')
+  @JsonKey(name: 'stop_name')
   String? stopName;
-   @JsonKey(name: 'stop_id')
+  @JsonKey(name: 'stop_id')
   String? stopId;
-   @JsonKey(name: 'stage_id')
+  @JsonKey(name: 'stage_id')
   String? stageId;
-   @JsonKey(name: 'is_stage')
+  @JsonKey(name: 'is_stage')
   String? isStage;
-   @JsonKey(name: 'km')
+  @JsonKey(name: 'km')
   String? km;
-   @JsonKey(name: 'arriving_time')
+  @JsonKey(name: 'arriving_time')
   String? arrivingTime;
-
 
   @JsonKey(name: 'name')
   String? cname;
@@ -46,31 +45,41 @@ class Listdet {
   @JsonKey(name: 'bus_id')
   String? busId;
 
-  Listdet({
-    this.tripName,
-    this.via,
-    this.tripId,
-    this.startTime,
-    this.stopName,
-       this.stopId,
-       this.stageId,
-       this.isStage,
-       this.km,
-       this.arrivingTime,
-    this.cname,
-    this.mobileNo,
-    this.address,
-    this.conductorId,
-    this.accountNo,
-    this.status,
-    this.registratioNo,
-    this.routeName,
-    this.routeId,
-    this.busId,
-  });
+  @JsonKey(name: 'end_time')
+  String? endTime;
+  @JsonKey(name: 'from_station')
+  String? fromStation;
+  @JsonKey(name: 'to_station')
+  String? toStation;
+  @JsonKey(name: 'station')
+  String? station;
+  Listdet(
+      {this.tripName,
+      this.via,
+      this.tripId,
+      this.startTime,
+      this.stopName,
+      this.stopId,
+      this.stageId,
+      this.isStage,
+      this.km,
+      this.arrivingTime,
+      this.cname,
+      this.mobileNo,
+      this.address,
+      this.conductorId,
+      this.accountNo,
+      this.status,
+      this.registratioNo,
+      this.routeName,
+      this.routeId,
+      this.busId,
+      this.endTime,
+      this.fromStation,
+      this.toStation,
+      this.station});
 
   //Listdet({this.tripName, this.via, this.tripId, this.startTime});
-
 
   factory Listdet.fromJson(Map<String, dynamic> json) {
     return _$ListdetFromJson(json);

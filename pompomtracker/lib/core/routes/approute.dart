@@ -42,7 +42,9 @@ class Approutes {
   );
 
   PageTransition tripmasterscreen = PageTransition(
-    child: const ScreenTrip(),
+    child: const ScreenTrip(
+      flag: 0,
+    ),
     type: PageTransitionType.fade,
     alignment: Alignment.center,
     curve: Curves.easeInOutBack,

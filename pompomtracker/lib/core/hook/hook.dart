@@ -164,9 +164,9 @@ export 'package:pompomtracker/function/bus/busListFun.dart';
 export 'package:pompomtracker/function/Stop/stopfunctions.dart';
 
 export 'package:pompomtracker/function/conductor/conductorListFun.dart';
-export 'package:pompomtracker/function/BusRouteFun.dart';
+export 'package:pompomtracker/function/Bus_route/BusRouteFun.dart';
 
-
+export 'package:pompomtracker/function/trip/TripListFun.dart';
 /**************************************/
 
 /*WIDGETS*/

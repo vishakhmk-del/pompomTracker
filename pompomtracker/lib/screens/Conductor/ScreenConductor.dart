@@ -1,6 +1,5 @@
 import 'package:pompomtracker/core/hook/hook.dart';
 
-
 class ScreenConductor extends StatefulWidget {
   // ignore: non_constant_identifier_names
   final String? conductor_id;
@@ -65,8 +64,13 @@ class _ScreenconductorState extends State<ScreenConductor> {
           leading: IconButton(
             icon: const Icon(Icons.arrow_back),
             onPressed: () {
-              Navigator.pushReplacement(
-                  _scafoldkey.currentContext!, Approutes().stopListScreen);
+              if (widget.flag == 0) {
+                Navigator.pushReplacement(
+                    _scafoldkey.currentContext!, Approutes().homescreen);
+              } else {
+                Navigator.pushReplacement(_scafoldkey.currentContext!,
+                    Approutes().conductorListScreen);
+              }
             },
           ),
           title: Text(
@@ -75,9 +79,9 @@ class _ScreenconductorState extends State<ScreenConductor> {
           )),
       body: Center(
         child: ListView(
-          scrollDirection: Axis.horizontal,
-          physics: const BouncingScrollPhysics(),
-          //scrollDirection: Axis.vertical,
+          //scrollDirection: Axis.horizontal,
+          // physics: const BouncingScrollPhysics(),
+          scrollDirection: Axis.vertical,
           children: [
             SingleChildScrollView(
               child: Container(
@@ -407,7 +411,7 @@ class _ScreenconductorState extends State<ScreenConductor> {
           await Busdata().updateConductortDetails(conductorMasterRequst);
     }
 
-    print(conductorMasterSavevar);
+    //print(conductorMasterSavevar);
     final resultAsjson = jsonDecode(conductorMasterSavevar.toString());
     // print(resultAsjson);
     final resValue =

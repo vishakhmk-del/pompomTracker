@@ -11,14 +11,12 @@ Listdet _$ListdetFromJson(Map<String, dynamic> json) => Listdet(
       via: json['via'],
       tripId: json['trip_id'] as String?,
       startTime: json['start_time'] as String?,
-
       stopName: json['stop_name'] as String?,
       stopId: json['stop_id'] as String?,
-      stageId:json['stage_id'] as String?,
+      stageId: json['stage_id'] as String?,
       isStage: json['is_stage'] as String?,
       km: json['km'] as String?,
       arrivingTime: json['arriving_time'] as String?,
-
       cname: json['name'] as String?,
       mobileNo: json['mobile_no'] as String?,
       address: json['address'] as String?,
@@ -29,7 +27,10 @@ Listdet _$ListdetFromJson(Map<String, dynamic> json) => Listdet(
       routeName: json['route_name'] as String?,
       routeId: json['route_id'] as String?,
       busId: json['bus_id'] as String?,
-
+      endTime: json['end_time'] as String?,
+      fromStation: json['from_station'] as String?,
+      toStation: json['to_station'] as String?,
+      station: json['station'] as String?,
     );
 
 Map<String, dynamic> _$ListdetToJson(Listdet instance) => <String, dynamic>{
@@ -37,14 +38,12 @@ Map<String, dynamic> _$ListdetToJson(Listdet instance) => <String, dynamic>{
       'via': instance.via,
       'trip_id': instance.tripId,
       'start_time': instance.startTime,
-
-      'stop_name':instance.stopName,
-      'stop_id':instance.stopId,
-      'stage_id':instance.stageId,
-      'is_stage':instance.isStage,
-      'km':instance.km,
-      'arriving_time':instance.arrivingTime,
-
+      'stop_name': instance.stopName,
+      'stop_id': instance.stopId,
+      'stage_id': instance.stageId,
+      'is_stage': instance.isStage,
+      'km': instance.km,
+      'arriving_time': instance.arrivingTime,
       'name': instance.cname,
       'mobile_no': instance.mobileNo,
       'address': instance.address,
@@ -55,5 +54,8 @@ Map<String, dynamic> _$ListdetToJson(Listdet instance) => <String, dynamic>{
       'route_name': instance.routeName,
       'route_id': instance.routeId,
       'bus_id': instance.busId,
-
+      'end_time': instance.endTime,
+      'from_station': instance.fromStation,
+      'to_station': instance.toStation,
+      'station':instance.station
     };

@@ -15,6 +15,7 @@ TripMasterReq _$TripMasterReqFromJson(Map<String, dynamic> json) =>
       ftime: json['ftime'] as String?,
       ttime: json['ttime'] as String?,
       userId: json['user_id'] as String?,
+      tripId: json['trip_id'] as String?,
     );
 
 Map<String, dynamic> _$TripMasterReqToJson(TripMasterReq instance) =>
@@ -26,4 +27,5 @@ Map<String, dynamic> _$TripMasterReqToJson(TripMasterReq instance) =>
       'ftime': instance.ftime,
       'ttime': instance.ttime,
       'user_id': instance.userId,
+      'trip_id': instance.tripId,
     };

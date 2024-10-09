@@ -22,7 +22,7 @@ class Wklycollectfn implements Commonfn {
     final sharevalue = await SharedPrefManager.instance.getSharedData();
     DateTime now = DateTime.now();
     String formattedDate = DateFormat('yyyy-MM-dd').format(now);
-    print(formattedDate);
+    // print(formattedDate);
 
     final wklyrqst = Weeklycollectionreq.req(
         userId: sharevalue!.userId, curDate: '2024-06-29');
