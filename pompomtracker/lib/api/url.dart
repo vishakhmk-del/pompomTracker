@@ -42,5 +42,9 @@ class Url {
   String deleteStopUrl = '/RouteMaster_C/get_stop_delete';
   String getStopNameUrl = '/RouteMaster_C/get_stop_name';
   String addNewStopUrl = '/RouteMaster_C/get_stop_adding';
+
   String linkConductorBus = '/Master_C/conductor_bus_link';
+
+  String sortRouteUrl = '/Master_C/get_linked_route';
+  String fromtoStnUrl = '/Master_C/get_existing_tripname';
 }

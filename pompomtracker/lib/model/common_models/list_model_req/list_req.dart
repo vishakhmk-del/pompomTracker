@@ -47,6 +47,10 @@ class MasterListReq {
   String? longitude;
   @JsonKey(name: 'is_stage')
   int? isStage;
+  @JsonKey(name: 'reg_no')
+  String? regNo;
+  @JsonKey(name: 'route_id')
+  int? routeId;
   MasterListReq(
       {this.conductorId,
       this.cname,
@@ -68,7 +72,10 @@ class MasterListReq {
       this.after,
       this.latitude,
       this.longitude,
-      this.isStage});
+      this.isStage,
+      this.regNo,
+      this.routeId
+      });
 
   factory MasterListReq.fromJson(Map<String, dynamic> json) {
     return _$MasterListReqFromJson(json);

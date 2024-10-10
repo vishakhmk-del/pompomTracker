@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:pompomtracker/core/hook/hook.dart';
 
 class TripListFuntions {
@@ -72,5 +74,77 @@ class TripListFuntions {
       return tripDetailslist;
     }
     return tripDetailslist;
+  }
+
+  Future<List<Listdet>> sortedrouteList(String? regno) async {
+    
+    Response<dynamic>? dtwiseresp;
+     List<Listdet> triplist = [];
+
+    final dtwiserqst = MasterListReq(
+        regNo: regno,       
+        );
+    dtwiseresp = await Busdata().sortedRoute(dtwiserqst);
+
+    if (dtwiseresp == null) {
+      triplist = triplist;
+      return triplist;
+    } else if (dtwiseresp.statusCode == 200) {
+      final resultAsjson = jsonDecode(dtwiseresp.toString());
+      final dtwiserspval =
+          MasterListMdl.fromJson(resultAsjson as Map<String, dynamic>);
+      if (dtwiserspval.status == 'success') {
+       log('sorted route fetch success');
+        final routeList = dtwiserspval.listDet;
+        triplist = routeList;
+        return triplist;
+      } else if (dtwiserspval.status == 'Failed') {
+        log('sorted route  fetch failed');
+        final routeList = dtwiserspval.listDet;
+        triplist = routeList;
+        return triplist;
+      }
+    } else {
+      log('sorted route  fetch exception');
+      triplist = triplist;
+      return triplist;
+    }
+    return triplist;
+  }
+
+  Future<List<Listdet>> stationList(int? routeId) async {
+    
+    Response<dynamic>? dtwiseresp;
+     List<Listdet> triplist = [];
+
+    final dtwiserqst = MasterListReq(
+        routeId: routeId,       
+        );
+    dtwiseresp = await Busdata().fromToStaton(dtwiserqst);
+
+    if (dtwiseresp == null) {
+      triplist = triplist;
+      return triplist;
+    } else if (dtwiseresp.statusCode == 200) {
+      final resultAsjson = jsonDecode(dtwiseresp.toString());
+      final dtwiserspval =
+          MasterListMdl.fromJson(resultAsjson as Map<String, dynamic>);
+      if (dtwiserspval.status == 'success') {
+       log('sorted route fetch success');
+        final routeList = dtwiserspval.listDet;
+        triplist = routeList;
+        return triplist;
+      } else if (dtwiserspval.status == 'Failed') {
+        log('sorted route  fetch failed');
+        final routeList = dtwiserspval.listDet;
+        triplist = routeList;
+        return triplist;
+      }
+    } else {
+      log('sorted route  fetch exception');
+      triplist = triplist;
+      return triplist;
+    }
+    return triplist;
   }
 }

@@ -43,7 +43,11 @@ abstract class Apicalls {
   Future<Response<dynamic>?> deleteStop(MasterListReq value);
   Future<Response<dynamic>?> getStopname(MasterListReq value);
   Future<Response<dynamic>?> addNewStop(MasterListReq value);
+
   Future<Response<dynamic>?> linkConductorBus(MasterListReq value);
+
+  Future<Response<dynamic>?> sortedRoute(MasterListReq value);
+  Future<Response<dynamic>?> fromToStaton(MasterListReq value);
 }
 
 class Busdata extends Apicalls {
@@ -478,6 +482,32 @@ class Busdata extends Apicalls {
     try {
       final result = await dio.post(
         url.linkConductorBus,
+        data: value.toJson(),
+      );
+      return result;
+    } on DioException catch (ex) {
+      return ex.response;
+    }
+  }
+
+  @override
+  Future<Response?> sortedRoute(MasterListReq value) async {
+    try {
+      final result = await dio.post(
+        url.sortRouteUrl,
+        data: value.toJson(),
+      );
+      return result;
+    } on DioException catch (ex) {
+      return ex.response;
+    }
+  }
+
+  @override
+  Future<Response?> fromToStaton(MasterListReq value) async {
+    try {
+      final result = await dio.post(
+        url.fromtoStnUrl,
         data: value.toJson(),
       );
       return result;

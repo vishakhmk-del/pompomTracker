@@ -28,7 +28,9 @@ MasterListReq _$MasterListReqFromJson(Map<String, dynamic> json) =>
       after: (json['after'] as num?)?.toInt(),
       latitude: json['latitude'] as String?,
       longitude: json['longitude'] as String?,
-      isStage: (json['is_stage'] as num?)?.toInt(),
+      isStage: json['is_stage'] as int?,
+      regNo: json['reg_no'] as String?,
+      routeId: json['route_id'] as int?,
     );
 
 Map<String, dynamic> _$MasterListReqToJson(MasterListReq instance) =>
@@ -54,4 +56,6 @@ Map<String, dynamic> _$MasterListReqToJson(MasterListReq instance) =>
       'latitude': instance.latitude,
       'longitude': instance.longitude,
       'is_stage': instance.isStage,
+      'reg_no': instance.regNo,
+      'route_id': instance.routeId
     };

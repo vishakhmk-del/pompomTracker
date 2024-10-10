@@ -30,6 +30,7 @@ Listdet _$ListdetFromJson(Map<String, dynamic> json) => Listdet(
       endTime: json['end_time'] as String?,
       fromStation: json['from_station'] as String?,
       toStation: json['to_station'] as String?,
+      station: json['station'] as String?,
     );
 
 Map<String, dynamic> _$ListdetToJson(Listdet instance) => <String, dynamic>{
@@ -56,4 +57,5 @@ Map<String, dynamic> _$ListdetToJson(Listdet instance) => <String, dynamic>{
       'end_time': instance.endTime,
       'from_station': instance.fromStation,
       'to_station': instance.toStation,
+      'station': instance.station
     };

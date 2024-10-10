@@ -51,7 +51,8 @@ class Listdet {
   String? fromStation;
   @JsonKey(name: 'to_station')
   String? toStation;
-
+  @JsonKey(name: 'station')
+  String? station;
   Listdet(
       {this.tripName,
       this.via,
@@ -75,7 +76,8 @@ class Listdet {
       this.busId,
       this.endTime,
       this.fromStation,
-      this.toStation});
+      this.toStation,
+      this.station});
 
   //Listdet({this.tripName, this.via, this.tripId, this.startTime});
 

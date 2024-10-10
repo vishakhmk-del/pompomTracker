@@ -71,7 +71,7 @@ export 'package:pompomtracker/screens/route_mas/ScreenRouteMaster.dart';
 export 'package:pompomtracker/screens/stop/ScreenStopMaster.dart';
 export 'package:pompomtracker/screens/stop/StopList.dart';
 export 'package:pompomtracker/screens/trip/ScreenTrip.dart';
-export 'package:pompomtracker/screens/trip/TripList.dart';
+export 'package:pompomtracker/screens/trip/ScreenTripMaster.dart';
 export 'package:pompomtracker/screens/stop/ScreenChangeStopname.dart';
 export 'package:pompomtracker/screens/LinkBusRoute/BusRouteList.dart';
 export 'package:pompomtracker/screens/stop/ScreenAddnewStp.dart';
@@ -163,6 +163,8 @@ export 'package:pompomtracker/function/Stop/stopfunctions.dart';
 
 export 'package:pompomtracker/function/conductor/conductorListFun.dart';
 export 'package:pompomtracker/function/Bus_route/BusRouteFun.dart';
+
+export 'package:pompomtracker/function/trip/TripListFun.dart';
 
 /**************************************/
 
