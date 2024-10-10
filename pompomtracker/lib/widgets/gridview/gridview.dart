@@ -87,7 +87,7 @@ class BusGridView extends StatelessWidget {
             ),
           ),
         ),
-            InkWell(
+        InkWell(
           splashColor: Theme.of(context).colorScheme.secondaryFixed,
           onTap: () {
             Navigator.pushReplacement(context, Approutes().linkbusroutescreen);
@@ -198,7 +198,6 @@ class BusGridView extends StatelessWidget {
             ),
           ),
         ),
-    
         InkWell(
           splashColor: Theme.of(context).colorScheme.secondaryFixed,
           onTap: () {

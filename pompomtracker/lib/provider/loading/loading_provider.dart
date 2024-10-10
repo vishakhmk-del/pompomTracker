@@ -8,6 +8,7 @@ class LoadingProvider with ChangeNotifier {
     isloading = !isloading;
     notifyListeners();
   }
+
   void reset() {
     isloading = false;
     notifyListeners();

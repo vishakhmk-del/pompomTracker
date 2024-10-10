@@ -55,5 +55,5 @@ Map<String, dynamic> _$ListdetToJson(Listdet instance) => <String, dynamic>{
       'bus_id': instance.busId,
       'end_time': instance.endTime,
       'from_station': instance.fromStation,
-      'to_station': instance.toStation
+      'to_station': instance.toStation,
     };

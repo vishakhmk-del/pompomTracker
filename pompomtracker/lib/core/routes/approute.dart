@@ -1,6 +1,5 @@
 import 'package:pompomtracker/core/hook/hook.dart';
 
-
 class Approutes {
   PageTransition loginscreen = PageTransition(
     child: const ScreenLogin(),
@@ -115,6 +114,4 @@ class Approutes {
     curve: Curves.easeInOutBack,
     duration: const Duration(microseconds: 500),
   );
-
- 
 }

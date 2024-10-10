@@ -1,7 +1,5 @@
 import 'package:pompomtracker/core/hook/hook.dart';
 
-import 'package:pompomtracker/model/conductor_master/conductor_edit/conductor_edit_req/conductor_edit_re.dart';
-
 abstract class Apicalls {
   Future<Response<dynamic>?> login(Loginreq value);
   Future<Response<dynamic>?> weeklycollection(Weeklycollectionreq value);
@@ -45,6 +43,7 @@ abstract class Apicalls {
   Future<Response<dynamic>?> deleteStop(MasterListReq value);
   Future<Response<dynamic>?> getStopname(MasterListReq value);
   Future<Response<dynamic>?> addNewStop(MasterListReq value);
+  Future<Response<dynamic>?> linkConductorBus(MasterListReq value);
 }
 
 class Busdata extends Apicalls {
@@ -466,6 +465,19 @@ class Busdata extends Apicalls {
     try {
       final result = await dio.post(
         url.tripUpdate,
+        data: value.toJson(),
+      );
+      return result;
+    } on DioException catch (ex) {
+      return ex.response;
+    }
+  }
+
+  @override
+  Future<Response?> linkConductorBus(MasterListReq value) async {
+    try {
+      final result = await dio.post(
+        url.linkConductorBus,
         data: value.toJson(),
       );
       return result;
