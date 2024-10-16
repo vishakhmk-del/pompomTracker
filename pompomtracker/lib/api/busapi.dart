@@ -46,6 +46,11 @@ abstract class Apicalls {
   Future<Response<dynamic>?> addNewStop(MasterListReq value);
   Future<Response<dynamic>?> sortedRoute(MasterListReq value);
   Future<Response<dynamic>?> fromToStaton(MasterListReq value);
+  Future<Response<dynamic>?> exstingStop(MasterListReq value);
+  Future<Response<dynamic>?> editArvTime(MasterListReq value);
+  Future<Response<dynamic>?> getNewTripdet(MasterListReq value);
+
+
 }
 
 class Busdata extends Apicalls {
@@ -493,6 +498,45 @@ class Busdata extends Apicalls {
     try {
       final result = await dio.post(
         url.fromtoStnUrl,
+        data: value.toJson(),
+      );
+      return result;
+    } on DioException catch (ex) {
+      return ex.response;
+    }
+  }
+  
+  @override
+  Future<Response?> exstingStop(MasterListReq value) async{
+   try {
+      final result = await dio.post(
+        url.existingStpUrl,
+        data: value.toJson(),
+      );
+      return result;
+    } on DioException catch (ex) {
+      return ex.response;
+    }
+  }
+  
+  @override
+  Future<Response?> editArvTime(MasterListReq value) async{
+    try {
+      final result = await dio.post(
+        url.editArrivingTmUrl,
+        data: value.toJson(),
+      );
+      return result;
+    } on DioException catch (ex) {
+      return ex.response;
+    }
+  }
+  
+  @override
+  Future<Response?> getNewTripdet(MasterListReq value) async{
+    try {
+      final result = await dio.post(
+        url.getnewTripUrl,
         data: value.toJson(),
       );
       return result;

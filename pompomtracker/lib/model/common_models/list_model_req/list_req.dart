@@ -46,7 +46,9 @@ class MasterListReq {
   @JsonKey(name: 'longitude')
   String? longitude;
   @JsonKey(name: 'is_stage')
-  int? isStage;
+  String? isStage;
+  @JsonKey(name: 'stage_id')
+  String? stageId;
   @JsonKey(name: 'reg_no')
   String? regNo;
   @JsonKey(name: 'route_id')
@@ -73,6 +75,7 @@ class MasterListReq {
       this.latitude,
       this.longitude,
       this.isStage,
+      this.stageId,
       this.regNo,
       this.routeId
       });

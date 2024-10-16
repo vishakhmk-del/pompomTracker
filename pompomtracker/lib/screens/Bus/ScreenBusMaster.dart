@@ -294,7 +294,7 @@ class _ScreenBusMaterState extends State<ScreenBusMater> {
                                 controller: _dateToController,
                                 style: Theme.of(context).textTheme.bodySmall,
                                 decoration: InputDecoration(
-                                  labelText: 'Name',
+                                  labelText: 'Valid To',
                                   labelStyle:
                                       Theme.of(context).textTheme.bodySmall,
                                   suffixIcon: Theme(

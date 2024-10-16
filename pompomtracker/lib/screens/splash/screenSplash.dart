@@ -18,7 +18,7 @@ class _ScreenSplashState extends State<ScreenSplash> {
   Future<void> checkUserLogin() async {
     final sharedpref = await SharedPreferences.getInstance();
     final useLoggedin = sharedpref.getBool(savekeyname);
-    if (useLoggedin == null && useLoggedin == false) {
+    if (useLoggedin == null || useLoggedin == false) {
       gotoLogin();
     } else {
       final value = await SharedPrefManager.instance.getSharedData();

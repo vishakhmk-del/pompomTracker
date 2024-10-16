@@ -1,7 +1,7 @@
 class Url {
-  String baseUrl = 'http://10.160.100.53/Qrpay/index.php';
+  // String baseUrl = 'http://10.160.100.53/Qrpay/index.php';
 
-  // String baseUrl = 'http://117.221.68.183:81/Qrpay/index.php';
+  String baseUrl = 'http://117.221.68.183:81/Qrpay/index.php';
 
   String loginUrl = '/Home_C/owner_login';
 
@@ -44,4 +44,8 @@ class Url {
   String addNewStopUrl = '/RouteMaster_C/get_stop_adding';
   String sortRouteUrl = '/Master_C/get_linked_route';
   String fromtoStnUrl = '/Master_C/get_existing_tripname';
+  String existingStpUrl = '/Owner_C/get_existing_stop';
+  String editArrivingTmUrl = '/Owner_C/add_existing_stop';
+  String getnewTripUrl = '/Owner_C/get_new_trip';
+
 }

@@ -197,17 +197,7 @@ class _ScreenTripMasterState extends State<ScreenTripMaster> {
                                       ),
                                     ],
                                     ),)
-                                    // Text(
-                                    //   (busMap['display'] as String)
-                                    //   .replaceFirst(' - via - ', '\nvia - '), // Display the route name and via
-                                    //   maxLines: null, // Allow multiple lines
-                                    //   softWrap: true,
-                                    //   style: TextStyle(
-                                    //     color: Theme.of(context)
-                                    //         .colorScheme
-                                    //         .onSecondary,
-                                    //   ),
-                                    // ),
+                                   
                                   );
                                 }).toList(),
                                 onChanged: (newValue) {

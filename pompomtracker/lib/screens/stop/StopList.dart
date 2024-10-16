@@ -324,12 +324,14 @@ class _ScreenStopListState extends State<ScreenStopList> {
                 children: [
                   IconButton(
                       onPressed: () {
+                       
                         Navigator.push(
                           context,
                           MaterialPageRoute(
                             builder: (context) => ScreenStopNameChange(stopdet: task,tripName:display,),
                           ),
                         );
+                        
                       },
                       icon: Icon(
                         Icons.edit,

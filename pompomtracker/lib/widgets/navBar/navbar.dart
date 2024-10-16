@@ -105,7 +105,7 @@ class _NavbarState extends State<Navbar> {
                 onTap: () {
                   Navigator.push(context, Approutes().conductorListScreen);
                 }),
-            const Divider(),
+            
             ListTile(
                 leading: const Icon(
                   Icons.trip_origin,
@@ -141,6 +141,19 @@ class _NavbarState extends State<Navbar> {
                 onTap: () {
                   Navigator.push(context, Approutes().stopListScreen);
                 }),
+                const Divider(),
+              ListTile(
+                leading: const Icon(
+                  Icons.logout_outlined,
+                  //color: Appcolors.labelclr,
+                ),
+                title: Text(
+                  "Sign Out",
+                  style: Theme.of(context).textTheme.bodyLarge,
+                ),
+                onTap: () {
+                  signout(context);
+                }),
           ],
         ),
       ),
@@ -150,5 +163,15 @@ class _NavbarState extends State<Navbar> {
   @override
   void dispose() {
     super.dispose();
+  }
+  void signout(BuildContext ctx)async{
+    final sharedprf=await SharedPreferences.getInstance();
+    await sharedprf.remove(savekeyname);
+    Navigator.of(_scaffoldKey.currentContext!).pushAndRemoveUntil(
+        MaterialPageRoute(
+          builder: (ctx) => const ScreenLogin(),
+        ),
+        (Route<dynamic> route) => false);
+    
   }
 }
