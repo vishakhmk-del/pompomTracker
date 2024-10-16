@@ -1,6 +1,4 @@
-import 'package:flutter/material.dart';
 import 'package:pompomtracker/core/hook/hook.dart';
-import 'package:pompomtracker/function/trip/TripListFun.dart';
 
 class ScreenTripList extends StatefulWidget {
   const ScreenTripList({super.key});
