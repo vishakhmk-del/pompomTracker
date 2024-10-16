@@ -1,4 +1,5 @@
 import 'package:pompomtracker/core/hook/hook.dart';
+import 'package:pompomtracker/screens/trip/TripList.dart';
 
 class Approutes {
   PageTransition loginscreen = PageTransition(
@@ -41,9 +42,7 @@ class Approutes {
   );
 
   PageTransition tripmasterscreen = PageTransition(
-    child: const ScreenTrip(
-      flag: 0,
-    ),
+    child: const ScreenTripMaster(),
     type: PageTransitionType.fade,
     alignment: Alignment.center,
     curve: Curves.easeInOutBack,
@@ -92,7 +91,7 @@ class Approutes {
   );
 
   PageTransition tripListScreen = PageTransition(
-    child: const ScreenTripMaster(),
+    child: const ScreenTripList(),
     type: PageTransitionType.fade,
     alignment: Alignment.center,
     curve: Curves.easeInOutBack,
@@ -109,6 +108,15 @@ class Approutes {
 
   PageTransition stopListScreen = PageTransition(
     child: const ScreenStopList(),
+    type: PageTransitionType.fade,
+    alignment: Alignment.center,
+    curve: Curves.easeInOutBack,
+    duration: const Duration(microseconds: 500),
+  );
+  PageTransition screenTripEdit = PageTransition(
+    child: const ScreenTrip(
+      flag: 0,
+    ),
     type: PageTransitionType.fade,
     alignment: Alignment.center,
     curve: Curves.easeInOutBack,

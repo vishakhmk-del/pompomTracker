@@ -1,6 +1,7 @@
+import 'dart:math';
+
 import 'package:intl/intl.dart';
 import 'package:pompomtracker/core/hook/hook.dart';
-import 'package:pompomtracker/function/trip/TripListFun.dart';
 
 class ScreenTrip extends StatefulWidget {
   final String? trip_id;
@@ -94,308 +95,327 @@ class _ScreenTriptState extends State<ScreenTrip> {
     }
   }
 
+  Future<bool?> popscreen(BuildContext context) async {
+    Navigator.push(context, Approutes().homescreen);
+    return true;
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      key: _scafoldkey,
-      appBar: AppBar(
-          leading: IconButton(
-            icon: const Icon(Icons.arrow_back),
-            onPressed: () {
-              if (widget.flag == 0) {
-                Navigator.pushReplacement(
-                    _scafoldkey.currentContext!, Approutes().homescreen);
-              } else {
-                Navigator.pushReplacement(
-                    _scafoldkey.currentContext!, Approutes().tripListScreen);
-              }
-            },
-          ),
-          title: Text(
-            "Trip Master",
-            style: TextStyle(color: Theme.of(context).colorScheme.onSecondary),
-          )),
-      body: Center(
-        child: ListView(
-          children: [
-            SingleChildScrollView(
-              child: Container(
-                height: MediaQuery.of(context).size.height * .9,
-                margin: const EdgeInsets.all(15),
-                decoration: BoxDecoration(
-                  border: Border.all(
-                      color: Theme.of(context).colorScheme.onSecondary),
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: Form(
-                    key: _formKey,
-                    child: Padding(
-                      padding: const EdgeInsets.all(15.0),
-                      child: Theme(
-                        data: MyTheme.googleFormTheme,
-                        child: Column(
-                          children: [
-                            const CircleAvatar(
-                              backgroundImage:
-                                  AssetImage('assets/bus/busmaster.png'),
-                              radius: 50,
-                            ),
-                            const SizedBox(
-                              height: 20,
-                            ),
-                            SizedBox(
-                              width: MediaQuery.of(context).size.width,
-                              child: IgnorePointer(
-                                ignoring: widget.flag == 0 ? false : true,
-                                child: DropdownButtonFormField(
-                                  items: registarionlst.map((valueItem) {
-                                    return DropdownMenuItem(
-                                      value: valueItem,
-                                      child: Text(
-                                        valueItem,
-                                        style: TextStyle(
-                                            color: Theme.of(context)
-                                                .colorScheme
-                                                .onSecondary),
+    return PopScope(
+      canPop: false,
+      onPopInvoked: (bool didPop) async {
+        if (!didPop) {
+          if (didPop) return;
+          await popscreen(context);
+        }
+        //  log('BackButton pressed!');
+      },
+      child: Scaffold(
+        key: _scafoldkey,
+        appBar: AppBar(
+            leading: IconButton(
+              icon: const Icon(Icons.arrow_back),
+              onPressed: () {
+                if (widget.flag == 0) {
+                  Navigator.pushReplacement(
+                      _scafoldkey.currentContext!, Approutes().homescreen);
+                } else {
+                  Navigator.pushReplacement(
+                      _scafoldkey.currentContext!, Approutes().tripListScreen);
+                }
+              },
+            ),
+            title: Text(
+              "Trip Master",
+              style:
+                  TextStyle(color: Theme.of(context).colorScheme.onSecondary),
+            )),
+        body: Center(
+          child: ListView(
+            children: [
+              SingleChildScrollView(
+                child: Container(
+                  height: MediaQuery.of(context).size.height * .9,
+                  margin: const EdgeInsets.all(15),
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                        color: Theme.of(context).colorScheme.onSecondary),
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: Form(
+                      key: _formKey,
+                      child: Padding(
+                        padding: const EdgeInsets.all(15.0),
+                        child: Theme(
+                          data: MyTheme.googleFormTheme,
+                          child: Column(
+                            children: [
+                              const CircleAvatar(
+                                backgroundImage:
+                                    AssetImage('assets/bus/busmaster.png'),
+                                radius: 50,
+                              ),
+                              const SizedBox(
+                                height: 20,
+                              ),
+                              SizedBox(
+                                width: MediaQuery.of(context).size.width,
+                                child: IgnorePointer(
+                                  ignoring: widget.flag == 0 ? false : true,
+                                  child: DropdownButtonFormField(
+                                    items: registarionlst.map((valueItem) {
+                                      return DropdownMenuItem(
+                                        value: valueItem,
+                                        child: Text(
+                                          valueItem,
+                                          style: TextStyle(
+                                              color: Theme.of(context)
+                                                  .colorScheme
+                                                  .onSecondary),
+                                        ),
+                                      );
+                                    }).toList(),
+                                    onChanged: (newValue) {
+                                      setState(() {
+                                        selectedBusList = newValue;
+                                      });
+                                    },
+                                    value: selectedBusList,
+                                    style: TextStyle(
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .onPrimary),
+                                    icon: Theme(
+                                      data: Theme.of(context),
+                                      child: const Icon(
+                                        Icons.arrow_drop_down,
                                       ),
-                                    );
-                                  }).toList(),
-                                  onChanged: (newValue) {
-                                    setState(() {
-                                      selectedBusList = newValue;
-                                    });
-                                  },
-                                  value: selectedBusList,
-                                  style: TextStyle(
-                                      color: Theme.of(context)
-                                          .colorScheme
-                                          .onPrimary),
-                                  icon: Theme(
-                                    data: Theme.of(context),
-                                    child: const Icon(
-                                      Icons.arrow_drop_down,
                                     ),
+                                    decoration: InputDecoration(
+                                      labelText: 'Select Bus',
+                                      labelStyle:
+                                          Theme.of(context).textTheme.bodySmall,
+                                    ),
+                                    dropdownColor:
+                                        Theme.of(context).colorScheme.tertiary,
+                                    validator: (value) {
+                                      if (value!.isEmpty) {
+                                        return 'Select Bus Type';
+                                      } else {
+                                        return null;
+                                      }
+                                    },
                                   ),
-                                  decoration: InputDecoration(
-                                    labelText: 'Select Bus',
-                                    labelStyle:
-                                        Theme.of(context).textTheme.bodySmall,
-                                  ),
-                                  dropdownColor:
-                                      Theme.of(context).colorScheme.tertiary,
-                                  validator: (value) {
-                                    if (value!.isEmpty) {
-                                      return 'Select Bus Type';
-                                    } else {
-                                      return null;
-                                    }
-                                  },
                                 ),
                               ),
-                            ),
-                            const SizedBox(
-                              height: 20,
-                            ),
-                            SizedBox(
-                              width: MediaQuery.of(context).size.width,
-                              child: IgnorePointer(
-                                ignoring: widget.flag == 0 ? false : true,
-                                child: DropdownButtonFormField(
-                                  items: routelist.map((busMap) {
-                                    return DropdownMenuItem<String>(
-                                      value: busMap['routeId'] as String,
-                                      // Use routeId as the value
-                                      child: ConstrainedBox(
-                                        constraints:
-                                            const BoxConstraints(maxWidth: 200),
-                                        child: Text(
-                                          busMap['display']
-                                              as String, // Display the route name and via
-                                          overflow: TextOverflow.ellipsis,
-                                          style: TextStyle(
-                                            color: Theme.of(context)
-                                                .colorScheme
-                                                .onSecondary,
+                              const SizedBox(
+                                height: 20,
+                              ),
+                              SizedBox(
+                                width: MediaQuery.of(context).size.width,
+                                child: IgnorePointer(
+                                  ignoring: widget.flag == 0 ? false : true,
+                                  child: DropdownButtonFormField(
+                                    items: routelist.map((busMap) {
+                                      return DropdownMenuItem<String>(
+                                        value: busMap['routeId'] as String,
+                                        // Use routeId as the value
+                                        child: ConstrainedBox(
+                                          constraints: const BoxConstraints(
+                                              maxWidth: 200),
+                                          child: Text(
+                                            busMap['display']
+                                                as String, // Display the route name and via
+                                            overflow: TextOverflow.ellipsis,
+                                            style: TextStyle(
+                                              color: Theme.of(context)
+                                                  .colorScheme
+                                                  .onSecondary,
+                                            ),
                                           ),
                                         ),
-                                      ),
-                                    );
-                                  }).toList(),
-                                  onChanged: (newValue) {
-                                    setState(() {
-                                      selectedRouteList = newValue;
-                                      selectedRouteId = int.parse(newValue!);
-                                      // Store the selected routeId
-                                    });
-                                  },
-                                  value: selectedRouteList,
-                                  // Use the selected routeId
-                                  style: TextStyle(
-                                    color:
-                                        Theme.of(context).colorScheme.onPrimary,
-                                  ),
-                                  icon: Theme(
-                                    data: Theme.of(context),
-                                    child: const Icon(
-                                      Icons.arrow_drop_down,
+                                      );
+                                    }).toList(),
+                                    onChanged: (newValue) {
+                                      setState(() {
+                                        selectedRouteList = newValue;
+                                        selectedRouteId = int.parse(newValue!);
+                                        // Store the selected routeId
+                                      });
+                                    },
+                                    value: selectedRouteList,
+                                    // Use the selected routeId
+                                    style: TextStyle(
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .onPrimary,
                                     ),
+                                    icon: Theme(
+                                      data: Theme.of(context),
+                                      child: const Icon(
+                                        Icons.arrow_drop_down,
+                                      ),
+                                    ),
+                                    decoration: InputDecoration(
+                                      labelText: 'Select Route',
+                                      labelStyle:
+                                          Theme.of(context).textTheme.bodySmall,
+                                    ),
+                                    dropdownColor:
+                                        Theme.of(context).colorScheme.tertiary,
+                                    validator: (value) {
+                                      if (value == null) {
+                                        return 'Select Route';
+                                      } else {
+                                        return null;
+                                      }
+                                    },
                                   ),
+                                ),
+                              ),
+                              const SizedBox(height: 20),
+                              SizedBox(
+                                width: MediaQuery.of(context).size.width,
+                                child: TextFormField(
+                                  controller: _fromController,
+                                  style: Theme.of(context).textTheme.bodySmall,
                                   decoration: InputDecoration(
-                                    labelText: 'Select Route',
-                                    labelStyle:
-                                        Theme.of(context).textTheme.bodySmall,
-                                  ),
-                                  dropdownColor:
-                                      Theme.of(context).colorScheme.tertiary,
+                                      labelText: 'From Station',
+                                      labelStyle: Theme.of(context)
+                                          .textTheme
+                                          .bodySmall),
                                   validator: (value) {
-                                    if (value == null) {
-                                      return 'Select Route';
+                                    if (value!.isEmpty) {
+                                      return 'Enter From Station';
                                     } else {
                                       return null;
                                     }
                                   },
                                 ),
                               ),
-                            ),
-                            const SizedBox(height: 20),
-                            SizedBox(
-                              width: MediaQuery.of(context).size.width,
-                              child: TextFormField(
-                                controller: _fromController,
-                                style: Theme.of(context).textTheme.bodySmall,
-                                decoration: InputDecoration(
-                                    labelText: 'From Station',
-                                    labelStyle:
-                                        Theme.of(context).textTheme.bodySmall),
-                                validator: (value) {
-                                  if (value!.isEmpty) {
-                                    return 'Enter From Station';
-                                  } else {
-                                    return null;
-                                  }
-                                },
-                              ),
-                            ),
-                            const SizedBox(height: 20),
-                            SizedBox(
-                              width: MediaQuery.of(context).size.width,
-                              child: TextFormField(
-                                controller: _toController,
-                                style: Theme.of(context).textTheme.bodySmall,
-                                decoration: InputDecoration(
-                                    labelText: 'To Station',
-                                    labelStyle:
-                                        Theme.of(context).textTheme.bodySmall),
-                                validator: (value) {
-                                  if (value!.isEmpty) {
-                                    return 'Enter To Station';
-                                  } else {
-                                    return null;
-                                  }
-                                },
-                              ),
-                            ),
-
-                            const SizedBox(height: 20),
-                            SizedBox(
-                              width: MediaQuery.of(context).size.width,
-                              child: TextFormField(
-                                controller: _startTimeController,
-                                style: Theme.of(context).textTheme.bodySmall,
-                                decoration: InputDecoration(
-                                  labelText: 'Starting Time',
-                                  labelStyle:
-                                      Theme.of(context).textTheme.bodySmall,
-                                  suffixIcon: Theme(
-                                      data: Theme.of(context),
-                                      child: const Icon(Icons.timer)),
+                              const SizedBox(height: 20),
+                              SizedBox(
+                                width: MediaQuery.of(context).size.width,
+                                child: TextFormField(
+                                  controller: _toController,
+                                  style: Theme.of(context).textTheme.bodySmall,
+                                  decoration: InputDecoration(
+                                      labelText: 'To Station',
+                                      labelStyle: Theme.of(context)
+                                          .textTheme
+                                          .bodySmall),
+                                  validator: (value) {
+                                    if (value!.isEmpty) {
+                                      return 'Enter To Station';
+                                    } else {
+                                      return null;
+                                    }
+                                  },
                                 ),
-                                onTap: () =>
-                                    _selectTime(context, _startTimeController),
-                                validator: (value) {
-                                  if (value!.isEmpty) {
-                                    return 'Enter Starting Time';
-                                  } else {
-                                    return null;
-                                  }
-                                },
                               ),
-                            ),
-                            const SizedBox(height: 20),
-                            SizedBox(
-                              width: MediaQuery.of(context).size.width,
-                              child: TextFormField(
-                                controller: _endTimeController,
-                                style: Theme.of(context).textTheme.bodySmall,
-                                decoration: InputDecoration(
-                                    labelText: 'End Time',
+
+                              const SizedBox(height: 20),
+                              SizedBox(
+                                width: MediaQuery.of(context).size.width,
+                                child: TextFormField(
+                                  controller: _startTimeController,
+                                  style: Theme.of(context).textTheme.bodySmall,
+                                  decoration: InputDecoration(
+                                    labelText: 'Starting Time',
                                     labelStyle:
                                         Theme.of(context).textTheme.bodySmall,
                                     suffixIcon: Theme(
                                         data: Theme.of(context),
-                                        child: const Icon(Icons.timer))),
-                                onTap: () =>
-                                    _selectTime(context, _endTimeController),
-                                validator: (value) {
-                                  if (value!.isEmpty) {
-                                    return 'Enter End Time';
-                                  } else {
-                                    return null;
-                                  }
-                                },
-                              ),
-                            ),
-                            const SizedBox(
-                              height: 20,
-                            ),
-                            Container(
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10),
-                                gradient: LinearGradient(
-                                  begin: Alignment.topLeft,
-                                  end: Alignment.bottomRight,
-                                  colors: [
-                                    Theme.of(context).colorScheme.primary,
-                                    Theme.of(context).colorScheme.secondary,
-                                  ],
-                                ),
-                              ),
-                              child: Theme(
-                                data: MyTheme.buttonStyleTheme,
-                                child: ElevatedButton(
-                                  onPressed: () {
-                                    tripMasterSave();
+                                        child: const Icon(Icons.timer)),
+                                  ),
+                                  onTap: () => _selectTime(
+                                      context, _startTimeController),
+                                  validator: (value) {
+                                    if (value!.isEmpty) {
+                                      return 'Enter Starting Time';
+                                    } else {
+                                      return null;
+                                    }
                                   },
-                                  child: Text(
-                                      widget.flag == 0 ? 'SAVE' : 'UPDATE',
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .titleMedium),
                                 ),
                               ),
-                            ),
-                            const SizedBox(height: 10),
-                            Consumer<LoadingProvider>(
-                                builder: (context, loadingProvider, child) {
-                              return loadingProvider.isLoading
-                                  ? const Center(
-                                      child: CircularProgressIndicator(
-                                        valueColor:
-                                            AlwaysStoppedAnimation<Color>(
-                                          Color.fromARGB(255, 2, 128, 6),
+                              const SizedBox(height: 20),
+                              SizedBox(
+                                width: MediaQuery.of(context).size.width,
+                                child: TextFormField(
+                                  controller: _endTimeController,
+                                  style: Theme.of(context).textTheme.bodySmall,
+                                  decoration: InputDecoration(
+                                      labelText: 'End Time',
+                                      labelStyle:
+                                          Theme.of(context).textTheme.bodySmall,
+                                      suffixIcon: Theme(
+                                          data: Theme.of(context),
+                                          child: const Icon(Icons.timer))),
+                                  onTap: () =>
+                                      _selectTime(context, _endTimeController),
+                                  validator: (value) {
+                                    if (value!.isEmpty) {
+                                      return 'Enter End Time';
+                                    } else {
+                                      return null;
+                                    }
+                                  },
+                                ),
+                              ),
+                              const SizedBox(
+                                height: 20,
+                              ),
+                              Container(
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10),
+                                  gradient: LinearGradient(
+                                    begin: Alignment.topLeft,
+                                    end: Alignment.bottomRight,
+                                    colors: [
+                                      Theme.of(context).colorScheme.primary,
+                                      Theme.of(context).colorScheme.secondary,
+                                    ],
+                                  ),
+                                ),
+                                child: Theme(
+                                  data: MyTheme.buttonStyleTheme,
+                                  child: ElevatedButton(
+                                    onPressed: () {
+                                      tripMasterSave();
+                                    },
+                                    child: Text(
+                                        widget.flag == 0 ? 'SAVE' : 'UPDATE',
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .titleMedium),
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(height: 10),
+                              Consumer<LoadingProvider>(
+                                  builder: (context, loadingProvider, child) {
+                                return loadingProvider.isLoading
+                                    ? const Center(
+                                        child: CircularProgressIndicator(
+                                          valueColor:
+                                              AlwaysStoppedAnimation<Color>(
+                                            Color.fromARGB(255, 2, 128, 6),
+                                          ),
                                         ),
-                                      ),
-                                    )
-                                  : const SizedBox.shrink();
-                            }),
-                            // showTimePicker(context: _scafoldkey.currentContext, initialTime:TimeOfDay(hour: 7, minute: 15)),
-                          ],
+                                      )
+                                    : const SizedBox.shrink();
+                              }),
+                              // showTimePicker(context: _scafoldkey.currentContext, initialTime:TimeOfDay(hour: 7, minute: 15)),
+                            ],
+                          ),
                         ),
-                      ),
-                    )),
+                      )),
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
