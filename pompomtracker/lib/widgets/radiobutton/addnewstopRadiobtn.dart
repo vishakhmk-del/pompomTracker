@@ -8,13 +8,13 @@ class FormatRadioButton extends StatelessWidget {
   final StatementType type;
   final TextStyle? txtstyl;
   final Color? color;
-  
-  const FormatRadioButton({
-    required this.title,
-     required this.type,
-     required this.txtstyl,
-     required this.color,
-     super.key});
+
+  const FormatRadioButton(
+      {required this.title,
+      required this.type,
+      required this.txtstyl,
+      required this.color,
+      super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -32,8 +32,6 @@ class FormatRadioButton extends StatelessWidget {
                     return;
                   }
                   ctx.read<RadiobuttonProvider>().changeSelectedFormat(value);
-
-                  
 
                   selectedFormatNotifier.value = value;
                   selectedFormatNotifier.notifyListeners();

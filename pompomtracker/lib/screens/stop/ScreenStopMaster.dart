@@ -277,7 +277,7 @@ class _ScreenStopMasterState extends State<ScreenStopMaster> {
                               },
                             ),
                           ),
-                            Theme(
+                          Theme(
                             data: Theme.of(context),
                             child: Consumer<CheckProvider>(
                               builder: (context, check, _) => Checkbox(

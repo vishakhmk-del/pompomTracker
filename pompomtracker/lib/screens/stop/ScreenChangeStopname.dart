@@ -2,7 +2,8 @@ import 'package:intl/intl.dart';
 import 'package:pompomtracker/core/hook/hook.dart';
 
 class ScreenStopNameChange extends StatefulWidget {
-  const ScreenStopNameChange({super.key,required this.tripName,required this.stopdet});
+  const ScreenStopNameChange(
+      {super.key, required this.tripName, required this.stopdet});
   final String? tripName;
   final Listdet stopdet;
   @override
@@ -17,8 +18,8 @@ class _ScreenStopNameChangeState extends State<ScreenStopNameChange> {
   final _newstopNameController = TextEditingController();
   final _kilometerController = TextEditingController();
   final _arrivingController = TextEditingController();
-   String? stopId;
-   String? tripID;
+  String? stopId;
+  String? tripID;
 
   int? isstage;
   TimeOfDay _time = const TimeOfDay(hour: 7, minute: 15);
@@ -47,7 +48,6 @@ class _ScreenStopNameChangeState extends State<ScreenStopNameChange> {
           newTime.minute,
         );
         controller.text = timeFormat.format(formattedTime);
-        
       });
     }
   }
@@ -58,22 +58,21 @@ class _ScreenStopNameChangeState extends State<ScreenStopNameChange> {
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       setState(() {
-        _tripNameController.text=widget.tripName??"";
-        _stopNameController.text=widget.stopdet.stopName??"";
-        _kilometerController.text=widget.stopdet.km??"";
-        _arrivingController.text=widget.stopdet.arrivingTime??"";
-        tripID=widget.stopdet.tripId;
-        stopId=widget.stopdet.stopId;
+        _tripNameController.text = widget.tripName ?? "";
+        _stopNameController.text = widget.stopdet.stopName ?? "";
+        _kilometerController.text = widget.stopdet.km ?? "";
+        _arrivingController.text = widget.stopdet.arrivingTime ?? "";
+        tripID = widget.stopdet.tripId;
+        stopId = widget.stopdet.stopId;
         //print(_tripNameController);
       });
     });
-  
+
     //fetchBusregistraionList();
   }
 
   @override
   Widget build(BuildContext context) {
-    
     return Scaffold(
         key: _scafoldkey,
         appBar: AppBar(
@@ -91,7 +90,7 @@ class _ScreenStopNameChangeState extends State<ScreenStopNameChange> {
         body: Center(
           child: SingleChildScrollView(
             child: Container(
-              height: MediaQuery.of(context).size.height*.83,
+              height: MediaQuery.of(context).size.height * .83,
               margin: const EdgeInsets.all(15),
               decoration: BoxDecoration(
                   border: Border.all(
@@ -110,11 +109,12 @@ class _ScreenStopNameChangeState extends State<ScreenStopNameChange> {
                               AssetImage('assets/bus/busmaster.png'),
                           radius: 50,
                         ),
-                      
+
                         SizedBox(
                           width: MediaQuery.of(context).size.width,
                           child: Padding(
-                            padding: const EdgeInsets.only(top: 20, left: 5, right: 5),
+                            padding: const EdgeInsets.only(
+                                top: 20, left: 5, right: 5),
                             child: TextFormField(
                               readOnly: true,
                               controller: _tripNameController,
@@ -123,14 +123,14 @@ class _ScreenStopNameChangeState extends State<ScreenStopNameChange> {
                                   labelText: 'Route Name',
                                   labelStyle:
                                       Theme.of(context).textTheme.bodySmall),
-                              
                             ),
                           ),
                         ),
                         SizedBox(
                           width: MediaQuery.of(context).size.width,
                           child: Padding(
-                            padding: const EdgeInsets.only(top: 20, left: 5, right: 5),
+                            padding: const EdgeInsets.only(
+                                top: 20, left: 5, right: 5),
                             child: TextFormField(
                               readOnly: true,
                               controller: _stopNameController,
@@ -139,14 +139,14 @@ class _ScreenStopNameChangeState extends State<ScreenStopNameChange> {
                                   labelText: 'Stop Name',
                                   labelStyle:
                                       Theme.of(context).textTheme.bodySmall),
-                              
                             ),
                           ),
                         ),
                         SizedBox(
                           width: MediaQuery.of(context).size.width,
                           child: Padding(
-                            padding: const EdgeInsets.only(top: 20, left: 5, right: 5),
+                            padding: const EdgeInsets.only(
+                                top: 20, left: 5, right: 5),
                             child: TextFormField(
                               controller: _newstopNameController,
                               style: Theme.of(context).textTheme.bodySmall,
@@ -164,18 +164,20 @@ class _ScreenStopNameChangeState extends State<ScreenStopNameChange> {
                             ),
                           ),
                         ),
-                        
+
                         SizedBox(
                           width: MediaQuery.of(context).size.width * .5,
                           child: Padding(
-                            padding: const EdgeInsets.only(top: 20, left: 5, right: 5),
+                            padding: const EdgeInsets.only(
+                                top: 20, left: 5, right: 5),
                             child: TextFormField(
                               controller: _kilometerController,
                               style: Theme.of(context).textTheme.bodySmall,
                               decoration: InputDecoration(
                                 labelText: 'Kilo Meter',
                                 hintText: 'KM',
-                                hintStyle:  Theme.of(context).textTheme.bodySmall,
+                                hintStyle:
+                                    Theme.of(context).textTheme.bodySmall,
                                 labelStyle:
                                     Theme.of(context).textTheme.bodySmall,
                               ),
@@ -189,21 +191,27 @@ class _ScreenStopNameChangeState extends State<ScreenStopNameChange> {
                             ),
                           ),
                         ),
-                        
+
                         SizedBox(
-                          width: MediaQuery.of(context).size.width ,
+                          width: MediaQuery.of(context).size.width,
                           child: Padding(
-                            padding: const EdgeInsets.only(top: 20, left: 5, right: 5),
+                            padding: const EdgeInsets.only(
+                                top: 20, left: 5, right: 5),
                             child: TextFormField(
                               controller: _arrivingController,
                               style: Theme.of(context).textTheme.bodySmall,
                               decoration: InputDecoration(
                                   labelText: 'Arriving Time',
-                                  labelStyle: Theme.of(context).textTheme.bodySmall,
+                                  labelStyle:
+                                      Theme.of(context).textTheme.bodySmall,
                                   suffixIcon: Theme(
                                       data: Theme.of(context),
-                                      child:  Icon(Icons.timer,
-                                      color: Theme.of(context).colorScheme.primary,))),
+                                      child: Icon(
+                                        Icons.timer,
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .primary,
+                                      ))),
                               onTap: () =>
                                   _selectTime(context, _arrivingController),
                               validator: (value) {
@@ -218,39 +226,39 @@ class _ScreenStopNameChangeState extends State<ScreenStopNameChange> {
                         ),
 
                         Padding(
-                                  padding: const EdgeInsets.only(top:50.0,bottom: 20),
-                                  child: Container(
-                                    height: 45,
-                                    width: 200,
-                                    decoration: BoxDecoration(
-                                      gradient: LinearGradient(
-                                        begin: Alignment.topLeft,
-                                        end: Alignment.bottomRight,
-                                        colors: [
-                                          Theme.of(context).colorScheme.primary,
-                                          Theme.of(context).colorScheme.secondary
-                                        ],
-                                      ),
-                                      borderRadius: BorderRadius.circular(12.0),
-                                    ),
-                                    child: Theme(
-                                      data: MyTheme.buttonStyleTheme,
-                                      child: ElevatedButton(
-                                        onPressed: () async {
-                                          
-                                         if (_formKey.currentState!.validate()) {
-                                             //context.read<ElevatedBtnProvider>().changeSelectedVal(true);
-                                            stopNameChangeFun(context);
-                                          }
-                                        },
-                                        child: Text(
-                                          'UPDATE',
-                                          style: Theme.of(context).textTheme.titleMedium,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
+                          padding: const EdgeInsets.only(top: 50.0, bottom: 20),
+                          child: Container(
+                            height: 45,
+                            width: 200,
+                            decoration: BoxDecoration(
+                              gradient: LinearGradient(
+                                begin: Alignment.topLeft,
+                                end: Alignment.bottomRight,
+                                colors: [
+                                  Theme.of(context).colorScheme.primary,
+                                  Theme.of(context).colorScheme.secondary
+                                ],
+                              ),
+                              borderRadius: BorderRadius.circular(12.0),
+                            ),
+                            child: Theme(
+                              data: MyTheme.buttonStyleTheme,
+                              child: ElevatedButton(
+                                onPressed: () async {
+                                  if (_formKey.currentState!.validate()) {
+                                    //context.read<ElevatedBtnProvider>().changeSelectedVal(true);
+                                    stopNameChangeFun(context);
+                                  }
+                                },
+                                child: Text(
+                                  'UPDATE',
+                                  style:
+                                      Theme.of(context).textTheme.titleMedium,
                                 ),
+                              ),
+                            ),
+                          ),
+                        ),
                         //const SizedBox(height: 10),
                         Consumer<LoadingProvider>(
                             builder: (context, loadingProvider, child) {
@@ -279,9 +287,9 @@ class _ScreenStopNameChangeState extends State<ScreenStopNameChange> {
     //False to true
     loadingProvider.reset();
     loadingProvider.toggleLoading();
-    
+
     final stopName = _newstopNameController.text;
-    final oldName=_stopNameController.text;
+    final oldName = _stopNameController.text;
     final kiloMeter = _kilometerController.text;
     final arriving = _arrivingController.text;
 
@@ -290,10 +298,10 @@ class _ScreenStopNameChangeState extends State<ScreenStopNameChange> {
       stopId: stopId,
       stopName: stopName,
       stopNameOld: oldName,
-      km:kiloMeter,
-        tripId: tripID,        
-        );
-   
+      km: kiloMeter,
+      tripId: tripID,
+    );
+
     final stopMasterResp = await Busdata().stopNameChang(stopMasReq);
     final reultAsJson = jsonDecode(stopMasterResp.toString());
     final resValue =
@@ -310,10 +318,8 @@ class _ScreenStopNameChangeState extends State<ScreenStopNameChange> {
           backgroundColor: Colors.white,
           textColor: Colors.black,
           fontSize: 15.0);
-           Navigator.pushReplacement(
-                    _scafoldkey.currentContext!, Approutes().stopListScreen);
-              
-
+      Navigator.pushReplacement(
+          _scafoldkey.currentContext!, Approutes().stopListScreen);
     } else if (resValue.status == 'Failed') {
       showerror(_scafoldkey.currentContext, 2);
     } else {

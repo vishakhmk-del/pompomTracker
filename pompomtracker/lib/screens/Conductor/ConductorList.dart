@@ -1,6 +1,5 @@
 import 'package:pompomtracker/core/hook/hook.dart';
 
-
 class ScreenConductorList extends StatefulWidget {
   const ScreenConductorList({super.key});
 
@@ -11,7 +10,10 @@ class ScreenConductorList extends StatefulWidget {
 class _ScreenConductorListState extends State<ScreenConductorList> {
   List<String> columns = [];
   List<String?> cells = [];
-  
+  List<BusRegList>? busreglist = [];
+  List<String> registarionlst = [];
+  String? selectedBusList;
+
   @override
   void initState() {
     super.initState();
@@ -50,6 +52,7 @@ class _ScreenConductorListState extends State<ScreenConductorList> {
                     'Name',
                     'Phone',
                     'Active',
+                    'Action',
                     'Action',
                   ]),
                   rows: getRows(newList),
@@ -121,8 +124,160 @@ class _ScreenConductorListState extends State<ScreenConductorList> {
                   )),
             ),
           ),
+          DataCell(
+            Center(
+              child: IconButton(
+                  onPressed: () {
+                    _showMyDialog(task.conductorId);
+                  },
+                  icon: Icon(
+                    Icons.add,
+                    color: Theme.of(context).colorScheme.primary,
+                  )),
+            ),
+          ),
         ],
       );
     }).toList();
+  }
+
+  Future<void> _showMyDialog(conductorId) async {
+    final value = await SharedPrefManager.instance.getSharedData();
+    busreglist = await Wklycollectfn.instance.busReglistfn();
+    registarionlst =
+        busreglist!.map((bus) => bus.registrationNo ?? "").toList();
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Container(
+            height: MediaQuery.of(context).size.height / 4,
+            width: MediaQuery.of(context).size.width,
+            decoration: BoxDecoration(
+              border:
+                  Border.all(color: Theme.of(context).colorScheme.onSecondary),
+              borderRadius: BorderRadius.circular(12),
+            ),
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                children: [
+                  Text(
+                    'Link Conductor Bus',
+                    style: Theme.of(context).textTheme.titleMedium,
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  ListBody(
+                    children: <Widget>[
+                      DropdownButtonFormField(
+                        items: registarionlst.map((valueItem) {
+                          return DropdownMenuItem(
+                            value: valueItem,
+                            child: Text(
+                              valueItem,
+                              style: TextStyle(
+                                  color: Theme.of(context)
+                                      .colorScheme
+                                      .onSecondary),
+                            ),
+                          );
+                        }).toList(),
+                        onChanged: (newValue) {
+                          setState(() {
+                            selectedBusList = newValue;
+                          });
+                        },
+                        value: selectedBusList,
+                        style: TextStyle(
+                            color: Theme.of(context).colorScheme.onPrimary),
+                        icon: Theme(
+                          data: Theme.of(context),
+                          child: const Icon(
+                            Icons.arrow_drop_down,
+                          ),
+                        ),
+                        decoration: InputDecoration(
+                          labelText: 'Select Bus',
+                          labelStyle: Theme.of(context).textTheme.bodySmall,
+                        ),
+                        dropdownColor: Theme.of(context).colorScheme.tertiary,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Select Bus Type';
+                          } else {
+                            return null;
+                          }
+                        },
+                      ),
+                    ],
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  Container(
+                    height: 30,
+                    width: 100,
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                        colors: [
+                          Theme.of(context).colorScheme.primary,
+                          Theme.of(context).colorScheme.secondary
+                        ],
+                      ),
+                      borderRadius: BorderRadius.circular(12.0),
+                    ),
+                    child: Theme(
+                      data: MyTheme.buttonStyleTheme,
+                      child: ElevatedButton(
+                        onPressed: () async {
+                          final req = MasterListReq(
+                              conductorId: conductorId,
+                              busRegNo: selectedBusList,
+                              userId: value!.userId);
+                          final resp = await Busdata().linkConductorBus(req);
+                          final resultAsjson = jsonDecode(resp.toString());
+                          final resValue = ConductorBusInkResp.fromJson(
+                              resultAsjson as Map<String, dynamic>);
+                          if (resValue.status == 'success') {
+                            Fluttertoast.showToast(
+                                msg: "Linked successfully",
+                                toastLength: Toast.LENGTH_SHORT,
+                                gravity: ToastGravity.CENTER,
+                                timeInSecForIosWeb: 1,
+                                backgroundColor: Colors.white,
+                                textColor: Colors.black,
+                                fontSize: 15.0);
+                            Navigator.of(context).pop();
+                          } else {
+                            Fluttertoast.showToast(
+                                msg: " Error",
+                                toastLength: Toast.LENGTH_SHORT,
+                                gravity: ToastGravity.CENTER,
+                                timeInSecForIosWeb: 1,
+                                backgroundColor: Colors.white,
+                                textColor: Colors.black,
+                                fontSize: 15.0);
+                            Navigator.of(context).pop();
+                          }
+                        },
+                        child: Text(
+                          'LINK',
+                          style: Theme.of(context).textTheme.titleMedium,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
+      },
+    );
   }
 }

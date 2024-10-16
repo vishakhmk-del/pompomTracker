@@ -142,18 +142,16 @@ export 'package:pompomtracker/model/bus_master/bus_list_resp/bus_list_resp.dart'
 
 export 'package:pompomtracker/model/common_models/list_model_resp/listdet.dart';
 
-
-
 export 'package:pompomtracker/model/common_models/list_model_req/list_req.dart';
 export 'package:pompomtracker/model/common_models/list_model_resp/masterlistMdl.dart';
-
 
 export 'package:pompomtracker/model/conductor_master/conductor_edit/conductor_edit_req/conductor_edit_re.dart';
 export 'package:pompomtracker/model/conductor_master/conductor_resp/conductor_resp.dart';
 
-
 export 'package:pompomtracker/model/conductor_master/conductor_edit/conductor_edit_resp/conductor_detail.dart';
 export 'package:pompomtracker/model/conductor_master/conductor_edit/conductor_edit_resp/conductor_edit_resp.dart';
+export 'package:pompomtracker/model/conductor_master/conductor_link/conductor_bus_ink_resp/conductor_bus_ink_resp.dart';
+
 /**************************************/
 
 /*FUNCTION*/
@@ -169,6 +167,7 @@ export 'package:pompomtracker/function/conductor/conductorListFun.dart';
 export 'package:pompomtracker/function/Bus_route/BusRouteFun.dart';
 
 export 'package:pompomtracker/function/trip/TripListFun.dart';
+
 /**************************************/
 
 /*WIDGETS*/
