@@ -13,6 +13,10 @@ class _ScreenConductorListState extends State<ScreenConductorList> {
   List<BusRegList>? busreglist = [];
   List<String> registarionlst = [];
   String? selectedBusList;
+  Future<bool?> popscreen(BuildContext context) async {
+    Navigator.push(context, Approutes().homescreen);
+    return true;
+  }
 
   @override
   void initState() {
@@ -24,40 +28,50 @@ class _ScreenConductorListState extends State<ScreenConductorList> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () {
-            Navigator.pushReplacement(context, Approutes().homescreen);
-          },
+    return PopScope(
+      canPop: false,
+      onPopInvoked: (bool didPop) async {
+        if (!didPop) {
+          if (didPop) return;
+          await popscreen(context);
+        }
+        //  log('BackButton pressed!');
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back),
+            onPressed: () {
+              Navigator.pushReplacement(context, Approutes().homescreen);
+            },
+          ),
+          title: Text(
+            'Conductor List',
+            style: TextStyle(color: Theme.of(context).colorScheme.onSecondary),
+          ),
         ),
-        title: Text(
-          'Conductor List',
-          style: TextStyle(color: Theme.of(context).colorScheme.onSecondary),
-        ),
-      ),
-      body: SingleChildScrollView(
-        scrollDirection: Axis.horizontal,
-        child: SingleChildScrollView(
-          scrollDirection: Axis.vertical,
-          child: ValueListenableBuilder(
-              valueListenable:
-                  ConductorListFunctions.instance.getConductoristNotifier,
-              builder:
-                  (BuildContext context, List<Listdet> newList, Widget? _) {
-                return DataTable(
-                  columns: getColumns(columns = [
-                    'S.No',
-                    'Name',
-                    'Phone',
-                    'Active',
-                    'Action',
-                    'Action',
-                  ]),
-                  rows: getRows(newList),
-                );
-              }),
+        body: SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          child: SingleChildScrollView(
+            scrollDirection: Axis.vertical,
+            child: ValueListenableBuilder(
+                valueListenable:
+                    ConductorListFunctions.instance.getConductoristNotifier,
+                builder:
+                    (BuildContext context, List<Listdet> newList, Widget? _) {
+                  return DataTable(
+                    columns: getColumns(columns = [
+                      'S.No',
+                      'Name',
+                      'Phone',
+                      'Active',
+                      'Action',
+                      'Action',
+                    ]),
+                    rows: getRows(newList),
+                  );
+                }),
+          ),
         ),
       ),
     );

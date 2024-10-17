@@ -18,40 +18,55 @@ class _ScreenBusListState extends State<ScreenBusList> {
     });
   }
 
+  Future<bool?> popscreen(BuildContext context) async {
+    Navigator.push(context, Approutes().homescreen);
+    return true;
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () {
-            Navigator.pushReplacement(context, Approutes().homescreen);
-          },
+    return PopScope(
+      canPop: false,
+      onPopInvoked: (bool didPop) async {
+        if (!didPop) {
+          if (didPop) return;
+          await popscreen(context);
+        }
+        //  log('BackButton pressed!');
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back),
+            onPressed: () {
+              Navigator.pushReplacement(context, Approutes().homescreen);
+            },
+          ),
+          title: Text(
+            'Bus List',
+            style: TextStyle(color: Theme.of(context).colorScheme.onSecondary),
+          ),
         ),
-        title: Text(
-          'Bus List',
-          style: TextStyle(color: Theme.of(context).colorScheme.onSecondary),
-        ),
-      ),
-      body: SingleChildScrollView(
-        scrollDirection: Axis.horizontal,
-        child: SingleChildScrollView(
-          scrollDirection: Axis.vertical,
-          child: ValueListenableBuilder(
-              valueListenable: BusListFunctions.instance.getBusListNotifier,
-              builder:
-                  (BuildContext context, List<BusList> newList, Widget? _) {
-                return DataTable(
-                  columns: getColumns(columns = [
-                    'S.No',
-                    'Reg No',
-                    'Permit No',
-                    'Valid To',
-                    'Action',
-                  ]),
-                  rows: getRows(newList),
-                );
-              }),
+        body: SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          child: SingleChildScrollView(
+            scrollDirection: Axis.vertical,
+            child: ValueListenableBuilder(
+                valueListenable: BusListFunctions.instance.getBusListNotifier,
+                builder:
+                    (BuildContext context, List<BusList> newList, Widget? _) {
+                  return DataTable(
+                    columns: getColumns(columns = [
+                      'S.No',
+                      'Reg No',
+                      'Permit No',
+                      'Valid To',
+                      'Action',
+                    ]),
+                    rows: getRows(newList),
+                  );
+                }),
+          ),
         ),
       ),
     );

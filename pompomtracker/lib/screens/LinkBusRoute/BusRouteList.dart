@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:pompomtracker/core/hook/hook.dart';
 
@@ -18,34 +20,50 @@ class _BusRouteListState extends State<BusRouteList> {
     });
   }
 
+  Future<bool?> popscreen(BuildContext context) async {
+    Navigator.push(context, Approutes().homescreen);
+    return true;
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-            onPressed: () {
-              Navigator.pushReplacement(context, Approutes().homescreen);
-            },
-            icon: const Icon(Icons.arrow_back)),
-        title: const Text('Bus Route List'),
-      ),
-      body: SingleChildScrollView(
-        scrollDirection: Axis.horizontal,
-        child: ValueListenableBuilder(
-            valueListenable:
-                BusRouteListFunctions.instance.getBusRouteListNotifier,
-            builder: (BuildContext context, List<Listdet> newList, Widget? _) {
-              return DataTable(
-                columns: getColumns(columns = [
-                  'S.No',
-                  'Reg No',
-                  'Route',
-                  'Via',
-                  'Action',
-                ]),
-                rows: getRows(newList),
-              );
-            }),
+    return PopScope(
+      canPop: false,
+      onPopInvoked: (bool didPop) async {
+        if (!didPop) {
+          if (didPop) return;
+          await popscreen(context);
+        }
+        log('BackButton pressed!');
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          leading: IconButton(
+              onPressed: () {
+                Navigator.pushReplacement(context, Approutes().homescreen);
+              },
+              icon: const Icon(Icons.arrow_back)),
+          title: const Text('Bus Route List'),
+        ),
+        body: SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          child: ValueListenableBuilder(
+              valueListenable:
+                  BusRouteListFunctions.instance.getBusRouteListNotifier,
+              builder:
+                  (BuildContext context, List<Listdet> newList, Widget? _) {
+                return DataTable(
+                  columns: getColumns(columns = [
+                    'S.No',
+                    'Reg No',
+                    'Route',
+                    'Via',
+                    'Action',
+                  ]),
+                  rows: getRows(newList),
+                );
+              }),
+        ),
       ),
     );
   }
