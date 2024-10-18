@@ -106,7 +106,7 @@ class _ScreenStopMasterState extends State<ScreenStopMaster> {
             
           ),
           title: Text(
-            'Stop List',
+            'Add Stop',
             style: TextStyle(color: Theme.of(context).colorScheme.onSecondary),
           ),
         ),
