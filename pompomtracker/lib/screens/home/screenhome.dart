@@ -201,24 +201,24 @@ class _ScreenhomeState extends State<Screenhome> {
 Future<bool?> showWarning(BuildContext context) async => showDialog<bool>(
     context: context,
     builder: (context) => AlertDialog(
-          title: const Text("Do you want to exit app?",
-              style: TextStyle(color: Color.fromARGB(255, 101, 47, 248))),
+          title:  Text("Do you want to exit app?",
+              style: TextStyle(color: Theme.of(context).colorScheme.primary)),
           actions: [
             ElevatedButton(
               style: ElevatedButton.styleFrom(
-                backgroundColor: const Color.fromARGB(255, 158, 89, 248),
+                backgroundColor: Theme.of(context).colorScheme.primary,
               ),
               onPressed: () => Navigator.pop(context, false),
-              child: const Text("No", style: TextStyle(color: Colors.white)),
+              child:  Text("No", style: TextStyle(color:Theme.of(context).colorScheme.onPrimary)),
             ),
             ElevatedButton(
               style: ElevatedButton.styleFrom(
-                backgroundColor: const Color.fromARGB(255, 158, 89, 248),
+                backgroundColor: Theme.of(context).colorScheme.primary,
               ),
               onPressed: () =>
                   // SystemNavigator.pop(),
                   Navigator.pop(context, true),
-              child: const Text("Yes", style: TextStyle(color: Colors.white)),
+              child:  Text("Yes", style: TextStyle(color:Theme.of(context).colorScheme.onPrimary)),
             ),
           ],
         ));

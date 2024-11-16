@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:pompomtracker/core/hook/hook.dart';
 
 class BusRouteList extends StatefulWidget {
@@ -11,6 +10,7 @@ class BusRouteList extends StatefulWidget {
 class _BusRouteListState extends State<BusRouteList> {
   List<String> columns = [];
   List<String?> cells = [];
+  @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
