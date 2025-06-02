@@ -77,13 +77,12 @@ class TripListFuntions {
   }
 
   Future<List<Listdet>> sortedrouteList(String? regno) async {
-    
     Response<dynamic>? dtwiseresp;
-     List<Listdet> triplist = [];
+    List<Listdet> triplist = [];
 
     final dtwiserqst = MasterListReq(
-        regNo: regno,       
-        );
+      regNo: regno,
+    );
     dtwiseresp = await Busdata().sortedRoute(dtwiserqst);
 
     if (dtwiseresp == null) {
@@ -94,7 +93,7 @@ class TripListFuntions {
       final dtwiserspval =
           MasterListMdl.fromJson(resultAsjson as Map<String, dynamic>);
       if (dtwiserspval.status == 'success') {
-       log('sorted route fetch success');
+        log('sorted route fetch success');
         final routeList = dtwiserspval.listDet;
         triplist = routeList;
         return triplist;
@@ -113,13 +112,12 @@ class TripListFuntions {
   }
 
   Future<List<Listdet>> stationList(int? routeId) async {
-    
     Response<dynamic>? dtwiseresp;
-     List<Listdet> triplist = [];
+    List<Listdet> triplist = [];
 
     final dtwiserqst = MasterListReq(
-        routeId: routeId,       
-        );
+      routeId: routeId,
+    );
     dtwiseresp = await Busdata().fromToStaton(dtwiserqst);
 
     if (dtwiseresp == null) {
@@ -130,7 +128,7 @@ class TripListFuntions {
       final dtwiserspval =
           MasterListMdl.fromJson(resultAsjson as Map<String, dynamic>);
       if (dtwiserspval.status == 'success') {
-       log('sorted route fetch success');
+        log('sorted route fetch success');
         final routeList = dtwiserspval.listDet;
         triplist = routeList;
         return triplist;

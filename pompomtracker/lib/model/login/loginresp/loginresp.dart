@@ -1,26 +1,15 @@
 import 'package:json_annotation/json_annotation.dart';
+import 'package:pompomtracker/model/login/loginresp/data.dart';
 
 part 'loginresp.g.dart';
 
 @JsonSerializable()
 class Loginresp {
   String? status;
-  @JsonKey(name: 'user_id')
-  String? userId;
-  @JsonKey(name: 'user_type')
-  String? userType;
-  @JsonKey(name: 'user_name')
-  String? userName;
-  @JsonKey(name: 'owner_name')
-  String? ownerName;
+  String? message;
+  DataCount? data;
 
-  Loginresp({
-    this.status,
-    this.userId,
-    this.userType,
-    this.userName,
-    this.ownerName,
-  });
+  Loginresp({this.status, this.message, this.data});
 
   factory Loginresp.fromJson(Map<String, dynamic> json) {
     return _$LoginrespFromJson(json);

@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:intl/intl.dart';
 import 'package:pompomtracker/core/hook/hook.dart';
 
@@ -35,8 +33,10 @@ class _ScreenTriptState extends State<ScreenTrip> {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       // fetchRouteList();
-      busreglist = await Wklycollectfn.instance.busReglistfn();
-      routeDetailslist = await Wklycollectfn.instance.fetchRouteList();
+      busreglist = await Wklycollectfn.instance.busReglistfn(context);
+      if (!mounted) return;
+
+      routeDetailslist = await Wklycollectfn.instance.fetchRouteList(context);
       setState(() {
         registarionlst =
             busreglist!.map((bus) => bus.registrationNo ?? "").toList();
@@ -96,8 +96,15 @@ class _ScreenTriptState extends State<ScreenTrip> {
   }
 
   Future<bool?> popscreen(BuildContext context) async {
-    Navigator.push(context, Approutes().homescreen);
-    return true;
+    if (widget.flag == 0) {
+      Navigator.pushReplacement(
+          _scafoldkey.currentContext!, Approutes().homescreen);
+      return true;
+    } else {
+      Navigator.pushReplacement(
+          _scafoldkey.currentContext!, Approutes().tripListScreen);
+      return true;
+    }
   }
 
   @override
@@ -109,7 +116,6 @@ class _ScreenTriptState extends State<ScreenTrip> {
           if (didPop) return;
           await popscreen(context);
         }
-        //  log('BackButton pressed!');
       },
       child: Scaffold(
         key: _scafoldkey,

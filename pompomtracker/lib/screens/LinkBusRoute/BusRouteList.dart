@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:pompomtracker/core/hook/hook.dart';
 
 class BusRouteList extends StatefulWidget {
@@ -18,34 +20,114 @@ class _BusRouteListState extends State<BusRouteList> {
     });
   }
 
+  Future<bool?> popscreen(BuildContext context) async {
+    Navigator.push(context, Approutes().homescreen);
+    return true;
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-            onPressed: () {
-              Navigator.pushReplacement(context, Approutes().homescreen);
-            },
-            icon: const Icon(Icons.arrow_back)),
-        title: const Text('Bus Route List'),
-      ),
-      body: SingleChildScrollView(
-        scrollDirection: Axis.horizontal,
-        child: ValueListenableBuilder(
-            valueListenable:
-                BusRouteListFunctions.instance.getBusRouteListNotifier,
-            builder: (BuildContext context, List<Listdet> newList, Widget? _) {
-              return DataTable(
-                columns: getColumns(columns = [
-                  'S.No',
-                  'Reg No',
-                  'Route',
-                  'Via',
-                  'Action',
-                ]),
-                rows: getRows(newList),
-              );
-            }),
+    return PopScope(
+      canPop: false,
+      onPopInvoked: (bool didPop) async {
+        if (!didPop) {
+          if (didPop) return;
+          await popscreen(context);
+        }
+        log('BackButton pressed!');
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          leading: IconButton(
+              onPressed: () {
+                Navigator.pushReplacement(context, Approutes().homescreen);
+              },
+              icon: const Icon(Icons.arrow_back)),
+          title: const Text('Bus Route List'),
+        ),
+        body: Column(
+          children: [
+            Expanded(
+              child: ScrollableWidget(
+                child: ValueListenableBuilder(
+                    valueListenable:
+                        BusRouteListFunctions.instance.getBusRouteListNotifier,
+                    builder: (BuildContext context, List<Listdet> newList,
+                        Widget? _) {
+                      return Column(
+                        children: [
+                          if (newList.isNotEmpty) ...[
+                            Container(
+                              decoration: BoxDecoration(
+                                border: Border.all(
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .onSecondary),
+                                //borderRadius:const BorderRadius.only(topLeft: Radius.circular(12),topRight: Radius.circular(12)),
+                              ),
+                              child: DataTable(
+                                columns: getColumns(columns = [
+                                  'S.No',
+                                  'Reg No',
+                                  'Route',
+                                  'Via',
+                                  'Action',
+                                ]),
+                                rows: getRows(newList),
+                              ),
+                            ),
+                          ] else ...[
+                            FutureBuilder(
+                              future: Future.delayed(const Duration(
+                                  seconds: 10)), // Add a delay of 5 seconds
+                              builder: (context, snapshot) {
+                                if (snapshot.connectionState ==
+                                    ConnectionState.waiting) {
+                                  return Center(
+                                    child: Padding(
+                                      padding: EdgeInsets.symmetric(
+                                        vertical:
+                                            MediaQuery.of(context).size.height /
+                                                2.5,
+                                        horizontal:
+                                            MediaQuery.of(context).size.width /
+                                                2.3,
+                                      ),
+                                      child: const CircularProgressIndicator(),
+                                    ),
+                                  );
+                                } else {
+                                  // After 5 seconds, show the No Data Found image
+                                  return Center(
+                                    child: Padding(
+                                      padding: EdgeInsets.symmetric(
+                                        vertical:
+                                            MediaQuery.of(context).size.height /
+                                                2.5,
+                                        horizontal:
+                                            MediaQuery.of(context).size.width /
+                                                2.7,
+                                      ),
+                                      child: Text(
+                                        'No data found',
+                                        style: TextStyle(
+                                            color: Theme.of(context)
+                                                .colorScheme
+                                                .onSecondary),
+                                      ),
+                                    ),
+                                  );
+                                }
+                              },
+                            ),
+                          ]
+                        ],
+                      );
+                    }),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -66,9 +148,9 @@ class _BusRouteListState extends State<BusRouteList> {
       int index = entry.key + 1; // Serial number starts from 1
       Listdet task = entry.value;
       cells = [
-        task.registratioNo,
-        task.routeName,
-        task.via,
+        task.registratioNo ?? '',
+        task.routeName ?? '',
+        task.via ?? '',
       ];
       return DataRow(cells: [
         //

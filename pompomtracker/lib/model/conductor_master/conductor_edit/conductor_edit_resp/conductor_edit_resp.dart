@@ -9,7 +9,7 @@ part 'conductor_edit_resp.g.dart';
 class ConductorEditResp {
   String? status;
   String? message;
-  @JsonKey(name: 'conductor_details')
+  @JsonKey(name: 'employee_details')
   List<ConductorDetail>? conductorDetails;
   @JsonKey(name: 'bus_list')
   List<BusList>? busList;

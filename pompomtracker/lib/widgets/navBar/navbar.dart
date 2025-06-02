@@ -11,25 +11,29 @@ class Navbar extends StatefulWidget {
 class _NavbarState extends State<Navbar> {
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   String username = '';
+
   String brname = '';
   bool isVisible = true;
+
   String? version;
+
   @override
   void initState() {
-    //checkUserLoggedIn();
+    buildversion();
     super.initState();
   }
-  // void buildversion() async {
-  //   final value = await Sharedata.instance.getdeviceinfo();
 
-  //  final devversion=value.appversion;
-  //  final devicever=devversion!.split('+');
-  //  final versionval=devicever[0];
+  void buildversion() async {
+    final value = await SharedPrefManager.instance.getdeviceinfo();
 
-  //   setState(() {
-  //     version=versionval;
-  //   });
-  // }
+    final devversion = value.appversion;
+    final devicever = devversion!.split('+');
+    final versionval = devicever[0];
+
+    setState(() {
+      version = versionval;
+    });
+  }
 
   Future<bool?> popscreen(BuildContext context) async {
     Navigator.of(context).pushReplacement(
@@ -58,10 +62,22 @@ class _NavbarState extends State<Navbar> {
           children: [
             UserAccountsDrawerHeader(
               accountName: Text(
-                'PomPomTracker',
+                'My Bus',
+                textAlign: TextAlign.center,
                 style: Theme.of(context).textTheme.titleLarge,
+                textScaler: TextScaler.noScaling,
+                maxLines: 2, // Or any number you want
+                overflow: TextOverflow.visible,
+                softWrap: true,
               ),
-              accountEmail: Text('Version:$version'),
+              accountEmail: Text(
+                'Version:$version',
+                style: Theme.of(context)
+                    .textTheme
+                    .labelMedium
+                    ?.copyWith(fontSize: 14),
+                textScaler: TextScaler.noScaling,
+              ),
               currentAccountPicture: CircleAvatar(
                 child: ClipOval(
                   child: Image.asset(
@@ -87,6 +103,18 @@ class _NavbarState extends State<Navbar> {
                   color: Color(0xff13bc91),
                 ),
                 title: Text(
+                  "Trip Details",
+                  style: Theme.of(context).textTheme.bodyLarge,
+                ),
+                onTap: () {
+                  Navigator.push(context, Approutes().employeeAssign);
+                }),
+            ListTile(
+                leading: const Icon(
+                  Icons.directions_bus,
+                  // color: Color(0xff13bc91),
+                ),
+                title: Text(
                   "Bus List",
                   style: Theme.of(context).textTheme.bodyLarge,
                 ),
@@ -95,7 +123,7 @@ class _NavbarState extends State<Navbar> {
                 }),
             ListTile(
                 leading: const Icon(
-                  Icons.person_2_outlined,
+                  Icons.badge_outlined,
                   //color: Appcolors.labelclr,
                 ),
                 title: Text(
@@ -104,6 +132,18 @@ class _NavbarState extends State<Navbar> {
                 ),
                 onTap: () {
                   Navigator.push(context, Approutes().conductorListScreen);
+                }),
+            ListTile(
+                leading: const Icon(
+                  Icons.emoji_transportation,
+                  // color: Color(0xff13bc91),
+                ),
+                title: Text(
+                  "Driver List",
+                  style: Theme.of(context).textTheme.bodyLarge,
+                ),
+                onTap: () {
+                  Navigator.push(context, Approutes().screenDriverView);
                 }),
             ListTile(
                 leading: const Icon(

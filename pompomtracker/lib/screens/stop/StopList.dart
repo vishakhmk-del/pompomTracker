@@ -24,6 +24,7 @@ class _ScreenStopListState extends State<ScreenStopList> {
   void initState() {
     super.initState();
     Future.delayed(Duration.zero, () {
+      if (!mounted) return;
       context.read<ElevatedBtnProvider>().changeSelectedVal(false);
     });
 
@@ -45,7 +46,9 @@ class _ScreenStopListState extends State<ScreenStopList> {
   Future<bool?> popscreen(BuildContext context) async {
     selectedTaskNotifier.value = StatementType.collectionType;
     selectedModeNotifier.value = StatementType.both;
-    Navigator.push(context, Approutes().collectionscreen);
+    Navigator.of(context).pushAndRemoveUntil(
+        MaterialPageRoute(builder: (context) => const Screenhome()),
+        (Route<dynamic> route) => false);
     return true;
   }
 
@@ -77,7 +80,7 @@ class _ScreenStopListState extends State<ScreenStopList> {
                     TextStyle(color: Theme.of(context).colorScheme.onSecondary),
               ),
             ),
-            body: ListView(
+            body: Column(
               children: [
                 Card(
                     margin: const EdgeInsets.all(10),
@@ -230,7 +233,8 @@ class _ScreenStopListState extends State<ScreenStopList> {
                     if (provider.selectedVal == false) {
                       return Container();
                     } else if (provider.selectedVal == true) {
-                      return ScrollableWidget(child: buildStmntTbl());
+                      return Expanded(
+                          child: ScrollableWidget(child: buildStmntTbl()));
                     }
                     return Container();
                   },
@@ -243,55 +247,95 @@ class _ScreenStopListState extends State<ScreenStopList> {
     return ValueListenableBuilder(
         valueListenable: StopFunctions.instance.getStopDetNotifier,
         builder: (BuildContext context, List<Listdet> newList, Widget? _) {
-          return Card(
-            margin: const EdgeInsets.all(10),
-            elevation: 3,
-            child: Container(
-              decoration: BoxDecoration(
-                border: Border.all(
-                    color: Theme.of(context).colorScheme.onSecondary),
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    children: [
-                      IconButton(
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => ScreenAddNewStop(
-                                  tripName: display,
-                                  tripId: tripId,
-                                ),
-                              ),
-                            );
-                          },
-                          icon: Icon(
-                            Icons.add_circle_outline,
-                            color: Theme.of(context).colorScheme.primary,
-                            size: 25,
-                          )),
-                      Text(
-                        'Add New Stop',
-                        style: Theme.of(context).textTheme.titleMedium,
-                      ),
-                    ],
+          return Column(
+            children: [
+              if (newList.isNotEmpty) ...[
+                Card(
+                  margin: const EdgeInsets.all(10),
+                  elevation: 3,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                          color: Theme.of(context).colorScheme.onSecondary),
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          children: [
+                            IconButton(
+                                onPressed: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => ScreenAddNewStop(
+                                        tripName: display,
+                                        tripId: tripId,
+                                      ),
+                                    ),
+                                  );
+                                },
+                                icon: Icon(
+                                  Icons.add_circle_outline,
+                                  color: Theme.of(context).colorScheme.primary,
+                                  size: 25,
+                                )),
+                            Text(
+                              'Add New Stop',
+                              style: Theme.of(context).textTheme.titleMedium,
+                            ),
+                          ],
+                        ),
+                        DataTable(
+                          columns: getColumns(columns = [
+                            'Stop Name',
+                            'Is Stage',
+                            'Arriving ',
+                            'Action'
+                          ]),
+                          rows: getRows(newList),
+                        ),
+                      ],
+                    ),
                   ),
-                  DataTable(
-                    columns: getColumns(columns = [
-                      'Stop Name',
-                      'Is Stage',
-                      'Arriving ',
-                      'Action'
-                    ]),
-                    rows: getRows(newList),
-                  ),
-                ],
-              ),
-            ),
+                ),
+              ] else ...[
+                FutureBuilder(
+                  future: Future.delayed(
+                      const Duration(seconds: 10)), // Add a delay of 5 seconds
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return Center(
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(
+                            vertical: MediaQuery.of(context).size.height / 2.5,
+                            horizontal: MediaQuery.of(context).size.width / 2.3,
+                          ),
+                          child: const CircularProgressIndicator(),
+                        ),
+                      );
+                    } else {
+                      // After 5 seconds, show the No Data Found image
+                      return Center(
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(
+                            vertical: MediaQuery.of(context).size.height / 2.5,
+                            horizontal: MediaQuery.of(context).size.width / 2.7,
+                          ),
+                          child: Text(
+                            'No data found',
+                            style: TextStyle(
+                                color:
+                                    Theme.of(context).colorScheme.onSecondary),
+                          ),
+                        ),
+                      );
+                    }
+                  },
+                ),
+              ]
+            ],
           );
         });
   }
@@ -309,9 +353,9 @@ class _ScreenStopListState extends State<ScreenStopList> {
 
   List<DataRow> getRows(List<Listdet> newList) => newList.map((Listdet task) {
         cells = [
-          task.stopName,
-          task.isStage,
-          task.arrivingTime,
+          task.stopName ?? '',
+          task.isStage ?? '',
+          task.arrivingTime ?? '',
         ];
 
         return DataRow(cells: [
@@ -345,7 +389,6 @@ class _ScreenStopListState extends State<ScreenStopList> {
                 children: [
                   IconButton(
                       onPressed: () {
-                       
                         Navigator.push(
                           context,
                           MaterialPageRoute(
@@ -355,7 +398,6 @@ class _ScreenStopListState extends State<ScreenStopList> {
                             ),
                           ),
                         );
-                        
                       },
                       icon: Icon(
                         Icons.edit,

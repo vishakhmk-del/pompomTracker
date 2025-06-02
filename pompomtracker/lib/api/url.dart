@@ -3,7 +3,7 @@ class Url {
 
   String baseUrl = 'http://117.221.68.183:81/Qrpay/index.php';
 
-  String loginUrl = '/Home_C/owner_login';
+  String loginUrl = '/Home_C/owner_login_v';
 
   String getBusUrl = '/Master_C/get_bustype';
   String busSave = '/Master_C/bus_save';
@@ -19,7 +19,6 @@ class Url {
   String stopSave = '/Owner_C/save_stop';
   String linkBusRouteSave = '/Master_C/bus_route_link';
   String conductorSave = '/Master_C/conductor_save';
-
   String fetchBusList = '/Owner_C/bus_view';
   String fetchBusEditList = '/Owner_C/bus_details';
   String updateBus = '/Owner_C/update_bus';
@@ -50,5 +49,17 @@ class Url {
   String existingStpUrl = '/Owner_C/get_existing_stop';
   String editArrivingTmUrl = '/Owner_C/add_existing_stop';
   String getnewTripUrl = '/Owner_C/get_new_trip';
+  String frgetPswrdUrl = '/Home_C/forgot_password';
+  String deviceInfoUrl = '/Home_C/create_or_update_device';
 
+  String driverSaveUrl = '/Master_C/driver_save';
+  String driverViewUrl = '/Owner_C/driver_view';
+  String busDetailsUrl = '/Master_C/get_bus_trip_details';
+  String fetcheditDriverDetailsUrl = '/Owner_C/driver_details';
+  String updateDriverUrl = '/Owner_C/update_driver';
+  String conductorLstUrl = '/Master_C/conductor_list';
+  String driverLstUrl = '/Master_C/driver_list';
+  String employeeAsgnUrl = '/Master_C/duty_assign_save_working';
+  String empStatusUrl ='/Master_C/update_driver_conductor_statusnew';
+  String empUpdtStatusUrl ='/Master_C/update_DriverConductor';
 }

@@ -69,6 +69,8 @@ class _ScreenAddNewStopState extends State<ScreenAddNewStop> {
         }).toList();
       });
     });
+    final checkProvider = context.read<CheckProvider>();
+    checkProvider.reset();
     //fetchBusregistraionList();
   }
 
@@ -89,19 +91,13 @@ class _ScreenAddNewStopState extends State<ScreenAddNewStop> {
           ),
         ),
         body: Center(
-          child: SingleChildScrollView(
-            child: Container(
-              height: MediaQuery.of(context).size.height * .9,
-              margin: const EdgeInsets.all(15),
-              decoration: BoxDecoration(
-                  border: Border.all(
-                      color: Theme.of(context).colorScheme.onSecondary),
-                  borderRadius: BorderRadius.circular(12)),
-              child: Form(
+          child: ListView(
+            children: [
+              Form(
                 key: _formKey,
                 child: Padding(
                   padding:
-                      const EdgeInsets.symmetric(vertical: 15.0, horizontal: 5),
+                      const EdgeInsets.symmetric(vertical: 15.0, horizontal: 0),
                   child: Theme(
                     data: MyTheme.googleFormTheme,
                     child: Column(
@@ -134,13 +130,12 @@ class _ScreenAddNewStopState extends State<ScreenAddNewStop> {
                             ),
                           ),
                         ),
-
                         SizedBox(
                           child: Padding(
                             padding: const EdgeInsets.only(
-                                top: 20, left: 5, right: 5),
+                                top: 20, left: 0, right: 0),
                             child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              //mainAxisAlignment: MainAxisAlignment.spaceAround,
                               children: [
                                 FormatRadioButton(
                                   title: 'Before',
@@ -159,8 +154,7 @@ class _ScreenAddNewStopState extends State<ScreenAddNewStop> {
                                       Theme.of(context).textTheme.labelLarge,
                                 ),
                                 SizedBox(
-                                  width:
-                                      MediaQuery.of(context).size.width / 2.5,
+                                  width: MediaQuery.of(context).size.width / 2,
                                   child: DropdownButtonFormField(
                                     items: routelist.map((busMap) {
                                       return DropdownMenuItem<String>(
@@ -222,7 +216,6 @@ class _ScreenAddNewStopState extends State<ScreenAddNewStop> {
                             ),
                           ),
                         ),
-
                         SizedBox(
                           width: MediaQuery.of(context).size.width,
                           child: Padding(
@@ -231,6 +224,7 @@ class _ScreenAddNewStopState extends State<ScreenAddNewStop> {
                             child: TextFormField(
                               controller: _stopNameController,
                               style: Theme.of(context).textTheme.bodySmall,
+                              textCapitalization: TextCapitalization.characters,
                               decoration: InputDecoration(
                                   labelText: 'Stop Name',
                                   labelStyle:
@@ -275,45 +269,50 @@ class _ScreenAddNewStopState extends State<ScreenAddNewStop> {
                             ),
                           ),
                         ),
-                        SizedBox(
-                          width: MediaQuery.of(context).size.width / 2,
-                          child: Padding(
-                            padding: const EdgeInsets.only(
-                                top: 20, left: 5, right: 5),
-                            child: TextFormField(
-                              controller: _kilometerController,
-                              style: Theme.of(context).textTheme.bodySmall,
-                              decoration: InputDecoration(
-                                labelText: 'Kilo Meter',
-                                labelStyle:
-                                    Theme.of(context).textTheme.bodySmall,
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            SizedBox(
+                              width: MediaQuery.of(context).size.width / 2,
+                              child: Padding(
+                                padding: const EdgeInsets.only(
+                                    top: 20, left: 5, right: 5),
+                                child: TextFormField(
+                                  controller: _kilometerController,
+                                  style: Theme.of(context).textTheme.bodySmall,
+                                  decoration: InputDecoration(
+                                    labelText: 'Kilo Meter',
+                                    labelStyle:
+                                        Theme.of(context).textTheme.bodySmall,
+                                  ),
+                                  validator: (value) {
+                                    if (value!.isEmpty) {
+                                      return 'Enter Kilo Meter';
+                                    } else {
+                                      return null;
+                                    }
+                                  },
+                                ),
                               ),
-                              validator: (value) {
-                                if (value!.isEmpty) {
-                                  return 'Enter Kilo Meter';
-                                } else {
-                                  return null;
-                                }
-                              },
                             ),
-                          ),
+                            Theme(
+                              data: Theme.of(context),
+                              child: Consumer<CheckProvider>(
+                                builder: (context, check, _) => Checkbox(
+                                    value: check.isAccepted,
+                                    onChanged: (value) {
+                                      check.setAccepted(value);
+                                    }),
+                              ),
+                            ),
+                            Expanded(
+                                child: Text(
+                              "Is stage",
+                              textAlign: TextAlign.left,
+                              style: Theme.of(context).textTheme.labelLarge,
+                            )),
+                          ],
                         ),
-                        // Theme(
-                        //   data: Theme.of(context),
-                        //   child: Consumer<CheckProvider>(
-                        //     builder: (context, check, _) => Checkbox(
-                        //         value: check.isAccepted,
-                        //         onChanged: (value) {
-                        //           check.setAccepted(value);
-                        //         }),
-                        //   ),
-                        // ),
-                        // Expanded(
-                        //     child: Text(
-                        //   "Is stage",
-                        //   textAlign: TextAlign.left,
-                        //   style: Theme.of(context).textTheme.labelLarge,
-                        // )),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
@@ -376,7 +375,7 @@ class _ScreenAddNewStopState extends State<ScreenAddNewStop> {
                                     final stopid = selectedRouteList;
                                     var proval =
                                         context.read<RadiobuttonProvider>();
-                                    final mode = proval.selectedMode;
+                                    final mode = proval.selectedFormat;
 
                                     if (mode == StatementType.after) {
                                       modeval = flag1;
@@ -411,7 +410,8 @@ class _ScreenAddNewStopState extends State<ScreenAddNewStop> {
                                       userId: usrid,
                                       //isStage: isstage
                                     );
-                                    stopSaveFun(context, value);
+                                    stopSaveFun(
+                                        _scafoldkey.currentContext!, value);
                                   }
                                 },
                                 child: Text(
@@ -423,7 +423,6 @@ class _ScreenAddNewStopState extends State<ScreenAddNewStop> {
                             ),
                           ),
                         ),
-
                         Consumer<LoadingProvider>(
                             builder: (context, loadingProvider, child) {
                           return loadingProvider.isLoading
@@ -441,7 +440,7 @@ class _ScreenAddNewStopState extends State<ScreenAddNewStop> {
                   ),
                 ),
               ),
-            ),
+            ],
           ),
         ));
   }

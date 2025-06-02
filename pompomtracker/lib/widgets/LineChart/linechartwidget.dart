@@ -16,30 +16,47 @@ class Linechartwidget extends StatelessWidget {
         builder: (BuildContext context, List<Buswklycollectlist> newList,
             Widget? _) {
           return newList.isEmpty
-              ? Padding(
-                  padding: const EdgeInsets.all(10.0),
-                  child: Container(
-                    width: MediaQuery.of(context).size.width,
-                    margin: const EdgeInsets.all(5),
-                    child: Column(
-                      //crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Container(
-                          width: 200,
-                          height: 200,
-                          decoration: BoxDecoration(
-                              color: Theme.of(context).colorScheme.tertiary,
-                              shape: BoxShape.circle,
-                              image: const DecorationImage(
-                                image:
-                                    AssetImage('assets/home/no_data_found.png'),
-                                fit: BoxFit.scaleDown,
-                              )),
+              ? FutureBuilder(
+                  future: Future.delayed(
+                      const Duration(seconds: 10)), // Add a delay of 5 seconds
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const Center(
+                        child: Padding(
+                          padding: EdgeInsets.only(top: 200.0),
+                          child: CircularProgressIndicator(),
                         ),
-                      ],
-                    ),
-                  ),
+                      );
+                    } else {
+                      // After 5 seconds, show the No Data Found image
+                      return Padding(
+                        padding: const EdgeInsets.all(10.0),
+                        child: Container(
+                          width: MediaQuery.of(context).size.width,
+                          margin: const EdgeInsets.all(5),
+                          child: Column(
+                            //crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Container(
+                                width: 200,
+                                height: 200,
+                                decoration: BoxDecoration(
+                                    color:
+                                        Theme.of(context).colorScheme.tertiary,
+                                    shape: BoxShape.circle,
+                                    image: const DecorationImage(
+                                      image: AssetImage(
+                                          'assets/home/no_data_found.png'),
+                                      fit: BoxFit.scaleDown,
+                                    )),
+                              ),
+                            ],
+                          ),
+                        ),
+                      );
+                    }
+                  },
                 )
               : LineChart(LineChartData(
                   minX: 0,

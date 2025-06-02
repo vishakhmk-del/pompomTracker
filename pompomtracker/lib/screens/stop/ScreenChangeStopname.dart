@@ -67,6 +67,8 @@ class _ScreenStopNameChangeState extends State<ScreenStopNameChange> {
         //print(_tripNameController);
       });
     });
+    final checkProvider = context.read<CheckProvider>();
+    checkProvider.reset();
 
     //fetchBusregistraionList();
   }
@@ -78,8 +80,7 @@ class _ScreenStopNameChangeState extends State<ScreenStopNameChange> {
         appBar: AppBar(
           leading: IconButton(
               onPressed: () {
-                Navigator.pushReplacement(
-                    _scafoldkey.currentContext!, Approutes().stopListScreen);
+                Navigator.pop(context, false);
               },
               icon: const Icon(Icons.arrow_back)),
           title: Text(
@@ -90,7 +91,7 @@ class _ScreenStopNameChangeState extends State<ScreenStopNameChange> {
         body: Center(
           child: SingleChildScrollView(
             child: Container(
-              height: MediaQuery.of(context).size.height * .83,
+              height: MediaQuery.of(context).size.height * .85,
               margin: const EdgeInsets.all(15),
               decoration: BoxDecoration(
                   border: Border.all(
@@ -165,31 +166,51 @@ class _ScreenStopNameChangeState extends State<ScreenStopNameChange> {
                           ),
                         ),
 
-                        SizedBox(
-                          width: MediaQuery.of(context).size.width * .5,
-                          child: Padding(
-                            padding: const EdgeInsets.only(
-                                top: 20, left: 5, right: 5),
-                            child: TextFormField(
-                              controller: _kilometerController,
-                              style: Theme.of(context).textTheme.bodySmall,
-                              decoration: InputDecoration(
-                                labelText: 'Kilo Meter',
-                                hintText: 'KM',
-                                hintStyle:
-                                    Theme.of(context).textTheme.bodySmall,
-                                labelStyle:
-                                    Theme.of(context).textTheme.bodySmall,
+                        Row(
+                          children: [
+                            SizedBox(
+                              width: MediaQuery.of(context).size.width * .5,
+                              child: Padding(
+                                padding: const EdgeInsets.only(
+                                    top: 20, left: 5, right: 5),
+                                child: TextFormField(
+                                  controller: _kilometerController,
+                                  style: Theme.of(context).textTheme.bodySmall,
+                                  decoration: InputDecoration(
+                                    labelText: 'Kilo Meter',
+                                    hintText: 'KM',
+                                    hintStyle:
+                                        Theme.of(context).textTheme.bodySmall,
+                                    labelStyle:
+                                        Theme.of(context).textTheme.bodySmall,
+                                  ),
+                                  validator: (value) {
+                                    if (value!.isEmpty) {
+                                      return 'Enter Kilo Meter';
+                                    } else {
+                                      return null;
+                                    }
+                                  },
+                                ),
                               ),
-                              validator: (value) {
-                                if (value!.isEmpty) {
-                                  return 'Enter Kilo Meter';
-                                } else {
-                                  return null;
-                                }
-                              },
                             ),
-                          ),
+                            Theme(
+                              data: Theme.of(context),
+                              child: Consumer<CheckProvider>(
+                                builder: (context, check, _) => Checkbox(
+                                    value: check.isAccepted,
+                                    onChanged: (value) {
+                                      check.setAccepted(value);
+                                    }),
+                              ),
+                            ),
+                            Expanded(
+                                child: Text(
+                              "Is stage",
+                              textAlign: TextAlign.left,
+                              style: Theme.of(context).textTheme.labelLarge,
+                            )),
+                          ],
                         ),
 
                         SizedBox(

@@ -32,8 +32,12 @@ class Listdet {
   String? address;
   @JsonKey(name: 'conductor_id')
   String? conductorId;
+  @JsonKey(name: 'driver_id')
+  String? driverId;
   @JsonKey(name: 'account_no')
   String? accountNo;
+  @JsonKey(name: 'lisecnce_no')
+  String? lisecnceNo;
   @JsonKey(name: 'status')
   String? status;
   @JsonKey(name: 'registration_no')
@@ -68,7 +72,9 @@ class Listdet {
       this.mobileNo,
       this.address,
       this.conductorId,
+      this.driverId,
       this.accountNo,
+      this.lisecnceNo,
       this.status,
       this.registratioNo,
       this.routeName,

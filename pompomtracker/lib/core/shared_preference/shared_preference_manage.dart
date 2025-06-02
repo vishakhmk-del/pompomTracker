@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:pompomtracker/core/hook/hook.dart';
 
 class SharedPrefManager {
@@ -36,5 +38,55 @@ class SharedPrefManager {
         userName: username,
         ownerName: ownername);
     return valshared;
+  }
+
+  Future<void> setdeviceinfo(Deviceinfo value) async {
+    final sharedprefes = await SharedPreferences.getInstance();
+    await sharedprefes.setBool(savedeviceinfo, true);
+    await sharedprefes.setString('DEVICE', value.phone ?? '');
+    await sharedprefes.setString('DEVICEOS', value.phoneos ?? '');
+    await sharedprefes.setString('DEVICEID', value.deviceid ?? '');
+    // await sharedprefes.setString('DEVICETOKEN', value.devicetoken ?? '');
+    await sharedprefes.setString('PLATFORMID', value.androidid ?? '');
+    await sharedprefes.setString(
+        'SCREENRESOLUTION', value.screenresolution ?? '');
+    await sharedprefes.setString('DEVICEVERSION', value.osversion ?? '');
+    await sharedprefes.setString('PACKAGENAME', value.packagename ?? '');
+    await sharedprefes.setString('APPVERSION', value.appversion ?? '');
+    await sharedprefes.setString('BUILDNUMBER', value.buildnumber ?? '');
+    // await sharedprefes.setString('BUILDTIME', value.buildtime ?? '');
+  }
+
+  Future<Deviceinfo> getdeviceinfo() async {
+    final sharedprefs = await SharedPreferences.getInstance();
+    bool checkValue = sharedprefs.containsKey('DEVICE');
+    log('$checkValue');
+    final device = sharedprefs.getString('DEVICE') ?? '';
+    final deviceos = sharedprefs.getString('DEVICEOS') ?? '';
+    final deviceid = sharedprefs.getString('DEVICEID') ?? '';
+    // final devicetkn = sharedprefs.getString('DEVICETOKEN') ?? '';
+    final platformid = sharedprefs.getString('PLATFORMID') ?? '';
+    final screenres = sharedprefs.getString('SCREENRESOLUTION') ?? '';
+    final deviceversion = sharedprefs.getString('DEVICEVERSION') ?? '';
+    final packagename = sharedprefs.getString('PACKAGENAME') ?? '';
+    final appversion = sharedprefs.getString('APPVERSION') ?? '';
+    final buildno = sharedprefs.getString('BUILDNUMBER') ?? '';
+    // final buildtime = sharedprefs.getString('BUILDTIME') ?? '';
+
+    final infoshared = Deviceinfo(
+      phone: device,
+      phoneos: deviceos,
+      deviceid: deviceid,
+      // devicetoken: devicetkn,
+      androidid: platformid,
+      screenresolution: screenres,
+      osversion: deviceversion,
+      packagename: packagename,
+      appversion: appversion,
+      buildnumber: buildno,
+      // buildtime: buildtime
+    );
+
+    return infoshared;
   }
 }

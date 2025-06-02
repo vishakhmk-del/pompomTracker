@@ -54,21 +54,16 @@ export 'package:pompomtracker/provider/dropdwn/dropdwnProvider.dart';
 /**************************************/
 
 /*screens*/
+
 export 'package:pompomtracker/screens/splash/screenSplash.dart';
-
 export 'package:pompomtracker/screens/login/screenLogin.dart';
-
 export 'package:pompomtracker/screens/home/screenhome.dart';
 export 'package:pompomtracker/screens/Bus/ScreenBusList.dart';
 export 'package:pompomtracker/screens/Bus/ScreenBusMaster.dart';
 export 'package:pompomtracker/screens/Collection/ScreenCollection.dart';
-
-export 'package:pompomtracker/screens/Conductor/ScreenConductor.dart';
+export 'package:pompomtracker/screens/employee/Conductor/ScreenConductor.dart';
 export 'package:pompomtracker/screens/LinkBusRoute/ScreenLinkBusRoute.dart';
-
-export 'package:pompomtracker/screens/Conductor/ConductorList.dart';
-export 'package:pompomtracker/screens/route_mas/BusRouteList.dart';
-
+export 'package:pompomtracker/screens/employee/Conductor/ConductorList.dart';
 export 'package:pompomtracker/screens/route_mas/ScreenRouteMaster.dart';
 export 'package:pompomtracker/screens/stop/ScreenStopMaster.dart';
 export 'package:pompomtracker/screens/stop/StopList.dart';
@@ -77,6 +72,11 @@ export 'package:pompomtracker/screens/trip/ScreenTripMaster.dart';
 export 'package:pompomtracker/screens/stop/ScreenChangeStopname.dart';
 export 'package:pompomtracker/screens/LinkBusRoute/BusRouteList.dart';
 export 'package:pompomtracker/screens/stop/ScreenAddnewStp.dart';
+export 'package:pompomtracker/screens/trip/TripList.dart';
+export 'package:pompomtracker/screens/forgot/screenforgot.dart';
+export 'package:pompomtracker/screens/error/screenError.dart';
+export 'package:pompomtracker/screens/Trip_Details/ScreenEmployeeAssign.dart';
+export 'package:pompomtracker/screens/employee/driver/screendriverView.dart';
 /**************************************/
 
 /*model*/
@@ -111,8 +111,11 @@ export 'package:pompomtracker/model/Registration_List/registration_resp/registra
 export 'package:pompomtracker/model/common_models/enum/statements/statementType.dart';
 
 export 'package:pompomtracker/model/Trip_master/trip_master_req/trip_master_req.dart';
+
 export 'package:pompomtracker/model/Trip_master/trip_master_resp/trip_master_resp.dart';
+
 export 'package:pompomtracker/model/getRoute/ger_route_resp/ger_route_resp.dart';
+
 export 'package:pompomtracker/model/getRoute/get_route_req/get_route_req.dart';
 
 export 'package:pompomtracker/model/Registration_List/registration_resp/bus_list.dart';
@@ -125,33 +128,54 @@ export 'package:pompomtracker/model/Statements/datewise/datewiseresp/ticket_list
 export 'package:pompomtracker/model/Statements/datewise/datewiseresp/datewise_stmnt.dart';
 
 export 'package:pompomtracker/model/Statements/function/stmntfnparameter/stmntfnparameter.dart';
+
 export 'package:pompomtracker/model/getRoute/ger_route_resp/route_list.dart';
 
 export 'package:pompomtracker/model/stop_master/stop_master_req/stop_master_req.dart';
+
 export 'package:pompomtracker/model/stop_master/stop_master_resp/stop_master_resp.dart';
 
 export 'package:pompomtracker/model/link_route_master/bus_route_link_req/bus_route_link_req.dart';
+
 export 'package:pompomtracker/model/link_route_master/bus_route_link_resp/bus_route_link_resp.dart';
+
 export 'package:pompomtracker/model/bus_master/bus_list_resp/bus_list.dart';
+
 export 'package:pompomtracker/model/bus_master/bus_edit/bus_edit_req/bus_edit_req.dart';
+
 export 'package:pompomtracker/model/bus_master/bus_edit/bus_edit_resp/bus_edit_resp.dart';
 
 export 'package:pompomtracker/model/bus_master/bus_edit/bus_edit_resp/bus_detail.dart';
+
 export 'package:pompomtracker/model/bus_master/bus_list_req/bus_list_req.dart';
+
 export 'package:pompomtracker/model/bus_master/bus_list_resp/bus_list_resp.dart';
 
 export 'package:pompomtracker/model/common_models/list_model_resp/listdet.dart';
 
 export 'package:pompomtracker/model/common_models/list_model_req/list_req.dart';
+
 export 'package:pompomtracker/model/common_models/list_model_resp/masterlistMdl.dart';
 
 export 'package:pompomtracker/model/conductor_master/conductor_edit/conductor_edit_req/conductor_edit_re.dart';
+
 export 'package:pompomtracker/model/conductor_master/conductor_resp/conductor_resp.dart';
 
 export 'package:pompomtracker/model/conductor_master/conductor_edit/conductor_edit_resp/conductor_detail.dart';
+
 export 'package:pompomtracker/model/conductor_master/conductor_edit/conductor_edit_resp/conductor_edit_resp.dart';
+
 export 'package:pompomtracker/model/conductor_master/conductor_link/conductor_bus_ink_resp/conductor_bus_ink_resp.dart';
 
+export 'package:pompomtracker/model/deviceinfo/deviceinfo.dart';
+
+export 'package:pompomtracker/model/employee/employee_assign/trip_detail.dart';
+
+export 'package:pompomtracker/model/getRoute/ger_route_resp/emplist/emplist.dart';
+
+export 'package:pompomtracker/model/employee/employee_assign/employee_assign.dart';
+
+export 'package:pompomtracker/model/employee/employee_req/employee_req.dart';
 /**************************************/
 
 /*FUNCTION*/
@@ -159,11 +183,13 @@ export 'package:pompomtracker/model/conductor_master/conductor_link/conductor_bu
 export 'package:pompomtracker/function/commonfns/commonfunctions.dart';
 
 export 'package:pompomtracker/function/statementfns/statementFunctions.dart';
+
 export 'package:pompomtracker/function/bus/busListFun.dart';
 
 export 'package:pompomtracker/function/Stop/stopfunctions.dart';
 
 export 'package:pompomtracker/function/conductor/conductorListFun.dart';
+
 export 'package:pompomtracker/function/Bus_route/BusRouteFun.dart';
 
 export 'package:pompomtracker/function/trip/TripListFun.dart';
@@ -191,5 +217,11 @@ export 'package:pompomtracker/widgets/navBar/navbar.dart';
 export 'package:pompomtracker/widgets/radiobutton/datewiseModeRadiobtn.dart';
 
 export 'package:pompomtracker/widgets/radiobutton/addnewstopRadiobtn.dart';
+
+export 'package:pompomtracker/widgets/deviceInfo/appInfo.dart';
+
+export 'package:pompomtracker/widgets/deviceInfo/deviceInfo.dart';
+
+export 'package:pompomtracker/widgets/radiobutton/addEmployerRadiobtn.dart';
 
 /**************************************/

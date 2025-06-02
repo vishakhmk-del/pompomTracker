@@ -18,40 +18,118 @@ class _ScreenBusListState extends State<ScreenBusList> {
     });
   }
 
+  Future<bool?> popscreen(BuildContext context) async {
+    Navigator.push(context, Approutes().homescreen);
+    return true;
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () {
-            Navigator.pushReplacement(context, Approutes().homescreen);
-          },
+    return PopScope(
+      canPop: false,
+      onPopInvoked: (bool didPop) async {
+        if (!didPop) {
+          if (didPop) return;
+          await popscreen(context);
+        }
+        //  log('BackButton pressed!');
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back),
+            onPressed: () {
+              Navigator.pushReplacement(context, Approutes().homescreen);
+            },
+          ),
+          title: Text(
+            'Bus List',
+            style: TextStyle(color: Theme.of(context).colorScheme.onSecondary),
+          ),
         ),
-        title: Text(
-          'Bus List',
-          style: TextStyle(color: Theme.of(context).colorScheme.onSecondary),
-        ),
-      ),
-      body: SingleChildScrollView(
-        scrollDirection: Axis.horizontal,
-        child: SingleChildScrollView(
-          scrollDirection: Axis.vertical,
-          child: ValueListenableBuilder(
-              valueListenable: BusListFunctions.instance.getBusListNotifier,
-              builder:
-                  (BuildContext context, List<BusList> newList, Widget? _) {
-                return DataTable(
-                  columns: getColumns(columns = [
-                    'S.No',
-                    'Reg No',
-                    'Permit No',
-                    'Valid To',
-                    'Action',
-                  ]),
-                  rows: getRows(newList),
-                );
-              }),
+        body: Column(
+          children: [
+            Expanded(
+              child: ScrollableWidget(
+                child: ValueListenableBuilder(
+                    valueListenable:
+                        BusListFunctions.instance.getBusListNotifier,
+                    builder: (BuildContext context, List<BusList> newList,
+                        Widget? _) {
+                      return Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          if (newList.isNotEmpty) ...[
+                            Container(
+                              decoration: BoxDecoration(
+                                border: Border.all(
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .onSecondary),
+                                //borderRadius:const BorderRadius.only(topLeft: Radius.circular(12),topRight: Radius.circular(12)),
+                              ),
+                              child: DataTable(
+                                columns: getColumns(columns = [
+                                  'S.No',
+                                  'Reg No',
+                                  'Permit No',
+                                  'Valid To',
+                                  'Action',
+                                ]),
+                                rows: getRows(newList),
+                              ),
+                            ),
+                          ] else ...[
+                            FutureBuilder(
+                              future: Future.delayed(const Duration(
+                                  seconds: 10)), // Add a delay of 5 seconds
+                              builder: (context, snapshot) {
+                                if (snapshot.connectionState ==
+                                    ConnectionState.waiting) {
+                                  return Center(
+                                    child: Padding(
+                                      padding: EdgeInsets.symmetric(
+                                        vertical:
+                                            MediaQuery.of(context).size.height /
+                                                2.5,
+                                        horizontal:
+                                            MediaQuery.of(context).size.width /
+                                                2.3,
+                                      ),
+                                      child: const CircularProgressIndicator(),
+                                    ),
+                                  );
+                                } else {
+                                  // After 5 seconds, show the No Data Found image
+                                  return Center(
+                                    child: Padding(
+                                      padding: EdgeInsets.symmetric(
+                                        vertical:
+                                            MediaQuery.of(context).size.height /
+                                                2.5,
+                                        horizontal:
+                                            MediaQuery.of(context).size.width /
+                                                2.7,
+                                      ),
+                                      child: Text(
+                                        'No data found',
+                                        style: TextStyle(
+                                            color: Theme.of(context)
+                                                .colorScheme
+                                                .onSecondary),
+                                      ),
+                                    ),
+                                  );
+                                }
+                              },
+                            ),
+                          ]
+                        ],
+                      );
+                    }),
+              ),
+            ),
+          ],
         ),
       ),
     );
@@ -73,9 +151,9 @@ class _ScreenBusListState extends State<ScreenBusList> {
       int index = entry.key + 1; // Serial number starts from 1
       BusList task = entry.value;
       cells = [
-        task.registrationNo,
-        task.permitNo,
-        task.validTo,
+        task.registrationNo ?? '',
+        task.permitNo ?? '',
+        task.validTo ?? '',
       ];
       return DataRow(
         cells: [

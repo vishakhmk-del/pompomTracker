@@ -9,6 +9,7 @@ part of 'conductor_detail.dart';
 ConductorDetail _$ConductorDetailFromJson(Map<String, dynamic> json) =>
     ConductorDetail(
       conductorId: json['conductor_id'] as String?,
+      driverId: json['driver_id'] as String?,
       name: json['name'] as String?,
       address: json['address'] as String?,
       accountNo: json['account_no'] as String?,
@@ -17,11 +18,13 @@ ConductorDetail _$ConductorDetailFromJson(Map<String, dynamic> json) =>
       busName: json['bus_name'] as String?,
       registrationNo: json['registration_no'] as String?,
       emailId: json['email_id'] as String?,
+      lisenceNo: json['lisence_no'] as String?,
     );
 
 Map<String, dynamic> _$ConductorDetailToJson(ConductorDetail instance) =>
     <String, dynamic>{
       'conductor_id': instance.conductorId,
+      'driver_id': instance.driverId,
       'name': instance.name,
       'address': instance.address,
       'account_no': instance.accountNo,
@@ -30,4 +33,5 @@ Map<String, dynamic> _$ConductorDetailToJson(ConductorDetail instance) =>
       'bus_name': instance.busName,
       'registration_no': instance.registrationNo,
       'email_id': instance.emailId,
+      'lisence_no': instance.lisenceNo,
     };

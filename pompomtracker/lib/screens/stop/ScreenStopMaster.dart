@@ -1,4 +1,3 @@
-
 import 'dart:developer';
 import 'package:intl/intl.dart';
 import 'package:pompomtracker/core/hook/hook.dart';
@@ -17,7 +16,7 @@ class _ScreenStopMasterState extends State<ScreenStopMaster> {
   final _stopNameController = TextEditingController();
   final _kiloMeterController = TextEditingController();
   final _arrivingController = TextEditingController();
-  
+
   int? isstage;
   TimeOfDay _time = const TimeOfDay(hour: 7, minute: 15);
   bool isChecked = true;
@@ -28,14 +27,22 @@ class _ScreenStopMasterState extends State<ScreenStopMaster> {
   List<Listdet>? routeDetailslist = [];
   List<String> columns = [];
   List<String?> cells = [];
-  bool respIcon=false;
+  bool respIcon = false;
 
   Future<void> _selectTime(
       BuildContext context, TextEditingController controller) async {
-    final DateFormat timeFormat = DateFormat('HH:mm');
+    final DateFormat timeFormat =
+        DateFormat('hh:mm a'); // 12-hour format with AM/PM
     final TimeOfDay? newTime = await showTimePicker(
       context: context,
       initialTime: _time,
+      builder: (BuildContext context, Widget? child) {
+        return MediaQuery(
+          data: MediaQuery.of(context)
+              .copyWith(alwaysUse24HourFormat: false), // Force 12-hour format
+          child: child!,
+        );
+      },
     );
     if (newTime != null) {
       setState(() {
@@ -48,7 +55,7 @@ class _ScreenStopMasterState extends State<ScreenStopMaster> {
           newTime.hour,
           newTime.minute,
         );
-        controller.text = timeFormat.format(formattedTime);
+        controller.text = timeFormat.format(formattedTime); // Show AM/PM format
       });
     }
   }
@@ -60,7 +67,8 @@ class _ScreenStopMasterState extends State<ScreenStopMaster> {
       routeDetailslist = await StopFunctions.instance.tripNewNameList();
       setState(() {
         routelist = routeDetailslist!.map((bus) {
-         String routeDisplay = bus.tripName ?? "";
+          String routeDisplay =
+              "${bus.tripName ?? ""}->${bus.startTime ?? ""}-${bus.endTime ?? ""}";
           // String viaDisplay =
           //     bus.via != null && bus.via!.isNotEmpty ? " via - ${bus.via}" : "";
           return {
@@ -70,8 +78,11 @@ class _ScreenStopMasterState extends State<ScreenStopMaster> {
         }).toList();
       });
     });
+    final checkProvider = context.read<CheckProvider>();
+    checkProvider.reset();
     //fetchBusregistraionList();
   }
+
   Future<bool?> popscreen(BuildContext context) async {
     selectedTaskNotifier.value = StatementType.collectionType;
     selectedModeNotifier.value = StatementType.both;
@@ -83,320 +94,382 @@ class _ScreenStopMasterState extends State<ScreenStopMaster> {
   @override
   Widget build(BuildContext context) {
     return PopScope(
-      canPop: false,
-      onPopInvoked: (bool didPop) async {
-        if (!didPop) {
-          if (didPop) return;
-          await popscreen(context);
-        }
-        log('BackButton pressed!');
-      },
-      child: Scaffold(
-        key: _scafoldkey,
-        appBar: AppBar(
-          leading: IconButton(
-            icon: const Icon(Icons.arrow_back),
-            onPressed: () {
-              context.read<DropdownProvider>().changeSelectedVal(null);
-              Navigator.of(context).pushAndRemoveUntil(
-                            MaterialPageRoute(
-                                builder: (context) => const Screenhome()),
-                            (Route<dynamic> route) => false);
-                      },
-            
-          ),
-          title: Text(
-            'Add Stop',
-            style: TextStyle(color: Theme.of(context).colorScheme.onSecondary),
-          ),
-        ),
-        body: ListView(
-          children: [
-                  Card(
-                      margin: const EdgeInsets.all(10),
-                      elevation: 3,
-                      child: Container(
+        canPop: false,
+        onPopInvoked: (bool didPop) async {
+          if (!didPop) {
+            if (didPop) return;
+            await popscreen(context);
+          }
+          log('BackButton pressed!');
+        },
+        child: Scaffold(
+            key: _scafoldkey,
+            appBar: AppBar(
+              leading: IconButton(
+                icon: const Icon(Icons.arrow_back),
+                onPressed: () {
+                  context.read<DropdownProvider>().changeSelectedVal(null);
+                  Navigator.of(context).pushAndRemoveUntil(
+                      MaterialPageRoute(
+                          builder: (context) => const Screenhome()),
+                      (Route<dynamic> route) => false);
+                },
+              ),
+              title: Text(
+                'Add Stop',
+                style:
+                    TextStyle(color: Theme.of(context).colorScheme.onSecondary),
+              ),
+            ),
+            body: ListView(
+              children: [
+                Card(
+                    margin: const EdgeInsets.all(10),
+                    elevation: 3,
+                    child: Container(
                         decoration: BoxDecoration(
-                            border: Border.all(
-                                color: Theme.of(context).colorScheme.onSecondary),
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                        child:Padding(
+                          border: Border.all(
+                              color: Theme.of(context).colorScheme.onSecondary),
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: Padding(
                           padding: const EdgeInsets.all(15.0),
                           child: Theme(
-                            data: MyTheme.googleFormTheme,
-                            child: Column(children: [
-                              Text(
-                                'Search For Stop Details',
-                                style: Theme.of(context).textTheme.titleLarge,
-                              ),
-                              const SizedBox(height: 10),
-                                SizedBox(
-                                  width: MediaQuery.of(context).size.width,
-                                  child: DropdownButtonFormField(
-                                    isExpanded: true,
-                                    items: routelist.map((busMap) {
-                                      return DropdownMenuItem<String>(
-                                        value: busMap['routeId'] as String,
-                                        // Use routeId as the value
-                                        child: ConstrainedBox(
-                                          constraints:
-                                              const BoxConstraints(maxWidth: 200),
-                                          child: Text(
-                                            busMap['display']
-                                                as String, // Display the route name and via
-                                            //overflow: TextOverflow.ellipsis,
-                                            softWrap: true,
-                                            style: TextStyle(
-                                              color: Theme.of(context)
-                                                  .colorScheme
-                                                  .onSecondary,
-                                            ),
-                                          ),
-                                        ),
-                                      );
-                                    }).toList(),
-                                    onChanged: (newValue) async{
-                                      //StopFunctions.instance.getExistingStopNotifier.value = []; 
-                                      setState(() {
-                                        selectedRouteList = newValue;
-                                        selectedRouteId = int.parse(newValue!);
-                                        // Store the selected routeId
-                                      });
-
-                                      existingStpdet=await StopFunctions.instance.getExistingStpFn(selectedRouteList);
-                                      //existingStpdet=StopFunctions.instance.getExistingStopNotifier.value;
-                                      if(existingStpdet!.isEmpty){
-                                         _scafoldkey.currentContext!.read<DropdownProvider>().changeSelectedVal(false);
-                                      }else{
-                                        _scafoldkey.currentContext!.read<DropdownProvider>().changeSelectedVal(true);
-                                      }
-                                    },
-                                    value: selectedRouteList,
-                                    // Use the selected routeId
-                                    style: TextStyle(
-                                      color: Theme.of(context).colorScheme.onPrimary,
-                                    ),
-                                    icon: Theme(
-                                      data: Theme.of(context),
-                                      child: const Icon(
-                                        Icons.arrow_drop_down,
-                                      ),
-                                    ),
-                                    decoration: InputDecoration(
-                                      labelText: 'Select Trip',
-                                      labelStyle: Theme.of(context).textTheme.bodySmall,
-                                    ),
-                                    dropdownColor:
-                                        Theme.of(context).colorScheme.tertiary,
-                                    validator: (value) {
-                                      if (value == null) {
-                                        return 'Select Trip';
-                                      } else {
-                                        return null;
-                                      }
-                                    },
+                              data: MyTheme.googleFormTheme,
+                              child: Column(
+                                children: [
+                                  Text(
+                                    'Search For Stop Details',
+                                    style:
+                                        Theme.of(context).textTheme.titleLarge,
                                   ),
-                                ),
-                            ],)),
-                        )
-                      )),
-                      Consumer<DropdownProvider>(
-                      builder: (context, provider, child) {
-                        if (provider.selectedVal == false) {
-                          return stopAddForm(context);
-                          
-                        } else if (provider.selectedVal == true) {
-                          
-                          return ScrollableWidget(child: buildExStopTbl());
-                          
+                                  const SizedBox(height: 10),
+                                  SizedBox(
+                                    width: MediaQuery.of(context).size.width,
+                                    child: DropdownButtonFormField(
+                                      isExpanded: true,
+                                      items: routelist.map((busMap) {
+                                        final routeText =
+                                            (busMap['display'] as String)
+                                                .split('->');
+                                        final routeName =
+                                            routeText[0]; // First part
+                                        final viaPart = routeText.length > 1
+                                            ? '-> ${routeText[1]}'
+                                            : '';
+
+                                        return DropdownMenuItem<String>(
+                                          value: busMap['routeId'] as String,
+                                          // Use routeId as the value
+                                          child: ConstrainedBox(
+                                              constraints: const BoxConstraints(
+                                                  maxWidth: 200),
+                                              child: RichText(
+                                                text: TextSpan(
+                                                  style: TextStyle(
+                                                    color: Theme.of(context)
+                                                        .colorScheme
+                                                        .onSecondary,
+                                                  ),
+                                                  children: [
+                                                    TextSpan(
+                                                      text:
+                                                          '$routeName\n', // Route name on the first line
+                                                    ),
+                                                    TextSpan(
+                                                      text:
+                                                          viaPart, // "via" part on the second line
+                                                      style: TextStyle(
+                                                        color: Theme.of(context)
+                                                            .colorScheme
+                                                            .onSecondary,
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              )),
+                                        );
+                                      }).toList(),
+                                      onChanged: (newValue) async {
+                                        //StopFunctions.instance.getExistingStopNotifier.value = [];
+                                        setState(() {
+                                          selectedRouteList = newValue;
+                                          selectedRouteId =
+                                              int.parse(newValue!);
+                                          // Store the selected routeId
+                                        });
+
+                                        existingStpdet = await StopFunctions
+                                            .instance
+                                            .getExistingStpFn(
+                                                selectedRouteList);
+                                        //existingStpdet=StopFunctions.instance.getExistingStopNotifier.value;
+                                        if (existingStpdet!.isEmpty) {
+                                          _scafoldkey.currentContext!
+                                              .read<DropdownProvider>()
+                                              .changeSelectedVal(false);
+                                        } else {
+                                          _scafoldkey.currentContext!
+                                              .read<DropdownProvider>()
+                                              .changeSelectedVal(true);
+                                        }
+                                      },
+                                      value: selectedRouteList,
+                                      // Use the selected routeId
+                                      style: TextStyle(
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .onPrimary,
+                                      ),
+                                      icon: Theme(
+                                        data: Theme.of(context),
+                                        child: const Icon(
+                                          Icons.arrow_drop_down,
+                                        ),
+                                      ),
+                                      decoration: InputDecoration(
+                                        labelText: 'Select Trip',
+                                        labelStyle: Theme.of(context)
+                                            .textTheme
+                                            .bodySmall,
+                                      ),
+                                      dropdownColor: Theme.of(context)
+                                          .colorScheme
+                                          .tertiary,
+                                      validator: (value) {
+                                        if (value == null) {
+                                          return 'Select Trip';
+                                        } else {
+                                          return null;
+                                        }
+                                      },
+                                    ),
+                                  ),
+                                ],
+                              )),
+                        ))),
+                Consumer<DropdownProvider>(
+                  builder: (context, provider, child) {
+                    if (provider.selectedVal == false) {
+                      return stopAddForm(context);
+                    } else if (provider.selectedVal == true) {
+                      return ScrollableWidget(child: buildExStopTbl());
+                    }
+                    return Container();
+                  },
+                ),
+              ],
+            )));
+  }
+
+  Widget stopAddForm(BuildContext context) {
+    return Container(
+        //height: MediaQuery.of(context).size.height * .7,
+        margin: const EdgeInsets.all(15),
+        decoration: BoxDecoration(
+            border:
+                Border.all(color: Theme.of(context).colorScheme.onSecondary),
+            borderRadius: BorderRadius.circular(12)),
+        child: Form(
+            key: _formKey,
+            child: Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: Theme(
+                data: MyTheme.googleFormTheme,
+                child: Column(
+                  children: [
+                    const CircleAvatar(
+                      backgroundImage: AssetImage('assets/bus/busmaster.png'),
+                      radius: 50,
+                    ),
+                    const SizedBox(height: 10),
+                    TextFormField(
+                      controller: _stopNameController,
+                      style: Theme.of(context).textTheme.bodySmall,
+                      decoration: InputDecoration(
+                          labelText: 'Stop Name',
+                          labelStyle: Theme.of(context).textTheme.bodySmall),
+                      validator: (value) {
+                        if (value!.isEmpty) {
+                          return 'Enter Stop Name';
+                        } else {
+                          return null;
                         }
-                        return Container();
-                        
                       },
                     ),
-          ],)
-          )
-          );
-  }
-  Widget stopAddForm(BuildContext context){
-    return Container(
-              height: MediaQuery.of(context).size.height * .7,
-              margin: const EdgeInsets.all(15),
-              decoration: BoxDecoration(
-                  border: Border.all(
-                      color: Theme.of(context).colorScheme.onSecondary),
-                  borderRadius: BorderRadius.circular(12)),
-              child: Form(
-                key: _formKey,
-                child: Padding(
-                  padding: const EdgeInsets.all(20.0),
-                  child: Theme(
-                    data: MyTheme.googleFormTheme,
-                    child: Column(
-                      children: [
-                        const CircleAvatar(
-                          backgroundImage:
-                              AssetImage('assets/bus/busmaster.png'),
-                          radius: 50,
-                        ),
-                        const SizedBox(height: 10),
-                        TextFormField(
-                          controller: _stopNameController,
+                    const SizedBox(height: 20),
+                    Row(children: [
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width * .5,
+                        child: TextFormField(
+                          controller: _kiloMeterController,
                           style: Theme.of(context).textTheme.bodySmall,
                           decoration: InputDecoration(
-                              labelText: 'Stop Name',
-                              labelStyle:
-                                  Theme.of(context).textTheme.bodySmall),
+                            labelText: 'Kilo Meter',
+                            labelStyle: Theme.of(context).textTheme.bodySmall,
+                          ),
                           validator: (value) {
                             if (value!.isEmpty) {
-                              return 'Enter Stop Name';
+                              return 'Enter Kilo Meter';
                             } else {
                               return null;
                             }
                           },
                         ),
-                        const SizedBox(height: 20),
-                        Row(children: [
-                          SizedBox(
-                            width: MediaQuery.of(context).size.width * .5,
-                            child: TextFormField(
-                              controller: _kiloMeterController,
-                              style: Theme.of(context).textTheme.bodySmall,
-                              decoration: InputDecoration(
-                                labelText: 'Kilo Meter',
-                                labelStyle:
-                                    Theme.of(context).textTheme.bodySmall,
-                              ),
-                              validator: (value) {
-                                if (value!.isEmpty) {
-                                  return 'Enter Kilo Meter';
-                                } else {
-                                  return null;
-                                }
-                              },
-                            ),
-                          ),
-                          Theme(
-                            data: Theme.of(context),
-                            child: Consumer<CheckProvider>(
-                              builder: (context, check, _) => Checkbox(
-                                  value: check.isAccepted,
-                                  onChanged: (value) {
-                                    check.setAccepted(value);
-                                  }),
-                            ),
-                          ),
-                          Expanded(
-                              child: Text(
-                            "Is stage",
-                            textAlign: TextAlign.left,
-                            style: Theme.of(context).textTheme.labelLarge,
-                          )),
-                        ]),
-                        // const SizedBox(height: 20),
+                      ),
+                      Theme(
+                        data: Theme.of(context),
+                        child: Consumer<CheckProvider>(
+                          builder: (context, check, _) => Checkbox(
+                              value: check.isAccepted,
+                              onChanged: (value) {
+                                check.setAccepted(value);
+                              }),
+                        ),
+                      ),
+                      Expanded(
+                          child: Text(
+                        "Is stage",
+                        textAlign: TextAlign.left,
+                        style: Theme.of(context).textTheme.labelLarge,
+                      )),
+                    ]),
+                    // const SizedBox(height: 20),
 
-                        const SizedBox(height: 20),
-                        TextFormField(
-                          controller: _arrivingController,
-                          style: Theme.of(context).textTheme.bodySmall,
-                          decoration: InputDecoration(
-                              labelText: 'Arriving Time',
-                              labelStyle: Theme.of(context).textTheme.bodySmall,
-                              suffixIcon: Theme(
-                                  data: Theme.of(context),
-                                  child: const Icon(Icons.timer))),
-                          onTap: () =>
-                              _selectTime(context, _arrivingController),
-                          validator: (value) {
-                            if (value!.isEmpty) {
-                              return 'Enter Value';
-                            } else {
-                              return null;
+                    const SizedBox(height: 20),
+                    TextFormField(
+                      controller: _arrivingController,
+                      style: Theme.of(context).textTheme.bodySmall,
+                      decoration: InputDecoration(
+                          labelText: 'Arriving Time',
+                          labelStyle: Theme.of(context).textTheme.bodySmall,
+                          suffixIcon: Theme(
+                              data: Theme.of(context),
+                              child: const Icon(Icons.timer))),
+                      onTap: () => _selectTime(context, _arrivingController),
+                      validator: (value) {
+                        if (value!.isEmpty) {
+                          return 'Enter Value';
+                        } else {
+                          return null;
+                        }
+                      },
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    Container(
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          gradient: LinearGradient(
+                              begin: Alignment.topLeft,
+                              end: Alignment.bottomRight,
+                              colors: [
+                                Theme.of(context).colorScheme.primary,
+                                Theme.of(context).colorScheme.secondary,
+                              ])),
+                      child: Theme(
+                        data: MyTheme.buttonStyleTheme,
+                        child: ElevatedButton(
+                          onPressed: () async {
+                            if (_formKey.currentState!.validate()) {
+                              stopMasterSaveFun();
                             }
                           },
+                          child: Text('SAVE',
+                              style: Theme.of(context).textTheme.titleMedium),
                         ),
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        Container(
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              gradient: LinearGradient(
-                                  begin: Alignment.topLeft,
-                                  end: Alignment.bottomRight,
-                                  colors: [
-                                    Theme.of(context).colorScheme.primary,
-                                    Theme.of(context).colorScheme.secondary,
-                                  ])),
-                          child: Theme(
-                            data: MyTheme.buttonStyleTheme,
-                            child: ElevatedButton(
-                              onPressed: () async {
-                                if (_formKey.currentState!.validate()) {
-                                  stopMasterSaveFun();
-                                }
-                              },
-                              child: Text('SAVE',
-                                  style:
-                                      Theme.of(context).textTheme.titleMedium),
-                            ),
-                          ),
-                        ),
-                        const SizedBox(height: 10),
-                        Consumer<LoadingProvider>(
-                            builder: (context, loadingProvider, child) {
-                          return loadingProvider.isLoading
-                              ? const Center(
-                                  child: CircularProgressIndicator(
-                                    valueColor: AlwaysStoppedAnimation<Color>(
-                                      Color.fromARGB(255, 2, 128, 6),
-                                    ),
-                                  ),
-                                )
-                              : const SizedBox.shrink();
-                        }),
-                      ],
+                      ),
                     ),
-                  ),
-                )));
+                    const SizedBox(height: 10),
+                    Consumer<LoadingProvider>(
+                        builder: (context, loadingProvider, child) {
+                      return loadingProvider.isLoading
+                          ? const Center(
+                              child: CircularProgressIndicator(
+                                valueColor: AlwaysStoppedAnimation<Color>(
+                                  Color.fromARGB(255, 2, 128, 6),
+                                ),
+                              ),
+                            )
+                          : const SizedBox.shrink();
+                    }),
+                  ],
+                ),
+              ),
+            )));
   }
-  
+
   Widget buildExStopTbl() {
     return ValueListenableBuilder(
         valueListenable: StopFunctions.instance.getExistingStopNotifier,
         builder: (BuildContext context, List<Listdet> newList, Widget? _) {
-          return Card(
-                      margin: const EdgeInsets.all(10),
-                      elevation: 3,
-            child: Container(
-                          decoration: BoxDecoration(
-                              border: Border.all(
-                                  color: Theme.of(context).colorScheme.onSecondary),
-              
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  
-
-                  DataTable(
-                    columns: getColumns(
-                       columns = [
-                                'Stop Id',
-                                'Stop Name',
-                                'Is Stage',
-                                'Km',
-                                'Arriving ',
-                                'Action'
-                              ]
+          return Column(
+            children: [
+              if (newList.isNotEmpty) ...[
+                Card(
+                  margin: const EdgeInsets.all(10),
+                  elevation: 3,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                          color: Theme.of(context).colorScheme.onSecondary),
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        DataTable(
+                          columns: getColumns(columns = [
+                            'Stop Id',
+                            'Stop Name',
+                            'Is Stage',
+                            'Km',
+                            'Arriving ',
+                            'Action'
+                          ]),
+                          rows: getRows(newList),
                         ),
-                    rows: getRows(newList),
+                      ],
+                    ),
                   ),
-                ],
-              ),
-            ),
+                ),
+              ] else ...[
+                FutureBuilder(
+                  future: Future.delayed(
+                      const Duration(seconds: 10)), // Add a delay of 5 seconds
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return Center(
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(
+                            vertical: MediaQuery.of(context).size.height / 2.5,
+                            horizontal: MediaQuery.of(context).size.width / 2.3,
+                          ),
+                          child: const CircularProgressIndicator(),
+                        ),
+                      );
+                    } else {
+                      // After 5 seconds, show the No Data Found image
+                      return Center(
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(
+                            vertical: MediaQuery.of(context).size.height / 2.5,
+                            horizontal: MediaQuery.of(context).size.width / 2.7,
+                          ),
+                          child: Text(
+                            'No data found',
+                            style: TextStyle(
+                                color:
+                                    Theme.of(context).colorScheme.onSecondary),
+                          ),
+                        ),
+                      );
+                    }
+                  },
+                ),
+              ]
+            ],
           );
         });
   }
@@ -412,47 +485,57 @@ class _ScreenStopMasterState extends State<ScreenStopMaster> {
     }).toList();
   }
 
-Map<String?, TextEditingController> kmControllers = {};
-Map<String?, TextEditingController> arrivingTimeControllers = {};
+  Map<String?, TextEditingController> kmControllers = {};
+  Map<String?, TextEditingController> arrivingTimeControllers = {};
 
-  List<DataRow> getRows(List<Listdet> newList) =>
-      newList.map((Listdet task) {
+  List<DataRow> getRows(List<Listdet> newList) => newList.map((Listdet task) {
         if (!kmControllers.containsKey(task.stopId)) {
-        kmControllers[task.stopId] = TextEditingController(text: task.km);
-      }
-      if (!arrivingTimeControllers.containsKey(task.stopId)) {
-        arrivingTimeControllers[task.stopId] = TextEditingController(text: task.arrivingTime);
-      }
-      // TextEditingController kmController = TextEditingController(text: task.km);
-      // TextEditingController arrivingTimeController = TextEditingController(text: task.arrivingTime);
-        cells = [       
-                        task.stopId,
-                        task.stopName,
-                        task.isStage,
-                        task.km,         
-                        task.arrivingTime
-                        
-                      ];
-                    
+          kmControllers[task.stopId] = TextEditingController(text: task.km);
+        }
+        if (!arrivingTimeControllers.containsKey(task.stopId)) {
+          arrivingTimeControllers[task.stopId] =
+              TextEditingController(text: task.arrivingTime);
+        }
+        // TextEditingController kmController = TextEditingController(text: task.km);
+        // TextEditingController arrivingTimeController = TextEditingController(text: task.arrivingTime);
+        cells = [
+          task.stopId ?? '',
+          task.stopName ?? '',
+          task.isStage ?? '',
+          task.km ?? '',
+          task.arrivingTime ?? ''
+        ];
 
-         return DataRow(
-        cells: [
+        return DataRow(cells: [
           ...Utils.modelBuilder(cells, (index, cell) {
             final taskbold = index == 0;
             final val = cells[2];
             final stage = val == "y" ? "yes" : "no";
             if (index == 3) {
               // Editable field for Km (index 3) and ArrivingTime (index 4)
-            //  TextEditingController controller = index == 3 ? kmController : arrivingTimeController;
+              //  TextEditingController controller = index == 3 ? kmController : arrivingTimeController;
 
               return DataCell(
                 Center(
                   child: TextFormField(
                     controller: kmControllers[task.stopId],
-                    decoration: const InputDecoration(
-                      border: InputBorder.none,
-                      isDense: true, // Minimize padding
-                    ),
+                    decoration: InputDecoration(
+                        border: InputBorder.none,
+                        isDense: true,
+                        suffixIcon: Theme(
+                            data: Theme.of(context),
+                            child: Text(
+                              "km",
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodyLarge
+                                  ?.copyWith(
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .primary),
+                              textAlign: TextAlign.center,
+                            )) // Minimize padding
+                        ),
                     textAlign: TextAlign.center,
                     style: taskbold
                         ? const TextStyle(
@@ -460,41 +543,46 @@ Map<String?, TextEditingController> arrivingTimeControllers = {};
                             color: Color.fromARGB(255, 88, 147, 250),
                           )
                         : const TextStyle(fontWeight: FontWeight.normal),
-                    onFieldSubmitted: (newValue) {                      
-                        task.km = newValue; // Update Km                 
-                      StopFunctions.instance.getExistingStopNotifier.notifyListeners();
+                    onFieldSubmitted: (newValue) {
+                      task.km = newValue; // Update Km
+                      StopFunctions.instance.getExistingStopNotifier
+                          .notifyListeners();
                     },
                   ),
                 ),
               );
-            } else if(index == 4){
-                return DataCell(
-                Center(            
-                  child:  TextFormField(
-                          controller: arrivingTimeControllers[task.stopId],
-                           decoration: const InputDecoration(
-                            border: InputBorder.none,
-                            isDense: true, 
-                          ),
-                          textAlign: TextAlign.center,
-                          style: taskbold
-                              ? const TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  color: Color.fromARGB(255, 88, 147, 250),
-                                )
-                              : const TextStyle(fontWeight: FontWeight.normal),
-                          onFieldSubmitted: (newValue) {                          
-                              task.arrivingTime = newValue;
-                            StopFunctions.instance.getExistingStopNotifier.notifyListeners();
-                          },
-                          onTap: () =>
-                              _selectTime(context,arrivingTimeControllers[task.stopId]! ),
-                         
-                        ),
+            } else if (index == 4) {
+              return DataCell(
+                Center(
+                  child: TextFormField(
+                    controller: arrivingTimeControllers[task.stopId],
+                    decoration: InputDecoration(
+                        border: InputBorder.none,
+                        isDense: true,
+                        suffixIcon: Theme(
+                            data: Theme.of(context),
+                            child: Icon(
+                              Icons.timer,
+                              color: Theme.of(context).colorScheme.primary,
+                            ))),
+                    textAlign: TextAlign.center,
+                    style: taskbold
+                        ? const TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Color.fromARGB(255, 88, 147, 250),
+                          )
+                        : const TextStyle(fontWeight: FontWeight.normal),
+                    onFieldSubmitted: (newValue) {
+                      task.arrivingTime = newValue;
+                      StopFunctions.instance.getExistingStopNotifier
+                          .notifyListeners();
+                    },
+                    onTap: () => _selectTime(
+                        context, arrivingTimeControllers[task.stopId]!),
+                  ),
                 ),
-              ); 
-            }else {
-              
+              );
+            } else {
               return DataCell(
                 Center(
                   child: Text(
@@ -509,27 +597,31 @@ Map<String?, TextEditingController> arrivingTimeControllers = {};
               );
             }
           }),
-          
           DataCell(
             Center(
               child: Row(
                 children: [
                   IconButton(
-                      onPressed: () async{
-                       await editArriveTime(context,task,kmControllers[task.stopId],arrivingTimeControllers[task.stopId]);
+                      onPressed: () async {
+                        await editArriveTime(
+                            context,
+                            task,
+                            kmControllers[task.stopId],
+                            arrivingTimeControllers[task.stopId]);
                       },
                       icon: Icon(
-                        Provider.of<IconChangeProvider>(context).isVerified(task.stopId)?Icons.verified:Icons.add_circle_outline,
+                        Provider.of<IconChangeProvider>(context)
+                                .isVerified(task.stopId)
+                            ? Icons.verified
+                            : Icons.add_circle_outline,
                         color: Theme.of(context).colorScheme.primary,
                       )),
                 ],
               ),
             ),
           ),
-        ]
-      );
-    }).toList();
-
+        ]);
+      }).toList();
 
   Future stopMasterSaveFun() async {
     final loadingProvider = _scafoldkey.currentContext!.read<LoadingProvider>();
@@ -602,25 +694,24 @@ Map<String?, TextEditingController> arrivingTimeControllers = {};
     }
   }
 
-Future editArriveTime(
-  BuildContext ctx,Listdet value,
-  TextEditingController? kmcntrlr,
-  TextEditingController? arvtm )async{
+  Future editArriveTime(BuildContext ctx, Listdet value,
+      TextEditingController? kmcntrlr, TextEditingController? arvtm) async {
+    String updatedKm = kmcntrlr!.text;
+    String updatedArrivingTime = arvtm!.text;
+    value.km = updatedKm;
+    value.arrivingTime = updatedArrivingTime;
+    StopFunctions.instance.getExistingStopNotifier.notifyListeners();
 
-  String updatedKm = kmcntrlr!.text;
-  String updatedArrivingTime = arvtm!.text;
-  value.km = updatedKm;
-  value.arrivingTime = updatedArrivingTime;
-  StopFunctions.instance.getExistingStopNotifier.notifyListeners();
+    String? resp = await StopFunctions.instance.editArrivingTime(value);
 
-  String? resp=await StopFunctions.instance.editArrivingTime(value); 
-   
-   if(resp=='success'){
-     _scafoldkey.currentContext!.read<IconChangeProvider>().setVerified(value.stopId,true);
-   }else{
-     _scafoldkey.currentContext!.read<IconChangeProvider>().setVerified(value.stopId,false);
-   }
-
-}
-
+    if (resp == 'success') {
+      _scafoldkey.currentContext!
+          .read<IconChangeProvider>()
+          .setVerified(value.stopId, true);
+    } else {
+      _scafoldkey.currentContext!
+          .read<IconChangeProvider>()
+          .setVerified(value.stopId, false);
+    }
+  }
 }

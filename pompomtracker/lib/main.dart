@@ -1,8 +1,8 @@
 import 'package:pompomtracker/core/hook/hook.dart';
 import 'package:pompomtracker/provider/iconChange/iconChangeProvider.dart';
 
-
 const savekeyname = 'UserLoggedIn';
+const savedeviceinfo = '_userDeviceIn';
 void main() {
   runApp(const MyApp());
 }
@@ -27,7 +27,7 @@ class MyApp extends StatelessWidget {
             create: (context) => CheckProvider()),
         ChangeNotifierProvider<DropdownProvider>(
             create: (context) => DropdownProvider()),
-             ChangeNotifierProvider<IconChangeProvider>(
+        ChangeNotifierProvider<IconChangeProvider>(
             create: (context) => IconChangeProvider()),
         ChangeNotifierProvider<ThemeProvider>(
           create: (context) => ThemeProvider(),

@@ -9,6 +9,7 @@ part of 'list_req.dart';
 MasterListReq _$MasterListReqFromJson(Map<String, dynamic> json) =>
     MasterListReq(
       conductorId: json['conductor_id'] as String?,
+      driverId: json['driver_id'] as String?,
       cname: json['cname'] as String?,
       caddress: json['caddress'] as String?,
       mobNo: json['mob_no'] as String?,
@@ -20,6 +21,7 @@ MasterListReq _$MasterListReqFromJson(Map<String, dynamic> json) =>
       ownerId: json['owner_id'] as String?,
       usertype: json['user_type'] as String?,
       tripId: json['trip_id'] as String?,
+      licenceNo: json['lisence_no'] as String?,
       arrivingTime: json['arriving_time'] as String?,
       stopName: json['stop_name'] as String?,
       stopNameOld: json['stop_name_old'] as String?,
@@ -31,12 +33,16 @@ MasterListReq _$MasterListReqFromJson(Map<String, dynamic> json) =>
       isStage: json['is_stage'] as String?,
       stageId: json['stage_id'] as String?,
       regNo: json['reg_no'] as String?,
-      routeId: json['route_id'] as int?,
+      routeId: (json['route_id'] as num?)?.toInt(),
+      flag: json['flag'] as String?,
+      role: json['role'] as String?,
+
     );
 
 Map<String, dynamic> _$MasterListReqToJson(MasterListReq instance) =>
     <String, dynamic>{
       'conductor_id': instance.conductorId,
+      'driver_id': instance.driverId,
       'cname': instance.cname,
       'caddress': instance.caddress,
       'mob_no': instance.mobNo,
@@ -48,6 +54,7 @@ Map<String, dynamic> _$MasterListReqToJson(MasterListReq instance) =>
       'owner_id': instance.ownerId,
       'user_type': instance.usertype,
       'trip_id': instance.tripId,
+      'lisence_no': instance.licenceNo,
       'arriving_time': instance.arrivingTime,
       'stop_name': instance.stopName,
       'stop_name_old': instance.stopNameOld,
@@ -58,7 +65,9 @@ Map<String, dynamic> _$MasterListReqToJson(MasterListReq instance) =>
       'longitude': instance.longitude,
       'is_stage': instance.isStage,
       'stage_id': instance.stageId,
-      'reg_no':instance.regNo,
-      'route_id':instance.routeId
+      'reg_no': instance.regNo,
+      'route_id': instance.routeId,
+      'flag':instance.flag,
+      'role':instance.role
 
     };

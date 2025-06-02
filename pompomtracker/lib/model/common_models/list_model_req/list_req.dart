@@ -6,6 +6,8 @@ part 'list_req.g.dart';
 class MasterListReq {
   @JsonKey(name: 'conductor_id')
   String? conductorId;
+  @JsonKey(name: 'driver_id')
+  String? driverId;
   @JsonKey(name: 'cname')
   String? cname;
   @JsonKey(name: 'caddress')
@@ -28,6 +30,8 @@ class MasterListReq {
   String? usertype;
   @JsonKey(name: 'trip_id')
   String? tripId;
+  @JsonKey(name: 'lisence_no')
+  String? licenceNo;
 
   @JsonKey(name: 'arriving_time')
   String? arrivingTime;
@@ -53,8 +57,13 @@ class MasterListReq {
   String? regNo;
   @JsonKey(name: 'route_id')
   int? routeId;
+  @JsonKey(name: 'flag')
+  String? flag;
+  @JsonKey(name: 'role')
+  String? role;
   MasterListReq(
       {this.conductorId,
+      this.driverId,
       this.cname,
       this.caddress,
       this.mobNo,
@@ -66,6 +75,7 @@ class MasterListReq {
       this.ownerId,
       this.usertype,
       this.tripId,
+      this.licenceNo,
       this.arrivingTime,
       this.stopName,
       this.stopNameOld,
@@ -77,8 +87,73 @@ class MasterListReq {
       this.isStage,
       this.stageId,
       this.regNo,
-      this.routeId
-      });
+      this.routeId,
+      this.flag,
+      this.role});
+
+      MasterListReq copyWith({
+    String? conductorId,
+    String? driverId,
+    String? cname,
+    String? caddress,
+    String? mobNo,
+    String? busRegNo,
+    String? emailId,
+    String? status,
+    String? accNo,
+    String? userId,
+    String? ownerId,
+    String? usertype,
+    String? tripId,
+    String? licenceNo,
+    String? arrivingTime,
+    String? stopName,
+    String? stopNameOld,
+    String? stopId,
+    String? km,
+    int? after,
+    String? latitude,
+    String? longitude,
+    String? isStage,
+    String? stageId,
+    String? regNo,
+    int? routeId,
+    String? flag,
+    String? role
+
+  }) {
+    return MasterListReq(
+      conductorId: conductorId ?? this.conductorId,
+      driverId: driverId ?? this.driverId,
+      cname: cname ?? this.cname,
+      caddress: caddress ?? this.caddress,
+      mobNo: mobNo ?? this.mobNo,
+      busRegNo: busRegNo ?? this.busRegNo,
+      emailId: emailId ?? this.emailId,
+      status: status ?? this.status,
+      accNo: accNo ?? this.accNo,
+      userId: userId ?? this.userId,
+      ownerId: ownerId ?? this.ownerId,
+      usertype: usertype ?? this.usertype,
+      tripId: tripId ?? this.tripId,
+      licenceNo: licenceNo ?? this.licenceNo,
+      arrivingTime: arrivingTime ?? this.arrivingTime,
+      stopName: stopName ?? this.stopName,
+      stopNameOld: stopNameOld ?? this.stopNameOld,
+      stopId: stopId ?? this.stopId,
+      km: km ?? this.km,
+      after: after ?? this.after,
+      latitude: latitude ?? this.latitude,
+      longitude: longitude ?? this.longitude,
+      isStage: isStage ?? this.isStage,
+      stageId: stageId ?? this.stageId,
+      regNo: regNo ?? this.regNo,
+      routeId: routeId ?? this.routeId,
+      flag: flag ?? this.flag,
+      role: role ?? this.role,
+
+    );
+  }
 
   factory MasterListReq.fromJson(Map<String, dynamic> json) {
     return _$MasterListReqFromJson(json);

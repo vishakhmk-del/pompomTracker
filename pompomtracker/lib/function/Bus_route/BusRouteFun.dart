@@ -1,4 +1,3 @@
-
 import 'package:pompomtracker/core/hook/hook.dart';
 
 class BusRouteListFunctions {
@@ -18,7 +17,7 @@ class BusRouteListFunctions {
         userId: sharedValue!.userId, usertype: sharedValue.userType);
     busRouteReqListRespVar = await Busdata().fetchBusRouteList(busRouteReq);
     if (busRouteReqListRespVar == null) {
-//print('null');
+      //print('null');
       getBusRouteListNotifier.value.clear();
       getBusRouteListNotifier.value.addAll([]);
       getBusRouteListNotifier.notifyListeners();

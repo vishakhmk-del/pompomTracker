@@ -1,4 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
+import 'package:pompomtracker/model/getRoute/ger_route_resp/emplist/emplist.dart';
 
 import 'route_list.dart';
 
@@ -10,9 +11,10 @@ class GerRouteResp {
   String? message;
   @JsonKey(name: 'route_list')
   List<RouteList>? routeList;
+  @JsonKey(name: 'employee_list')
+  List<Emplist>? employeeList;
 
-  GerRouteResp(
-      {required this.status, required this.message, required this.routeList});
+  GerRouteResp({this.status, this.message, this.routeList, this.employeeList});
 
   factory GerRouteResp.fromJson(Map<String, dynamic> json) {
     return _$GerRouteRespFromJson(json);

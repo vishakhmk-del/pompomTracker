@@ -1,5 +1,4 @@
 import 'package:pompomtracker/core/hook/hook.dart';
-import 'package:pompomtracker/screens/trip/TripList.dart';
 
 class Approutes {
   PageTransition loginscreen = PageTransition(
@@ -117,6 +116,20 @@ class Approutes {
     child: const ScreenTrip(
       flag: 0,
     ),
+    type: PageTransitionType.fade,
+    alignment: Alignment.center,
+    curve: Curves.easeInOutBack,
+    duration: const Duration(microseconds: 500),
+  );
+  PageTransition screenDriverView = PageTransition(
+    child: const ScreenDriverView(),
+    type: PageTransitionType.fade,
+    alignment: Alignment.center,
+    curve: Curves.easeInOutBack,
+    duration: const Duration(microseconds: 500),
+  );
+  PageTransition employeeAssign = PageTransition(
+    child: const ScreenEmployeeAssign(),
     type: PageTransitionType.fade,
     alignment: Alignment.center,
     curve: Curves.easeInOutBack,

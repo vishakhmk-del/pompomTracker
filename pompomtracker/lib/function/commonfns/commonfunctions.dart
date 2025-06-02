@@ -4,7 +4,7 @@ import 'package:pompomtracker/core/hook/hook.dart';
 
 abstract class Commonfn {
   Future wklycolctfn();
-  Future<List<BusRegList>?> busReglistfn();
+  Future<List<BusRegList>?> busReglistfn(BuildContext context);
 }
 
 class Wklycollectfn implements Commonfn {
@@ -16,16 +16,50 @@ class Wklycollectfn implements Commonfn {
 
   ValueNotifier<List<Buswklycollectlist>> wklycollectionNotifier =
       ValueNotifier([]);
+  Future signout(BuildContext context) async {
+    Fluttertoast.showToast(
+        msg: "Session Expired.",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.CENTER,
+        timeInSecForIosWeb: 1,
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+        fontSize: 16.0);
+
+    final sharedprf = await SharedPreferences.getInstance();
+
+    await sharedprf.remove(savekeyname);
+    if (!context.mounted) return;
+
+    Navigator.of(context).pushAndRemoveUntil(
+        MaterialPageRoute(
+          builder: (ctx) => const ScreenLogin(),
+        ),
+        (Route<dynamic> route) => false);
+  }
+
+  Future showApierror(BuildContext? context, String? msg) async {
+    //print('hi');
+
+    Fluttertoast.showToast(
+        msg: "$msg",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.CENTER,
+        timeInSecForIosWeb: 1,
+        backgroundColor: Colors.white,
+        textColor: Colors.black,
+        fontSize: 15.0);
+  }
 
   @override
   Future wklycolctfn() async {
     final sharevalue = await SharedPrefManager.instance.getSharedData();
     DateTime now = DateTime.now();
     String formattedDate = DateFormat('yyyy-MM-dd').format(now);
-    // print(formattedDate);
+    print(formattedDate);
 
     final wklyrqst = Weeklycollectionreq.req(
-        userId: sharevalue!.userId, curDate: '2024-06-29');
+        userId: sharevalue!.userId, curDate: formattedDate);
     final wklyresp = await Busdata().weeklycollection(wklyrqst);
 
     if (wklyresp == null) {
@@ -61,75 +95,213 @@ class Wklycollectfn implements Commonfn {
   }
 
   @override
-  Future<List<BusRegList>?> busReglistfn() async {
-    final sharevalue = await SharedPrefManager.instance.getSharedData();
+  Future<List<BusRegList>?> busReglistfn(BuildContext context) async {
+    try {
+      final sharevalue = await SharedPrefManager.instance.getSharedData();
 
-    List<BusRegList>? busreglist = [];
+      List<BusRegList>? busreglist = [];
 
-    final regrqst = RegistrationReq(
-      userId: sharevalue!.userId,
-    );
-    final regresp = await Busdata().getBusRegistartionList(regrqst);
+      final regrqst = RegistrationReq(
+        userId: sharevalue!.userId,
+      );
+      final regresp = await Busdata().getBusRegistartionList(regrqst);
 
-    if (regresp == null) {
-      busreglist = busreglist;
-      return busreglist;
-    } else if (regresp.statusCode == 200) {
-      final resultAsjson = jsonDecode(regresp.toString());
-      final regrspval =
-          RegistrationResp.fromJson(resultAsjson as Map<String, dynamic>);
-
-      if (regrspval.status == 'success') {
-        log('weeklycollection data fetch success');
-        final reglist = regrspval.busList;
-        busreglist = reglist;
+      if (regresp == null) {
+        busreglist = busreglist;
         return busreglist;
-      } else if (regrspval.status == 'Failed') {
-        log('weeklycollection data fetch failed');
-        final reglist = regrspval.busList;
-        busreglist = reglist;
-        return busreglist;
+      } else if (regresp.statusCode == 200) {
+        final resultAsjson = jsonDecode(regresp.toString());
+        final regrspval =
+            RegistrationResp.fromJson(resultAsjson as Map<String, dynamic>);
+
+        if (regrspval.status == 'success') {
+          log('weeklycollection data fetch success');
+          final reglist = regrspval.busList;
+          busreglist = reglist;
+          return busreglist;
+        } else if (regrspval.status == 'Failed') {
+          log('weeklycollection data fetch failed');
+          final reglist = regrspval.busList;
+          busreglist = reglist;
+          return busreglist;
+        }
+      } else if (regresp.statusCode == 500) {
+        if (!context.mounted) return [];
+        Wklycollectfn.instance.showApierror(context, "Sever Not reached");
+
+        // showLoginerror(context, 3);
+      } else if (regresp.statusCode == 408) {
+        if (!context.mounted) return [];
+        Wklycollectfn.instance.showApierror(context, "Connection time out");
+
+        //showLoginerror(context, 4);
+      } else {
+        if (!context.mounted) return [];
+        Wklycollectfn.instance.showApierror(context, "Something went wrong");
+        //showLoginerror(context, 5);
       }
-    } else {
-      log('weeklycollection data fetch exception');
-      busreglist = busreglist;
-      return busreglist;
+    } catch (e) {
+      if (!context.mounted) return [];
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('An unexpected error occurred')),
+      );
     }
-    return busreglist;
   }
 
-  Future<dynamic> fetchRouteList() async {
-    final value = await SharedPrefManager.instance.getSharedData();
-    GetRouteReq routeReq =
-        GetRouteReq(userId: value!.userId, userType: value.userType);
-    final getRouteList = await Busdata().getRouteList(routeReq);
+  Future<dynamic> fetchRouteList(BuildContext context) async {
+    try {
+      final value = await SharedPrefManager.instance.getSharedData();
+      GetRouteReq routeReq =
+          GetRouteReq(userId: value!.userId, userType: value.userType);
+      final getRouteList = await Busdata().getRouteList(routeReq);
 
-    List<RouteList>? routeDetailslist = [];
+      List<RouteList>? routeDetailslist = [];
 
-    if (getRouteList == null) {
-      routeDetailslist = routeDetailslist;
-      return routeDetailslist;
-    } else if (getRouteList.statusCode == 200) {
-      final resultAsjson = jsonDecode(getRouteList.toString());
-      final regrspval =
-          GerRouteResp.fromJson(resultAsjson as Map<String, dynamic>);
-
-      if (regrspval.status == 'success') {
-        log('Route  data fetch success');
-        final routeList = regrspval.routeList;
-        routeDetailslist = routeList;
+      if (getRouteList == null) {
+        routeDetailslist = routeDetailslist;
         return routeDetailslist;
-      } else if (regrspval.status == 'Failed') {
-        log('Route data fetch failed');
-        final routeList = regrspval.routeList;
-        routeDetailslist = routeList;
-        return routeDetailslist;
+      } else if (getRouteList.statusCode == 200) {
+        final resultAsjson = jsonDecode(getRouteList.toString());
+        final regrspval =
+            GerRouteResp.fromJson(resultAsjson as Map<String, dynamic>);
+
+        if (regrspval.status == 'success') {
+          log('Route  data fetch success');
+          final routeList = regrspval.routeList;
+          routeDetailslist = routeList;
+          return routeDetailslist;
+        } else if (regrspval.status == 'Failed') {
+          log('Route data fetch failed');
+          final routeList = regrspval.routeList;
+          routeDetailslist = routeList;
+          return routeDetailslist;
+        }
+      } else if (getRouteList.statusCode == 500) {
+        if (!context.mounted) return [];
+        Wklycollectfn.instance.showApierror(context, "Sever Not reached");
+
+        // showLoginerror(context, 3);
+      } else if (getRouteList.statusCode == 408) {
+        if (!context.mounted) return [];
+        Wklycollectfn.instance.showApierror(context, "Connection time out");
+
+        //showLoginerror(context, 4);
+      } else {
+        if (!context.mounted) return [];
+        Wklycollectfn.instance.showApierror(context, "Something went wrong");
+        //showLoginerror(context, 5);
       }
-    } else {
-      log('Route data fetch exception');
-      routeDetailslist = routeDetailslist;
-      return routeDetailslist;
+    } catch (e) {
+      if (!context.mounted) return [];
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('An unexpected error occurred')),
+      );
     }
-    return routeDetailslist;
+  }
+
+  Future<dynamic> conductorList(BuildContext context) async {
+    try {
+      final value = await SharedPrefManager.instance.getSharedData();
+      GetRouteReq routeReq =
+          GetRouteReq(userId: value!.userId, userType: value.userType);
+      final getRouteList = await Busdata().conductorList(routeReq);
+
+      List<Emplist>? routeDetailslist = [];
+
+      if (getRouteList == null) {
+        routeDetailslist = routeDetailslist;
+        return routeDetailslist;
+      } else if (getRouteList.statusCode == 200) {
+        final resultAsjson = jsonDecode(getRouteList.toString());
+        final regrspval =
+            GerRouteResp.fromJson(resultAsjson as Map<String, dynamic>);
+
+        if (regrspval.status == 'success') {
+          log('Route  data fetch success');
+          final routeList = regrspval.employeeList;
+          routeDetailslist = routeList;
+          return routeDetailslist;
+        } else if (regrspval.status == 'Failed') {
+          log('Route data fetch failed');
+          final routeList = regrspval.employeeList;
+          routeDetailslist = routeList;
+          return routeDetailslist;
+        }
+      } else if (getRouteList.statusCode == 500) {
+        if (!context.mounted) return [];
+        Wklycollectfn.instance.showApierror(context, "Sever Not reached");
+
+        // showLoginerror(context, 3);
+      } else if (getRouteList.statusCode == 408) {
+        if (!context.mounted) return [];
+        Wklycollectfn.instance.showApierror(context, "Connection time out");
+
+        //showLoginerror(context, 4);
+      } else {
+        if (!context.mounted) return [];
+        Wklycollectfn.instance.showApierror(context, "Something went wrong");
+        //showLoginerror(context, 5);
+      }
+    } catch (e) {
+      if (!context.mounted) return [];
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('An unexpected error occurred')),
+      );
+    }
+  }
+
+  Future<dynamic> driverList(BuildContext context) async {
+    try {
+      final value = await SharedPrefManager.instance.getSharedData();
+      GetRouteReq routeReq =
+          GetRouteReq(userId: value!.userId, userType: value.userType);
+      final getRouteList = await Busdata().driverList(routeReq);
+
+      List<Emplist>? routeDetailslist = [];
+
+      if (getRouteList == null) {
+        routeDetailslist = routeDetailslist;
+        return routeDetailslist;
+      } else if (getRouteList.statusCode == 200) {
+        final resultAsjson = jsonDecode(getRouteList.toString());
+        final regrspval =
+            GerRouteResp.fromJson(resultAsjson as Map<String, dynamic>);
+
+        if (regrspval.status == 'success') {
+          log('Route  data fetch success');
+          final routeList = regrspval.employeeList;
+          routeDetailslist = routeList;
+          return routeDetailslist;
+        } else if (regrspval.status == 'Failed') {
+          log('Route data fetch failed');
+          final routeList = regrspval.employeeList;
+          routeDetailslist = routeList;
+          return routeDetailslist;
+        }
+      } else if (getRouteList.statusCode == 500) {
+        if (!context.mounted) return [];
+        Wklycollectfn.instance.showApierror(context, "Sever Not reached");
+
+        // showLoginerror(context, 3);
+      } else if (getRouteList.statusCode == 408) {
+        if (!context.mounted) return [];
+        Wklycollectfn.instance.showApierror(context, "Connection time out");
+
+        //showLoginerror(context, 4);
+      } else {
+        if (!context.mounted) return [];
+        Wklycollectfn.instance.showApierror(context, "Something went wrong");
+        //showLoginerror(context, 5);
+      }
+    } catch (e) {
+      if (!context.mounted) return [];
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('An unexpected error occurred')),
+      );
+    }
   }
 }

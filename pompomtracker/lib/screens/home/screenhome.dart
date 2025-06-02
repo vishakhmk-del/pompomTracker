@@ -1,6 +1,5 @@
 import 'dart:developer';
 import 'package:intl/intl.dart';
-
 import '../../core/hook/hook.dart';
 
 class Screenhome extends StatefulWidget {
@@ -25,10 +24,9 @@ class _ScreenhomeState extends State<Screenhome> {
       onPopInvoked: (bool didPop) async {
         log('BackButton pressed!');
         if (!didPop) {
-          //final nav=Navigator.of(context);
           if (didPop) return;
           final result = await showWarning(context);
-          print(result);
+          //print(result);
           if (result != null && result) {
             SystemNavigator.pop(); // This will properly exit the app
           }
@@ -42,7 +40,7 @@ class _ScreenhomeState extends State<Screenhome> {
             // backgroundColor: Colors.black,
             appBar: AppBar(
                 title: Text(
-              "PomPomTracker",
+              "My Bus",
               style: Theme.of(context).textTheme.titleLarge,
             )),
             body: ListView(
@@ -64,7 +62,7 @@ class _ScreenhomeState extends State<Screenhome> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Padding(
-                          padding: const EdgeInsets.only(top: 30, left: 10),
+                          padding: const EdgeInsets.only(top: 15, left: 10),
                           child: Text(
                             "Weekly Collection",
                             style: Theme.of(context).textTheme.titleLarge,
@@ -72,23 +70,22 @@ class _ScreenhomeState extends State<Screenhome> {
                         ),
                         Card(
                           margin: const EdgeInsets.only(
-                              top: 30, left: 10, right: 10),
+                              top: 15, left: 10, right: 10, bottom: 10),
                           elevation: 3,
                           child: Column(
                             children: [
                               Container(
-                                //width: MediaQuery.of(context).size.width,
-                                height: MediaQuery.of(context).size.height / 2,
+                                height: MediaQuery.of(context).size.height / 4,
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(12),
                                 ),
                                 child: const Linechartwidget(),
                               ),
                               Padding(
-                                padding: const EdgeInsets.all(15.0),
+                                padding: const EdgeInsets.all(8.0),
                                 child: Container(
-                                  height: 45,
-                                  width: 200,
+                                  height: 40,
+                                  width: 150,
                                   decoration: BoxDecoration(
                                     gradient: LinearGradient(
                                       begin: Alignment.topLeft,
@@ -124,8 +121,11 @@ class _ScreenhomeState extends State<Screenhome> {
                     ),
                   ),
                 ),
+                const SizedBox(
+                  height: 10,
+                ),
                 Card(
-                    margin: const EdgeInsets.all(10),
+                    margin: const EdgeInsets.all(5),
                     elevation: 3,
                     shadowColor: Theme.of(context).colorScheme.primary,
                     child: Container(
@@ -199,9 +199,10 @@ class _ScreenhomeState extends State<Screenhome> {
 }
 
 Future<bool?> showWarning(BuildContext context) async => showDialog<bool>(
+    barrierDismissible: false,
     context: context,
     builder: (context) => AlertDialog(
-          title:  Text("Do you want to exit app?",
+          title: Text("Do you want to exit app?",
               style: TextStyle(color: Theme.of(context).colorScheme.primary)),
           actions: [
             ElevatedButton(
@@ -209,7 +210,9 @@ Future<bool?> showWarning(BuildContext context) async => showDialog<bool>(
                 backgroundColor: Theme.of(context).colorScheme.primary,
               ),
               onPressed: () => Navigator.pop(context, false),
-              child:  Text("No", style: TextStyle(color:Theme.of(context).colorScheme.onPrimary)),
+              child: Text("No",
+                  style: TextStyle(
+                      color: Theme.of(context).colorScheme.onPrimary)),
             ),
             ElevatedButton(
               style: ElevatedButton.styleFrom(
@@ -218,7 +221,9 @@ Future<bool?> showWarning(BuildContext context) async => showDialog<bool>(
               onPressed: () =>
                   // SystemNavigator.pop(),
                   Navigator.pop(context, true),
-              child:  Text("Yes", style: TextStyle(color:Theme.of(context).colorScheme.onPrimary)),
+              child: Text("Yes",
+                  style: TextStyle(
+                      color: Theme.of(context).colorScheme.onPrimary)),
             ),
           ],
         ));

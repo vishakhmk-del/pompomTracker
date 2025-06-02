@@ -64,6 +64,7 @@ class _ScreenLoginState extends State<ScreenLogin> {
                                 padding: const EdgeInsets.symmetric(
                                     vertical: 0.0, horizontal: 5),
                                 child: TextFormField(
+                                    cursorColor: Colors.white,
                                     controller: _usercontroller,
                                     style: TextStyle(
                                       color: Theme.of(context)
@@ -95,6 +96,7 @@ class _ScreenLoginState extends State<ScreenLogin> {
                                 padding: const EdgeInsets.symmetric(
                                     vertical: 10, horizontal: 5),
                                 child: TextFormField(
+                                    cursorColor: Colors.white,
                                     controller: _passcontroller,
                                     style: TextStyle(
                                       color: Theme.of(context)
@@ -169,7 +171,7 @@ class _ScreenLoginState extends State<ScreenLogin> {
                                 child: ElevatedButton(
                                   onPressed: () async {
                                     if (_formkey.currentState!.validate()) {
-                                      await getlogin();
+                                      await getlogin(context);
                                     }
                                   },
                                   child: Text(
@@ -181,7 +183,14 @@ class _ScreenLoginState extends State<ScreenLogin> {
                               ),
                             ),
                             TextButton(
-                              onPressed: () {},
+                              onPressed: () {
+                                Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        const ScreenForgotPswrd(),
+                                  ),
+                                );
+                              },
                               child: Text(
                                 'Forgot password?',
                                 style: Theme.of(context).textTheme.titleSmall,
@@ -215,75 +224,96 @@ class _ScreenLoginState extends State<ScreenLogin> {
     ]);
   }
 
-  Future getlogin() async {
-    final loadingProvider =
-        _scaffoldKey.currentContext!.read<LoadingProvider>();
-    //False to true
-    loadingProvider.toggleLoading();
-    final username = _usercontroller.text;
-    final password = _passcontroller.text;
+  Future getlogin(BuildContext context) async {
+    try {
+      final loadingProvider =
+          _scaffoldKey.currentContext!.read<LoadingProvider>();
+      //False to true
+      loadingProvider.toggleLoading();
+      final username = _usercontroller.text;
+      final password = _passcontroller.text;
+      final value = await SharedPrefManager.instance.getdeviceinfo();
 
-    final logreq = Loginreq.req(userName: username, pwd: password);
+      final logreq = Loginreq(
+          userName: username,
+          pwd: password,
+          phone: value.phone,
+          deviceid: value.deviceid,
+          phoneos: value.phoneos,
+          androidid: value.androidid,
+          appversion: value.appversion,
+          buildnumber: value.buildnumber);
 
-    final loginResponse = await Busdata().login(logreq);
-    final resultAsjson = jsonDecode(loginResponse.toString());
-    final loginval = Loginresp.fromJson(resultAsjson as Map<String, dynamic>);
-    //factory Loginresp.fromJson(Map<String, dynamic> json)
-    //final status = loginval.status;
+      final loginResponse = await Busdata().login(logreq);
 
-    //True To False
-    loadingProvider.toggleLoading();
-    if (loginResponse == null) {
-      showLoginerror(_scaffoldKey.currentContext!, 1);
-    } else if (loginResponse.statusCode == 200 &&
-        loginval.status == 'success') {
-      //print('success');
-      addLoginShareddata(loginval.status, loginval.userId, loginval.userType,
-          loginval.userName, loginval.ownerName);
-      /*wklycollection function */
+      final resultAsjson = jsonDecode(loginResponse.toString());
+      final loginval = Loginresp.fromJson(resultAsjson as Map<String, dynamic>);
 
-      /**************************/
+      loadingProvider.reset();
+      if (loginResponse == null) {
+        if (!context.mounted) return;
+        Wklycollectfn.instance.showApierror(context, "Something went wrong");
+      } else if (loginResponse.statusCode == 200 &&
+          loginval.status == 'success') {
+        //print('success');
+        addLoginShareddata(
+            loginval.data?.userId ?? '',
+            loginval.data?.userType ?? '',
+            loginval.data?.userName ?? '',
+            loginval.data?.ownerName ?? '');
+        if (!context.mounted) return;
 
-      Navigator.of(_scaffoldKey.currentContext!).pushReplacement(
-        MaterialPageRoute(
-          builder: (context) => const Screenhome(),
-        ),
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(
+            builder: (context) => const Screenhome(),
+          ),
+        );
+      } else if (loginval.status == 'failed') {
+        if (loginval.data == null) {
+          if (!context.mounted) return;
+          Wklycollectfn.instance
+              .showApierror(context, "Username or password Incorrect");
+        } else if (loginval.data?.errorCode == 'VERSION001') {
+          if (!context.mounted) return;
+
+          Navigator.of(context).pushReplacement(
+            MaterialPageRoute(
+              builder: (context) => ScreenError(
+                message: loginval.message,
+              ),
+            ),
+          );
+        } else {
+          if (!context.mounted) return;
+          Wklycollectfn.instance
+              .showApierror(context, "Username or password Incorrect");
+        }
+      } else if (loginResponse.statusCode == 500) {
+        if (!context.mounted) return;
+        Wklycollectfn.instance.showApierror(context, "Sever Not Reachable");
+
+        // showLoginerror(context, 3);
+      } else if (loginResponse.statusCode == 408) {
+        if (!context.mounted) return;
+        Wklycollectfn.instance.showApierror(context, "Connection time out");
+
+        //showLoginerror(context, 4);
+      } else {
+        if (!context.mounted) return;
+        Wklycollectfn.instance.showApierror(context, "Something went wrong");
+        //showLoginerror(context, 5);
+      }
+    } catch (e) {
+      if (!context.mounted) return;
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('An unexpected error occurred')),
       );
-
-      //showLoginerror(_scaffoldKey.currentContext!);
-    } else if (loginval.status == 'Failed') {
-      showLoginerror(_scaffoldKey.currentContext!, 2);
-    } else {
-      showLoginerror(_scaffoldKey.currentContext!, 3);
     }
   }
 
-  Future showLoginerror(BuildContext? context, stat) async {
-    //print('hi');
-    if (stat == 2) {
-      Fluttertoast.showToast(
-          msg: "Username or password incorrect",
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.CENTER,
-          timeInSecForIosWeb: 1,
-          backgroundColor: Colors.black,
-          textColor: Colors.white,
-          fontSize: 15.0);
-    } else {
-      Fluttertoast.showToast(
-          msg: "Something went wrong",
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.CENTER,
-          timeInSecForIosWeb: 1,
-          backgroundColor: Colors.black,
-          textColor: Colors.white,
-          fontSize: 15.0);
-    }
-  }
-
-  addLoginShareddata(status, userId, userType, userName, ownerName) async {
+  addLoginShareddata(userId, userType, userName, ownerName) async {
     final sharedPrefLogin = Sharedpref(
-      status: status,
       userId: userId,
       userType: userType,
       userName: userName,
@@ -291,10 +321,6 @@ class _ScreenLoginState extends State<ScreenLogin> {
     );
 
     await SharedPrefManager.instance.addSharedData(sharedPrefLogin);
-    // final getLoginData = await SharedPrefManager().getSharedData();
-    // for (var data in getLoginData) {
-    //   print(data.userId);
-    // }
 
     await Wklycollectfn.instance.wklycolctfn();
   }

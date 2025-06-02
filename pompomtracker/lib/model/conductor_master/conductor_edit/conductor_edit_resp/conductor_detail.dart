@@ -6,6 +6,8 @@ part 'conductor_detail.g.dart';
 class ConductorDetail {
   @JsonKey(name: 'conductor_id')
   String? conductorId;
+  @JsonKey(name: 'driver_id')
+  String? driverId;
   String? name;
   String? address;
   @JsonKey(name: 'account_no')
@@ -19,18 +21,21 @@ class ConductorDetail {
   String? registrationNo;
   @JsonKey(name: 'email_id')
   String? emailId;
+  @JsonKey(name: 'lisence_no')
+  String? lisenceNo;
 
-  ConductorDetail({
-    this.conductorId,
-    this.name,
-    this.address,
-    this.accountNo,
-    this.mobileNo,
-    this.status,
-    this.busName,
-    this.registrationNo,
-    this.emailId,
-  });
+  ConductorDetail(
+      {this.conductorId,
+      this.driverId,
+      this.name,
+      this.address,
+      this.accountNo,
+      this.mobileNo,
+      this.status,
+      this.busName,
+      this.registrationNo,
+      this.emailId,
+      this.lisenceNo});
 
   factory ConductorDetail.fromJson(Map<String, dynamic> json) {
     return _$ConductorDetailFromJson(json);

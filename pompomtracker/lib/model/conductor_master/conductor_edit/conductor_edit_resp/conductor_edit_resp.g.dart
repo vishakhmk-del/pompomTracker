@@ -10,7 +10,7 @@ ConductorEditResp _$ConductorEditRespFromJson(Map<String, dynamic> json) =>
     ConductorEditResp(
       status: json['status'] as String?,
       message: json['message'] as String?,
-      conductorDetails: (json['conductor_details'] as List<dynamic>?)
+      conductorDetails: (json['employee_details'] as List<dynamic>?)
           ?.map((e) => ConductorDetail.fromJson(e as Map<String, dynamic>))
           .toList(),
       busList: (json['bus_list'] as List<dynamic>?)
@@ -22,6 +22,6 @@ Map<String, dynamic> _$ConductorEditRespToJson(ConductorEditResp instance) =>
     <String, dynamic>{
       'status': instance.status,
       'message': instance.message,
-      'conductor_details': instance.conductorDetails,
+      'employee_details': instance.conductorDetails,
       'bus_list': instance.busList,
     };

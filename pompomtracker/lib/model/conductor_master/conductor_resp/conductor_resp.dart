@@ -7,9 +7,13 @@ class ConductorResp {
   String? status;
   String? message;
   @JsonKey(name: 'conductor_id')
-  String? conductorId;
+  dynamic conductorId;
+  @JsonKey(name: 'driver_id')
+  dynamic driverId;
+  @JsonKey(name: 'flag')
+  String? flag;
 
-  ConductorResp({this.status, this.message, this.conductorId});
+  ConductorResp({this.status, this.message, this.conductorId, this.driverId,this.flag});
 
   factory ConductorResp.fromJson(Map<String, dynamic> json) {
     return _$ConductorRespFromJson(json);

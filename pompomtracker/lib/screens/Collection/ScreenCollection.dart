@@ -39,15 +39,24 @@ class _ScreenCollectionState extends State<ScreenCollection> {
   @override
   void initState() {
     super.initState();
-    Future.delayed(Duration.zero, () {
-      var po = context.read<CheckProvider>();
+   
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
 
+       Future.delayed(Duration.zero, () {
+      if (!mounted) return;
+
+      final loadingProvider = context.read<LoadingProvider>();
+      loadingProvider.reset();
+
+      var po = context.read<CheckProvider>();
       po.reset();
+
       context.read<ElevatedBtnProvider>().changeSelectedVal(false);
+      
       context.read<RadiobuttonProvider>().reset();
     });
-    WidgetsBinding.instance.addPostFrameCallback((_) async {
-      busreglist = await Wklycollectfn.instance.busReglistfn();
+
+      busreglist = await Wklycollectfn.instance.busReglistfn(context);
       setState(() {
         registarionlst = busreglist!
             .map((bus) => bus.registrationNo ?? "")
@@ -59,7 +68,9 @@ class _ScreenCollectionState extends State<ScreenCollection> {
   Future<bool?> popscreen(BuildContext context) async {
     selectedTaskNotifier.value = StatementType.collectionType;
     selectedModeNotifier.value = StatementType.both;
-    Navigator.push(context, Approutes().collectionscreen);
+    Navigator.of(context).pushAndRemoveUntil(
+        MaterialPageRoute(builder: (context) => const Screenhome()),
+        (Route<dynamic> route) => false);
     return true;
   }
 
@@ -125,8 +136,8 @@ class _ScreenCollectionState extends State<ScreenCollection> {
                               child: Column(
                                 children: [
                                   Container(
-                                    height: MediaQuery.of(context).size.height /
-                                        1.52,
+                                    // height: MediaQuery.of(context).size.height /
+                                    //     1.45,
                                     decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(12),
                                     ),
@@ -1007,19 +1018,19 @@ class _ScreenCollectionState extends State<ScreenCollection> {
                             .isAccepted ==
                         false
                     ? cells = [
-                        task.regNo,
-                        task.payDate,
-                        task.mode,
+                        task.regNo ?? '',
+                        task.payDate ?? '',
+                        task.mode ?? '',
                         task.amount,
                       ]
                     : cells = [
-                        task.payDate,
-                        task.amount,
+                        task.payDate ?? '',
+                        task.amount ?? '',
                       ]
                 : cells = [
-                    task.regNo,
-                    task.payDate,
-                    task.amount,
+                    task.regNo ?? '',
+                    task.payDate ?? '',
+                    task.amount ?? '',
                   ]
             : Provider.of<CashstmntDrpDwnProvider>(context, listen: false)
                         .selectedVal ==
@@ -1028,19 +1039,19 @@ class _ScreenCollectionState extends State<ScreenCollection> {
                             .isAccepted ==
                         false
                     ? cells = [
-                        task.payDate,
-                        task.regNo,
-                        task.expensehead,
-                        task.expense,
+                        task.payDate ?? '',
+                        task.regNo ?? '',
+                        task.expensehead ?? '',
+                        task.expense ?? '',
                       ]
                     : cells = [
-                        task.payDate,
-                        task.expense,
+                        task.payDate ?? '',
+                        task.expense ?? '',
                       ]
                 : cells = [
-                    task.payDate,
-                    task.totalIncome,
-                    task.totalExpense,
+                    task.payDate ?? '',
+                    task.totalIncome ?? '',
+                    task.totalExpense ?? '',
                   ];
 
         return DataRow(

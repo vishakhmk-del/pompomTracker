@@ -235,29 +235,25 @@ class StopFunctions {
     }
   }
 
- Future<List<Listdet>> getExistingStpFn(String? tripId) async {
-  
+  Future<List<Listdet>> getExistingStpFn(String? tripId) async {
     final sharevalue = await SharedPrefManager.instance.getSharedData();
 
-    final stopreq=MasterListReq(
-    tripId: tripId,
-    userId: sharevalue!.userId,
-    usertype: sharevalue.userType);
+    final stopreq = MasterListReq(
+        tripId: tripId,
+        userId: sharevalue!.userId,
+        usertype: sharevalue.userType);
     List<Listdet> stplist = [];
 
     final stpresp = await Busdata().exstingStop(stopreq);
 
     if (stpresp == null) {
-
       log('stop list data fetch null');
       getExistingStopNotifier.value.clear();
       getExistingStopNotifier.value.addAll([]);
       getExistingStopNotifier.notifyListeners();
-       stplist = stplist;
+      stplist = stplist;
       return stplist;
-
     } else if (stpresp.statusCode == 200) {
-
       final resultAsjson = jsonDecode(stpresp.toString());
       final stprspval =
           MasterListMdl.fromJson(resultAsjson as Map<String, dynamic>);
@@ -272,22 +268,18 @@ class StopFunctions {
         //final routeList = dtwiserspval.listDet;
         stplist = stoplist;
         return stplist;
-
       } else if (stprspval.status == 'Failed') {
-
         log('stop list data fetch failed');
         final stoplist = stprspval.listDet;
         getExistingStopNotifier.value.clear();
         getExistingStopNotifier.value.addAll(stoplist);
         getExistingStopNotifier.notifyListeners();
 
-         //final routeList = dtwiserspval.listDet;
+        //final routeList = dtwiserspval.listDet;
         stplist = stoplist;
         return stplist;
-
       }
     } else {
-
       log('Stop list data fetch exception');
       getStopDetNotifier.value.clear();
       getStopDetNotifier.value.addAll([]);
@@ -295,26 +287,26 @@ class StopFunctions {
       stplist = stplist;
       return stplist;
     }
-     return stplist;
+    return stplist;
   }
- 
- Future<String?> editArrivingTime(Listdet value) async {
+
+  Future<String?> editArrivingTime(Listdet value) async {
     final sharevalue = await SharedPrefManager.instance.getSharedData();
     Response<dynamic>? dtwiseresp;
-     List<Listdet> triplist = [];
-    String stage=value.isStage=="y"?"y":"n";
-    
+    List<Listdet> triplist = [];
+    String stage = value.isStage == "y" ? "y" : "n";
+
     final dtwiserqst = MasterListReq(
-          userId: sharevalue!.userId,
-          tripId: value.tripId,
-          stopId: value.stopId,
-          km: value.km,
-          isStage: stage,
-          stageId: value.stageId,
-          stopName: value.stopName,
-          arrivingTime: value.arrivingTime,                  
-        );
-        
+      userId: sharevalue!.userId,
+      tripId: value.tripId,
+      stopId: value.stopId,
+      km: value.km,
+      isStage: stage,
+      stageId: value.stageId,
+      stopName: value.stopName,
+      arrivingTime: value.arrivingTime,
+    );
+
     dtwiseresp = await Busdata().editArvTime(dtwiserqst);
 
     if (dtwiseresp == null) {
@@ -325,18 +317,18 @@ class StopFunctions {
       final dtwiserspval =
           MasterListMdl.fromJson(resultAsjson as Map<String, dynamic>);
       if (dtwiserspval.status == 'success') {
-       log('stop details added success');
+        log('stop details added success');
         final routeList = dtwiserspval.listDet;
         triplist = routeList;
         Fluttertoast.showToast(
-          msg: "Stop details added successfully",
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.CENTER,
-          timeInSecForIosWeb: 1,
-          backgroundColor: Colors.white,
-          textColor: Colors.black,
-          fontSize: 15.0);
-          
+            msg: "Stop details added successfully",
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.CENTER,
+            timeInSecForIosWeb: 1,
+            backgroundColor: Colors.white,
+            textColor: Colors.black,
+            fontSize: 15.0);
+
         return dtwiserspval.status;
       } else if (dtwiserspval.status == 'Failed') {
         log('stop details added failed');
@@ -353,6 +345,7 @@ class StopFunctions {
     }
     return "Failed";
   }
+
   showArvTimerror(stat) {
     if (stat == 2) {
       Fluttertoast.showToast(
@@ -374,16 +367,17 @@ class StopFunctions {
           fontSize: 15.0);
     }
   }
+
   Future<List<Listdet>> tripNewNameList() async {
     final sharevalue = await SharedPrefManager.instance.getSharedData();
 
     Response<dynamic>? dtwiseresp;
-     List<Listdet> triplist = [];
+    List<Listdet> triplist = [];
 
     final dtwiserqst = MasterListReq(
-        userId: sharevalue!.userId,
-        usertype: sharevalue.userType,
-        );
+      userId: sharevalue!.userId,
+      usertype: sharevalue.userType,
+    );
     dtwiseresp = await Busdata().getNewTripdet(dtwiserqst);
 
     if (dtwiseresp == null) {
@@ -394,7 +388,7 @@ class StopFunctions {
       final dtwiserspval =
           MasterListMdl.fromJson(resultAsjson as Map<String, dynamic>);
       if (dtwiserspval.status == 'success') {
-       log('Trip  data fetch success');
+        log('Trip  data fetch success');
         final routeList = dtwiserspval.listDet;
         triplist = routeList;
         return triplist;
@@ -412,5 +406,3 @@ class StopFunctions {
     return triplist;
   }
 }
-
-

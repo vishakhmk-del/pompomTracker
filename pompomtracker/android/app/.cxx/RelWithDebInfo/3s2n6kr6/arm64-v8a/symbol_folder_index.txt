@@ -1,0 +1,1 @@
+/Users/dits/flutterpro/busownerapp/pompomtracker/build/app/intermediates/cxx/RelWithDebInfo/3s2n6kr6/obj/arm64-v8a

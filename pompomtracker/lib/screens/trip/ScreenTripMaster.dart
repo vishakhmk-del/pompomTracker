@@ -33,7 +33,7 @@ class _ScreenTripMasterState extends State<ScreenTripMaster> {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       // fetchRouteList();
-      busreglist = await Wklycollectfn.instance.busReglistfn();
+      busreglist = await Wklycollectfn.instance.busReglistfn(context);
       setState(() {
         registarionlst =
             busreglist!.map((bus) => bus.registrationNo ?? "").toList();
@@ -44,10 +44,18 @@ class _ScreenTripMasterState extends State<ScreenTripMaster> {
 
   Future<void> _selectTime(
       BuildContext context, TextEditingController controller) async {
-    final DateFormat timeFormat = DateFormat('HH:mm');
+    final DateFormat timeFormat =
+        DateFormat('hh:mm a'); // 12-hour format with AM/PM
     final TimeOfDay? newTime = await showTimePicker(
       context: context,
       initialTime: _time,
+      builder: (BuildContext context, Widget? child) {
+        return MediaQuery(
+          data: MediaQuery.of(context)
+              .copyWith(alwaysUse24HourFormat: false), // Force 12-hour format
+          child: child!,
+        );
+      },
     );
     if (newTime != null) {
       setState(() {
@@ -60,7 +68,7 @@ class _ScreenTripMasterState extends State<ScreenTripMaster> {
           newTime.hour,
           newTime.minute,
         );
-        controller.text = timeFormat.format(formattedTime);
+        controller.text = timeFormat.format(formattedTime); // Show AM/PM format
       });
     }
   }
@@ -102,7 +110,7 @@ class _ScreenTripMasterState extends State<ScreenTripMaster> {
             children: [
               SingleChildScrollView(
                 child: Container(
-                  height: MediaQuery.of(context).size.height * 1.05,
+                  // height: MediaQuery.of(context).size.height * 1.05,
                   margin: const EdgeInsets.all(15),
                   decoration: BoxDecoration(
                     border: Border.all(
@@ -224,6 +232,8 @@ class _ScreenTripMasterState extends State<ScreenTripMaster> {
                                       selectedRouteId = int.parse(newValue!);
                                       // Store the selected routeId
                                     });
+                                    selectedFromList = null;
+                                    selectedToList = null;
                                     fetchfromtostn(selectedRouteId);
                                     //selectedRouteList ?? 'Others';
                                   },
@@ -274,9 +284,13 @@ class _ScreenTripMasterState extends State<ScreenTripMaster> {
                                         ),
                                       );
                                     }).toList(),
-                                    const DropdownMenuItem(
+                                    DropdownMenuItem(
                                       value: 'Others',
-                                      child: Text('Others'),
+                                      child: Text('Others',
+                                          style: TextStyle(
+                                              color: Theme.of(context)
+                                                  .colorScheme
+                                                  .onSecondary)),
                                     ),
                                   ],
                                   onChanged: (newValue) {
@@ -354,9 +368,13 @@ class _ScreenTripMasterState extends State<ScreenTripMaster> {
                                         ),
                                       );
                                     }).toList(),
-                                    const DropdownMenuItem(
+                                    DropdownMenuItem(
                                       value: 'Others',
-                                      child: Text('Others'),
+                                      child: Text('Others',
+                                          style: TextStyle(
+                                              color: Theme.of(context)
+                                                  .colorScheme
+                                                  .onSecondary)),
                                     ),
                                   ],
                                   onChanged: (newValue) {

@@ -13,35 +13,38 @@ if (localPropertiesFile.exists()) {
     }
 }
 
-def flutterVersionCode = localProperties.getProperty("flutter.versionCode")
-if (flutterVersionCode == null) {
-    flutterVersionCode = "1"
+def versionProps = new Properties()
+file("$rootDir/../version.properties").withInputStream {
+    versionProps.load(it)
 }
 
-def flutterVersionName = localProperties.getProperty("flutter.versionName")
-if (flutterVersionName == null) {
-    flutterVersionName = "1.0"
-}
+def versionMajor = versionProps['versionMajor'].toInteger()
+def versionMinor = versionProps['versionMinor'].toInteger()
+def versionPatch = versionProps['versionPatch'].toInteger()
 
 android {
     namespace = "com.example.pompomtracker"
-    compileSdk = flutter.compileSdkVersion
+    compileSdk = 35
     ndkVersion = flutter.ndkVersion
 
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
+    }
+
+    kotlinOptions{
+        jvmTarget='17'
     }
 
     defaultConfig {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
-        applicationId = "com.example.pompomtracker"
+        applicationId = "com.ditsbus.pompomtracker"
         // You can update the following values to match your application needs.
         // For more information, see: https://docs.flutter.dev/deployment/android#reviewing-the-gradle-build-configuration.
-        minSdk = flutter.minSdkVersion
-        targetSdk = flutter.targetSdkVersion
-        versionCode = flutterVersionCode.toInteger()
-        versionName = flutterVersionName
+        minSdk = 21
+        targetSdk = 35
+        versionCode = versionMajor * 10000 + versionMinor * 100 + versionPatch
+        versionName = "${versionMajor}.${versionMinor}.${versionPatch}"
     }
 
     buildTypes {
@@ -52,7 +55,43 @@ android {
         }
     }
 }
+afterEvaluate {
+    def pubspecFile = rootProject.file("../pubspec.yaml")
+
+    if (pubspecFile.exists()) {
+        def lines = pubspecFile.readLines()
+        def newVersion = "version: ${versionMajor}.${versionMinor}.${versionPatch}+${android.defaultConfig.versionCode}"
+
+        def updatedLines = lines.collect { line ->
+            if (line.startsWith("version:")) {
+                return newVersion
+            }
+            return line
+        }
+
+        pubspecFile.text = updatedLines.join("\n")
+    } else {
+        throw new GradleException("pubspec.yaml file not found!")
+    }
+}
+
+// ✅ **Ensure Flutter pub get runs**
+task updatePubspecVersion {
+    doLast {
+        def flutterSdkPath = System.getenv("FLUTTER_HOME") ?: "${System.properties['user.home']}/flutter"
+
+        exec {
+            commandLine flutterSdkPath + "/bin/flutter", "pub", "get"
+        }
+    }
+}
+
+preBuild.dependsOn(updatePubspecVersion)
 
 flutter {
     source = "../.."
+}
+dependencies {
+   // implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
+    implementation 'com.google.android.material:material:1.11.0'
 }

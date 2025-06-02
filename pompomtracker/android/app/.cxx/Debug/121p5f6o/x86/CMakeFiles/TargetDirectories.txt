@@ -1,0 +1,2 @@
+/Users/dits/flutterpro/busownerapp/pompomtracker/android/app/.cxx/Debug/121p5f6o/x86/CMakeFiles/edit_cache.dir
+/Users/dits/flutterpro/busownerapp/pompomtracker/android/app/.cxx/Debug/121p5f6o/x86/CMakeFiles/rebuild_cache.dir

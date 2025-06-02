@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:pompomtracker/core/hook/hook.dart';
 
 const primaryColor = Colors.purple;
