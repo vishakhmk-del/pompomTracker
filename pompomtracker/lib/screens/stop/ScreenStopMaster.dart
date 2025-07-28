@@ -2,6 +2,7 @@ import 'dart:developer';
 import 'package:intl/intl.dart';
 import 'package:pompomtracker/core/hook/hook.dart';
 import 'package:pompomtracker/provider/iconChange/iconChangeProvider.dart';
+import 'package:pompomtracker/screens/home/new/screenSettings.dart';
 
 class ScreenStopMaster extends StatefulWidget {
   const ScreenStopMaster({super.key});
@@ -69,25 +70,23 @@ class _ScreenStopMasterState extends State<ScreenStopMaster> {
         routelist = routeDetailslist!.map((bus) {
           String routeDisplay =
               "${bus.tripName ?? ""}->${bus.startTime ?? ""}-${bus.endTime ?? ""}";
-          // String viaDisplay =
-          //     bus.via != null && bus.via!.isNotEmpty ? " via - ${bus.via}" : "";
           return {
             'routeId': bus.tripId!, // routeId as int
             'display': routeDisplay, // Display label
           };
         }).toList();
       });
+      if (!mounted) return;
+      final checkProvider = context.read<CheckProvider>();
+      checkProvider.reset();
     });
-    final checkProvider = context.read<CheckProvider>();
-    checkProvider.reset();
-    //fetchBusregistraionList();
   }
 
   Future<bool?> popscreen(BuildContext context) async {
     selectedTaskNotifier.value = StatementType.collectionType;
     selectedModeNotifier.value = StatementType.both;
     context.read<DropdownProvider>().changeSelectedVal(null);
-    Navigator.push(context, Approutes().homescreen);
+    Navigator.push(context, Approutes().settingscreen);
     return true;
   }
 
@@ -102,164 +101,289 @@ class _ScreenStopMasterState extends State<ScreenStopMaster> {
           }
           log('BackButton pressed!');
         },
-        child: Scaffold(
-            key: _scafoldkey,
-            appBar: AppBar(
-              leading: IconButton(
-                icon: const Icon(Icons.arrow_back),
-                onPressed: () {
-                  context.read<DropdownProvider>().changeSelectedVal(null);
-                  Navigator.of(context).pushAndRemoveUntil(
-                      MaterialPageRoute(
-                          builder: (context) => const Screenhome()),
-                      (Route<dynamic> route) => false);
-                },
-              ),
-              title: Text(
-                'Add Stop',
-                style:
-                    TextStyle(color: Theme.of(context).colorScheme.onSecondary),
-              ),
-            ),
-            body: ListView(
-              children: [
-                Card(
-                    margin: const EdgeInsets.all(10),
-                    elevation: 3,
-                    child: Container(
-                        decoration: BoxDecoration(
-                          border: Border.all(
-                              color: Theme.of(context).colorScheme.onSecondary),
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.all(15.0),
-                          child: Theme(
-                              data: MyTheme.googleFormTheme,
-                              child: Column(
-                                children: [
-                                  Text(
-                                    'Search For Stop Details',
-                                    style:
-                                        Theme.of(context).textTheme.titleLarge,
-                                  ),
-                                  const SizedBox(height: 10),
-                                  SizedBox(
-                                    width: MediaQuery.of(context).size.width,
-                                    child: DropdownButtonFormField(
-                                      isExpanded: true,
-                                      items: routelist.map((busMap) {
-                                        final routeText =
-                                            (busMap['display'] as String)
-                                                .split('->');
-                                        final routeName =
-                                            routeText[0]; // First part
-                                        final viaPart = routeText.length > 1
-                                            ? '-> ${routeText[1]}'
-                                            : '';
-
-                                        return DropdownMenuItem<String>(
-                                          value: busMap['routeId'] as String,
-                                          // Use routeId as the value
-                                          child: ConstrainedBox(
-                                              constraints: const BoxConstraints(
-                                                  maxWidth: 200),
-                                              child: RichText(
-                                                text: TextSpan(
-                                                  style: TextStyle(
-                                                    color: Theme.of(context)
-                                                        .colorScheme
-                                                        .onSecondary,
-                                                  ),
-                                                  children: [
-                                                    TextSpan(
-                                                      text:
-                                                          '$routeName\n', // Route name on the first line
-                                                    ),
-                                                    TextSpan(
-                                                      text:
-                                                          viaPart, // "via" part on the second line
-                                                      style: TextStyle(
-                                                        color: Theme.of(context)
-                                                            .colorScheme
-                                                            .onSecondary,
-                                                      ),
-                                                    ),
-                                                  ],
-                                                ),
-                                              )),
-                                        );
-                                      }).toList(),
-                                      onChanged: (newValue) async {
-                                        //StopFunctions.instance.getExistingStopNotifier.value = [];
-                                        setState(() {
-                                          selectedRouteList = newValue;
-                                          selectedRouteId =
-                                              int.parse(newValue!);
-                                          // Store the selected routeId
-                                        });
-
-                                        existingStpdet = await StopFunctions
-                                            .instance
-                                            .getExistingStpFn(
-                                                selectedRouteList);
-                                        //existingStpdet=StopFunctions.instance.getExistingStopNotifier.value;
-                                        if (existingStpdet!.isEmpty) {
-                                          _scafoldkey.currentContext!
-                                              .read<DropdownProvider>()
-                                              .changeSelectedVal(false);
-                                        } else {
-                                          _scafoldkey.currentContext!
-                                              .read<DropdownProvider>()
-                                              .changeSelectedVal(true);
-                                        }
-                                      },
-                                      value: selectedRouteList,
-                                      // Use the selected routeId
-                                      style: TextStyle(
-                                        color: Theme.of(context)
-                                            .colorScheme
-                                            .onPrimary,
-                                      ),
-                                      icon: Theme(
-                                        data: Theme.of(context),
-                                        child: const Icon(
-                                          Icons.arrow_drop_down,
-                                        ),
-                                      ),
-                                      decoration: InputDecoration(
-                                        labelText: 'Select Trip',
-                                        labelStyle: Theme.of(context)
-                                            .textTheme
-                                            .bodySmall,
-                                      ),
-                                      dropdownColor: Theme.of(context)
-                                          .colorScheme
-                                          .tertiary,
-                                      validator: (value) {
-                                        if (value == null) {
-                                          return 'Select Trip';
-                                        } else {
-                                          return null;
-                                        }
-                                      },
-                                    ),
-                                  ),
-                                ],
-                              )),
-                        ))),
-                Consumer<DropdownProvider>(
-                  builder: (context, provider, child) {
-                    if (provider.selectedVal == false) {
-                      return stopAddForm(context);
-                    } else if (provider.selectedVal == true) {
-                      return ScrollableWidget(child: buildExStopTbl());
-                    }
-                    return Container();
-                  },
+        child: Stack(
+          children: [
+            BackgroundColorGradient(),
+            Scaffold(
+              backgroundColor: Colors.transparent,
+                key: _scafoldkey,
+                appBar: AppBar(
+                  backgroundColor: Theme.of(context).colorScheme.primary,
+                  leading: IconButton(
+                    icon: const Icon(Icons.arrow_back),
+                    onPressed: () {
+                      context.read<DropdownProvider>().changeSelectedVal(null);
+                      Navigator.of(context).pushAndRemoveUntil(
+                          MaterialPageRoute(
+                              builder: (context) => const ScreenSettings()),
+                          (Route<dynamic> route) => false);
+                    },
+                  ),
+                  title: Text(
+                    'Add Stop',
+                    style:TextStyle(color: Colors.white),
+                  ),
                 ),
-              ],
-            )));
+                body: ListView(
+                  children: [
+                    if (routelist.isNotEmpty) ...[
+                      Card(
+                        margin: const EdgeInsets.all(10),
+                        elevation: 3,
+                        child: Container(
+                            decoration: BoxDecoration(
+                              border: Border.all(
+                                  color: Theme.of(context).colorScheme.onSecondary),
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.all(15.0),
+                              child: Theme(
+                                  data: MyTheme.googleFormTheme,
+                                  child: Column(
+                                    children: [
+                                      
+                                        Text(
+                                          'Search For Stop Details',
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .titleLarge,
+                                        ),
+                                        const SizedBox(height: 10),
+                                        SizedBox(
+                                          width: MediaQuery.of(context).size.width,
+                                          child: DropdownButtonFormField(
+                                            isExpanded: true,
+                                            items: routelist.map((busMap) {
+                                              final routeText =
+                                                  (busMap['display'] as String)
+                                                      .split('->');
+                                              final routeName =
+                                                  routeText[0]; // First part
+                                              final viaPart = routeText.length > 1
+                                                  ? '-> ${routeText[1]}'
+                                                  : '';
+            
+                                              return DropdownMenuItem<String>(
+                                                value: busMap['routeId'] as String,
+                                                // Use routeId as the value
+                                                child: ConstrainedBox(
+                                                    constraints:
+                                                        const BoxConstraints(
+                                                            maxWidth: 200),
+                                                    child: RichText(
+                                                      text: TextSpan(
+                                                        style: TextStyle(
+                                                          color: Theme.of(context)
+                                                              .colorScheme
+                                                              .onSecondary,
+                                                        ),
+                                                        children: [
+                                                          TextSpan(
+                                                            text:
+                                                                '$routeName\n', // Route name on the first line
+                                                          ),
+                                                          TextSpan(
+                                                            text:
+                                                                viaPart, // "via" part on the second line
+                                                            style: TextStyle(
+                                                              color:
+                                                                  Theme.of(context)
+                                                                      .colorScheme
+                                                                      .onSecondary,
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    )),
+                                              );
+                                            }).toList(),
+                                            onChanged: (newValue) async {
+                                              //StopFunctions.instance.getExistingStopNotifier.value = [];
+                                              setState(() {
+                                                selectedRouteList = newValue;
+                                                selectedRouteId =
+                                                    int.parse(newValue!);
+                                                // Store the selected routeId
+                                              });
+            
+                                              existingStpdet = await StopFunctions
+                                                  .instance
+                                                  .getExistingStpFn(
+                                                      selectedRouteList);
+                                              //existingStpdet=StopFunctions.instance.getExistingStopNotifier.value;
+                                              if (existingStpdet!.isEmpty) {
+                                                _scafoldkey.currentContext!
+                                                    .read<DropdownProvider>()
+                                                    .changeSelectedVal(false);
+                                              } else {
+                                                _scafoldkey.currentContext!
+                                                    .read<DropdownProvider>()
+                                                    .changeSelectedVal(true);
+                                              }
+                                            },
+                                            value: selectedRouteList,
+                                            // Use the selected routeId
+                                            style: TextStyle(
+                                              color: Theme.of(context)
+                                                  .colorScheme
+                                                  .onPrimary,
+                                            ),
+                                            icon: Theme(
+                                              data: Theme.of(context),
+                                              child: const Icon(
+                                                Icons.arrow_drop_down,
+                                              ),
+                                            ),
+                                            decoration: InputDecoration(
+                                              labelText: 'Select Trip',
+                                              labelStyle: Theme.of(context)
+                                                  .textTheme
+                                                  .bodySmall,
+                                            ),
+                                            dropdownColor: Theme.of(context)
+                                                .colorScheme
+                                                .tertiary,
+                                            validator: (value) {
+                                              if (value == null) {
+                                                return 'Select Trip';
+                                              } else {
+                                                return null;
+                                              }
+                                            },
+                                          ),
+                                        ),
+                                      
+                                    ],
+                                  )),
+                            ))),
+                    ]
+                     else ...[
+                                        FutureBuilder(
+                                          future: Future.delayed(const Duration(
+                                              seconds:
+                                                  5)), // Add a delay of 5 seconds
+                                          builder: (context, snapshot) {
+                                            if (snapshot.connectionState ==
+                                                ConnectionState.waiting) {
+                                              return Center(
+                                                child: Padding(
+                                                  padding: EdgeInsets.symmetric(
+                                                    vertical: MediaQuery.of(context)
+                                                            .size
+                                                            .height /
+                                                        2,
+                                                    // horizontal:
+                                                    //     MediaQuery.of(context).size.width /
+                                                    //         2.3,
+                                                  ),
+                                                  child:
+                                                      const CircularProgressIndicator(color:Color.fromARGB(255, 204, 123, 2)),
+                                                ),
+                                              );
+                                            } else {
+                                              // After 5 seconds, show the No Data Found image
+                                              return Center(
+                                                child: Padding(
+                                                  padding: EdgeInsets.symmetric(
+                                                    vertical: MediaQuery.of(context)
+                                                            .size
+                                                            .height /
+                                                        2,
+                                                    // horizontal:
+                                                    //     MediaQuery.of(context).size.width /
+                                                    //         2,
+                                                  ),
+                                                  child: Column(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment.center,
+                                                    children: [
+                                                      Center(
+                                                        child: Text(
+                                                          'No trip is available without stops.\nPlease check your trip in the stop list.',
+                                                          style: TextStyle(
+                                                              fontWeight:
+                                                                  FontWeight.bold,
+                                                              color:Colors.white),
+                                                          textAlign:
+                                                              TextAlign.center,
+                                                        ),
+                                                      ),
+                                                      Padding(
+                                                        padding:
+                                                            const EdgeInsets.all(
+                                                                25.0),
+                                                        child: Container(
+                                                          height: 45,
+                                                          width: 200,
+                                                          decoration: BoxDecoration(
+                                                            gradient:
+                                                                LinearGradient(
+                                                              begin:
+                                                                  Alignment.topLeft,
+                                                              end: Alignment
+                                                                  .bottomRight,
+                                                              colors: [
+                                                                Colors.orange,
+                                                                Color.fromARGB(255, 204, 123, 2)
+                                                              ],
+                                                            ),
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(12.0),
+                                                          ),
+                                                          child: Theme(
+                                                            data: MyTheme
+                                                                .buttonStyleTheme,
+                                                            child: ElevatedButton(
+                                                              onPressed: () async {
+                                                                // Navigator
+                                                                //     .pushReplacement(
+                                                                //         context,
+                                                                //         Approutes()
+                                                                //             .stopListScreen);
+                                                                      Navigator.push(
+                                                                          context,
+                                                                          MaterialPageRoute(
+                                                                            builder: (context) => ScreenStopList(
+                                                                                flag: 1),
+                                                                          ),
+                                                                        );
+                                                              },
+                                                              child: Text(
+                                                                'Check',
+                                                                style: Theme.of(
+                                                                        context)
+                                                                    .textTheme
+                                                                    .titleMedium,
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                              );
+                                            }
+                                          },
+                                        ),
+                                      ],
+                    
+                    Consumer<DropdownProvider>(
+                      builder: (context, provider, child) {
+                        if (provider.selectedVal == false) {
+                          return stopAddForm(context);
+                        } else if (provider.selectedVal == true) {
+                          return ScrollableWidget(child: buildExStopTbl());
+                        }
+                        return Container();
+                      },
+                    ),
+                  ],
+                )),
+          ],
+        ));
   }
 
   Widget stopAddForm(BuildContext context) {
@@ -388,7 +512,8 @@ class _ScreenStopMasterState extends State<ScreenStopMaster> {
                           ? const Center(
                               child: CircularProgressIndicator(
                                 valueColor: AlwaysStoppedAnimation<Color>(
-                                  Color.fromARGB(255, 2, 128, 6),
+                                  
+                                    Color.fromARGB(255, 204, 123, 2),
                                 ),
                               ),
                             )
@@ -446,7 +571,7 @@ class _ScreenStopMasterState extends State<ScreenStopMaster> {
                             vertical: MediaQuery.of(context).size.height / 2.5,
                             horizontal: MediaQuery.of(context).size.width / 2.3,
                           ),
-                          child: const CircularProgressIndicator(),
+                          child: const CircularProgressIndicator(color:Color.fromARGB(255, 204, 123, 2)),
                         ),
                       );
                     } else {

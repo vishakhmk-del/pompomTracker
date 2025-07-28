@@ -1,5 +1,5 @@
-const String dtWise = 'Date Wise';
-const String bsWise = 'Bus Wise';
+const String dtWise = 'Date Wise Collection';
+const String bsWise = 'Bus Wise Collection';
 
 const String exStatmnt = 'Expense Statement';
 const String chStatmnt = 'Cash Statement';

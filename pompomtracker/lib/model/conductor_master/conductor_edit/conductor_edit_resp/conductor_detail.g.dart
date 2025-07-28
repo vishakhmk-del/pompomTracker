@@ -8,8 +8,7 @@ part of 'conductor_detail.dart';
 
 ConductorDetail _$ConductorDetailFromJson(Map<String, dynamic> json) =>
     ConductorDetail(
-      conductorId: json['conductor_id'] as String?,
-      driverId: json['driver_id'] as String?,
+      empId: json['emp_id'] as String?,
       name: json['name'] as String?,
       address: json['address'] as String?,
       accountNo: json['account_no'] as String?,
@@ -23,8 +22,7 @@ ConductorDetail _$ConductorDetailFromJson(Map<String, dynamic> json) =>
 
 Map<String, dynamic> _$ConductorDetailToJson(ConductorDetail instance) =>
     <String, dynamic>{
-      'conductor_id': instance.conductorId,
-      'driver_id': instance.driverId,
+      'emp_id': instance.empId,
       'name': instance.name,
       'address': instance.address,
       'account_no': instance.accountNo,

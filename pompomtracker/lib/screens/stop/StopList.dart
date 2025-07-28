@@ -1,9 +1,10 @@
 import 'dart:developer';
 import 'package:pompomtracker/core/hook/hook.dart';
+import 'package:pompomtracker/screens/main/screenmainPage.dart';
 
 class ScreenStopList extends StatefulWidget {
-  const ScreenStopList({super.key});
-
+  const ScreenStopList({super.key,required this.flag});
+final int flag;
   @override
   State<ScreenStopList> createState() => _ScreenStopListState();
 }
@@ -47,7 +48,7 @@ class _ScreenStopListState extends State<ScreenStopList> {
     selectedTaskNotifier.value = StatementType.collectionType;
     selectedModeNotifier.value = StatementType.both;
     Navigator.of(context).pushAndRemoveUntil(
-        MaterialPageRoute(builder: (context) => const Screenhome()),
+        MaterialPageRoute(builder: (context) => const ScreenMainPage()),
         (Route<dynamic> route) => false);
     return true;
   }
@@ -70,7 +71,7 @@ class _ScreenStopListState extends State<ScreenStopList> {
                 onPressed: () {
                   Navigator.of(context).pushAndRemoveUntil(
                       MaterialPageRoute(
-                          builder: (context) => const Screenhome()),
+                          builder: (context) => const ScreenMainPage()),
                       (Route<dynamic> route) => false);
                 },
               ),
@@ -283,7 +284,7 @@ class _ScreenStopListState extends State<ScreenStopList> {
                                 )),
                             Text(
                               'Add New Stop',
-                              style: Theme.of(context).textTheme.titleMedium,
+                              style: Theme.of(context).textTheme.titleLarge,
                             ),
                           ],
                         ),

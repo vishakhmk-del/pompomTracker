@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'package:intl/intl.dart';
 import 'package:pompomtracker/core/hook/hook.dart';
 
 class ScreenCollection extends StatefulWidget {
@@ -34,39 +35,58 @@ class _ScreenCollectionState extends State<ScreenCollection> {
   final _formkey3 = GlobalKey<FormState>();
   final _formkey4 = GlobalKey<FormState>();
 
-  final _list = [dtWise, bsWise];
-  final _list1 = [exStatmnt, chStatmnt];
+  final _list = [dtWise, bsWise, chStatmnt, exStatmnt];
+  //final _list1 = [exStatmnt, chStatmnt];
   @override
   void initState() {
     super.initState();
-   
+
     WidgetsBinding.instance.addPostFrameCallback((_) async {
+      final datenw = DateTime.now();
+      final crntDt = DateFormat('d-M-yyyy').format(datenw);
+      // final dt= "${crntDt.toLocal().day}-${crntDt.toLocal().month}-${crntDt.toLocal().year}";
+      Future.delayed(Duration.zero, () {
+        if (!mounted) return;
 
-       Future.delayed(Duration.zero, () {
-      if (!mounted) return;
+        final loadingProvider = context.read<LoadingProvider>();
+        loadingProvider.reset();
 
-      final loadingProvider = context.read<LoadingProvider>();
-      loadingProvider.reset();
+        var po = context.read<CheckProvider>();
+        po.reset();
 
-      var po = context.read<CheckProvider>();
-      po.reset();
+        context.read<ElevatedBtnProvider>().changeSelectedVal(false);
 
-      context.read<ElevatedBtnProvider>().changeSelectedVal(false);
-      
-      context.read<RadiobuttonProvider>().reset();
-    });
+        context.read<RadiobuttonProvider>().reset();
+      });
 
       busreglist = await Wklycollectfn.instance.busReglistfn(context);
       setState(() {
+        _cldateFromController.text = crntDt;
+        _cldateToController.text = crntDt;
+
+        _clbusFromController.text = crntDt;
+        _clbusToController.text = crntDt;
+
+        _cashFromController.text = crntDt;
+        _cashToController.text = crntDt;
+
+        _expdateFromController.text = crntDt;
+        _expdateToController.text = crntDt;
+
+        dropdownsearchvalue = _list.first;
+
         registarionlst = busreglist!
             .map((bus) => bus.registrationNo ?? "")
             .toList(); //calling registarion list  from main model
+        dropdownbusvalue = registarionlst.first;
       });
     });
   }
 
   Future<bool?> popscreen(BuildContext context) async {
-    selectedTaskNotifier.value = StatementType.collectionType;
+    //selectedTaskNotifier.value = StatementType.collectionType;
+    context.read<CollectionDrpDwnProvider>().changeSelectedVal(dtWise);
+
     selectedModeNotifier.value = StatementType.both;
     Navigator.of(context).pushAndRemoveUntil(
         MaterialPageRoute(builder: (context) => const Screenhome()),
@@ -95,7 +115,11 @@ class _ScreenCollectionState extends State<ScreenCollection> {
                 ),
                 leading: IconButton(
                     onPressed: () {
-                      selectedTaskNotifier.value = StatementType.collectionType;
+                      // selectedTaskNotifier.value = StatementType.collectionType;
+                      context
+                          .read<CollectionDrpDwnProvider>()
+                          .changeSelectedVal(dtWise);
+
                       selectedModeNotifier.value = StatementType.both;
 
                       Navigator.of(context).pushAndRemoveUntil(
@@ -123,42 +147,25 @@ class _ScreenCollectionState extends State<ScreenCollection> {
                                 ])),
                         child: Column(
                           children: [
-                            const StmntRadioButton(
-                                title: 'Collection Statement',
-                                type: StatementType.collectionType),
-                            const StmntRadioButton(
-                                title: 'Cash Statement',
-                                type: StatementType.cashType),
+                            // const StmntRadioButton(
+                            //     title: 'Collection Statement',
+                            //     type: StatementType.collectionType),
+                            // const StmntRadioButton(
+                            //     title: 'Cash Statement',
+                            //     type: StatementType.cashType),
                             Card(
                               margin: const EdgeInsets.only(
-                                  top: 10, left: 10, right: 10),
+                                  top: 20, left: 10, right: 10, bottom: 10),
                               elevation: 3,
                               child: Column(
                                 children: [
                                   Container(
-                                    // height: MediaQuery.of(context).size.height /
-                                    //     1.45,
                                     decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(12),
                                     ),
                                     child: Padding(
-                                      padding: const EdgeInsets.all(20.0),
-                                      child: Consumer<RadiobuttonProvider>(
-                                        builder: (context, provider, child) {
-                                          if (provider.selectedType ==
-                                              StatementType.collectionType) {
-                                            return collectionForm(context);
-                                            // Replace with your Collection Form widget
-                                          } else if (provider.selectedType ==
-                                              StatementType.cashType) {
-                                            return cashForm(context);
-                                            // Replace with your Cash Form widget
-                                          }
-                                          return Container();
-                                          // Or some default widget
-                                        },
-                                      ),
-                                    ),
+                                        padding: const EdgeInsets.all(20.0),
+                                        child: collectionForm(context)),
                                   ),
                                 ],
                               ),
@@ -199,7 +206,7 @@ class _ScreenCollectionState extends State<ScreenCollection> {
     return Column(
       children: [
         Text(
-          'Collection Statement',
+          'All Statements',
           style: Theme.of(context).textTheme.titleLarge,
         ),
         SizedBox(
@@ -248,20 +255,20 @@ class _ScreenCollectionState extends State<ScreenCollection> {
               }).toList(),
               onChanged: (newvalue) {
                 log('Collection Statement:$newvalue');
-
+                selectedModeNotifier.value = StatementType.both;
                 context
                     .read<CollectionDrpDwnProvider>()
                     .changeSelectedVal(newvalue);
 
                 context.read<ElevatedBtnProvider>().changeSelectedVal(false);
-                _clbusFromController.clear();
+                //_clbusFromController.clear();
 
                 setState(() {
                   dropdownsearchvalue = newvalue;
-                  _clbusFromController.clear();
-                  _clbusToController.clear();
-                  _cldateFromController.clear();
-                  _cldateToController.clear();
+                  // _clbusFromController.clear();
+                  // _clbusToController.clear();
+                  // _cldateFromController.clear();
+                  // _cldateToController.clear();
                 });
               },
               value: dropdownsearchvalue,
@@ -271,21 +278,44 @@ class _ScreenCollectionState extends State<ScreenCollection> {
         const SizedBox(
           height: 10,
         ),
-        const Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            ModeRadioButton(title: 'Both', type: StatementType.both),
-            ModeRadioButton(title: 'Online', type: StatementType.on),
-            ModeRadioButton(title: 'Offline', type: StatementType.off),
-          ],
-        ),
         Consumer<CollectionDrpDwnProvider>(
           builder: (context, provider, child) {
             if (provider.selectedVal == dtWise) {
-              return datewiseForm(
-                  context); // Replace with your Collection Form widget
+              return Column(
+                children: [
+                  const Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      ModeRadioButton(title: 'Both', type: StatementType.both),
+                      ModeRadioButton(title: 'Online', type: StatementType.on),
+                      ModeRadioButton(
+                          title: 'Offline', type: StatementType.off),
+                    ],
+                  ),
+                  datewiseForm(context),
+                ],
+              ); // Replace with your Collection Form widget
             } else if (provider.selectedVal == bsWise) {
-              return buswiseForm(context); // Replace with your Cash Form widget
+              return Column(
+                children: [
+                  const Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      ModeRadioButton(title: 'Both', type: StatementType.both),
+                      ModeRadioButton(title: 'Online', type: StatementType.on),
+                      ModeRadioButton(
+                          title: 'Offline', type: StatementType.off),
+                    ],
+                  ),
+                  buswiseForm(context),
+                ],
+              ); // Replace with your Cash Form widget
+            } else if (provider.selectedVal == exStatmnt) {
+              return expensestmtForm(
+                  context); // Replace with your Collection Form widget
+            } else if (provider.selectedVal == chStatmnt) {
+              return cashstmtForm(
+                  context); // Replace with your Cash Form widget
             }
             return Container(); // Or some default widget
           },
@@ -551,13 +581,21 @@ class _ScreenCollectionState extends State<ScreenCollection> {
                           final frmdt = _clbusFromController.text;
                           final todt = _clbusToController.text;
                           final regno = dropdownbusvalue;
-
+                          var proval = context.read<RadiobuttonProvider>();
+                          final mode = proval.selectedMode;
+                          String? stmntmode;
+                          if (mode == StatementType.both) {
+                            stmntmode = stmntall;
+                          } else if (mode == StatementType.on) {
+                            stmntmode = stmntonline;
+                          } else if (mode == StatementType.off) {
+                            stmntmode = stmntoffline;
+                          }
                           final value = Stmntfnparameter(
-                            fromdate: frmdt,
-                            todate: todt,
-                            type: regno,
-                          );
-
+                              fromdate: frmdt,
+                              todate: todt,
+                              type: regno,
+                              mode: stmntmode);
                           fetchclstatement(context, value);
                         }
                       },
@@ -575,90 +613,6 @@ class _ScreenCollectionState extends State<ScreenCollection> {
   }
 
   /// ************************* Collection Form end ****************************
-
-  /// ************************ Cash Form *************************
-
-  Widget cashForm(BuildContext context) {
-    return Column(
-      children: [
-        Text(
-          'Cash Statement',
-          style: Theme.of(context).textTheme.titleLarge,
-        ),
-        SizedBox(
-          width: MediaQuery.of(context).size.width,
-          child: Padding(
-            padding: const EdgeInsets.only(top: 30, left: 5, right: 5),
-            child: DropdownButtonFormField(
-              //controller: _selectsearchtypedropdwn,
-              dropdownColor: Theme.of(context).colorScheme.tertiary,
-              icon: Icon(Icons.arrow_drop_down,
-                  color: Theme.of(context).colorScheme.onSecondary),
-              style: TextStyle(
-                color: Theme.of(context).colorScheme.onSecondary,
-              ),
-              decoration: InputDecoration(
-                floatingLabelBehavior: FloatingLabelBehavior.auto,
-                border: const OutlineInputBorder(
-                  borderSide: BorderSide(color: Color(0xFFE1E1E1), width: 1.0),
-                  borderRadius: BorderRadius.all(Radius.circular(4.0)),
-                ),
-                enabledBorder: const OutlineInputBorder(
-                  borderSide: BorderSide(color: Color(0xFFE1E1E1), width: 1.0),
-                  borderRadius: BorderRadius.all(Radius.circular(4.0)),
-                ),
-                focusedBorder: const OutlineInputBorder(
-                  borderSide: BorderSide(color: Color(0xFFE1E1E1), width: 2.0),
-                  borderRadius: BorderRadius.all(Radius.circular(4.0)),
-                ),
-                errorBorder: const OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.red, width: 2.0),
-                  borderRadius: BorderRadius.all(Radius.circular(4.0)),
-                ),
-                focusedErrorBorder: const OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.red, width: 2.0),
-                  borderRadius: BorderRadius.all(Radius.circular(4.0)),
-                ),
-                disabledBorder: const OutlineInputBorder(
-                  borderSide: BorderSide(color: Color(0xFFE1E1E1), width: 1.0),
-                  borderRadius: BorderRadius.all(Radius.circular(4.0)),
-                ),
-                labelText: 'Select Search Type',
-                labelStyle: Theme.of(context).textTheme.labelLarge,
-              ),
-              items: _list1.map((e) {
-                return DropdownMenuItem(value: e, child: Text(e));
-              }).toList(),
-              onChanged: (newvalue) {
-                log('Collection Statement:$newvalue');
-
-                context
-                    .read<CashstmntDrpDwnProvider>()
-                    .changeSelectedVal(newvalue);
-
-                setState(() {
-                  dropdowncashvalue = newvalue;
-                });
-              },
-              value: dropdowncashvalue,
-            ),
-          ),
-        ),
-        Consumer<CashstmntDrpDwnProvider>(
-          builder: (context, provider, child) {
-            if (provider.selectedVal == exStatmnt) {
-              return expensestmtForm(
-                  context); // Replace with your Collection Form widget
-            } else if (provider.selectedVal == chStatmnt) {
-              return cashstmtForm(
-                  context); // Replace with your Cash Form widget
-            }
-            return Container(); // Or some default widget
-          },
-        ),
-      ],
-    );
-  }
 
   Widget expensestmtForm(BuildContext context) {
     return Form(
@@ -813,7 +767,7 @@ class _ScreenCollectionState extends State<ScreenCollection> {
                               summary: val,
                               type: regno);
 
-                          fetchcashstatement(context, value);
+                          fetchclstatement(context, value);
                         }
                       },
                       child: Text(
@@ -920,7 +874,7 @@ class _ScreenCollectionState extends State<ScreenCollection> {
                             todate: todt,
                           );
 
-                          fetchcashstatement(context, value);
+                          fetchclstatement(context, value);
                         }
                       },
                       child: Text(
@@ -941,57 +895,92 @@ class _ScreenCollectionState extends State<ScreenCollection> {
   /// ****************************Collection Statement Table **********************************
 
   Widget buildStmntTbl() {
+    final isLoading = context.watch<LoadingProvider>().isLoading;
+
     return ValueListenableBuilder(
         valueListenable: StatementFunctions.instance.getDatewiseStmntNotifier,
         builder: (BuildContext context, List<TicketList> newList, Widget? _) {
-          return DataTable(
-            columns: getColumns(Provider.of<RadiobuttonProvider>(context,
-                            listen: false)
-                        .selectedType ==
-                    StatementType.collectionType
-                ? Provider.of<CollectionDrpDwnProvider>(context, listen: false)
-                            .selectedVal ==
-                        dtWise
-                    ? Provider.of<CheckProvider>(context, listen: false)
-                                .isAccepted ==
-                            false
-                        ? columns = [
-                            'Reg No',
-                            'Date',
-                            'Mode',
-                            'Amount',
-                          ]
-                        : columns = [
-                            'Payment Date',
-                            'Amount',
-                          ]
-                    : columns = [
-                        'Reg No',
-                        'Date',
-                        'Amount',
-                      ]
-                : Provider.of<CashstmntDrpDwnProvider>(context, listen: false)
-                            .selectedVal ==
-                        exStatmnt
-                    ? Provider.of<CheckProvider>(context, listen: false)
-                                .isAccepted ==
-                            false
-                        ? columns = [
-                            'Date',
-                            'Reg No',
-                            'Category',
-                            'Expense',
-                          ]
-                        : columns = [
-                            'Date',
-                            'Expense',
-                          ]
-                    : columns = [
-                        'Date',
-                        'Income',
-                        'Expense',
-                      ]),
-            rows: getRows(newList),
+          if (isLoading) {
+            return const Center(
+              child: Padding(
+                padding: EdgeInsets.symmetric(vertical: 50),
+                child: CircularProgressIndicator(),
+              ),
+            );
+          }
+          if (newList.isEmpty) {
+            return Center(
+              child: Padding(
+                padding: const EdgeInsets.only(top: 50),
+                child: Text(
+                  'No data found',
+                  style: TextStyle(
+                    color: Theme.of(context).colorScheme.onSecondary,
+                  ),
+                ),
+              ),
+            );
+          }
+          return Container(
+            decoration: BoxDecoration(
+              border:
+                  Border.all(color: Theme.of(context).colorScheme.onSecondary),
+              //borderRadius:const BorderRadius.only(topLeft: Radius.circular(12),topRight: Radius.circular(12)),
+            ),
+            child: DataTable(
+              dataRowMaxHeight: 35,
+              dataRowMinHeight: 35,
+              headingRowHeight: 35,
+              columnSpacing: 15,
+              headingRowColor: WidgetStateProperty.all(const Color(0xff13bc91)),
+              columns: getColumns(dropdownsearchvalue == dtWise ||
+                      dropdownsearchvalue == bsWise
+                  ? Provider.of<CollectionDrpDwnProvider>(context,
+                                  listen: false)
+                              .selectedVal ==
+                          dtWise
+                      ? Provider.of<CheckProvider>(context, listen: false)
+                                  .isAccepted ==
+                              false
+                          ? columns = [
+                              'Reg No',
+                              'Date',
+                              'Mode',
+                              'Amount',
+                            ]
+                          : columns = [
+                              'Payment Date',
+                              'Amount',
+                            ]
+                      : columns = [
+                          'Reg No',
+                          'Date',
+                          'Amount',
+                        ]
+                  : Provider.of<CollectionDrpDwnProvider>(context,
+                                  listen: false)
+                              .selectedVal ==
+                          exStatmnt
+                      ? Provider.of<CheckProvider>(context, listen: false)
+                                  .isAccepted ==
+                              false
+                          ? columns = [
+                              'Date',
+                              'Reg No',
+                              'Category',
+                              'Expense',
+                            ]
+                          : columns = [
+                              'Date',
+                              'Expense',
+                            ]
+                      : columns = [
+                          'Date',
+                          'Income',
+                          'Expense',
+                        ]),
+              rows: getRows(newList),
+            ),
           );
         });
   }
@@ -1009,8 +998,7 @@ class _ScreenCollectionState extends State<ScreenCollection> {
 
   List<DataRow> getRows(List<TicketList> newList) =>
       newList.map((TicketList task) {
-        Provider.of<RadiobuttonProvider>(context, listen: false).selectedType ==
-                StatementType.collectionType
+        dropdownsearchvalue == dtWise || dropdownsearchvalue == bsWise
             ? Provider.of<CollectionDrpDwnProvider>(context, listen: false)
                         .selectedVal ==
                     dtWise
@@ -1032,7 +1020,7 @@ class _ScreenCollectionState extends State<ScreenCollection> {
                     task.payDate ?? '',
                     task.amount ?? '',
                   ]
-            : Provider.of<CashstmntDrpDwnProvider>(context, listen: false)
+            : Provider.of<CollectionDrpDwnProvider>(context, listen: false)
                         .selectedVal ==
                     exStatmnt
                 ? Provider.of<CheckProvider>(context, listen: false)
@@ -1107,6 +1095,9 @@ class _ScreenCollectionState extends State<ScreenCollection> {
 
   Future<void> fetchclstatement(
       BuildContext context, Stmntfnparameter val) async {
+    final provider = Provider.of<LoadingProvider>(context, listen: false);
+    provider.toggleLoading();
+    StatementFunctions.instance.getDatewiseStmntNotifier.value = [];
     String? selectedValue =
         Provider.of<CollectionDrpDwnProvider>(context, listen: false)
             .selectedVal;
@@ -1114,6 +1105,7 @@ class _ScreenCollectionState extends State<ScreenCollection> {
     log('collection type=$selectedValue');
 
     await StatementFunctions.instance.collectionStmntFn(selectedValue, val);
+    provider.reset();
   }
 
   Future<void> fetchcashstatement(

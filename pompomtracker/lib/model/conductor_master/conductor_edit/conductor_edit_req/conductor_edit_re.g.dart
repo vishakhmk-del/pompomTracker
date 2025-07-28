@@ -8,16 +8,14 @@ part of 'conductor_edit_re.dart';
 
 ConductorEditRe _$ConductorEditReFromJson(Map<String, dynamic> json) =>
     ConductorEditRe(
-      conductorId: json['conductor_id'] as String?,
+      empId: json['emp_id'] as String?,
       userId: json['user_id'] as String?,
-      userType: json['user_type'] as String?,
-      driverId: json['driver_id'] as String?,
+      empType: (json['emp_type'] as num?)?.toInt(),
     );
 
 Map<String, dynamic> _$ConductorEditReToJson(ConductorEditRe instance) =>
     <String, dynamic>{
-      'conductor_id': instance.conductorId,
-      'driver_id': instance.driverId,
+      'emp_id': instance.empId,
       'user_id': instance.userId,
-      'user_type': instance.userType,
+      'emp_type': instance.empType,
     };

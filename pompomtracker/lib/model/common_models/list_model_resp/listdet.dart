@@ -23,17 +23,14 @@ class Listdet {
   String? km;
   @JsonKey(name: 'arriving_time')
   String? arrivingTime;
-
   @JsonKey(name: 'name')
   String? cname;
   @JsonKey(name: 'mobile_no')
   String? mobileNo;
   @JsonKey(name: 'address')
   String? address;
-  @JsonKey(name: 'conductor_id')
-  String? conductorId;
-  @JsonKey(name: 'driver_id')
-  String? driverId;
+  @JsonKey(name: 'emp_id')
+  String? empId;
   @JsonKey(name: 'account_no')
   String? accountNo;
   @JsonKey(name: 'lisecnce_no')
@@ -48,7 +45,8 @@ class Listdet {
   String? routeId;
   @JsonKey(name: 'bus_id')
   String? busId;
-
+  @JsonKey(name: 'lisence_no')
+  String? lisenceNo;
   @JsonKey(name: 'end_time')
   String? endTime;
   @JsonKey(name: 'from_station')
@@ -57,6 +55,9 @@ class Listdet {
   String? toStation;
   @JsonKey(name: 'station')
   String? station;
+  @JsonKey(name: 'emp_type')
+  dynamic empType;
+
   Listdet(
       {this.tripName,
       this.via,
@@ -71,8 +72,7 @@ class Listdet {
       this.cname,
       this.mobileNo,
       this.address,
-      this.conductorId,
-      this.driverId,
+      this.empId,
       this.accountNo,
       this.lisecnceNo,
       this.status,
@@ -83,7 +83,9 @@ class Listdet {
       this.endTime,
       this.fromStation,
       this.toStation,
-      this.station});
+      this.station,
+      this.empType,
+      this.lisenceNo});
 
   //Listdet({this.tripName, this.via, this.tripId, this.startTime});
 

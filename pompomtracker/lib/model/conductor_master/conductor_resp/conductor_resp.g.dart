@@ -10,16 +10,14 @@ ConductorResp _$ConductorRespFromJson(Map<String, dynamic> json) =>
     ConductorResp(
       status: json['status'] as String?,
       message: json['message'] as String?,
-      conductorId: json['conductor_id'],
-      driverId: json['driver_id'],
-      flag: json['flag'],
+      empId: json['emp_id'],
+      flag: json['flag'] as String?,
     );
 
 Map<String, dynamic> _$ConductorRespToJson(ConductorResp instance) =>
     <String, dynamic>{
       'status': instance.status,
       'message': instance.message,
-      'conductor_id': instance.conductorId,
-      'driver_id': instance.driverId,
+      'emp_id': instance.empId,
       'flag': instance.flag,
     };

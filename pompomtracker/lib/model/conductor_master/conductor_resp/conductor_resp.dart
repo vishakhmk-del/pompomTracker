@@ -6,14 +6,12 @@ part 'conductor_resp.g.dart';
 class ConductorResp {
   String? status;
   String? message;
-  @JsonKey(name: 'conductor_id')
-  dynamic conductorId;
-  @JsonKey(name: 'driver_id')
-  dynamic driverId;
+  @JsonKey(name: 'emp_id')
+  dynamic empId;
   @JsonKey(name: 'flag')
   String? flag;
 
-  ConductorResp({this.status, this.message, this.conductorId, this.driverId,this.flag});
+  ConductorResp({this.status, this.message, this.empId, this.flag});
 
   factory ConductorResp.fromJson(Map<String, dynamic> json) {
     return _$ConductorRespFromJson(json);

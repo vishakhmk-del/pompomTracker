@@ -73,7 +73,7 @@ class _ScreenBusMaterState extends State<ScreenBusMater> {
   // }
 
   Future<bool?> popscreen(BuildContext context) async {
-    Navigator.push(context, Approutes().homescreen);
+    Navigator.push(context, Approutes().mainScreen);
     return true;
   }
 
@@ -96,7 +96,7 @@ class _ScreenBusMaterState extends State<ScreenBusMater> {
               onPressed: () {
                 if (widget.flag == 0) {
                   Navigator.pushReplacement(
-                      _scafoldkey.currentContext!, Approutes().homescreen);
+                      _scafoldkey.currentContext!, Approutes().mainScreen);
                 } else {
                   Navigator.pushReplacement(
                       _scafoldkey.currentContext!, Approutes().busListScreen);
@@ -456,7 +456,7 @@ class _ScreenBusMaterState extends State<ScreenBusMater> {
           fontSize: 15.0);
       if (!context.mounted) return;
 
-      Navigator.push(context, Approutes().homescreen);
+      Navigator.push(context, Approutes().mainScreen);
     } else if (busResponseValue.status == 'Failed') {
       showerror(_scafoldkey.currentContext!, 2);
     } else {

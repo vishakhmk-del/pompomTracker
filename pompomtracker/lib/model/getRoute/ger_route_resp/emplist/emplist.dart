@@ -4,13 +4,12 @@ part 'emplist.g.dart';
 
 @JsonSerializable()
 class Emplist {
-  @JsonKey(name: 'conductor_id')
-  String? conductorId;
-  @JsonKey(name: 'driver_id')
-  String? driverId;
+  @JsonKey(name: 'emp_id')
+  String? empId;
+
   String? name;
 
-  Emplist({this.conductorId, this.name, this.driverId});
+  Emplist({this.empId, this.name});
 
   factory Emplist.fromJson(Map<String, dynamic> json) {
     return _$EmplistFromJson(json);

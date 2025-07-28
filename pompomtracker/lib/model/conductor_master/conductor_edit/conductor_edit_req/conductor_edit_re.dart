@@ -4,17 +4,18 @@ part 'conductor_edit_re.g.dart';
 
 @JsonSerializable()
 class ConductorEditRe {
-  @JsonKey(name: 'conductor_id')
-  String? conductorId;
-  @JsonKey(name: 'driver_id')
-  String? driverId;
+  @JsonKey(name: 'emp_id')
+  String? empId;
   @JsonKey(name: 'user_id')
   String? userId;
-  @JsonKey(name: 'user_type')
-  String? userType;
+  @JsonKey(name: 'emp_type')
+  int? empType;
 
-  ConductorEditRe(
-      {this.conductorId, this.userId, this.userType, this.driverId});
+  ConductorEditRe({
+    this.empId,
+    this.userId,
+    this.empType,
+  });
 
   factory ConductorEditRe.fromJson(Map<String, dynamic> json) {
     return _$ConductorEditReFromJson(json);

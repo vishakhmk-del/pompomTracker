@@ -1,0 +1,20 @@
+{
+  "buildFiles": [
+    "/Users/dits/flutter/packages/flutter_tools/gradle/src/main/groovy/CMakeLists.txt"
+  ],
+  "cleanCommandsComponents": [
+    [
+      "/Users/dits/Library/Android/sdk/cmake/3.22.1/bin/ninja",
+      "-C",
+      "/Users/dits/flutterpro/busownerapp/pompomtracker/android/app/.cxx/RelWithDebInfo/1w1c5il6/armeabi-v7a",
+      "clean"
+    ]
+  ],
+  "buildTargetsCommandComponents": [
+    "/Users/dits/Library/Android/sdk/cmake/3.22.1/bin/ninja",
+    "-C",
+    "/Users/dits/flutterpro/busownerapp/pompomtracker/android/app/.cxx/RelWithDebInfo/1w1c5il6/armeabi-v7a",
+    "{LIST_OF_TARGETS_TO_BUILD}"
+  ],
+  "libraries": {}
+}

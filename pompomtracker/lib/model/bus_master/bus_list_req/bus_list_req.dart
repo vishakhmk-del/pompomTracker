@@ -8,8 +8,23 @@ class BusListReq {
   String? userId;
   @JsonKey(name: 'user_type')
   String? userType;
+  @JsonKey(name: 'bus_id')
+  String? busId;
+  @JsonKey(name: 'from_place')
+  dynamic fromPlace;
+  @JsonKey(name: 'to_place')
+  dynamic toPlace;
+  @JsonKey(name: 'trip_id')
+  dynamic tripId;
+  
 
-  BusListReq({required this.userId, required this.userType});
+  BusListReq({
+    this.userId,
+    this.userType,
+    this.busId,
+    this.fromPlace,
+    this.toPlace,
+    this.tripId});
 
   factory BusListReq.fromJson(Map<String, dynamic> json) {
     return _$BusListReqFromJson(json);

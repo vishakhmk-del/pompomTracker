@@ -18,6 +18,8 @@ class SharedPrefManager {
     await sharedprefes.setString('USERTYPE', value.userType!);
     await sharedprefes.setString('USERNAME', value.userName!);
     await sharedprefes.setString('OWNERNAME', value.ownerName!);
+    await sharedprefes.setString('TOKEN', value.token!);
+
     //final jsonString = json.encode(value.toJson());
     // await prefs.setStringList(_key, login);
   }
@@ -32,11 +34,15 @@ class SharedPrefManager {
     final username = sharedprefs.getString('USERNAME') ?? '';
 
     final ownername = sharedprefs.getString('OWNERNAME') ?? '';
+
+    final token = sharedprefs.getString('TOKEN') ?? '';
+
     final valshared = Sharedpref.value(
         userId: userid,
         userType: usertype,
         userName: username,
-        ownerName: ownername);
+        ownerName: ownername,
+        token:token);
     return valshared;
   }
 

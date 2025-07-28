@@ -1,6 +1,8 @@
 class Url {
   // String baseUrl = 'http://10.160.100.53/Qrpay/index.php';
 
+  // String baseUrl = 'http://117.221.68.183:81/Qrpayuser/index.php';
+
   String baseUrl = 'http://117.221.68.183:81/Qrpay/index.php';
 
   String loginUrl = '/Home_C/owner_login_v';
@@ -18,7 +20,7 @@ class Url {
   String getExpenseUrl = '/Master_C/expense_report';
   String stopSave = '/Owner_C/save_stop';
   String linkBusRouteSave = '/Master_C/bus_route_link';
-  String conductorSave = '/Master_C/conductor_save';
+  // String conductorSave = '/Master_C/conductor_save';
   String fetchBusList = '/Owner_C/bus_view';
   String fetchBusEditList = '/Owner_C/bus_details';
   String updateBus = '/Owner_C/update_bus';
@@ -28,7 +30,6 @@ class Url {
 
   String getStopUrl = '/Master_C/get_stop_details';
 
-  String fetchCondutorEditList = '/Owner_C/conductor_details';
   String updateCon = '/Owner_C/update_conductor';
   String fetchBusRouteList = '/Owner_C/bus_route_view';
   String updateBusRouteList = '/Master_C/bus_route_link_update';
@@ -52,14 +53,20 @@ class Url {
   String frgetPswrdUrl = '/Home_C/forgot_password';
   String deviceInfoUrl = '/Home_C/create_or_update_device';
 
-  String driverSaveUrl = '/Master_C/driver_save';
+  // String driverSaveUrl = '/Master_C/driver_save';
   String driverViewUrl = '/Owner_C/driver_view';
   String busDetailsUrl = '/Master_C/get_bus_trip_details';
-  String fetcheditDriverDetailsUrl = '/Owner_C/driver_details';
+
   String updateDriverUrl = '/Owner_C/update_driver';
-  String conductorLstUrl = '/Master_C/conductor_list';
-  String driverLstUrl = '/Master_C/driver_list';
-  String employeeAsgnUrl = '/Master_C/duty_assign_save_working';
-  String empStatusUrl ='/Master_C/update_driver_conductor_statusnew';
-  String empUpdtStatusUrl ='/Master_C/update_DriverConductor';
+  String employeeAsgnUrl = '/Master_C/duty_assign_save';
+  String empStatusUrl = '/Master_C/assign_duty';
+  String empUpdtStatusUrl = '/Master_C/update_DriverConductor';
+  String empSaveUrl = '/Master_C/employee_save';
+  String empLstUrl = '/Master_C/employee_list';
+  String empVwUrl = '/Owner_C/employee_view';
+  String empDetUrl = '/Owner_C/employee_details';
+  String empUpdtUrl = '/Owner_C/update_employee';
+  String realBusDet = '/Master_C/real_time_busdet';
+  String stopdetUrl ='/Home_C/stop_details';
+  String busLiveLocUrl = '/Home_C/bus_location';
 }

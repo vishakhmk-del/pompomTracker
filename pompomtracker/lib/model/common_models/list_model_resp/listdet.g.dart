@@ -20,8 +20,7 @@ Listdet _$ListdetFromJson(Map<String, dynamic> json) => Listdet(
       cname: json['name'] as String?,
       mobileNo: json['mobile_no'] as String?,
       address: json['address'] as String?,
-      conductorId: json['conductor_id'] as String?,
-      driverId: json['driver_id'] as String?,
+      empId: json['emp_id'] as String?,
       accountNo: json['account_no'] as String?,
       lisecnceNo: json['lisecnce_no'] as String?,
       status: json['status'] as String?,
@@ -33,6 +32,8 @@ Listdet _$ListdetFromJson(Map<String, dynamic> json) => Listdet(
       fromStation: json['from_station'] as String?,
       toStation: json['to_station'] as String?,
       station: json['station'] as String?,
+      empType: json['emp_type'],
+      lisenceNo: json['lisence_no'] as String?,
     );
 
 Map<String, dynamic> _$ListdetToJson(Listdet instance) => <String, dynamic>{
@@ -49,8 +50,7 @@ Map<String, dynamic> _$ListdetToJson(Listdet instance) => <String, dynamic>{
       'name': instance.cname,
       'mobile_no': instance.mobileNo,
       'address': instance.address,
-      'conductor_id': instance.conductorId,
-      'driver_id': instance.driverId,
+      'emp_id': instance.empId,
       'account_no': instance.accountNo,
       'lisecnce_no': instance.lisecnceNo,
       'status': instance.status,
@@ -58,8 +58,10 @@ Map<String, dynamic> _$ListdetToJson(Listdet instance) => <String, dynamic>{
       'route_name': instance.routeName,
       'route_id': instance.routeId,
       'bus_id': instance.busId,
+      'lisence_no': instance.lisenceNo,
       'end_time': instance.endTime,
       'from_station': instance.fromStation,
       'to_station': instance.toStation,
       'station': instance.station,
+      'emp_type': instance.empType,
     };

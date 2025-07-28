@@ -55,18 +55,18 @@ class _ScreenSplashState extends State<ScreenSplash> {
               if (!context.mounted) return;
               Navigator.pushReplacement(
                 context,
-                Approutes().homescreen,
+                Approutes().mainScreen,
               );
               //await Future.delayed(const Duration(seconds: 3));
-              await Wklycollectfn.instance.wklycolctfn();
+              //await Wklycollectfn.instance.wklycolctfn();
             } else {
               if (deviceinfoval.data == null) {
                 if (!context.mounted) return;
                 Navigator.pushReplacement(
                   context,
-                  Approutes().homescreen,
+                  Approutes().mainScreen,
                 );
-                await Wklycollectfn.instance.wklycolctfn();
+                //await Wklycollectfn.instance.wklycolctfn();
               } else if (deviceinfoval.data?.errorCode == 'VERSION001') {
                 if (!context.mounted) return;
 
@@ -81,10 +81,10 @@ class _ScreenSplashState extends State<ScreenSplash> {
                 if (!context.mounted) return;
                 Navigator.pushReplacement(
                   context,
-                  Approutes().homescreen,
+                  Approutes().mainScreen,
                 );
                 //await Future.delayed(const Duration(seconds: 3));
-                await Wklycollectfn.instance.wklycolctfn();
+                //await Wklycollectfn.instance.wklycolctfn();
               }
             }
             log("device details ${deviceinforesp.statusCode}");
@@ -94,18 +94,18 @@ class _ScreenSplashState extends State<ScreenSplash> {
 
             Navigator.pushReplacement(
               context,
-              Approutes().homescreen,
+              Approutes().mainScreen,
             );
 
             // await Future.delayed(const Duration(seconds: 3));
-            await Wklycollectfn.instance.wklycolctfn();
+           // await Wklycollectfn.instance.wklycolctfn();
           }
         } catch (e) {
           if (!context.mounted) return;
 
-          Navigator.pushReplacement(context, Approutes().homescreen);
+          Navigator.pushReplacement(context, Approutes().mainScreen);
           // await Future.delayed(const Duration(seconds: 3));
-          await Wklycollectfn.instance.wklycolctfn();
+         // await Wklycollectfn.instance.wklycolctfn();
         }
       } else {
         if (!context.mounted) return;
@@ -140,8 +140,8 @@ class _ScreenSplashState extends State<ScreenSplash> {
             ])),
         child: Center(
           child: Lottie.asset(
-            'assets/animatedsplash/Animation - bus.json',
-            width: MediaQuery.of(context).size.width / 2.5,
+            'assets/animatedsplash/Bus_carga_trackMile.json',
+            width: MediaQuery.of(context).size.width / 1.5,
             //height: MediaQuery.of(context).size.height/2
           ),
         ),

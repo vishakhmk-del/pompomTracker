@@ -8,21 +8,21 @@ part of 'employee_req.dart';
 
 EmployeeReq _$EmployeeReqFromJson(Map<String, dynamic> json) => EmployeeReq(
       busId: json['bus_id'] as String?,
-      conductorId: json['conductor_id'] as String?,
-      driverId: json['driver_id'] as String?,
-      dutyDate: json['duty_date'] as String?,
+      empId: json['emp_id'] as String?,
+      startDate: json['start_date'] as String?,
+      userType: json['user_type'],
       userId: json['user_id'] as String?,
-      busRegNo: json['bus_reg_no'] as String?,
+      ownerId: json['owner_id'] as String?,
       flag: json['flag'] as String?,
     );
 
 Map<String, dynamic> _$EmployeeReqToJson(EmployeeReq instance) =>
     <String, dynamic>{
       'bus_id': instance.busId,
-      'conductor_id': instance.conductorId,
-      'driver_id': instance.driverId,
-      'duty_date': instance.dutyDate,
+      'emp_id': instance.empId,
+      'start_date': instance.startDate,
+      'user_type': instance.userType,
       'user_id': instance.userId,
-      'bus_reg_no':instance.busRegNo,
-      'flag':instance.flag
+      'owner_id': instance.ownerId,
+      'flag': instance.flag,
     };

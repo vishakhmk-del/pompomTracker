@@ -97,18 +97,18 @@ class _NavbarState extends State<Navbar> {
                     Theme.of(context).colorScheme.onPrimary
                   ])),
             ),
-            ListTile(
-                leading: const Icon(
-                  Icons.bus_alert,
-                  color: Color(0xff13bc91),
-                ),
-                title: Text(
-                  "Trip Details",
-                  style: Theme.of(context).textTheme.bodyLarge,
-                ),
-                onTap: () {
-                  Navigator.push(context, Approutes().employeeAssign);
-                }),
+            // ListTile(
+            //     leading: const Icon(
+            //       Icons.bus_alert,
+            //       color: Color(0xff13bc91),
+            //     ),
+            //     title: Text(
+            //       "Trip Details",
+            //       style: Theme.of(context).textTheme.bodyLarge,
+            //     ),
+            //     onTap: () {
+            //       Navigator.push(context, Approutes().employeeAssign);
+            //     }),
             ListTile(
                 leading: const Icon(
                   Icons.directions_bus,

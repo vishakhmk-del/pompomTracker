@@ -19,7 +19,7 @@ class _ScreenBusListState extends State<ScreenBusList> {
   }
 
   Future<bool?> popscreen(BuildContext context) async {
-    Navigator.push(context, Approutes().homescreen);
+    Navigator.push(context, Approutes().mainScreen);
     return true;
   }
 
@@ -39,7 +39,7 @@ class _ScreenBusListState extends State<ScreenBusList> {
           leading: IconButton(
             icon: const Icon(Icons.arrow_back),
             onPressed: () {
-              Navigator.pushReplacement(context, Approutes().homescreen);
+              Navigator.pushReplacement(context, Approutes().mainScreen);
             },
           ),
           title: Text(
@@ -69,6 +69,12 @@ class _ScreenBusListState extends State<ScreenBusList> {
                                 //borderRadius:const BorderRadius.only(topLeft: Radius.circular(12),topRight: Radius.circular(12)),
                               ),
                               child: DataTable(
+                                dataRowMaxHeight: 35,
+                                dataRowMinHeight: 35,
+                                headingRowHeight: 35,
+                                columnSpacing: 15,
+                                headingRowColor: WidgetStateProperty.all(
+                                    const Color(0xff13bc91)),
                                 columns: getColumns(columns = [
                                   'S.No',
                                   'Reg No',

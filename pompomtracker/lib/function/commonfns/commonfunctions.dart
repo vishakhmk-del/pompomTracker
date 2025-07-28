@@ -205,8 +205,8 @@ class Wklycollectfn implements Commonfn {
     try {
       final value = await SharedPrefManager.instance.getSharedData();
       GetRouteReq routeReq =
-          GetRouteReq(userId: value!.userId, userType: value.userType);
-      final getRouteList = await Busdata().conductorList(routeReq);
+          GetRouteReq(userId: value!.userId,empType: 3);
+      final getRouteList = await Busdata().empList(routeReq);
 
       List<Emplist>? routeDetailslist = [];
 
@@ -257,8 +257,8 @@ class Wklycollectfn implements Commonfn {
     try {
       final value = await SharedPrefManager.instance.getSharedData();
       GetRouteReq routeReq =
-          GetRouteReq(userId: value!.userId, userType: value.userType);
-      final getRouteList = await Busdata().driverList(routeReq);
+          GetRouteReq(userId: value!.userId,empType: 5);
+      final getRouteList = await Busdata().empList(routeReq);
 
       List<Emplist>? routeDetailslist = [];
 

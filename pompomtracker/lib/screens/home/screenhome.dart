@@ -12,6 +12,13 @@ class Screenhome extends StatefulWidget {
 class _ScreenhomeState extends State<Screenhome> {
   @override
   void initState() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      weeklycollection();
+      if (mounted) {
+        setState(() {
+        });
+      }
+    });
     super.initState();
   }
 

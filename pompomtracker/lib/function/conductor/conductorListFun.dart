@@ -2,7 +2,6 @@ import 'dart:developer';
 
 import 'package:pompomtracker/core/hook/hook.dart';
 
-
 class ConductorListFunctions {
   ConductorListFunctions._internal();
   static ConductorListFunctions instance = ConductorListFunctions._internal();
@@ -18,9 +17,9 @@ class ConductorListFunctions {
     try {
       Response<dynamic>? conductorListRespVar;
       final sharedValue = await SharedPrefManager.instance.getSharedData();
-      final condutorReq = MasterListReq(
-          userId: sharedValue!.userId, usertype: sharedValue.userType);
-      conductorListRespVar = await Busdata().fetchConductorList(condutorReq);
+      final condutorReq =
+          MasterListReq(userId: sharedValue!.userId, emptype: 3);
+      conductorListRespVar = await Busdata().fetchempList(condutorReq);
       if (conductorListRespVar == null) {
         getConductoristNotifier.value.clear();
         getConductoristNotifier.value.addAll([]);
@@ -73,9 +72,9 @@ class ConductorListFunctions {
     try {
       Response<dynamic>? conductorListRespVar;
       final sharedValue = await SharedPrefManager.instance.getSharedData();
-      final condutorReq = MasterListReq(
-          userId: sharedValue!.userId, usertype: sharedValue.userType);
-      conductorListRespVar = await Busdata().fetchdriverView(condutorReq);
+      final condutorReq =
+          MasterListReq(userId: sharedValue!.userId, emptype: 5);
+      conductorListRespVar = await Busdata().fetchempList(condutorReq);
       if (conductorListRespVar == null) {
 //print('null');
         getDriveristNotifier.value.clear();
@@ -132,16 +131,12 @@ class ConductorListFunctions {
       final sharedValue = await SharedPrefManager.instance.getSharedData();
       if (flag == 1) {
         ConductorEditRe conEditReq = ConductorEditRe(
-            conductorId: conductorId,
-            userId: sharedValue!.userId,
-            userType: sharedValue.userType);
-        getEditDet = await Busdata().fetchConEditDetails(conEditReq);
+            empId: conductorId, userId: sharedValue!.userId, empType: 3);
+        getEditDet = await Busdata().fetchEmpEditDetails(conEditReq);
       } else if (flag == 2) {
         ConductorEditRe conEditReq = ConductorEditRe(
-            driverId: conductorId,
-            userId: sharedValue!.userId,
-            userType: sharedValue.userType);
-        getEditDet = await Busdata().fetchdriverEditDetails(conEditReq);
+            empId: conductorId, userId: sharedValue!.userId, empType: 5);
+        getEditDet = await Busdata().fetchEmpEditDetails(conEditReq);
       }
 
       if (getEditDet == null) {
@@ -243,9 +238,61 @@ class ConductorListFunctions {
     }
   }
 
-  Future employeeAssign(EmployeeReq val, BuildContext context) async {
+  // Future employeeAssign(EmployeeReq val, BuildContext context) async {
+  //   try {
+  //     final  getEditDet = await Busdata().employeeAssgn(val);
+  //     if (getEditDet == null) {
+  //       if (!context.mounted) return;
+
+  //       Wklycollectfn.instance.showApierror(context, "Something went wrong");
+  //     } else if (getEditDet.statusCode == 200) {
+  //       final resultJson = jsonDecode(getEditDet.toString());
+  //       final details =
+  //           ConductorEditResp.fromJson(resultJson as Map<String, dynamic>);
+  //       if (details.status == 'success') {
+  //         if (!context.mounted) return;
+
+  //         Navigator.pushReplacement(context, Approutes().employeeAssign);
+
+  //       Wklycollectfn.instance.showApierror(context, "Assigned Successfully");
+  //       } else if (details.status == 'failed') {
+  //         if(details.flag=='exist'){
+  //      if (!context.mounted) return;
+
+  //       warningMessage(message,conductorMasterRequst,context);
+  //     }
+  //         if (!context.mounted) return;
+  //       Wklycollectfn.instance.showApierror(context, "Can't be Assigned");
+  //       }
+  //     } else if (getEditDet.statusCode == 401) {
+  //       if (!context.mounted) return;
+  //       Wklycollectfn.instance.showApierror(context, "Unauthenticated");
+  //     } else if (getEditDet.statusCode == 500) {
+  //       if (!context.mounted) return;
+  //       Wklycollectfn.instance.showApierror(context, "Sever Not reached");
+  //       // showLoginerror(context, 3);
+  //     } else if (getEditDet.statusCode == 408) {
+  //       if (!context.mounted) return;
+  //       Wklycollectfn.instance.showApierror(context, "Connection time out");
+
+  //       //showLoginerror(context, 4);
+  //     } else {
+  //       if (!context.mounted) return;
+
+  //       Wklycollectfn.instance.showApierror(context, "Something went wrong");
+  //       //showLoginerror(context, 5);
+  //     }
+  //   } catch (e) {
+  //     if (!context.mounted) return;
+  //     ScaffoldMessenger.of(context).showSnackBar(
+  //       const SnackBar(content: Text('An unexpected error occurred')),
+  //     );
+  //   }
+  // }
+
+  Future employeeStatus(EmployeeReq val, BuildContext context) async {
     try {
-      final  getEditDet = await Busdata().employeeAssgn(val);
+      final getEditDet = await Busdata().empStatus(val);
       if (getEditDet == null) {
         if (!context.mounted) return;
 
@@ -256,62 +303,18 @@ class ConductorListFunctions {
             ConductorEditResp.fromJson(resultJson as Map<String, dynamic>);
         if (details.status == 'success') {
           if (!context.mounted) return;
-
-          Navigator.pushReplacement(context, Approutes().employeeAssign);
-          
-        Wklycollectfn.instance.showApierror(context, "Assigned Successfully");
-        } else if (details.status == 'failure') {
           if (!context.mounted) return;
-        Wklycollectfn.instance.showApierror(context, "Can't be Assigned");
-        }
-      } else if (getEditDet.statusCode == 401) {
-        if (!context.mounted) return;
-        Wklycollectfn.instance.showApierror(context, "Unauthenticated");
-      } else if (getEditDet.statusCode == 500) {
-        if (!context.mounted) return;
-        Wklycollectfn.instance.showApierror(context, "Sever Not reached");
-        // showLoginerror(context, 3);
-      } else if (getEditDet.statusCode == 408) {
-        if (!context.mounted) return;
-        Wklycollectfn.instance.showApierror(context, "Connection time out");
-
-        //showLoginerror(context, 4);
-      } else {
-        if (!context.mounted) return;
-
-        Wklycollectfn.instance.showApierror(context, "Something went wrong");
-        //showLoginerror(context, 5);
-      }
-    } catch (e) {
-      if (!context.mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('An unexpected error occurred')),
-      );
-    }
-  }
-
-   Future employeeStatus(MasterListReq val,BuildContext context) async {
-    try {
-      final  getEditDet = await Busdata().empStatus(val);
-      if (getEditDet == null) {
-        if (!context.mounted) return;
-
-        Wklycollectfn.instance.showApierror(context, "Something went wrong");
-      } else if (getEditDet.statusCode == 200) {
-        final resultJson = jsonDecode(getEditDet.toString());
-        final details =
-            ConductorEditResp.fromJson(resultJson as Map<String, dynamic>);
-        if (details.status == 'success') {
+          await ConductorListFunctions.instance.getAssignDetailsList(context);
           if (!context.mounted) return;
-          selectedEmployerNotifier.value = StatementType.conductor;
 
-          Navigator.pushReplacement(context, Approutes().conductoscreen);
-          
-        Wklycollectfn.instance.showApierror(context, "Saved Successfully");
+          Navigator.pop(context);
+          if (!context.mounted) return;
+
+          Wklycollectfn.instance.showApierror(context, details.message);
         } else if (details.status == 'failed') {
           if (!context.mounted) return;
-        Wklycollectfn.instance.showApierror(context, "Can't be Saved");
-        Navigator.pop(context);
+          Wklycollectfn.instance.showApierror(context, details.message);
+          Navigator.pop(context);
         }
       } else if (getEditDet.statusCode == 401) {
         if (!context.mounted) return;
@@ -339,9 +342,10 @@ class ConductorListFunctions {
     }
   }
 
-  Future employeeUpdateStatus(MasterListReq val,int? flag,BuildContext context) async {
+  Future employeeUpdateStatus(
+      MasterListReq val, int? flag, BuildContext context) async {
     try {
-      final  getEditDet = await Busdata().empUpdtStatus(val);
+      final getEditDet = await Busdata().empUpdtStatus(val);
       if (getEditDet == null) {
         if (!context.mounted) return;
 
@@ -357,12 +361,12 @@ class ConductorListFunctions {
           } else if (flag == 2) {
             Navigator.pushReplacement(context, Approutes().screenDriverView);
           }
-          
-        Wklycollectfn.instance.showApierror(context, "Saved Successfully");
+
+          Wklycollectfn.instance.showApierror(context, "Saved Successfully");
         } else if (details.status == 'failed') {
           if (!context.mounted) return;
-        Wklycollectfn.instance.showApierror(context, "Can't be Saved");
-        Navigator.pop(context);
+          Wklycollectfn.instance.showApierror(context, "Can't be Saved");
+          Navigator.pop(context);
         }
       } else if (getEditDet.statusCode == 401) {
         if (!context.mounted) return;

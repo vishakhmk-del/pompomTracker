@@ -68,9 +68,11 @@ class _ScreenAddNewStopState extends State<ScreenAddNewStop> {
           };
         }).toList();
       });
+      if (!mounted) return;
+      final checkProvider = context.read<CheckProvider>();
+      checkProvider.reset();
     });
-    final checkProvider = context.read<CheckProvider>();
-    checkProvider.reset();
+
     //fetchBusregistraionList();
   }
 

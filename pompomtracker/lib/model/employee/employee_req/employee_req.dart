@@ -6,29 +6,47 @@ part 'employee_req.g.dart';
 class EmployeeReq {
   @JsonKey(name: 'bus_id')
   String? busId;
-  @JsonKey(name: 'conductor_id')
-  String? conductorId;
-  @JsonKey(name: 'driver_id')
-  String? driverId;
-  @JsonKey(name: 'duty_date')
-  String? dutyDate;
+  @JsonKey(name: 'emp_id')
+  String? empId;
+  @JsonKey(name: 'start_date')
+  String? startDate;
+  @JsonKey(name: 'user_type')
+  dynamic userType;
   @JsonKey(name: 'user_id')
   String? userId;
-  @JsonKey(name: 'bus_reg_no')
-  String? busRegNo;
+  @JsonKey(name: 'owner_id')
+  String? ownerId;
   @JsonKey(name: 'flag')
   String? flag;
-  
 
-  EmployeeReq({
-    this.busId,
-    this.conductorId,
-    this.driverId,
-    this.dutyDate,
-    this.userId,
-    this.busRegNo,
-    this.flag
-  });
+  EmployeeReq(
+      {this.busId,
+      this.empId,
+      this.startDate,
+      this.userType,
+      this.userId,
+      this.ownerId,
+      this.flag});
+
+  EmployeeReq copyWith({
+    String? busId,
+    String? empId,
+    String? startDate,
+    dynamic userType,
+    String? userId,
+    String? ownerId,
+    String? flag,
+  }) {
+    return EmployeeReq(
+      empId: empId ?? this.empId,
+      busId: busId ?? this.busId,
+      startDate: startDate ?? this.startDate,
+      userType: userType ?? this.userType,
+      userId: userId ?? this.userId,
+      ownerId: ownerId ?? this.ownerId,
+      flag: flag ?? this.flag,
+    );
+  }
 
   factory EmployeeReq.fromJson(Map<String, dynamic> json) {
     return _$EmployeeReqFromJson(json);

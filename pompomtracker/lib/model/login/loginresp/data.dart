@@ -14,6 +14,9 @@ class DataCount {
   String? userName;
   @JsonKey(name: 'owner_name')
   String? ownerName;
+  @JsonKey(name: 'access_token')
+  String? token;
+  
 
   DataCount({
     this.errorCode,
@@ -21,6 +24,7 @@ class DataCount {
     this.userType,
     this.userName,
     this.ownerName,
+    this.token
   });
 
   factory DataCount.fromJson(Map<String, dynamic> json) =>

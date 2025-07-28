@@ -8,8 +8,7 @@ part of 'list_req.dart';
 
 MasterListReq _$MasterListReqFromJson(Map<String, dynamic> json) =>
     MasterListReq(
-      conductorId: json['conductor_id'] as String?,
-      driverId: json['driver_id'] as String?,
+      empId: json['emp_id'] as String?,
       cname: json['cname'] as String?,
       caddress: json['caddress'] as String?,
       mobNo: json['mob_no'] as String?,
@@ -35,14 +34,13 @@ MasterListReq _$MasterListReqFromJson(Map<String, dynamic> json) =>
       regNo: json['reg_no'] as String?,
       routeId: (json['route_id'] as num?)?.toInt(),
       flag: json['flag'] as String?,
-      role: json['role'] as String?,
-
+      role: (json['role'] as num?)?.toInt(),
+      emptype: (json['emp_type'] as num?)?.toInt(),
     );
 
 Map<String, dynamic> _$MasterListReqToJson(MasterListReq instance) =>
     <String, dynamic>{
-      'conductor_id': instance.conductorId,
-      'driver_id': instance.driverId,
+      'emp_id': instance.empId,
       'cname': instance.cname,
       'caddress': instance.caddress,
       'mob_no': instance.mobNo,
@@ -67,7 +65,7 @@ Map<String, dynamic> _$MasterListReqToJson(MasterListReq instance) =>
       'stage_id': instance.stageId,
       'reg_no': instance.regNo,
       'route_id': instance.routeId,
-      'flag':instance.flag,
-      'role':instance.role
-
+      'flag': instance.flag,
+      'role': instance.role,
+      'emp_type': instance.emptype,
     };

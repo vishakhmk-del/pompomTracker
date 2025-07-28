@@ -13,6 +13,8 @@ class Sharedpref {
   String? userName;
   @JsonKey(name: 'owner_name')
   String? ownerName;
+  @JsonKey(name: 'access_token')
+  String? token;
 
   Sharedpref({
     this.status,
@@ -20,6 +22,7 @@ class Sharedpref {
     this.userType,
     this.userName,
     this.ownerName,
+    this.token
   });
   Sharedpref.value({
     this.status,
@@ -27,6 +30,8 @@ class Sharedpref {
     required this.userType,
     required this.userName,
     required this.ownerName,
+    required this.token,
+
   });
 
   factory Sharedpref.fromJson(Map<String, dynamic> json) {

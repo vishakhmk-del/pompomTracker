@@ -8,8 +8,10 @@ class GetRouteReq {
   String? userId;
   @JsonKey(name: 'user_type')
   String? userType;
+  @JsonKey(name: 'emp_type')
+  int? empType;
 
-  GetRouteReq({this.userId, this.userType});
+  GetRouteReq({this.userId, this.userType, this.empType});
 
   factory GetRouteReq.fromJson(Map<String, dynamic> json) {
     return _$GetRouteReqFromJson(json);

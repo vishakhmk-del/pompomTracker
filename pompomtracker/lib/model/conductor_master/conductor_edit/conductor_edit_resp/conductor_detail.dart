@@ -4,10 +4,8 @@ part 'conductor_detail.g.dart';
 
 @JsonSerializable()
 class ConductorDetail {
-  @JsonKey(name: 'conductor_id')
-  String? conductorId;
-  @JsonKey(name: 'driver_id')
-  String? driverId;
+  @JsonKey(name: 'emp_id')
+  String? empId;
   String? name;
   String? address;
   @JsonKey(name: 'account_no')
@@ -25,8 +23,7 @@ class ConductorDetail {
   String? lisenceNo;
 
   ConductorDetail(
-      {this.conductorId,
-      this.driverId,
+      {this.empId,
       this.name,
       this.address,
       this.accountNo,

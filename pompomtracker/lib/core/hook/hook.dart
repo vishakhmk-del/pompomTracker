@@ -61,13 +61,13 @@ export 'package:pompomtracker/screens/home/screenhome.dart';
 export 'package:pompomtracker/screens/Bus/ScreenBusList.dart';
 export 'package:pompomtracker/screens/Bus/ScreenBusMaster.dart';
 export 'package:pompomtracker/screens/Collection/ScreenCollection.dart';
-export 'package:pompomtracker/screens/employee/Conductor/ScreenConductor.dart';
+export 'package:pompomtracker/screens/Emp_Details/employee/Employee/ScreenConductor.dart';
 export 'package:pompomtracker/screens/LinkBusRoute/ScreenLinkBusRoute.dart';
-export 'package:pompomtracker/screens/employee/Conductor/ConductorList.dart';
+export 'package:pompomtracker/screens/Emp_Details/employee/conductor/ConductorList.dart';
 export 'package:pompomtracker/screens/route_mas/ScreenRouteMaster.dart';
 export 'package:pompomtracker/screens/stop/ScreenStopMaster.dart';
 export 'package:pompomtracker/screens/stop/StopList.dart';
-export 'package:pompomtracker/screens/trip/ScreenTrip.dart';
+export 'package:pompomtracker/screens/trip/ScreenTripUpdate.dart';
 export 'package:pompomtracker/screens/trip/ScreenTripMaster.dart';
 export 'package:pompomtracker/screens/stop/ScreenChangeStopname.dart';
 export 'package:pompomtracker/screens/LinkBusRoute/BusRouteList.dart';
@@ -75,8 +75,8 @@ export 'package:pompomtracker/screens/stop/ScreenAddnewStp.dart';
 export 'package:pompomtracker/screens/trip/TripList.dart';
 export 'package:pompomtracker/screens/forgot/screenforgot.dart';
 export 'package:pompomtracker/screens/error/screenError.dart';
-export 'package:pompomtracker/screens/Trip_Details/ScreenEmployeeAssign.dart';
-export 'package:pompomtracker/screens/employee/driver/screendriverView.dart';
+export 'package:pompomtracker/screens/Emp_Details/assign/ScreenEmployeeAssign.dart';
+export 'package:pompomtracker/screens/Emp_Details/employee/driver/screendriverView.dart';
 /**************************************/
 
 /*model*/

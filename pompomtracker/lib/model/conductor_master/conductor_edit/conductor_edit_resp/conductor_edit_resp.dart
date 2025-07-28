@@ -9,6 +9,7 @@ part 'conductor_edit_resp.g.dart';
 class ConductorEditResp {
   String? status;
   String? message;
+  String? flag;
   @JsonKey(name: 'employee_details')
   List<ConductorDetail>? conductorDetails;
   @JsonKey(name: 'bus_list')
@@ -17,6 +18,7 @@ class ConductorEditResp {
   ConductorEditResp({
     this.status,
     this.message,
+    this.flag,
     this.conductorDetails,
     this.busList,
   });

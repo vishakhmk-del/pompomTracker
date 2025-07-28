@@ -4,10 +4,8 @@ part 'list_req.g.dart';
 
 @JsonSerializable()
 class MasterListReq {
-  @JsonKey(name: 'conductor_id')
-  String? conductorId;
-  @JsonKey(name: 'driver_id')
-  String? driverId;
+  @JsonKey(name: 'emp_id')
+  String? empId;
   @JsonKey(name: 'cname')
   String? cname;
   @JsonKey(name: 'caddress')
@@ -60,10 +58,11 @@ class MasterListReq {
   @JsonKey(name: 'flag')
   String? flag;
   @JsonKey(name: 'role')
-  String? role;
+  int? role;
+  @JsonKey(name: 'emp_type')
+  int? emptype;
   MasterListReq(
-      {this.conductorId,
-      this.driverId,
+      {this.empId,
       this.cname,
       this.caddress,
       this.mobNo,
@@ -89,42 +88,41 @@ class MasterListReq {
       this.regNo,
       this.routeId,
       this.flag,
-      this.role});
+      this.role,
+      this.emptype});
 
-      MasterListReq copyWith({
-    String? conductorId,
-    String? driverId,
-    String? cname,
-    String? caddress,
-    String? mobNo,
-    String? busRegNo,
-    String? emailId,
-    String? status,
-    String? accNo,
-    String? userId,
-    String? ownerId,
-    String? usertype,
-    String? tripId,
-    String? licenceNo,
-    String? arrivingTime,
-    String? stopName,
-    String? stopNameOld,
-    String? stopId,
-    String? km,
-    int? after,
-    String? latitude,
-    String? longitude,
-    String? isStage,
-    String? stageId,
-    String? regNo,
-    int? routeId,
-    String? flag,
-    String? role
-
-  }) {
+  MasterListReq copyWith(
+      {String? conductorId,
+      String? driverId,
+      String? cname,
+      String? caddress,
+      String? mobNo,
+      String? busRegNo,
+      String? emailId,
+      String? status,
+      String? accNo,
+      String? userId,
+      String? ownerId,
+      String? usertype,
+      String? tripId,
+      String? licenceNo,
+      String? arrivingTime,
+      String? stopName,
+      String? stopNameOld,
+      String? stopId,
+      String? km,
+      int? after,
+      String? latitude,
+      String? longitude,
+      String? isStage,
+      String? stageId,
+      String? regNo,
+      int? routeId,
+      String? flag,
+      int? role,
+      int? emptype}) {
     return MasterListReq(
-      conductorId: conductorId ?? this.conductorId,
-      driverId: driverId ?? this.driverId,
+      empId: conductorId ?? this.empId,
       cname: cname ?? this.cname,
       caddress: caddress ?? this.caddress,
       mobNo: mobNo ?? this.mobNo,
@@ -151,7 +149,7 @@ class MasterListReq {
       routeId: routeId ?? this.routeId,
       flag: flag ?? this.flag,
       role: role ?? this.role,
-
+      emptype: emptype ?? this.emptype,
     );
   }
 

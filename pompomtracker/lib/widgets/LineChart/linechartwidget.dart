@@ -18,7 +18,7 @@ class Linechartwidget extends StatelessWidget {
           return newList.isEmpty
               ? FutureBuilder(
                   future: Future.delayed(
-                      const Duration(seconds: 10)), // Add a delay of 5 seconds
+                      const Duration(seconds: 3)), // Add a delay of 5 seconds
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
                       return const Center(
@@ -39,8 +39,8 @@ class Linechartwidget extends StatelessWidget {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Container(
-                                width: 200,
-                                height: 200,
+                                width: 130,
+                                height: 130,
                                 decoration: BoxDecoration(
                                     color:
                                         Theme.of(context).colorScheme.tertiary,

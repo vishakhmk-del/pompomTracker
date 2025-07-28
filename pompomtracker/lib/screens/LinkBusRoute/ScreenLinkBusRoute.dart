@@ -59,7 +59,7 @@ class _ScreenLinkBusRouteState extends State<ScreenLinkBusRoute> {
   }
 
   Future<bool?> popscreen(BuildContext context) async {
-    Navigator.push(context, Approutes().homescreen);
+    Navigator.push(context, Approutes().mainScreen);
     return true;
   }
 
@@ -82,7 +82,7 @@ class _ScreenLinkBusRouteState extends State<ScreenLinkBusRoute> {
               onPressed: () {
                 if (widget.flag == 0) {
                   Navigator.pushReplacement(
-                      _scafoldkey.currentContext!, Approutes().homescreen);
+                      _scafoldkey.currentContext!, Approutes().mainScreen);
                 } else {
                   Navigator.pushReplacement(_scafoldkey.currentContext!,
                       Approutes().busRouteListScreen);
@@ -355,7 +355,7 @@ class _ScreenLinkBusRouteState extends State<ScreenLinkBusRoute> {
           fontSize: 15.0);
       if (!context.mounted) return;
 
-      Navigator.push(context, Approutes().homescreen);
+      Navigator.push(context, Approutes().mainScreen);
     } else if (resValue.status == 'Failed') {
       showerror(_scafoldkey.currentContext, 2);
     } else {
