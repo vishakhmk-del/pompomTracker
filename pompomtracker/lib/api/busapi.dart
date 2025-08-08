@@ -76,6 +76,8 @@ abstract class Apicalls {
   Future<Response<dynamic>?> realBusDet(BusListReq value);
   Future<Response<dynamic>?> fetchStopLoc(BusListReq value);
   Future<Response<dynamic>?> liveBusLoc(BusListReq value);
+  Future<Response<dynamic>?> daycollection(BusListReq value);
+  Future<Response<dynamic>?> collectDetails(BusListReq value);
 }
 
 class Busdata extends Apicalls {
@@ -121,7 +123,7 @@ class Busdata extends Apicalls {
 
   @override
   Future<Response<dynamic>?> getBusList() async {
-     final sharedValue = await SharedPrefManager.instance.getSharedData();
+    final sharedValue = await SharedPrefManager.instance.getSharedData();
     final token = sharedValue!.token;
     try {
       final result = await dio.post(
@@ -133,7 +135,6 @@ class Busdata extends Apicalls {
             "Accept": "application/json",
           },
         ),
-
       );
       return result;
     } on DioException catch (ex) {
@@ -166,7 +167,7 @@ class Busdata extends Apicalls {
       final result = await dio.post(
         url.busSave,
         data: value.toJson(),
-         options: Options(
+        options: Options(
           responseType: ResponseType.plain,
           headers: {
             "Authorization": "Bearer $token",
@@ -205,7 +206,7 @@ class Busdata extends Apicalls {
       final result = await dio.post(
         url.weeklyUrl,
         data: value.toJson(),
-         options: Options(
+        options: Options(
           responseType: ResponseType.plain,
           headers: {
             "Authorization": "Bearer $token",
@@ -272,7 +273,8 @@ class Busdata extends Apicalls {
   }
 
   @override
-  Future<Response<dynamic>?> getBusRegistartionList(RegistrationReq value) async {
+  Future<Response<dynamic>?> getBusRegistartionList(
+      RegistrationReq value) async {
     final sharedValue = await SharedPrefManager.instance.getSharedData();
     final token = sharedValue!.token;
     try {
@@ -1896,7 +1898,7 @@ class Busdata extends Apicalls {
       final result = await dio.post(
         url.empStatusUrl,
         data: value.toJson(),
-         options: Options(
+        options: Options(
           responseType: ResponseType.plain,
           headers: {
             "Authorization": "Bearer $token",
@@ -1935,7 +1937,7 @@ class Busdata extends Apicalls {
       final result = await dio.post(
         url.empUpdtStatusUrl,
         data: value.toJson(),
-         options: Options(
+        options: Options(
           responseType: ResponseType.plain,
           headers: {
             "Authorization": "Bearer $token",
@@ -2035,7 +2037,7 @@ class Busdata extends Apicalls {
       );
     }
   }
-  
+
   @override
   Future<Response?> fetchStopLoc(BusListReq value) async {
     final sharedValue = await SharedPrefManager.instance.getSharedData();
@@ -2063,8 +2065,7 @@ class Busdata extends Apicalls {
       }
       return Response(
         requestOptions: ex.requestOptions,
-        statusCode:
-            ex.response?.statusCode ??
+        statusCode: ex.response?.statusCode ??
             500, // Default to HTTP 500 if no status code
         statusMessage: ex.message,
         data: ex.response?.data, // Include error data if available
@@ -2099,8 +2100,77 @@ class Busdata extends Apicalls {
       }
       return Response(
         requestOptions: ex.requestOptions,
-        statusCode:
-            ex.response?.statusCode ??
+        statusCode: ex.response?.statusCode ??
+            500, // Default to HTTP 500 if no status code
+        statusMessage: ex.message,
+        data: ex.response?.data, // Include error data if available
+      );
+    }
+  }
+
+  @override
+  Future<Response?> daycollection(BusListReq value) async {
+    final sharedValue = await SharedPrefManager.instance.getSharedData();
+    final token = sharedValue!.token;
+    try {
+      final result = await dio.post(
+        url.dayCollectionUrl,
+        data: value.toJson(),
+        options: Options(
+          responseType: ResponseType.plain,
+          headers: {
+            "Authorization": "Bearer $token",
+            "Accept": "application/json",
+          },
+        ),
+      );
+      return result;
+    } on DioException catch (ex) {
+      if (ex.type == DioExceptionType.connectionTimeout) {
+        return Response(
+          requestOptions: ex.requestOptions,
+          statusCode: 408, // HTTP 408 Request Timeout
+          statusMessage: "Connection Timeout",
+        );
+      }
+      return Response(
+        requestOptions: ex.requestOptions,
+        statusCode: ex.response?.statusCode ??
+            500, // Default to HTTP 500 if no status code
+        statusMessage: ex.message,
+        data: ex.response?.data, // Include error data if available
+      );
+    }
+  }
+
+  @override
+  Future<Response?> collectDetails(BusListReq value) async {
+    final sharedValue = await SharedPrefManager.instance.getSharedData();
+    final token = sharedValue!.token;
+    try {
+      final result = await dio.post(
+        url.collectDetUrl,
+        data: value.toJson(),
+        options: Options(
+          responseType: ResponseType.plain,
+          headers: {
+            "Authorization": "Bearer $token",
+            "Accept": "application/json",
+          },
+        ),
+      );
+      return result;
+    } on DioException catch (ex) {
+      if (ex.type == DioExceptionType.connectionTimeout) {
+        return Response(
+          requestOptions: ex.requestOptions,
+          statusCode: 408, // HTTP 408 Request Timeout
+          statusMessage: "Connection Timeout",
+        );
+      }
+      return Response(
+        requestOptions: ex.requestOptions,
+        statusCode: ex.response?.statusCode ??
             500, // Default to HTTP 500 if no status code
         statusMessage: ex.message,
         data: ex.response?.data, // Include error data if available

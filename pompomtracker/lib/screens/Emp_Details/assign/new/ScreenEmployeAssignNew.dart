@@ -5,7 +5,8 @@ class ScreenEmployeeAssignNew extends StatefulWidget {
   const ScreenEmployeeAssignNew({super.key});
 
   @override
-  State<ScreenEmployeeAssignNew> createState() => _ScreenEmployeeAssignNewState();
+  State<ScreenEmployeeAssignNew> createState() =>
+      _ScreenEmployeeAssignNewState();
 }
 
 class _ScreenEmployeeAssignNewState extends State<ScreenEmployeeAssignNew> {
@@ -70,10 +71,10 @@ class _ScreenEmployeeAssignNewState extends State<ScreenEmployeeAssignNew> {
           Expanded(
             child: ScrollableWidget(
               child: ValueListenableBuilder(
-                  valueListenable: ConductorListFunctions
-                      .instance.getAssignDetailsNotifier,
-                  builder: (BuildContext context,
-                      List<TripDetail> newList, Widget? _) {
+                  valueListenable:
+                      ConductorListFunctions.instance.getAssignDetailsNotifier,
+                  builder: (BuildContext context, List<TripDetail> newList,
+                      Widget? _) {
                     return Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -86,7 +87,8 @@ class _ScreenEmployeeAssignNewState extends State<ScreenEmployeeAssignNew> {
                             child: Text("Assign Employee",
                                 style: Theme.of(context)
                                     .textTheme
-                                    .titleLarge?.copyWith(color: Colors.white)),
+                                    .titleLarge
+                                    ?.copyWith(color: Colors.white)),
                           ),
                           const SizedBox(
                             height: 20,
@@ -126,36 +128,32 @@ class _ScreenEmployeeAssignNewState extends State<ScreenEmployeeAssignNew> {
                                 return Center(
                                   child: Padding(
                                     padding: EdgeInsets.symmetric(
-                                      vertical: MediaQuery.of(context)
-                                              .size
-                                              .height /
-                                          2.5,
-                                      horizontal: MediaQuery.of(context)
-                                              .size
-                                              .width /
-                                          2.3,
+                                      vertical:
+                                          MediaQuery.of(context).size.height /
+                                              2.5,
+                                      horizontal:
+                                          MediaQuery.of(context).size.width /
+                                              2.3,
                                     ),
-                                    child:
-                                        const CircularProgressIndicator(color: Color.fromARGB(255, 204, 123, 2),),
+                                    child: const CircularProgressIndicator(
+                                      color: Color.fromARGB(255, 204, 123, 2),
+                                    ),
                                   ),
                                 );
                               } else {
                                 return Center(
                                   child: Padding(
                                     padding: EdgeInsets.symmetric(
-                                      vertical: MediaQuery.of(context)
-                                              .size
-                                              .height /
-                                          2.5,
-                                      horizontal: MediaQuery.of(context)
-                                              .size
-                                              .width /
-                                          2.7,
+                                      vertical:
+                                          MediaQuery.of(context).size.height /
+                                              2.5,
+                                      horizontal:
+                                          MediaQuery.of(context).size.width /
+                                              2.7,
                                     ),
                                     child: Text(
                                       'No data found',
-                                      style: TextStyle(
-                                          color: Colors.white),
+                                      style: TextStyle(color: Colors.white),
                                     ),
                                   ),
                                 );
@@ -225,7 +223,8 @@ class _ScreenEmployeeAssignNewState extends State<ScreenEmployeeAssignNew> {
                     ),
                     textAlign: TextAlign.center,
                     style: const TextStyle(
-                        fontWeight: FontWeight.bold, color: Color.fromARGB(255, 160, 97, 3)),
+                        fontWeight: FontWeight.bold,
+                        color: Color.fromARGB(255, 160, 97, 3)),
                     onFieldSubmitted: (newValue) {
                       task.conductorId = newValue; // Update Km
                     },
@@ -252,7 +251,8 @@ class _ScreenEmployeeAssignNewState extends State<ScreenEmployeeAssignNew> {
                     ),
                     textAlign: TextAlign.center,
                     style: const TextStyle(
-                        fontWeight: FontWeight.bold, color: Color.fromARGB(255, 160, 97, 3)),
+                        fontWeight: FontWeight.bold,
+                        color: Color.fromARGB(255, 160, 97, 3)),
                     onFieldSubmitted: (newValue) {
                       task.driverId = newValue; // Update Km
                     },
@@ -265,7 +265,8 @@ class _ScreenEmployeeAssignNewState extends State<ScreenEmployeeAssignNew> {
                   child: Text('$cell',
                       style: taskbold
                           ? const TextStyle(
-                              fontWeight: FontWeight.bold,)
+                              fontWeight: FontWeight.bold,
+                            )
                           : const TextStyle(fontWeight: FontWeight.normal)),
                 ),
               );

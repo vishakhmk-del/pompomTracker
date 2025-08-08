@@ -7,11 +7,11 @@ part of 'bus_location.dart';
 // **************************************************************************
 
 BusLocation _$BusLocationFromJson(Map<String, dynamic> json) => BusLocation(
-  busId: json['bus_id'] as String?,
-  latitude: json['latitude'] as String?,
-  longitude: json['longitude'] as String?,
-  createdAt: json['created_at'] as String?,
-);
+      busId: json['bus_id'] as String?,
+      latitude: json['latitude'] as String?,
+      longitude: json['longitude'] as String?,
+      createdAt: json['created_at'] as String?,
+    );
 
 Map<String, dynamic> _$BusLocationToJson(BusLocation instance) =>
     <String, dynamic>{

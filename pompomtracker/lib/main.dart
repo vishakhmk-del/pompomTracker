@@ -1,6 +1,7 @@
 import 'package:pompomtracker/core/hook/hook.dart';
 import 'package:pompomtracker/provider/iconChange/iconChangeProvider.dart';
 import 'package:sizer/sizer.dart';
+
 const savekeyname = 'UserLoggedIn';
 const savedeviceinfo = '_userDeviceIn';
 void main() {
@@ -12,8 +13,7 @@ class MyApp extends StatelessWidget {
 
   // This widget is the root of your application.
   @override
-  Widget build(BuildContext context) => MultiProvider(
-    providers: [
+  Widget build(BuildContext context) => MultiProvider(providers: [
         ChangeNotifierProvider<LoadingProvider>(
             create: (context) => LoadingProvider()),
         ChangeNotifierProvider<RadiobuttonProvider>(
@@ -35,20 +35,18 @@ class MyApp extends StatelessWidget {
           builder: (context, child) {
             final themeProvider = Provider.of<ThemeProvider>(context);
             return MediaQuery(
-            data: MediaQuery.of(
-              context,
-            ).copyWith(textScaler: TextScaler.noScaling),
-            child: Sizer(
-              builder: (context, orientation, screenType) {
+              data: MediaQuery.of(
+                context,
+              ).copyWith(textScaler: TextScaler.noScaling),
+              child: Sizer(builder: (context, orientation, screenType) {
                 return MaterialApp(
-                title: 'PomPomTracker',
-                themeMode: themeProvider.themeMode,
-                theme: themeProvider.lightScheme,
-                darkTheme: themeProvider.darkScheme,
-                home: const ScreenSplash(),
-              );
-              }
-            ),
+                  title: 'PomPomTracker',
+                  themeMode: themeProvider.themeMode,
+                  theme: themeProvider.lightScheme,
+                  darkTheme: themeProvider.darkScheme,
+                  home: const ScreenSplash(),
+                );
+              }),
             );
           },
         ),

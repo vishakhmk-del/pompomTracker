@@ -74,8 +74,6 @@ afterEvaluate {
         throw new GradleException("pubspec.yaml file not found!")
     }
 }
-
-// ✅ **Ensure Flutter pub get runs**
 task updatePubspecVersion {
     doLast {
         def flutterSdkPath = System.getenv("FLUTTER_HOME") ?: "${System.properties['user.home']}/flutter"

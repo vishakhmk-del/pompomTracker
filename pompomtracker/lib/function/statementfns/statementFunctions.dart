@@ -2,6 +2,9 @@ import 'dart:developer';
 
 import 'package:intl/intl.dart';
 import 'package:pompomtracker/core/hook/hook.dart';
+import 'package:pompomtracker/model/daycollection/collection_det/collection_det.dart';
+import 'package:pompomtracker/model/daycollection/collection_det/data.dart';
+import 'package:pompomtracker/model/daycollection/daycollectionresp/daycollectionresp.dart';
 
 class StatementFunctions {
   StatementFunctions._internal();
@@ -11,6 +14,9 @@ class StatementFunctions {
   }
 
   ValueNotifier<List<TicketList>> getDatewiseStmntNotifier = ValueNotifier([]);
+  //ValueNotifier<List<Listdet>> getDayCollectionNotifier = ValueNotifier([]);
+  ValueNotifier<DataCollection?> getDayCollectionNotifier = ValueNotifier(null);
+  ValueNotifier<DataDetails?> getCollectDetNotifier = ValueNotifier(null);
 
   Future collectionStmntFn(String? selectedValue, Stmntfnparameter val) async {
     final sharevalue = await SharedPrefManager.instance.getSharedData();
@@ -81,6 +87,95 @@ class StatementFunctions {
       getDatewiseStmntNotifier.value.clear();
       getDatewiseStmntNotifier.value.addAll([]);
       getDatewiseStmntNotifier.notifyListeners();
+    }
+  }
+
+  Future getDayCollection(String collectDt, BuildContext context) async {
+    try {
+      Response<dynamic>? conductorListRespVar;
+      final sharedValue = await SharedPrefManager.instance.getSharedData();
+      final condutorReq =
+          BusListReq(userId: sharedValue!.userId, collectionDt: collectDt);
+
+      conductorListRespVar = await Busdata().daycollection(condutorReq);
+
+      if (conductorListRespVar == null) {
+        getDayCollectionNotifier.value = null;
+        getDayCollectionNotifier.notifyListeners();
+      } else if (conductorListRespVar.statusCode == 200) {
+        final resultAsJson = jsonDecode(conductorListRespVar.toString());
+        final conductorListRespVal =
+            Daycollectionresp.fromJson(resultAsJson as Map<String, dynamic>);
+
+        if (conductorListRespVal.status == 'success') {
+          getDayCollectionNotifier.value = conductorListRespVal.data;
+          getDayCollectionNotifier.notifyListeners();
+        } else if (conductorListRespVal.status == 'failed') {
+          getDayCollectionNotifier.value = null;
+          getDayCollectionNotifier.notifyListeners();
+        }
+      } else if (conductorListRespVar.statusCode == 401) {
+        if (!context.mounted) return;
+        Wklycollectfn.instance.showApierror(context, "Unauthenticated");
+      } else if (conductorListRespVar.statusCode == 500) {
+        if (!context.mounted) return;
+        Wklycollectfn.instance.showApierror(context, "Server Not reached");
+      } else if (conductorListRespVar.statusCode == 408) {
+        if (!context.mounted) return;
+        Wklycollectfn.instance.showApierror(context, "Connection time out");
+      } else {
+        if (!context.mounted) return;
+        Wklycollectfn.instance.showApierror(context, "Something went wrong");
+      }
+    } catch (e) {
+      if (!context.mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('An unexpected error occurred')),
+      );
+    }
+  }
+
+  Future getCollectionDet(String? busid,String? collectDt, BuildContext context) async {
+    try {
+      Response<dynamic>? conductorListRespVar;
+     
+      final condutorReq =
+          BusListReq(busId: busid, collectionDt: collectDt);
+
+      conductorListRespVar = await Busdata().collectDetails(condutorReq);
+
+      if (conductorListRespVar == null) {
+        getCollectDetNotifier.value = null;
+        getCollectDetNotifier.notifyListeners();
+      } else if (conductorListRespVar.statusCode == 200) {
+        final resultAsJson = jsonDecode(conductorListRespVar.toString());
+        final conductorListRespVal =CollectionDet.fromJson(resultAsJson as Map<String, dynamic>);
+
+        if (conductorListRespVal.status == 'success') {
+          getCollectDetNotifier.value = conductorListRespVal.data;
+          getCollectDetNotifier.notifyListeners();
+        } else if (conductorListRespVal.status == 'failed') {
+          getCollectDetNotifier.value = null;
+          getCollectDetNotifier.notifyListeners();
+        }
+      } else if (conductorListRespVar.statusCode == 401) {
+        if (!context.mounted) return;
+        Wklycollectfn.instance.showApierror(context, "Unauthenticated");
+      } else if (conductorListRespVar.statusCode == 500) {
+        if (!context.mounted) return;
+        Wklycollectfn.instance.showApierror(context, "Server Not reached");
+      } else if (conductorListRespVar.statusCode == 408) {
+        if (!context.mounted) return;
+        Wklycollectfn.instance.showApierror(context, "Connection time out");
+      } else {
+        if (!context.mounted) return;
+        Wklycollectfn.instance.showApierror(context, "Something went wrong");
+      }
+    } catch (e) {
+      if (!context.mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('An unexpected error occurred')),
+      );
     }
   }
 }

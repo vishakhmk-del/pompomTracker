@@ -1,7 +1,6 @@
 import 'dart:developer';
 import 'package:intl/intl.dart';
 import 'package:pompomtracker/core/hook/hook.dart';
-import 'package:pompomtracker/screens/main/screenmainPage.dart';
 
 class ScreenCollectionNew extends StatefulWidget {
   const ScreenCollectionNew({super.key});
@@ -110,12 +109,15 @@ class _ScreenCollectionNewState extends State<ScreenCollectionNew> {
         children: [
           BackgroundColorGradient(),
           Scaffold(
-            backgroundColor: Colors.transparent,
+              backgroundColor: Colors.transparent,
               appBar: AppBar(
                 backgroundColor: Theme.of(context).colorScheme.primary,
                 title: Text(
                   "Statements",
-                  style: Theme.of(context).textTheme.titleLarge?.copyWith(color: Colors.white),
+                  style: Theme.of(context)
+                      .textTheme
+                      .titleLarge
+                      ?.copyWith(color: Colors.white),
                 ),
                 leading: IconButton(
                     onPressed: () {
@@ -131,7 +133,10 @@ class _ScreenCollectionNewState extends State<ScreenCollectionNew> {
                               builder: (context) => const ScreenMainPage()),
                           (Route<dynamic> route) => false);
                     },
-                    icon: const Icon(Icons.arrow_back,color: Colors.white,)),
+                    icon: const Icon(
+                      Icons.arrow_back,
+                      color: Colors.white,
+                    )),
               ),
               body: ListView(
                 controller: _listViewController,
@@ -894,7 +899,8 @@ class _ScreenCollectionNewState extends State<ScreenCollectionNew> {
             return const Center(
               child: Padding(
                 padding: EdgeInsets.symmetric(vertical: 50),
-                child: CircularProgressIndicator(color:Color.fromARGB(255, 204, 123, 2)),
+                child: CircularProgressIndicator(
+                    color: Color.fromARGB(255, 204, 123, 2)),
               ),
             );
           }
@@ -922,7 +928,8 @@ class _ScreenCollectionNewState extends State<ScreenCollectionNew> {
               dataRowMinHeight: 35,
               headingRowHeight: 35,
               columnSpacing: 15,
-              headingRowColor: WidgetStateProperty.all(Color.fromARGB(255, 204, 123, 2)),
+              headingRowColor:
+                  WidgetStateProperty.all(Color.fromARGB(255, 204, 123, 2)),
               columns: getColumns(dropdownsearchvalue == dtWise ||
                       dropdownsearchvalue == bsWise
                   ? Provider.of<CollectionDrpDwnProvider>(context,
@@ -1047,7 +1054,7 @@ class _ScreenCollectionNewState extends State<ScreenCollectionNew> {
                     style: taskbold
                         ? const TextStyle(
                             fontWeight: FontWeight.bold,
-                            )
+                          )
                         : const TextStyle(fontWeight: FontWeight.normal)),
               ),
               //onTap: () {}

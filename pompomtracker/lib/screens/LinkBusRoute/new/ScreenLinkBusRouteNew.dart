@@ -60,12 +60,10 @@ class _ScreenLinkBusRouteNewState extends State<ScreenLinkBusRouteNew> {
 
   Future<bool?> popscreen(BuildContext context) async {
     if (widget.flag == 0) {
-                      Navigator.pushReplacement(
-                          context, Approutes().settingscreen);
-                    } else {
-                      Navigator.pushReplacement(context,
-                          Approutes().busRouteListNewScreen);
-                    }
+      Navigator.pushReplacement(context, Approutes().settingscreen);
+    } else {
+      Navigator.pushReplacement(context, Approutes().busRouteListNewScreen);
+    }
     return true;
   }
 
@@ -87,23 +85,22 @@ class _ScreenLinkBusRouteNewState extends State<ScreenLinkBusRouteNew> {
             // key: _scafoldkey,
             backgroundColor: Colors.transparent,
             appBar: AppBar(
-              backgroundColor: Theme.of(context).colorScheme.primary,
+                backgroundColor: Theme.of(context).colorScheme.primary,
                 leading: IconButton(
-                  icon: const Icon(Icons.arrow_back,color:Colors.white),
+                  icon: const Icon(Icons.arrow_back, color: Colors.white),
                   onPressed: () {
                     if (widget.flag == 0) {
                       Navigator.pushReplacement(
                           context, Approutes().settingscreen);
                     } else {
-                      Navigator.pushReplacement(context,
-                          Approutes().busRouteListNewScreen);
+                      Navigator.pushReplacement(
+                          context, Approutes().busRouteListNewScreen);
                     }
                   },
                 ),
                 title: Text(
                   "Link Bus Route",
-                  style:
-                      TextStyle(color: Colors.white),
+                  style: TextStyle(color: Colors.white),
                 )),
             body: Center(
               child: ListView(
@@ -132,8 +129,8 @@ class _ScreenLinkBusRouteNewState extends State<ScreenLinkBusRouteNew> {
                                 child: Column(
                                   children: [
                                     const CircleAvatar(
-                                      backgroundImage:
-                                          AssetImage('assets/bus/busmaster.png'),
+                                      backgroundImage: AssetImage(
+                                          'assets/bus/busmaster.png'),
                                       radius: 50,
                                     ),
                                     const SizedBox(
@@ -172,11 +169,13 @@ class _ScreenLinkBusRouteNewState extends State<ScreenLinkBusRouteNew> {
                                         ),
                                         decoration: InputDecoration(
                                           labelText: 'Select Bus',
-                                          labelStyle:
-                                              Theme.of(context).textTheme.bodySmall,
+                                          labelStyle: Theme.of(context)
+                                              .textTheme
+                                              .bodySmall,
                                         ),
-                                        dropdownColor:
-                                            Theme.of(context).colorScheme.tertiary,
+                                        dropdownColor: Theme.of(context)
+                                            .colorScheme
+                                            .tertiary,
                                         validator: (value) {
                                           if (value!.isEmpty) {
                                             return 'Select Bus Type';
@@ -202,7 +201,8 @@ class _ScreenLinkBusRouteNewState extends State<ScreenLinkBusRouteNew> {
                                               ? 'via - ${routeText[1]}'
                                               : '';
                                           return DropdownMenuItem<String>(
-                                              value: busMap['routeId'] as String,
+                                              value:
+                                                  busMap['routeId'] as String,
                                               // Use routeId as the value
                                               child: RichText(
                                                 text: TextSpan(
@@ -232,7 +232,7 @@ class _ScreenLinkBusRouteNewState extends State<ScreenLinkBusRouteNew> {
                                         onChanged: (newValue) {
                                           setState(() {
                                             selectedRouteList = newValue;
-                                           // selectedRouteId = int.parse(newValue!);
+                                            // selectedRouteId = int.parse(newValue!);
                                             // Store the selected routeId
                                           });
                                         },
@@ -251,11 +251,13 @@ class _ScreenLinkBusRouteNewState extends State<ScreenLinkBusRouteNew> {
                                         ),
                                         decoration: InputDecoration(
                                           labelText: 'Select Route',
-                                          labelStyle:
-                                              Theme.of(context).textTheme.bodySmall,
+                                          labelStyle: Theme.of(context)
+                                              .textTheme
+                                              .bodySmall,
                                         ),
-                                        dropdownColor:
-                                            Theme.of(context).colorScheme.tertiary,
+                                        dropdownColor: Theme.of(context)
+                                            .colorScheme
+                                            .tertiary,
                                         validator: (value) {
                                           if (value == null) {
                                             return 'Select Route';
@@ -266,110 +268,126 @@ class _ScreenLinkBusRouteNewState extends State<ScreenLinkBusRouteNew> {
                                       ),
                                     ),
                                     const SizedBox(height: 20),
-                                
+
                                     const SizedBox(
                                       height: 20,
                                     ),
-                                   widget.flag == 0 ? 
-                                   Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                      children: [
-                                        Container(
-                                          decoration: BoxDecoration(
-                                            borderRadius: BorderRadius.circular(10),
-                                            gradient: LinearGradient(
-                                              begin: Alignment.topLeft,
-                                              end: Alignment.bottomRight,
-                                              colors: [
-                                                Theme.of(context).colorScheme.primary,
-                                                Theme.of(context).colorScheme.secondary,
-                                              ],
-                                            ),
-                                          ),
-                                          child: Theme(
-                                            data: MyTheme.buttonStyleTheme,
-                                            child: ElevatedButton(
-                                              onPressed: () {
-                                                linkRouteMasterSave(context);
-                                              },
-                                              child: Text(
-                                                  'LINK',
-                                                  style: Theme.of(context)
-                                                      .textTheme
-                                                      .titleMedium),
-                                            ),
-                                          ),
-                                        ),
-                                        Container(
-                                        decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.circular(10),
-                                          gradient: LinearGradient(
-                                            begin: Alignment.topLeft,
-                                            end: Alignment.bottomRight,
-                                            colors: [
-                                              Theme.of(context)
-                                                  .colorScheme
-                                                  .primary,
-                                              Theme.of(context)
-                                                  .colorScheme
-                                                  .secondary,
+                                    widget.flag == 0
+                                        ? Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceEvenly,
+                                            children: [
+                                              Container(
+                                                decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.circular(10),
+                                                  gradient: LinearGradient(
+                                                    begin: Alignment.topLeft,
+                                                    end: Alignment.bottomRight,
+                                                    colors: [
+                                                      Theme.of(context)
+                                                          .colorScheme
+                                                          .primary,
+                                                      Theme.of(context)
+                                                          .colorScheme
+                                                          .secondary,
+                                                    ],
+                                                  ),
+                                                ),
+                                                child: Theme(
+                                                  data:
+                                                      MyTheme.buttonStyleTheme,
+                                                  child: ElevatedButton(
+                                                    onPressed: () {
+                                                      linkRouteMasterSave(
+                                                          context);
+                                                    },
+                                                    child: Text('LINK',
+                                                        style: Theme.of(context)
+                                                            .textTheme
+                                                            .titleMedium),
+                                                  ),
+                                                ),
+                                              ),
+                                              Container(
+                                                decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.circular(10),
+                                                  gradient: LinearGradient(
+                                                    begin: Alignment.topLeft,
+                                                    end: Alignment.bottomRight,
+                                                    colors: [
+                                                      Theme.of(context)
+                                                          .colorScheme
+                                                          .primary,
+                                                      Theme.of(context)
+                                                          .colorScheme
+                                                          .secondary,
+                                                    ],
+                                                  ),
+                                                ),
+                                                child: Theme(
+                                                  data:
+                                                      MyTheme.buttonStyleTheme,
+                                                  child: ElevatedButton(
+                                                    onPressed: () {
+                                                      Navigator.push(
+                                                          context,
+                                                          Approutes()
+                                                              .busRouteListNewScreen);
+                                                    },
+                                                    child: Text(
+                                                      'VIEW',
+                                                      style: Theme.of(context)
+                                                          .textTheme
+                                                          .titleMedium,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
                                             ],
-                                          ),
-                                        ),
-                                        child: Theme(
-                                          data: MyTheme.buttonStyleTheme,
-                                          child: ElevatedButton(
-                                            onPressed: () {
-                                              Navigator.push(
-                                                  context,
-                                                  Approutes()
-                                                      .busRouteListNewScreen);
-                                            },
-                                            child: Text(
-                                              'VIEW',
-                                              style: Theme.of(context)
-                                                  .textTheme
-                                                  .titleMedium,
+                                          )
+                                        : Container(
+                                            decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(10),
+                                              gradient: LinearGradient(
+                                                begin: Alignment.topLeft,
+                                                end: Alignment.bottomRight,
+                                                colors: [
+                                                  Theme.of(context)
+                                                      .colorScheme
+                                                      .primary,
+                                                  Theme.of(context)
+                                                      .colorScheme
+                                                      .secondary,
+                                                ],
+                                              ),
+                                            ),
+                                            child: Theme(
+                                              data: MyTheme.buttonStyleTheme,
+                                              child: ElevatedButton(
+                                                onPressed: () {
+                                                  linkRouteMasterSave(context);
+                                                },
+                                                child: Text('UPDATE',
+                                                    style: Theme.of(context)
+                                                        .textTheme
+                                                        .titleMedium),
+                                              ),
                                             ),
                                           ),
-                                        ),
-                                      ),
-                                      ],
-                                    ):Container(
-                                          decoration: BoxDecoration(
-                                            borderRadius: BorderRadius.circular(10),
-                                            gradient: LinearGradient(
-                                              begin: Alignment.topLeft,
-                                              end: Alignment.bottomRight,
-                                              colors: [
-                                                Theme.of(context).colorScheme.primary,
-                                                Theme.of(context).colorScheme.secondary,
-                                              ],
-                                            ),
-                                          ),
-                                          child: Theme(
-                                            data: MyTheme.buttonStyleTheme,
-                                            child: ElevatedButton(
-                                              onPressed: () {
-                                                linkRouteMasterSave(context);
-                                              },
-                                              child: Text(
-                                                  'UPDATE',
-                                                  style: Theme.of(context)
-                                                      .textTheme
-                                                      .titleMedium),
-                                            ),
-                                          ),
-                                        ),
                                     const SizedBox(height: 10),
-                                    Consumer<LoadingProvider>(
-                                        builder: (context, loadingProvider, child) {
+                                    Consumer<LoadingProvider>(builder:
+                                        (context, loadingProvider, child) {
                                       return loadingProvider.isLoading
                                           ? const Center(
                                               child: CircularProgressIndicator(
                                                 valueColor:
-                                                    AlwaysStoppedAnimation<Color>(
-                                                  Color.fromARGB(255, 2, 128, 6),
+                                                    AlwaysStoppedAnimation<
+                                                        Color>(
+                                                  Color.fromARGB(
+                                                      255, 2, 128, 6),
                                                 ),
                                               ),
                                             )
@@ -393,11 +411,11 @@ class _ScreenLinkBusRouteNewState extends State<ScreenLinkBusRouteNew> {
   }
 
   Future linkRouteMasterSave(BuildContext context) async {
-    if(!context.mounted)return;
+    if (!context.mounted) return;
     final loadingProvider = context.read<LoadingProvider>();
     loadingProvider.toggleLoading();
     final registrationNo = selectedBusList;
-    final routeId =int.parse(selectedRouteList!) ;
+    final routeId = int.parse(selectedRouteList!);
 
     // print(widget.routeId);
     // print(routeId);
@@ -434,8 +452,9 @@ class _ScreenLinkBusRouteNewState extends State<ScreenLinkBusRouteNew> {
           textColor: Colors.black,
           fontSize: 15.0);
       if (!context.mounted) return;
-      widget.flag==0?
-      Navigator.push(context, Approutes().settingscreen):Navigator.push(context, Approutes().busRouteListNewScreen);
+      widget.flag == 0
+          ? Navigator.push(context, Approutes().settingscreen)
+          : Navigator.push(context, Approutes().busRouteListNewScreen);
     } else if (resValue.status == 'failed') {
       showerror(_scafoldkey.currentContext, 2);
     } else {

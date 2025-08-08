@@ -13,7 +13,6 @@ DataCount _$DataCountFromJson(Map<String, dynamic> json) => DataCount(
       userName: json['user_name'] as String?,
       ownerName: json['owner_name'] as String?,
       token: json['access_token'] as String?,
-
     );
 
 Map<String, dynamic> _$DataCountToJson(DataCount instance) => <String, dynamic>{
@@ -22,5 +21,5 @@ Map<String, dynamic> _$DataCountToJson(DataCount instance) => <String, dynamic>{
       'user_type': instance.userType,
       'user_name': instance.userName,
       'owner_name': instance.ownerName,
-      'access_token':instance.token
+      'access_token': instance.token,
     };

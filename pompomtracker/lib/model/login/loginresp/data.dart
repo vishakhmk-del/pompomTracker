@@ -16,16 +16,14 @@ class DataCount {
   String? ownerName;
   @JsonKey(name: 'access_token')
   String? token;
-  
 
-  DataCount({
-    this.errorCode,
-    this.userId,
-    this.userType,
-    this.userName,
-    this.ownerName,
-    this.token
-  });
+  DataCount(
+      {this.errorCode,
+      this.userId,
+      this.userType,
+      this.userName,
+      this.ownerName,
+      this.token});
 
   factory DataCount.fromJson(Map<String, dynamic> json) =>
       _$DataCountFromJson(json);

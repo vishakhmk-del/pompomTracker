@@ -15,7 +15,8 @@ class _ScreenDriverViewNewState extends State<ScreenDriverViewNew> {
   List<String> registarionlst = [];
   String? selectedBusList;
   Future<bool?> popscreen(BuildContext context) async {
-      Navigator.pop(context,false);
+    ConductorListFunctions.instance.getDriveristNotifier.value=[];
+    Navigator.pop(context, false);
     return true;
   }
 
@@ -44,18 +45,22 @@ class _ScreenDriverViewNewState extends State<ScreenDriverViewNew> {
       },
       child: Stack(
         children: [
-          BackgroundColorGradient(),
+          //BackgroundColorGradient(),
           Scaffold(
-            backgroundColor: Colors.transparent,
+            backgroundColor: Colors.white,
             appBar: AppBar(
               backgroundColor: Theme.of(context).colorScheme.primary,
               leading: IconButton(
-                icon: const Icon(Icons.arrow_back,color: Colors.white,),
+                icon: const Icon(
+                  Icons.arrow_back,
+                  color: Colors.white,
+                ),
                 onPressed: () {
-                 Navigator.pop(context,false);
+                ConductorListFunctions.instance.getDriveristNotifier.value=[];
 
-                      //Navigator.pushReplacement(context, Approutes().employeescreen);
+                  Navigator.pop(context, false);
 
+                  //Navigator.pushReplacement(context, Approutes().employeescreen);
                 },
               ),
               title: Text(
@@ -68,19 +73,18 @@ class _ScreenDriverViewNewState extends State<ScreenDriverViewNew> {
                 Expanded(
                   child: ScrollableWidget(
                     child: ValueListenableBuilder(
-                        valueListenable:
-                            ConductorListFunctions.instance.getDriveristNotifier,
+                        valueListenable: ConductorListFunctions
+                            .instance.getDriveristNotifier,
                         builder: (BuildContext context, List<Listdet> newList,
                             Widget? _) {
                           return Column(
                             children: [
                               if (newList.isNotEmpty) ...[
+                                SizedBox(height: 10,),
                                 Container(
                                   decoration: BoxDecoration(
                                     border: Border.all(
-                                        color: Theme.of(context)
-                                            .colorScheme
-                                            .onSecondary),
+                                        color: Colors.black),
                                     //borderRadius:const BorderRadius.only(topLeft: Radius.circular(12),topRight: Radius.circular(12)),
                                   ),
                                   child: DataTable(
@@ -110,14 +114,17 @@ class _ScreenDriverViewNewState extends State<ScreenDriverViewNew> {
                                       return Center(
                                         child: Padding(
                                           padding: EdgeInsets.symmetric(
-                                            vertical:
-                                                MediaQuery.of(context).size.height /
-                                                    2.5,
-                                            horizontal:
-                                                MediaQuery.of(context).size.width /
-                                                    2.3,
+                                            vertical: MediaQuery.of(context)
+                                                    .size
+                                                    .height /
+                                                2.5,
+                                            horizontal: MediaQuery.of(context)
+                                                    .size
+                                                    .width /
+                                                2.3,
                                           ),
-                                          child: const CircularProgressIndicator(),
+                                          child:
+                                              const CircularProgressIndicator(),
                                         ),
                                       );
                                     } else {
@@ -125,12 +132,14 @@ class _ScreenDriverViewNewState extends State<ScreenDriverViewNew> {
                                       return Center(
                                         child: Padding(
                                           padding: EdgeInsets.symmetric(
-                                            vertical:
-                                                MediaQuery.of(context).size.height /
-                                                    2.5,
-                                            horizontal:
-                                                MediaQuery.of(context).size.width /
-                                                    2.7,
+                                            vertical: MediaQuery.of(context)
+                                                    .size
+                                                    .height /
+                                                2.5,
+                                            horizontal: MediaQuery.of(context)
+                                                    .size
+                                                    .width /
+                                                2.7,
                                           ),
                                           child: Text(
                                             'No data found',
@@ -163,7 +172,7 @@ class _ScreenDriverViewNewState extends State<ScreenDriverViewNew> {
       return DataColumn(
         label: Text(
           column,
-          style: Theme.of(context).textTheme.bodyLarge,
+          style: Theme.of(context).textTheme.bodyLarge?.copyWith(color: Colors.white),
         ),
       );
     }).toList();
@@ -180,7 +189,7 @@ class _ScreenDriverViewNewState extends State<ScreenDriverViewNew> {
             Center(
               child: Text(
                 '$index', // Display the serial number
-                style: const TextStyle(fontWeight: FontWeight.bold),
+                style: const TextStyle(fontWeight: FontWeight.bold,color: Colors.black),
               ),
             ),
           ),
@@ -191,8 +200,9 @@ class _ScreenDriverViewNewState extends State<ScreenDriverViewNew> {
                 child: Text('$cell',
                     style: taskbold
                         ? const TextStyle(
-                            fontWeight: FontWeight.bold,)
-                        : const TextStyle(fontWeight: FontWeight.normal)),
+                            fontWeight: FontWeight.bold,color: Colors.black
+                          )
+                        : const TextStyle(fontWeight: FontWeight.normal,color: Colors.black)),
               ),
             );
           }),
@@ -203,8 +213,8 @@ class _ScreenDriverViewNewState extends State<ScreenDriverViewNew> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) =>
-                            ScreenEmployeeNew(conductor_id: task.empId, flag: 2),
+                        builder: (context) => ScreenEmployeeNew(
+                            conductor_id: task.empId, flag: 2),
                       ),
                     );
                   },
@@ -214,7 +224,6 @@ class _ScreenDriverViewNewState extends State<ScreenDriverViewNew> {
                   )),
             ),
           ),
-          
         ],
       );
     }).toList();

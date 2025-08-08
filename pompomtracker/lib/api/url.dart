@@ -6,7 +6,6 @@ class Url {
   String baseUrl = 'http://117.221.68.183:81/Qrpay/index.php';
 
   String loginUrl = '/Home_C/owner_login_v';
-
   String getBusUrl = '/Master_C/get_bustype';
   String busSave = '/Master_C/bus_save';
   String routeSave = '/Master_C/route_save';
@@ -67,6 +66,8 @@ class Url {
   String empDetUrl = '/Owner_C/employee_details';
   String empUpdtUrl = '/Owner_C/update_employee';
   String realBusDet = '/Master_C/real_time_busdet';
-  String stopdetUrl ='/Home_C/stop_details';
+  String stopdetUrl = '/Home_C/stop_details';
   String busLiveLocUrl = '/Home_C/bus_location';
+  String dayCollectionUrl = '/Master_C/bus_collection';
+  String collectDetUrl = '/Master_C/trip_collection_by_bus';
 }

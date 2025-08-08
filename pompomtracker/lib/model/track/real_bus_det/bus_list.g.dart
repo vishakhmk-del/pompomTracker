@@ -21,7 +21,8 @@ BusDetList _$BusDetListFromJson(Map<String, dynamic> json) => BusDetList(
       tripStatus: json['trip_status'] as String?,
     );
 
-Map<String, dynamic> _$BusDetListToJson(BusDetList instance) => <String, dynamic>{
+Map<String, dynamic> _$BusDetListToJson(BusDetList instance) =>
+    <String, dynamic>{
       'bus_name': instance.busName,
       'bus_id': instance.busId,
       'registration_no': instance.registrationNo,
@@ -29,9 +30,9 @@ Map<String, dynamic> _$BusDetListToJson(BusDetList instance) => <String, dynamic
       'live_latitude': instance.liveLatitude,
       'live_longitude': instance.liveLongitude,
       'live_date': instance.liveDate,
-      'trip_id':instance.tripId,
-      'from_station':instance.fromStation,
-      'to_station':instance.toStation,
-      'trip_name':instance.tripName,
-      'trip_status':instance.tripStatus
+      'trip_id': instance.tripId,
+      'trip_name': instance.tripName,
+      'from_station': instance.fromStation,
+      'to_station': instance.toStation,
+      'trip_status': instance.tripStatus,
     };

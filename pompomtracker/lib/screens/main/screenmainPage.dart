@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:math';
 import 'package:pompomtracker/core/hook/hook.dart';
 import 'package:pompomtracker/screens/Collection/new/screencollectionNew.dart';
+import 'package:pompomtracker/screens/Daily%20Collection/screenDailyCollection.dart';
 import 'package:pompomtracker/screens/Track/ScreenTrackMyBus.dart';
 import 'package:pompomtracker/screens/home/new/screenSettings.dart';
 import 'package:pompomtracker/widgets/navBar/navbarDM.dart';
@@ -46,36 +47,37 @@ class _ScreenMainPageState extends State<ScreenMainPage> {
     _pageController.dispose();
     super.dispose();
   }
-Future<bool?> showWarning(BuildContext context) async => showDialog<bool>(
-    barrierDismissible: false,
-    context: context,
-    builder: (context) => AlertDialog(
-      backgroundColor: Colors.white,
-          title: Text("Do you want to exit app?",
-              style: TextStyle(color: Theme.of(context).colorScheme.primary)),
-          actions: [
-            ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Theme.of(context).colorScheme.primary,
+
+  Future<bool?> showWarning(BuildContext context) async => showDialog<bool>(
+      barrierDismissible: false,
+      context: context,
+      builder: (context) => AlertDialog(
+            backgroundColor: Colors.white,
+            title: Text("Do you want to exit app?",
+                style: TextStyle(color: Theme.of(context).colorScheme.primary)),
+            actions: [
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Theme.of(context).colorScheme.primary,
+                ),
+                onPressed: () => Navigator.pop(context, false),
+                child: Text("No",
+                    style: TextStyle(
+                        color: Theme.of(context).colorScheme.onPrimary)),
               ),
-              onPressed: () => Navigator.pop(context, false),
-              child: Text("No",
-                  style: TextStyle(
-                      color: Theme.of(context).colorScheme.onPrimary)),
-            ),
-            ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Theme.of(context).colorScheme.primary,
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Theme.of(context).colorScheme.primary,
+                ),
+                onPressed: () =>
+                    // SystemNavigator.pop(),
+                    Navigator.pop(context, true),
+                child: Text("Yes",
+                    style: TextStyle(
+                        color: Theme.of(context).colorScheme.onPrimary)),
               ),
-              onPressed: () =>
-                  // SystemNavigator.pop(),
-                  Navigator.pop(context, true),
-              child: Text("Yes",
-                  style: TextStyle(
-                      color: Theme.of(context).colorScheme.onPrimary)),
-            ),
-          ],
-        ));
+            ],
+          ));
   @override
   Widget build(BuildContext context) {
     var screenSize = MediaQuery.of(context).size;
@@ -190,31 +192,38 @@ Future<bool?> showWarning(BuildContext context) async => showDialog<bool>(
                       Icons.bar_chart,
                       Icons.settings
                     ];
-      
+
                     return LayoutBuilder(
                       builder: (context, constraints) {
                         return InkWell(
                           onTap: () {
-                            if(index==0){
+                            if (index == 0) {
                               Navigator.of(context).push(
                                 MaterialPageRoute(
                                   builder: (context) => const ScreenMapTrack(),
                                 ),
                               );
-                            }else if(index==2){
+                            } else if (index == 1) {
                               Navigator.of(context).push(
                                 MaterialPageRoute(
-                                  builder: (context) => const ScreenCollectionNew(),
+                                  builder: (context) =>
+                                      const ScreenDailyCollection(),
                                 ),
                               );
-                            }else if(index==3){
+                            } else if (index == 2) {
+                              Navigator.of(context).push(
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      const ScreenCollectionNew(),
+                                ),
+                              );
+                            } else if (index == 3) {
                               Navigator.of(context).push(
                                 MaterialPageRoute(
                                   builder: (context) => const ScreenSettings(),
                                 ),
                               );
                             }
-                            
                           },
                           child: SizedBox(
                             width: double.infinity,

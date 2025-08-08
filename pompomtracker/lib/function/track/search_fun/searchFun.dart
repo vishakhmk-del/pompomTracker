@@ -1,4 +1,3 @@
-
 import 'dart:developer';
 
 import 'package:pompomtracker/core/hook/hook.dart';
@@ -13,11 +12,9 @@ class SearchFun {
   SearchFun factory() {
     return instance;
   }
- 
- 
 
-   Future<DataList?> fetchStopLoc(BusListReq req,BuildContext context) async {
-      DataList? value;
+  Future<DataList?> fetchStopLoc(BusListReq req, BuildContext context) async {
+    DataList? value;
     try {
       final bnkLstresp = await Busdata().fetchStopLoc(req);
       String? message;
@@ -66,9 +63,11 @@ class SearchFun {
     }
     return null;
   }
-  Future<BusLocation?> fetchLiveBusLoc(BusListReq req,BuildContext context) async {
-      //Datalive? value;
-      BusLocation? busLocation;
+
+  Future<BusLocation?> fetchLiveBusLoc(
+      BusListReq req, BuildContext context) async {
+    //Datalive? value;
+    BusLocation? busLocation;
     try {
       final bnkLstresp = await Busdata().liveBusLoc(req);
       String? message;
@@ -84,7 +83,6 @@ class SearchFun {
           final cpaymob = bnklstVal.data?.busLocation;
           return cpaymob;
         } else if (bnklstVal.status == 'failed') {
-          
           log("no live location found");
         }
       } else if (message == 'Unauthenticated' || bnkLstresp.statusCode == 401) {

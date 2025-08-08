@@ -70,7 +70,7 @@ class Livelocationfun {
             _positionSubscription?.cancel();
             if (!_isServiceRestarting) {
               _isServiceRestarting = true;
-              if(!context.mounted) return;
+              if (!context.mounted) return;
               await _handleLocationDisabled(context);
               _isServiceRestarting = false;
             }
@@ -135,52 +135,50 @@ class Livelocationfun {
   Future<void> _showLocationSettingsDialog(BuildContext context) async {
     await showDialog(
       context: context,
-      builder:
-          (context) => AlertDialog(
-            backgroundColor: Theme.of(context).colorScheme.primaryFixed,
-            title: const Text("Enable Location Services"),
-            content: const Text("Location services need to be enabled."),
-            actions: [
-              TextButton(
-                onPressed: () => Navigator.of(context).pop(),
-                child: const Text("Cancel"),
-              ),
-              TextButton(
-                onPressed: () async {
-                  Navigator.of(context).pop();
-                  await Geolocator.openLocationSettings();
-                },
-                child: const Text("Open Settings"),
-              ),
-            ],
+      builder: (context) => AlertDialog(
+        backgroundColor: Theme.of(context).colorScheme.primaryFixed,
+        title: const Text("Enable Location Services"),
+        content: const Text("Location services need to be enabled."),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: const Text("Cancel"),
           ),
+          TextButton(
+            onPressed: () async {
+              Navigator.of(context).pop();
+              await Geolocator.openLocationSettings();
+            },
+            child: const Text("Open Settings"),
+          ),
+        ],
+      ),
     );
   }
 
   void _showPermissionPermanentlyDeniedDialog(BuildContext context) {
     showDialog(
       context: context,
-      builder:
-          (context) => AlertDialog(
-            backgroundColor: Theme.of(context).colorScheme.primaryFixed,
-            title: const Text("Permission Denied Forever"),
-            content: const Text(
-              "Location permission is permanently denied. Please enable it in settings.",
-            ),
-            actions: [
-              TextButton(
-                onPressed: () => Navigator.of(context).pop(),
-                child: const Text("Cancel"),
-              ),
-              TextButton(
-                onPressed: () async {
-                  Navigator.of(context).pop();
-                  await openAppSettings();
-                },
-                child: const Text("Open Settings"),
-              ),
-            ],
+      builder: (context) => AlertDialog(
+        backgroundColor: Theme.of(context).colorScheme.primaryFixed,
+        title: const Text("Permission Denied Forever"),
+        content: const Text(
+          "Location permission is permanently denied. Please enable it in settings.",
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: const Text("Cancel"),
           ),
+          TextButton(
+            onPressed: () async {
+              Navigator.of(context).pop();
+              await openAppSettings();
+            },
+            child: const Text("Open Settings"),
+          ),
+        ],
+      ),
     );
   }
 

@@ -1,12 +1,11 @@
 import 'dart:developer';
 import 'package:pompomtracker/core/hook/hook.dart';
-import 'package:pompomtracker/screens/main/screenmainPage.dart';
 import 'package:pompomtracker/screens/stop/new/ScreenAddnewStpNew.dart';
 import 'package:pompomtracker/screens/stop/new/ScreenChangeStopNameNew.dart';
 
 class ScreenStopListNew extends StatefulWidget {
-  const ScreenStopListNew({super.key,required this.flag});
-final int flag;
+  const ScreenStopListNew({super.key, required this.flag});
+  final int flag;
   @override
   State<ScreenStopListNew> createState() => _ScreenStopListNewState();
 }
@@ -49,11 +48,11 @@ class _ScreenStopListNewState extends State<ScreenStopListNew> {
   Future<bool?> popscreen(BuildContext context) async {
     selectedTaskNotifier.value = StatementType.collectionType;
     selectedModeNotifier.value = StatementType.both;
-    widget.flag==0?
-    Navigator.of(context).pushAndRemoveUntil(
-        MaterialPageRoute(builder: (context) => const ScreenMainPage()),
-        (Route<dynamic> route) => false):
-    Navigator.push(context, Approutes().settingscreen);
+    widget.flag == 0
+        ? Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(builder: (context) => const ScreenMainPage()),
+            (Route<dynamic> route) => false)
+        : Navigator.push(context, Approutes().settingscreen);
     return true;
   }
 
@@ -70,25 +69,28 @@ class _ScreenStopListNewState extends State<ScreenStopListNew> {
         },
         child: Stack(
           children: [
-            BackgroundColorGradient(),
+            // BackgroundColorGradient(),
             Scaffold(
-              backgroundColor: Colors.transparent,
+                backgroundColor: Colors.white,
                 appBar: AppBar(
                   backgroundColor: Theme.of(context).colorScheme.primary,
                   leading: IconButton(
-                    icon: const Icon(Icons.arrow_back,color: Colors.white,),
+                    icon: const Icon(
+                      Icons.arrow_back,
+                      color: Colors.white,
+                    ),
                     onPressed: () {
-                      widget.flag==0?
-                      Navigator.of(context).pushAndRemoveUntil(
-                          MaterialPageRoute(builder: (context) => const ScreenMainPage()),
-                          (Route<dynamic> route) => false):
-                      Navigator.push(context, Approutes().settingscreen);
+                      widget.flag == 0
+                          ? Navigator.of(context).pushAndRemoveUntil(
+                              MaterialPageRoute(
+                                  builder: (context) => const ScreenMainPage()),
+                              (Route<dynamic> route) => false)
+                          : Navigator.push(context, Approutes().settingscreen);
                     },
                   ),
                   title: Text(
                     'Stop List',
-                    style:
-                        TextStyle(color:Colors.white),
+                    style: TextStyle(color: Colors.white),
                   ),
                 ),
                 body: Column(
@@ -99,7 +101,9 @@ class _ScreenStopListNewState extends State<ScreenStopListNew> {
                         child: Container(
                             decoration: BoxDecoration(
                               border: Border.all(
-                                  color: Theme.of(context).colorScheme.onSecondary),
+                                  color: Theme.of(context)
+                                      .colorScheme
+                                      .onSecondary),
                               borderRadius: BorderRadius.circular(12),
                             ),
                             child: Form(
@@ -117,8 +121,9 @@ class _ScreenStopListNewState extends State<ScreenStopListNew> {
                                                 .titleLarge,
                                           ),
                                           SizedBox(
-                                            width:
-                                                MediaQuery.of(context).size.width,
+                                            width: MediaQuery.of(context)
+                                                .size
+                                                .width,
                                             child: Padding(
                                               padding: const EdgeInsets.only(
                                                   top: 25, left: 5, right: 5),
@@ -127,7 +132,8 @@ class _ScreenStopListNewState extends State<ScreenStopListNew> {
                                                 dropdownColor: Theme.of(context)
                                                     .colorScheme
                                                     .tertiary,
-                                                icon: Icon(Icons.arrow_drop_down,
+                                                icon: Icon(
+                                                    Icons.arrow_drop_down,
                                                     color: Theme.of(context)
                                                         .colorScheme
                                                         .onSecondary),
@@ -142,10 +148,12 @@ class _ScreenStopListNewState extends State<ScreenStopListNew> {
                                                       .textTheme
                                                       .labelLarge,
                                                 ),
-                                                items: tripnamelst.map((tripMap) {
+                                                items:
+                                                    tripnamelst.map((tripMap) {
                                                   String combinedValue =
                                                       '${tripMap['tripId']}+${tripMap['display']}';
-                                                  return DropdownMenuItem<String>(
+                                                  return DropdownMenuItem<
+                                                      String>(
                                                     value: combinedValue,
                                                     child: Text(
                                                       tripMap['display']
@@ -169,11 +177,12 @@ class _ScreenStopListNewState extends State<ScreenStopListNew> {
                                                   //  print(tripId);
                                                   //  print(display);
                                                   //final value=tripMap['display'] as String;
-            
+
                                                   context
-                                                      .read<ElevatedBtnProvider>()
+                                                      .read<
+                                                          ElevatedBtnProvider>()
                                                       .changeSelectedVal(false);
-            
+
                                                   setState(() {
                                                     dropdownbusvalue = newvalue;
                                                     //context.read<ElevatedBtnProvider>().changeSelectedVal(true);
@@ -220,8 +229,9 @@ class _ScreenStopListNewState extends State<ScreenStopListNew> {
                                                       context
                                                           .read<
                                                               ElevatedBtnProvider>()
-                                                          .changeSelectedVal(true);
-            
+                                                          .changeSelectedVal(
+                                                              true);
+
                                                       StopFunctions.instance
                                                           .stopDetFn(tripId);
                                                     }
@@ -263,44 +273,53 @@ class _ScreenStopListNewState extends State<ScreenStopListNew> {
           return Column(
             children: [
               if (newList.isNotEmpty) ...[
-                Card(
-                  margin: const EdgeInsets.all(10),
-                  elevation: 3,
-                  child: Container(
-                    decoration: BoxDecoration(
-                      border: Border.all(
-                          color: Theme.of(context).colorScheme.onSecondary),
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          children: [
-                            IconButton(
-                                onPressed: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => ScreenAddNewStopNew(
-                                        tripName: display,
-                                        tripId: tripId,
-                                      ),
+                Container(
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                        color: Theme.of(context).colorScheme.onSecondary),
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        children: [
+                          IconButton(
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => ScreenAddNewStopNew(
+                                      tripName: display,
+                                      tripId: tripId,
                                     ),
-                                  );
-                                },
-                                icon: Icon(
-                                  Icons.add_circle_outline,
-                                  color: Theme.of(context).colorScheme.primary,
-                                  size: 25,
-                                )),
-                            Text(
-                              'Add New Stop',
-                              style: Theme.of(context).textTheme.titleLarge,
-                            ),
-                          ],
+                                  ),
+                                );
+                              },
+                              icon: Icon(
+                                Icons.add_circle_outline,
+                                color: Theme.of(context).colorScheme.primary,
+                                size: 25,
+                              )),
+                          Text(
+                            'Add New Stop',
+                            style: Theme.of(context).textTheme.titleLarge?.copyWith(color: Colors.black),
+                          ),
+                        ],
+                      ),
+                      Container(
+                        decoration: BoxDecoration(
+                          border: Border.all(
+                              color: Colors.black),
+                          borderRadius: BorderRadius.circular(10),
                         ),
-                        DataTable(
+                        child: DataTable(
+                          dataRowMaxHeight: 35,
+                          dataRowMinHeight: 35,
+                          headingRowHeight: 35,
+                          columnSpacing: 15,
+                          headingRowColor: WidgetStateProperty.all(
+                              Color.fromARGB(255, 204, 123, 2)),
                           columns: getColumns(columns = [
                             'Stop Name',
                             'Is Stage',
@@ -309,8 +328,8 @@ class _ScreenStopListNewState extends State<ScreenStopListNew> {
                           ]),
                           rows: getRows(newList),
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                 ),
               ] else ...[
@@ -325,7 +344,9 @@ class _ScreenStopListNewState extends State<ScreenStopListNew> {
                             vertical: MediaQuery.of(context).size.height / 2.5,
                             horizontal: MediaQuery.of(context).size.width / 2.3,
                           ),
-                          child: const CircularProgressIndicator(color: Color.fromARGB(255, 204, 123, 2),),
+                          child: const CircularProgressIndicator(
+                            color: Color.fromARGB(255, 204, 123, 2),
+                          ),
                         ),
                       );
                     } else {
@@ -338,8 +359,7 @@ class _ScreenStopListNewState extends State<ScreenStopListNew> {
                           ),
                           child: Text(
                             'No data found',
-                            style: TextStyle(
-                                color:Colors.white),
+                            style: TextStyle(color: Colors.black),
                           ),
                         ),
                       );
@@ -357,7 +377,7 @@ class _ScreenStopListNewState extends State<ScreenStopListNew> {
       return DataColumn(
         label: Text(
           column,
-          style: Theme.of(context).textTheme.bodyLarge,
+          style: Theme.of(context).textTheme.bodyLarge?.copyWith(color: Colors.white),
         ),
       );
     }).toList();
@@ -386,7 +406,7 @@ class _ScreenStopListNewState extends State<ScreenStopListNew> {
                         ? const TextStyle(
                             fontWeight: FontWeight.bold,
                             color: Color.fromARGB(255, 88, 147, 250))
-                        : const TextStyle(fontWeight: FontWeight.normal)),
+                        : const TextStyle(fontWeight: FontWeight.normal,color: Colors.black)),
               ),
               // onTap: (){
               //   switch(index){

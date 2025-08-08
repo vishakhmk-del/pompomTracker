@@ -105,7 +105,7 @@ class _ScreenStopMasterState extends State<ScreenStopMaster> {
           children: [
             BackgroundColorGradient(),
             Scaffold(
-              backgroundColor: Colors.transparent,
+                backgroundColor: Colors.transparent,
                 key: _scafoldkey,
                 appBar: AppBar(
                   backgroundColor: Theme.of(context).colorScheme.primary,
@@ -121,28 +121,29 @@ class _ScreenStopMasterState extends State<ScreenStopMaster> {
                   ),
                   title: Text(
                     'Add Stop',
-                    style:TextStyle(color: Colors.white),
+                    style: TextStyle(color: Colors.white),
                   ),
                 ),
                 body: ListView(
                   children: [
                     if (routelist.isNotEmpty) ...[
                       Card(
-                        margin: const EdgeInsets.all(10),
-                        elevation: 3,
-                        child: Container(
-                            decoration: BoxDecoration(
-                              border: Border.all(
-                                  color: Theme.of(context).colorScheme.onSecondary),
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            child: Padding(
-                              padding: const EdgeInsets.all(15.0),
-                              child: Theme(
-                                  data: MyTheme.googleFormTheme,
-                                  child: Column(
-                                    children: [
-                                      
+                          margin: const EdgeInsets.all(10),
+                          elevation: 3,
+                          child: Container(
+                              decoration: BoxDecoration(
+                                border: Border.all(
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .onSecondary),
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsets.all(15.0),
+                                child: Theme(
+                                    data: MyTheme.googleFormTheme,
+                                    child: Column(
+                                      children: [
                                         Text(
                                           'Search For Stop Details',
                                           style: Theme.of(context)
@@ -151,7 +152,8 @@ class _ScreenStopMasterState extends State<ScreenStopMaster> {
                                         ),
                                         const SizedBox(height: 10),
                                         SizedBox(
-                                          width: MediaQuery.of(context).size.width,
+                                          width:
+                                              MediaQuery.of(context).size.width,
                                           child: DropdownButtonFormField(
                                             isExpanded: true,
                                             items: routelist.map((busMap) {
@@ -160,12 +162,14 @@ class _ScreenStopMasterState extends State<ScreenStopMaster> {
                                                       .split('->');
                                               final routeName =
                                                   routeText[0]; // First part
-                                              final viaPart = routeText.length > 1
-                                                  ? '-> ${routeText[1]}'
-                                                  : '';
-            
+                                              final viaPart =
+                                                  routeText.length > 1
+                                                      ? '-> ${routeText[1]}'
+                                                      : '';
+
                                               return DropdownMenuItem<String>(
-                                                value: busMap['routeId'] as String,
+                                                value:
+                                                    busMap['routeId'] as String,
                                                 // Use routeId as the value
                                                 child: ConstrainedBox(
                                                     constraints:
@@ -174,9 +178,10 @@ class _ScreenStopMasterState extends State<ScreenStopMaster> {
                                                     child: RichText(
                                                       text: TextSpan(
                                                         style: TextStyle(
-                                                          color: Theme.of(context)
-                                                              .colorScheme
-                                                              .onSecondary,
+                                                          color:
+                                                              Theme.of(context)
+                                                                  .colorScheme
+                                                                  .onSecondary,
                                                         ),
                                                         children: [
                                                           TextSpan(
@@ -187,10 +192,10 @@ class _ScreenStopMasterState extends State<ScreenStopMaster> {
                                                             text:
                                                                 viaPart, // "via" part on the second line
                                                             style: TextStyle(
-                                                              color:
-                                                                  Theme.of(context)
-                                                                      .colorScheme
-                                                                      .onSecondary,
+                                                              color: Theme.of(
+                                                                      context)
+                                                                  .colorScheme
+                                                                  .onSecondary,
                                                             ),
                                                           ),
                                                         ],
@@ -206,11 +211,11 @@ class _ScreenStopMasterState extends State<ScreenStopMaster> {
                                                     int.parse(newValue!);
                                                 // Store the selected routeId
                                               });
-            
-                                              existingStpdet = await StopFunctions
-                                                  .instance
-                                                  .getExistingStpFn(
-                                                      selectedRouteList);
+
+                                              existingStpdet =
+                                                  await StopFunctions.instance
+                                                      .getExistingStpFn(
+                                                          selectedRouteList);
                                               //existingStpdet=StopFunctions.instance.getExistingStopNotifier.value;
                                               if (existingStpdet!.isEmpty) {
                                                 _scafoldkey.currentContext!
@@ -253,123 +258,104 @@ class _ScreenStopMasterState extends State<ScreenStopMaster> {
                                             },
                                           ),
                                         ),
-                                      
-                                    ],
-                                  )),
-                            ))),
-                    ]
-                     else ...[
-                                        FutureBuilder(
-                                          future: Future.delayed(const Duration(
-                                              seconds:
-                                                  5)), // Add a delay of 5 seconds
-                                          builder: (context, snapshot) {
-                                            if (snapshot.connectionState ==
-                                                ConnectionState.waiting) {
-                                              return Center(
-                                                child: Padding(
-                                                  padding: EdgeInsets.symmetric(
-                                                    vertical: MediaQuery.of(context)
-                                                            .size
-                                                            .height /
-                                                        2,
-                                                    // horizontal:
-                                                    //     MediaQuery.of(context).size.width /
-                                                    //         2.3,
-                                                  ),
-                                                  child:
-                                                      const CircularProgressIndicator(color:Color.fromARGB(255, 204, 123, 2)),
-                                                ),
-                                              );
-                                            } else {
-                                              // After 5 seconds, show the No Data Found image
-                                              return Center(
-                                                child: Padding(
-                                                  padding: EdgeInsets.symmetric(
-                                                    vertical: MediaQuery.of(context)
-                                                            .size
-                                                            .height /
-                                                        2,
-                                                    // horizontal:
-                                                    //     MediaQuery.of(context).size.width /
-                                                    //         2,
-                                                  ),
-                                                  child: Column(
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment.center,
-                                                    children: [
-                                                      Center(
-                                                        child: Text(
-                                                          'No trip is available without stops.\nPlease check your trip in the stop list.',
-                                                          style: TextStyle(
-                                                              fontWeight:
-                                                                  FontWeight.bold,
-                                                              color:Colors.white),
-                                                          textAlign:
-                                                              TextAlign.center,
-                                                        ),
-                                                      ),
-                                                      Padding(
-                                                        padding:
-                                                            const EdgeInsets.all(
-                                                                25.0),
-                                                        child: Container(
-                                                          height: 45,
-                                                          width: 200,
-                                                          decoration: BoxDecoration(
-                                                            gradient:
-                                                                LinearGradient(
-                                                              begin:
-                                                                  Alignment.topLeft,
-                                                              end: Alignment
-                                                                  .bottomRight,
-                                                              colors: [
-                                                                Colors.orange,
-                                                                Color.fromARGB(255, 204, 123, 2)
-                                                              ],
-                                                            ),
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(12.0),
-                                                          ),
-                                                          child: Theme(
-                                                            data: MyTheme
-                                                                .buttonStyleTheme,
-                                                            child: ElevatedButton(
-                                                              onPressed: () async {
-                                                                // Navigator
-                                                                //     .pushReplacement(
-                                                                //         context,
-                                                                //         Approutes()
-                                                                //             .stopListScreen);
-                                                                      Navigator.push(
-                                                                          context,
-                                                                          MaterialPageRoute(
-                                                                            builder: (context) => ScreenStopList(
-                                                                                flag: 1),
-                                                                          ),
-                                                                        );
-                                                              },
-                                                              child: Text(
-                                                                'Check',
-                                                                style: Theme.of(
-                                                                        context)
-                                                                    .textTheme
-                                                                    .titleMedium,
-                                                              ),
-                                                            ),
-                                                          ),
-                                                        ),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                ),
-                                              );
-                                            }
-                                          },
-                                        ),
                                       ],
-                    
+                                    )),
+                              ))),
+                    ] else ...[
+                      FutureBuilder(
+                        future: Future.delayed(const Duration(
+                            seconds: 5)), // Add a delay of 5 seconds
+                        builder: (context, snapshot) {
+                          if (snapshot.connectionState ==
+                              ConnectionState.waiting) {
+                            return Center(
+                              child: Padding(
+                                padding: EdgeInsets.symmetric(
+                                  vertical:
+                                      MediaQuery.of(context).size.height / 2,
+                                  // horizontal:
+                                  //     MediaQuery.of(context).size.width /
+                                  //         2.3,
+                                ),
+                                child: const CircularProgressIndicator(
+                                    color: Color.fromARGB(255, 204, 123, 2)),
+                              ),
+                            );
+                          } else {
+                            // After 5 seconds, show the No Data Found image
+                            return Center(
+                              child: Padding(
+                                padding: EdgeInsets.symmetric(
+                                  vertical:
+                                      MediaQuery.of(context).size.height / 2,
+                                  // horizontal:
+                                  //     MediaQuery.of(context).size.width /
+                                  //         2,
+                                ),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Center(
+                                      child: Text(
+                                        'No trip is available without stops.\nPlease check your trip in the stop list.',
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.white),
+                                        textAlign: TextAlign.center,
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.all(25.0),
+                                      child: Container(
+                                        height: 45,
+                                        width: 200,
+                                        decoration: BoxDecoration(
+                                          gradient: LinearGradient(
+                                            begin: Alignment.topLeft,
+                                            end: Alignment.bottomRight,
+                                            colors: [
+                                              Colors.orange,
+                                              Color.fromARGB(255, 204, 123, 2)
+                                            ],
+                                          ),
+                                          borderRadius:
+                                              BorderRadius.circular(12.0),
+                                        ),
+                                        child: Theme(
+                                          data: MyTheme.buttonStyleTheme,
+                                          child: ElevatedButton(
+                                            onPressed: () async {
+                                              // Navigator
+                                              //     .pushReplacement(
+                                              //         context,
+                                              //         Approutes()
+                                              //             .stopListScreen);
+                                              Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      ScreenStopList(flag: 1),
+                                                ),
+                                              );
+                                            },
+                                            child: Text(
+                                              'Check',
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .titleMedium,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            );
+                          }
+                        },
+                      ),
+                    ],
                     Consumer<DropdownProvider>(
                       builder: (context, provider, child) {
                         if (provider.selectedVal == false) {
@@ -512,8 +498,7 @@ class _ScreenStopMasterState extends State<ScreenStopMaster> {
                           ? const Center(
                               child: CircularProgressIndicator(
                                 valueColor: AlwaysStoppedAnimation<Color>(
-                                  
-                                    Color.fromARGB(255, 204, 123, 2),
+                                  Color.fromARGB(255, 204, 123, 2),
                                 ),
                               ),
                             )
@@ -571,7 +556,8 @@ class _ScreenStopMasterState extends State<ScreenStopMaster> {
                             vertical: MediaQuery.of(context).size.height / 2.5,
                             horizontal: MediaQuery.of(context).size.width / 2.3,
                           ),
-                          child: const CircularProgressIndicator(color:Color.fromARGB(255, 204, 123, 2)),
+                          child: const CircularProgressIndicator(
+                              color: Color.fromARGB(255, 204, 123, 2)),
                         ),
                       );
                     } else {

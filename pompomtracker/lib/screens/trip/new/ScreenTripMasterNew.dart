@@ -97,18 +97,20 @@ class _ScreenTripMasterNewState extends State<ScreenTripMasterNew> {
             backgroundColor: Colors.transparent,
             key: _scafoldkey,
             appBar: AppBar(
-              backgroundColor: Theme.of(context).colorScheme.primary,
+                backgroundColor: Theme.of(context).colorScheme.primary,
                 leading: IconButton(
-                  icon: const Icon(Icons.arrow_back,color: Colors.white,),
+                  icon: const Icon(
+                    Icons.arrow_back,
+                    color: Colors.white,
+                  ),
                   onPressed: () {
                     Navigator.pushReplacement(
-                       context, Approutes().settingscreen);
+                        context, Approutes().settingscreen);
                   },
                 ),
                 title: Text(
                   "Add Trip",
-                  style:
-                      TextStyle(color: Colors.white),
+                  style: TextStyle(color: Colors.white),
                 )),
             body: Center(
               child: ListView(
@@ -134,8 +136,8 @@ class _ScreenTripMasterNewState extends State<ScreenTripMasterNew> {
                                 child: Column(
                                   children: [
                                     const CircleAvatar(
-                                      backgroundImage:
-                                          AssetImage('assets/bus/busmaster.png'),
+                                      backgroundImage: AssetImage(
+                                          'assets/bus/busmaster.png'),
                                       radius: 50,
                                     ),
                                     const SizedBox(
@@ -176,11 +178,13 @@ class _ScreenTripMasterNewState extends State<ScreenTripMasterNew> {
                                         ),
                                         decoration: InputDecoration(
                                           labelText: 'Select Bus',
-                                          labelStyle:
-                                              Theme.of(context).textTheme.bodySmall,
+                                          labelStyle: Theme.of(context)
+                                              .textTheme
+                                              .bodySmall,
                                         ),
-                                        dropdownColor:
-                                            Theme.of(context).colorScheme.tertiary,
+                                        dropdownColor: Theme.of(context)
+                                            .colorScheme
+                                            .tertiary,
                                         validator: (value) {
                                           if (value!.isEmpty) {
                                             return 'Select Bus Type';
@@ -207,7 +211,8 @@ class _ScreenTripMasterNewState extends State<ScreenTripMasterNew> {
                                               ? '- via - ${routeText[1]}'
                                               : '';
                                           return DropdownMenuItem<String>(
-                                              value: busMap['routeId'] as String,
+                                              value:
+                                                  busMap['routeId'] as String,
                                               // Use routeId as the value
                                               child: RichText(
                                                 text: TextSpan(
@@ -237,7 +242,8 @@ class _ScreenTripMasterNewState extends State<ScreenTripMasterNew> {
                                         onChanged: (newValue) {
                                           setState(() {
                                             selectedRouteList = newValue;
-                                            selectedRouteId = int.parse(newValue!);
+                                            selectedRouteId =
+                                                int.parse(newValue!);
                                             // Store the selected routeId
                                           });
                                           selectedFromList = null;
@@ -248,8 +254,9 @@ class _ScreenTripMasterNewState extends State<ScreenTripMasterNew> {
                                         value: selectedRouteList,
                                         // Use the selected routeId
                                         style: TextStyle(
-                                          color:
-                                              Theme.of(context).colorScheme.onPrimary,
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .onPrimary,
                                         ),
                                         icon: Theme(
                                           data: Theme.of(context),
@@ -259,11 +266,13 @@ class _ScreenTripMasterNewState extends State<ScreenTripMasterNew> {
                                         ),
                                         decoration: InputDecoration(
                                           labelText: 'Select Route',
-                                          labelStyle:
-                                              Theme.of(context).textTheme.bodySmall,
+                                          labelStyle: Theme.of(context)
+                                              .textTheme
+                                              .bodySmall,
                                         ),
-                                        dropdownColor:
-                                            Theme.of(context).colorScheme.tertiary,
+                                        dropdownColor: Theme.of(context)
+                                            .colorScheme
+                                            .tertiary,
                                         validator: (value) {
                                           if (value == null) {
                                             return 'Select Route';
@@ -321,11 +330,13 @@ class _ScreenTripMasterNewState extends State<ScreenTripMasterNew> {
                                         ),
                                         decoration: InputDecoration(
                                           labelText: 'From Station',
-                                          labelStyle:
-                                              Theme.of(context).textTheme.bodySmall,
+                                          labelStyle: Theme.of(context)
+                                              .textTheme
+                                              .bodySmall,
                                         ),
-                                        dropdownColor:
-                                            Theme.of(context).colorScheme.tertiary,
+                                        dropdownColor: Theme.of(context)
+                                            .colorScheme
+                                            .tertiary,
                                         validator: (value) {
                                           if (value!.isEmpty) {
                                             return 'Select From Station';
@@ -338,7 +349,9 @@ class _ScreenTripMasterNewState extends State<ScreenTripMasterNew> {
                                     const SizedBox(height: 20),
                                     selectedFromList == 'Others'
                                         ? SizedBox(
-                                            width: MediaQuery.of(context).size.width,
+                                            width: MediaQuery.of(context)
+                                                .size
+                                                .width,
                                             child: TextFormField(
                                               controller: _fromController,
                                               style: Theme.of(context)
@@ -405,11 +418,13 @@ class _ScreenTripMasterNewState extends State<ScreenTripMasterNew> {
                                         ),
                                         decoration: InputDecoration(
                                           labelText: 'To Station',
-                                          labelStyle:
-                                              Theme.of(context).textTheme.bodySmall,
+                                          labelStyle: Theme.of(context)
+                                              .textTheme
+                                              .bodySmall,
                                         ),
-                                        dropdownColor:
-                                            Theme.of(context).colorScheme.tertiary,
+                                        dropdownColor: Theme.of(context)
+                                            .colorScheme
+                                            .tertiary,
                                         validator: (value) {
                                           if (value!.isEmpty) {
                                             return 'Select To Station';
@@ -422,7 +437,9 @@ class _ScreenTripMasterNewState extends State<ScreenTripMasterNew> {
                                     const SizedBox(height: 20),
                                     selectedToList == 'Others'
                                         ? SizedBox(
-                                            width: MediaQuery.of(context).size.width,
+                                            width: MediaQuery.of(context)
+                                                .size
+                                                .width,
                                             child: TextFormField(
                                               controller: _toController,
                                               style: Theme.of(context)
@@ -443,17 +460,20 @@ class _ScreenTripMasterNewState extends State<ScreenTripMasterNew> {
                                             ),
                                           )
                                         : const SizedBox.shrink(),
-                                
+
                                     const SizedBox(height: 20),
                                     SizedBox(
                                       width: MediaQuery.of(context).size.width,
                                       child: TextFormField(
                                         controller: _startTimeController,
-                                        style: Theme.of(context).textTheme.bodySmall,
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodySmall,
                                         decoration: InputDecoration(
                                           labelText: 'Starting Time',
-                                          labelStyle:
-                                              Theme.of(context).textTheme.bodySmall,
+                                          labelStyle: Theme.of(context)
+                                              .textTheme
+                                              .bodySmall,
                                           suffixIcon: Theme(
                                               data: Theme.of(context),
                                               child: const Icon(Icons.timer)),
@@ -474,16 +494,20 @@ class _ScreenTripMasterNewState extends State<ScreenTripMasterNew> {
                                       width: MediaQuery.of(context).size.width,
                                       child: TextFormField(
                                         controller: _endTimeController,
-                                        style: Theme.of(context).textTheme.bodySmall,
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodySmall,
                                         decoration: InputDecoration(
                                             labelText: 'End Time',
-                                            labelStyle:
-                                                Theme.of(context).textTheme.bodySmall,
+                                            labelStyle: Theme.of(context)
+                                                .textTheme
+                                                .bodySmall,
                                             suffixIcon: Theme(
                                                 data: Theme.of(context),
-                                                child: const Icon(Icons.timer))),
-                                        onTap: () =>
-                                            _selectTime(context, _endTimeController),
+                                                child:
+                                                    const Icon(Icons.timer))),
+                                        onTap: () => _selectTime(
+                                            context, _endTimeController),
                                         validator: (value) {
                                           if (value!.isEmpty) {
                                             return 'Enter End Time';
@@ -497,17 +521,23 @@ class _ScreenTripMasterNewState extends State<ScreenTripMasterNew> {
                                       height: 20,
                                     ),
                                     Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceEvenly,
                                       children: [
                                         Container(
                                           decoration: BoxDecoration(
-                                            borderRadius: BorderRadius.circular(10),
+                                            borderRadius:
+                                                BorderRadius.circular(10),
                                             gradient: LinearGradient(
                                               begin: Alignment.topLeft,
                                               end: Alignment.bottomRight,
                                               colors: [
-                                                Theme.of(context).colorScheme.primary,
-                                                Theme.of(context).colorScheme.secondary,
+                                                Theme.of(context)
+                                                    .colorScheme
+                                                    .primary,
+                                                Theme.of(context)
+                                                    .colorScheme
+                                                    .secondary,
                                               ],
                                             ),
                                           ),
@@ -515,7 +545,8 @@ class _ScreenTripMasterNewState extends State<ScreenTripMasterNew> {
                                             data: MyTheme.buttonStyleTheme,
                                             child: ElevatedButton(
                                               onPressed: () {
-                                                if (_formKey.currentState!.validate()) {
+                                                if (_formKey.currentState!
+                                                    .validate()) {
                                                   tripMasterSave();
                                                 }
                                               },
@@ -528,13 +559,18 @@ class _ScreenTripMasterNewState extends State<ScreenTripMasterNew> {
                                         ),
                                         Container(
                                           decoration: BoxDecoration(
-                                            borderRadius: BorderRadius.circular(10),
+                                            borderRadius:
+                                                BorderRadius.circular(10),
                                             gradient: LinearGradient(
                                               begin: Alignment.topLeft,
                                               end: Alignment.bottomRight,
                                               colors: [
-                                                Theme.of(context).colorScheme.primary,
-                                                Theme.of(context).colorScheme.secondary,
+                                                Theme.of(context)
+                                                    .colorScheme
+                                                    .primary,
+                                                Theme.of(context)
+                                                    .colorScheme
+                                                    .secondary,
                                               ],
                                             ),
                                           ),
@@ -542,9 +578,10 @@ class _ScreenTripMasterNewState extends State<ScreenTripMasterNew> {
                                             data: MyTheme.buttonStyleTheme,
                                             child: ElevatedButton(
                                               onPressed: () {
-                                              Navigator.pushReplacement(context, Approutes().tripListNewScreen);
-
-                                                
+                                                Navigator.pushReplacement(
+                                                    context,
+                                                    Approutes()
+                                                        .tripListNewScreen);
                                               },
                                               child: Text('VIEW',
                                                   style: Theme.of(context)
@@ -556,14 +593,16 @@ class _ScreenTripMasterNewState extends State<ScreenTripMasterNew> {
                                       ],
                                     ),
                                     const SizedBox(height: 10),
-                                    Consumer<LoadingProvider>(
-                                        builder: (context, loadingProvider, child) {
+                                    Consumer<LoadingProvider>(builder:
+                                        (context, loadingProvider, child) {
                                       return loadingProvider.isLoading
                                           ? const Center(
                                               child: CircularProgressIndicator(
                                                 valueColor:
-                                                    AlwaysStoppedAnimation<Color>(
-                                                  Color.fromARGB(255, 2, 128, 6),
+                                                    AlwaysStoppedAnimation<
+                                                        Color>(
+                                                  Color.fromARGB(
+                                                      255, 2, 128, 6),
                                                 ),
                                               ),
                                             )

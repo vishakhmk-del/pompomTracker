@@ -20,7 +20,8 @@ class _ScreenBusListNewState extends State<ScreenBusListNew> {
   }
 
   Future<bool?> popscreen(BuildContext context) async {
-     Navigator.pushReplacement(context, Approutes().busmasternewscreen);
+    BusListFunctions.instance.getBusListNotifier.value=[];
+    Navigator.pop(context);
 
     return true;
   }
@@ -38,16 +39,21 @@ class _ScreenBusListNewState extends State<ScreenBusListNew> {
       },
       child: Stack(
         children: [
-          BackgroundColorGradient(),
+          //BackgroundColorGradient(),
           Scaffold(
-            backgroundColor: Colors.transparent,
+            backgroundColor: Colors.white,
             appBar: AppBar(
               backgroundColor: Theme.of(context).colorScheme.primary,
               leading: IconButton(
-                icon: const Icon(Icons.arrow_back,color: Colors.white,),
+                icon: const Icon(
+                  Icons.arrow_back,
+                  color: Colors.white,
+                ),
                 onPressed: () {
-                 Navigator.pushReplacement(context, Approutes().busmasternewscreen);
-          
+                  // Navigator.pushReplacement(
+                  //     context, Approutes().busmasternewscreen);
+                  BusListFunctions.instance.getBusListNotifier.value=[];
+                  Navigator.pop(context);
                 },
               ),
               title: Text(
@@ -68,12 +74,11 @@ class _ScreenBusListNewState extends State<ScreenBusListNew> {
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
                               if (newList.isNotEmpty) ...[
+                                SizedBox(height: 10,),
                                 Container(
                                   decoration: BoxDecoration(
                                     border: Border.all(
-                                        color: Theme.of(context)
-                                            .colorScheme
-                                            .onSecondary),
+                                        color: Colors.black),
                                     //borderRadius:const BorderRadius.only(topLeft: Radius.circular(12),topRight: Radius.circular(12)),
                                   ),
                                   child: DataTable(
@@ -81,7 +86,7 @@ class _ScreenBusListNewState extends State<ScreenBusListNew> {
                                     dataRowMinHeight: 35,
                                     headingRowHeight: 35,
                                     columnSpacing: 15,
-                                    headingTextStyle:TextStyle(color: Colors.white),
+                                    
                                     headingRowColor: WidgetStateProperty.all(
                                         Color.fromARGB(255, 204, 123, 2)),
                                     columns: getColumns(columns = [
@@ -105,14 +110,17 @@ class _ScreenBusListNewState extends State<ScreenBusListNew> {
                                       return Center(
                                         child: Padding(
                                           padding: EdgeInsets.symmetric(
-                                            vertical:
-                                                MediaQuery.of(context).size.height /
-                                                    2.5,
-                                            horizontal:
-                                                MediaQuery.of(context).size.width /
-                                                    2.3,
+                                            vertical: MediaQuery.of(context)
+                                                    .size
+                                                    .height /
+                                                2.5,
+                                            horizontal: MediaQuery.of(context)
+                                                    .size
+                                                    .width /
+                                                2.3,
                                           ),
-                                          child: const CircularProgressIndicator(),
+                                          child:
+                                              const CircularProgressIndicator(color: Color.fromARGB(255, 204, 123, 2),),
                                         ),
                                       );
                                     } else {
@@ -120,19 +128,19 @@ class _ScreenBusListNewState extends State<ScreenBusListNew> {
                                       return Center(
                                         child: Padding(
                                           padding: EdgeInsets.symmetric(
-                                            vertical:
-                                                MediaQuery.of(context).size.height /
-                                                    2.5,
-                                            horizontal:
-                                                MediaQuery.of(context).size.width /
-                                                    2.7,
+                                            vertical: MediaQuery.of(context)
+                                                    .size
+                                                    .height /
+                                                2.5,
+                                            horizontal: MediaQuery.of(context)
+                                                    .size
+                                                    .width /
+                                                2.7,
                                           ),
                                           child: Text(
                                             'No data found',
                                             style: TextStyle(
-                                                color: Theme.of(context)
-                                                    .colorScheme
-                                                    .onSecondary),
+                                                color: Colors.black),
                                           ),
                                         ),
                                       );
@@ -158,7 +166,7 @@ class _ScreenBusListNewState extends State<ScreenBusListNew> {
       return DataColumn(
         label: Text(
           column,
-          style: Theme.of(context).textTheme.bodyLarge,
+          style: Theme.of(context).textTheme.bodyLarge?.copyWith(color:Colors.white),
         ),
       );
     }).toList();
@@ -169,7 +177,7 @@ class _ScreenBusListNewState extends State<ScreenBusListNew> {
       int index = entry.key + 1; // Serial number starts from 1
       BusList task = entry.value;
       cells = [
-        task.busName??'',
+        task.busName ?? '',
         task.registrationNo ?? '',
         task.permitNo ?? '',
         task.validTo ?? '',
@@ -180,7 +188,7 @@ class _ScreenBusListNewState extends State<ScreenBusListNew> {
             Center(
               child: Text(
                 '$index', // Display the serial number
-                style: const TextStyle(fontWeight: FontWeight.bold),
+                style: const TextStyle(fontWeight: FontWeight.bold,color: Colors.black),
               ),
             ),
           ),
@@ -191,8 +199,9 @@ class _ScreenBusListNewState extends State<ScreenBusListNew> {
                 child: Text('$cell',
                     style: taskbold
                         ? const TextStyle(
-                            fontWeight: FontWeight.bold,)
-                        : const TextStyle(fontWeight: FontWeight.normal)),
+                            fontWeight: FontWeight.bold,color: Colors.black
+                          )
+                        : const TextStyle(fontWeight: FontWeight.normal,color: Colors.black)),
               ),
             );
           }),
@@ -203,8 +212,8 @@ class _ScreenBusListNewState extends State<ScreenBusListNew> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) =>
-                            ScreenBusMasterNew(regNo: task.registrationNo, flag: 1),
+                        builder: (context) => ScreenBusMasterNew(
+                            regNo: task.registrationNo, flag: 1),
                       ),
                     );
                   },

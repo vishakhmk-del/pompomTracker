@@ -11,7 +11,7 @@ class NavbarDM extends StatefulWidget {
 
 class _NavbarDMState extends State<NavbarDM> {
   final _scaffoldKey = GlobalKey<ScaffoldState>();
-  String? username ;
+  String? username;
 
   String brname = '';
   bool isVisible = true;
@@ -25,7 +25,7 @@ class _NavbarDMState extends State<NavbarDM> {
   }
 
   void buildversion() async {
-  final sharedValue = await SharedPrefManager.instance.getSharedData();
+    final sharedValue = await SharedPrefManager.instance.getSharedData();
 
     final value = await SharedPrefManager.instance.getdeviceinfo();
     final devversion = value.appversion;
@@ -34,7 +34,7 @@ class _NavbarDMState extends State<NavbarDM> {
 
     setState(() {
       version = versionval;
-      username=sharedValue?.ownerName??'';
+      username = sharedValue?.ownerName ?? '';
     });
   }
 
@@ -68,7 +68,10 @@ class _NavbarDMState extends State<NavbarDM> {
               accountName: Text(
                 '$username',
                 textAlign: TextAlign.center,
-                style: Theme.of(context).textTheme.titleLarge?.copyWith(color: Colors.white),
+                style: Theme.of(context)
+                    .textTheme
+                    .titleLarge
+                    ?.copyWith(color: Colors.white),
                 textScaler: TextScaler.noScaling,
                 maxLines: 2, // Or any number you want
                 overflow: TextOverflow.visible,
@@ -79,7 +82,7 @@ class _NavbarDMState extends State<NavbarDM> {
                 style: Theme.of(context)
                     .textTheme
                     .labelMedium
-                    ?.copyWith(fontSize: 14,color: Colors.white),
+                    ?.copyWith(fontSize: 14, color: Colors.white),
                 textScaler: TextScaler.noScaling,
               ),
               // currentAccountPicture: CircleAvatar(
@@ -99,8 +102,8 @@ class _NavbarDMState extends State<NavbarDM> {
                       colors: [
                     // Colors.orange,
                     //   Color.fromARGB(255, 204, 123, 2),
-                      Theme.of(context).colorScheme.primary,
-                      Theme.of(context).colorScheme.secondary
+                    Theme.of(context).colorScheme.primary,
+                    Theme.of(context).colorScheme.secondary
                   ])),
             ),
             // ListTile(
@@ -175,49 +178,61 @@ class _NavbarDMState extends State<NavbarDM> {
             //     onTap: () {
             //       Navigator.push(context, Approutes().busRouteListScreen);
             //     }),
+            // ListTile(
+            //     leading: const Icon(
+            //       Icons.stop_circle_outlined,
+            //       color: Colors.black,
+            //     ),
+            //     title: Text(
+            //       "Stop List",
+            //       style: Theme.of(context)
+            //           .textTheme
+            //           .bodyLarge
+            //           ?.copyWith(color: Colors.black),
+            //     ),
+            //     onTap: () {
+            //       Navigator.push(context, Approutes().stopListScreenNew);
+            //     }),
             ListTile(
-                leading: const Icon(
-                  Icons.stop_circle_outlined,
-                  color: Colors.black,
-                ),
-                title: Text(
-                  "Stop List",
-                  style: Theme.of(context).textTheme.bodyLarge?.copyWith(color: Colors.black),
-                ),
-                onTap: () {
-                  Navigator.push(context, Approutes().stopListScreenNew);
-                }),
-                ListTile(
                 leading: const Icon(
                   Icons.privacy_tip_outlined,
                   color: Colors.black,
                 ),
                 title: Text(
                   "Privacy Policy",
-                  style: Theme.of(context).textTheme.bodyLarge?.copyWith(color: Colors.black),
+                  style: Theme.of(context)
+                      .textTheme
+                      .bodyLarge
+                      ?.copyWith(color: Colors.black),
                 ),
-                onTap: () {
-                }),
-                ListTile(
+                onTap: () {}),
+            ListTile(
                 leading: const Icon(
                   Icons.info_outline,
                   color: Colors.black,
                 ),
                 title: Text(
                   "About",
-                  style: Theme.of(context).textTheme.bodyLarge?.copyWith(color: Colors.black),
+                  style: Theme.of(context)
+                      .textTheme
+                      .bodyLarge
+                      ?.copyWith(color: Colors.black),
                 ),
-                onTap: () {
-                }),
-            const Divider(color: Colors.black38,),
+                onTap: () {}),
+            const Divider(
+              color: Colors.black38,
+            ),
             ListTile(
                 leading: const Icon(
                   Icons.logout_outlined,
-                  color:Colors.black,
+                  color: Colors.black,
                 ),
                 title: Text(
                   "Sign Out",
-                  style: Theme.of(context).textTheme.bodyLarge?.copyWith(color: Colors.black),
+                  style: Theme.of(context)
+                      .textTheme
+                      .bodyLarge
+                      ?.copyWith(color: Colors.black),
                 ),
                 onTap: () {
                   signout(context);

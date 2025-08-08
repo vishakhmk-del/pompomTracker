@@ -15,8 +15,9 @@ class _ScreenConductorListNewState extends State<ScreenConductorListNew> {
   List<String> registarionlst = [];
   String? selectedBusList;
   Future<bool?> popscreen(BuildContext context) async {
+    ConductorListFunctions.instance.getConductoristNotifier.value=[];
     // Navigator.pushReplacement(context, Approutes().employeescreen);
-    Navigator.pop(context,false);
+    Navigator.pop(context, false);
     return true;
   }
 
@@ -40,22 +41,26 @@ class _ScreenConductorListNewState extends State<ScreenConductorListNew> {
       },
       child: Stack(
         children: [
-          BackgroundColorGradient(),
+         // BackgroundColorGradient(),
           Scaffold(
-            backgroundColor: Colors.transparent,
+            backgroundColor: Colors.white,
             appBar: AppBar(
               backgroundColor: Theme.of(context).colorScheme.primary,
-              
               leading: IconButton(
-                icon: const Icon(Icons.arrow_back,color: Colors.white,),
+                icon: const Icon(
+                  Icons.arrow_back,
+                  color: Colors.white,
+                ),
                 onPressed: () {
-                     // Navigator.pushReplacement(context, Approutes().employeescreen);
-                      Navigator.pop(context,false);
+                  ConductorListFunctions.instance.getConductoristNotifier.value=[];
+
+                  // Navigator.pushReplacement(context, Approutes().employeescreen);
+                  Navigator.pop(context, false);
                 },
               ),
               title: Text(
                 'Conductor List',
-                style: TextStyle(color:Colors.white),
+                style: TextStyle(color: Colors.white),
               ),
             ),
             body: Column(
@@ -63,19 +68,18 @@ class _ScreenConductorListNewState extends State<ScreenConductorListNew> {
                 Expanded(
                   child: ScrollableWidget(
                     child: ValueListenableBuilder(
-                        valueListenable:
-                            ConductorListFunctions.instance.getConductoristNotifier,
+                        valueListenable: ConductorListFunctions
+                            .instance.getConductoristNotifier,
                         builder: (BuildContext context, List<Listdet> newList,
                             Widget? _) {
                           return Column(
                             children: [
                               if (newList.isNotEmpty) ...[
+                                SizedBox(height: 10,),
                                 Container(
                                   decoration: BoxDecoration(
                                     border: Border.all(
-                                        color: Theme.of(context)
-                                            .colorScheme
-                                            .onSecondary),
+                                        color: Colors.black),
                                     //borderRadius:const BorderRadius.only(topLeft: Radius.circular(12),topRight: Radius.circular(12)),
                                   ),
                                   child: DataTable(
@@ -105,14 +109,17 @@ class _ScreenConductorListNewState extends State<ScreenConductorListNew> {
                                       return Center(
                                         child: Padding(
                                           padding: EdgeInsets.symmetric(
-                                            vertical:
-                                                MediaQuery.of(context).size.height /
-                                                    2.5,
-                                            horizontal:
-                                                MediaQuery.of(context).size.width /
-                                                    2.3,
+                                            vertical: MediaQuery.of(context)
+                                                    .size
+                                                    .height /
+                                                2.5,
+                                            horizontal: MediaQuery.of(context)
+                                                    .size
+                                                    .width /
+                                                2.3,
                                           ),
-                                          child: const CircularProgressIndicator(),
+                                          child:
+                                              const CircularProgressIndicator(color: Color.fromARGB(255, 204, 123, 2),),
                                         ),
                                       );
                                     } else {
@@ -120,19 +127,19 @@ class _ScreenConductorListNewState extends State<ScreenConductorListNew> {
                                       return Center(
                                         child: Padding(
                                           padding: EdgeInsets.symmetric(
-                                            vertical:
-                                                MediaQuery.of(context).size.height /
-                                                    2.5,
-                                            horizontal:
-                                                MediaQuery.of(context).size.width /
-                                                    2.7,
+                                            vertical: MediaQuery.of(context)
+                                                    .size
+                                                    .height /
+                                                2.5,
+                                            horizontal: MediaQuery.of(context)
+                                                    .size
+                                                    .width /
+                                                2.7,
                                           ),
                                           child: Text(
                                             'No data found',
                                             style: TextStyle(
-                                                color: Theme.of(context)
-                                                    .colorScheme
-                                                    .onSecondary),
+                                                color: Colors.black),
                                           ),
                                         ),
                                       );
@@ -158,7 +165,7 @@ class _ScreenConductorListNewState extends State<ScreenConductorListNew> {
       return DataColumn(
         label: Text(
           column,
-          style: Theme.of(context).textTheme.bodyLarge,
+          style: Theme.of(context).textTheme.bodyLarge?.copyWith(color:Colors.white),
         ),
       );
     }).toList();
@@ -179,7 +186,7 @@ class _ScreenConductorListNewState extends State<ScreenConductorListNew> {
             Center(
               child: Text(
                 '$index', // Display the serial number
-                style: const TextStyle(fontWeight: FontWeight.bold),
+                style: const TextStyle(fontWeight: FontWeight.bold,color:Colors.black),
               ),
             ),
           ),
@@ -190,8 +197,9 @@ class _ScreenConductorListNewState extends State<ScreenConductorListNew> {
                 child: Text('$cell',
                     style: taskbold
                         ? const TextStyle(
-                            fontWeight: FontWeight.bold,)
-                        : const TextStyle(fontWeight: FontWeight.normal)),
+                            fontWeight: FontWeight.bold,color:Colors.black
+                          )
+                        : const TextStyle(fontWeight: FontWeight.normal,color:Colors.black)),
               ),
             );
           }),
@@ -202,8 +210,8 @@ class _ScreenConductorListNewState extends State<ScreenConductorListNew> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) =>
-                            ScreenEmployeeNew(conductor_id: task.empId, flag: 1),
+                        builder: (context) => ScreenEmployeeNew(
+                            conductor_id: task.empId, flag: 1),
                       ),
                     );
                   },

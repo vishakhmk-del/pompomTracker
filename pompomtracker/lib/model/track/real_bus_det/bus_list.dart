@@ -28,22 +28,20 @@ class BusDetList {
   String? toStation;
   @JsonKey(name: 'trip_status')
   String? tripStatus;
-  
 
-  BusDetList({
-    this.busName,
-    this.busId,
-    this.registrationNo,
-    this.busType,
-    this.liveLatitude,
-    this.liveLongitude,
-    this.liveDate,
-    this.tripId,
-    this.fromStation,
-    this.toStation,
-    this.tripName,
-    this.tripStatus
-  });
+  BusDetList(
+      {this.busName,
+      this.busId,
+      this.registrationNo,
+      this.busType,
+      this.liveLatitude,
+      this.liveLongitude,
+      this.liveDate,
+      this.tripId,
+      this.fromStation,
+      this.toStation,
+      this.tripName,
+      this.tripStatus});
 
   factory BusDetList.fromJson(Map<String, dynamic> json) {
     return _$BusDetListFromJson(json);

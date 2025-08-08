@@ -15,8 +15,7 @@ class _ScreenhomeState extends State<Screenhome> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       weeklycollection();
       if (mounted) {
-        setState(() {
-        });
+        setState(() {});
       }
     });
     super.initState();

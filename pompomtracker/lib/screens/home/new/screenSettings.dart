@@ -28,6 +28,7 @@ class _ScreenSettingsState extends State<ScreenSettings> {
         (Route<dynamic> route) => false);
     return true;
   }
+
   @override
   Widget build(BuildContext context) {
     return PopScope(
@@ -47,32 +48,29 @@ class _ScreenSettingsState extends State<ScreenSettings> {
             //drawer: const Navbar(),
             backgroundColor: Colors.transparent,
             appBar: AppBar(
-              backgroundColor: Theme.of(context).colorScheme.primary,
-              leading: IconButton(
-                    icon: const Icon(Icons.arrow_back,color: Colors.white,),
-                    onPressed: () {
-                      
-                        Navigator.pushReplacement(
-                            context, Approutes().mainScreen);
-                      
-                    },
+                backgroundColor: Theme.of(context).colorScheme.primary,
+                leading: IconButton(
+                  icon: const Icon(
+                    Icons.arrow_back,
+                    color: Colors.white,
                   ),
+                  onPressed: () {
+                    Navigator.pushReplacement(context, Approutes().mainScreen);
+                  },
+                ),
                 title: Text(
-              "Settings",
-              style: Theme.of(context).textTheme.titleLarge?.copyWith(color: Colors.white),
-            )),
+                  "Settings",
+                  style: Theme.of(context)
+                      .textTheme
+                      .titleLarge
+                      ?.copyWith(color: Colors.white),
+                )),
             body: ListView(
-              children: [
-                const BusGridViewNew()
-              ],
+              children: [const BusGridViewNew()],
             ),
           ),
         ],
       ),
     );
   }
-
-
 }
-
-

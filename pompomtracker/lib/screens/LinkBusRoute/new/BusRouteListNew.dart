@@ -22,7 +22,9 @@ class _BusRouteListNewState extends State<BusRouteListNew> {
   }
 
   Future<bool?> popscreen(BuildContext context) async {
-    Navigator.push(context, Approutes().linkbusrouteNewscreen);
+    // Navigator.push(context, Approutes().linkbusrouteNewscreen);
+    BusRouteListFunctions.instance.getBusRouteListNotifier.value=[];
+    Navigator.pop(context);
     return true;
   }
 
@@ -39,25 +41,31 @@ class _BusRouteListNewState extends State<BusRouteListNew> {
       },
       child: Stack(
         children: [
-          BackgroundColorGradient(),
+          // BackgroundColorGradient(),
           Scaffold(
-            backgroundColor: Colors.transparent,
+            backgroundColor: Colors.white,
             appBar: AppBar(
               backgroundColor: Theme.of(context).colorScheme.primary,
               leading: IconButton(
                   onPressed: () {
-                    Navigator.pushReplacement(context, Approutes().linkbusrouteNewscreen);
+                    // Navigator.pushReplacement(
+                    //     context, Approutes().linkbusrouteNewscreen);
+                    BusRouteListFunctions.instance.getBusRouteListNotifier.value=[];
+                     Navigator.pop(context);
                   },
-                  icon: const Icon(Icons.arrow_back,color:Colors.white)),
-              title: const Text('Bus Route List',style: TextStyle(color:Colors.white),),
+                  icon: const Icon(Icons.arrow_back, color: Colors.white)),
+              title: const Text(
+                'Bus Route List',
+                style: TextStyle(color: Colors.white),
+              ),
             ),
             body: Column(
               children: [
                 Expanded(
                   child: ScrollableWidget(
                     child: ValueListenableBuilder(
-                        valueListenable:
-                            BusRouteListFunctions.instance.getBusRouteListNotifier,
+                        valueListenable: BusRouteListFunctions
+                            .instance.getBusRouteListNotifier,
                         builder: (BuildContext context, List<Listdet> newList,
                             Widget? _) {
                           return Column(
@@ -66,9 +74,7 @@ class _BusRouteListNewState extends State<BusRouteListNew> {
                                 Container(
                                   decoration: BoxDecoration(
                                     border: Border.all(
-                                        color: Theme.of(context)
-                                            .colorScheme
-                                            .onSecondary),
+                                        color: Colors.black),
                                     //borderRadius:const BorderRadius.only(topLeft: Radius.circular(12),topRight: Radius.circular(12)),
                                   ),
                                   child: DataTable(
@@ -98,14 +104,17 @@ class _BusRouteListNewState extends State<BusRouteListNew> {
                                       return Center(
                                         child: Padding(
                                           padding: EdgeInsets.symmetric(
-                                            vertical:
-                                                MediaQuery.of(context).size.height /
-                                                    2.5,
-                                            horizontal:
-                                                MediaQuery.of(context).size.width /
-                                                    2.3,
+                                            vertical: MediaQuery.of(context)
+                                                    .size
+                                                    .height /
+                                                2.5,
+                                            horizontal: MediaQuery.of(context)
+                                                    .size
+                                                    .width /
+                                                2.3,
                                           ),
-                                          child: const CircularProgressIndicator(),
+                                          child:
+                                              const CircularProgressIndicator(color: Color.fromARGB(255, 204, 123, 2),),
                                         ),
                                       );
                                     } else {
@@ -113,19 +122,19 @@ class _BusRouteListNewState extends State<BusRouteListNew> {
                                       return Center(
                                         child: Padding(
                                           padding: EdgeInsets.symmetric(
-                                            vertical:
-                                                MediaQuery.of(context).size.height /
-                                                    2.5,
-                                            horizontal:
-                                                MediaQuery.of(context).size.width /
-                                                    2.7,
+                                            vertical: MediaQuery.of(context)
+                                                    .size
+                                                    .height /
+                                                2.5,
+                                            horizontal: MediaQuery.of(context)
+                                                    .size
+                                                    .width /
+                                                2.7,
                                           ),
                                           child: Text(
                                             'No data found',
                                             style: TextStyle(
-                                                color: Theme.of(context)
-                                                    .colorScheme
-                                                    .onSecondary),
+                                                color: Colors.black),
                                           ),
                                         ),
                                       );
@@ -151,7 +160,7 @@ class _BusRouteListNewState extends State<BusRouteListNew> {
       return DataColumn(
         label: Text(
           column,
-          style: Theme.of(context).textTheme.bodyLarge,
+          style: Theme.of(context).textTheme.bodyLarge?.copyWith(color:Colors.white),
         ),
       );
     }).toList();
@@ -172,7 +181,7 @@ class _BusRouteListNewState extends State<BusRouteListNew> {
           Center(
             child: Text(
               '$index', // Display the serial number
-              style: const TextStyle(fontWeight: FontWeight.bold),
+              style: const TextStyle(fontWeight: FontWeight.bold,color:Colors.black),
             ),
           ),
         ),
@@ -183,8 +192,9 @@ class _BusRouteListNewState extends State<BusRouteListNew> {
               child: Text('$cell',
                   style: taskbold
                       ? const TextStyle(
-                          fontWeight: FontWeight.bold,)
-                      : const TextStyle(fontWeight: FontWeight.normal)),
+                          fontWeight: FontWeight.bold,color:Colors.black
+                        )
+                      : const TextStyle(fontWeight: FontWeight.normal,color:Colors.black)),
             ),
           );
         }),

@@ -150,13 +150,17 @@ class _ScreenEmployeeNewState extends State<ScreenEmployeeNew> {
             backgroundColor: Colors.transparent,
             key: _scafoldkey,
             appBar: AppBar(
-              backgroundColor: Theme.of(context).colorScheme.primary,
+                backgroundColor: Theme.of(context).colorScheme.primary,
                 leading: IconButton(
-                  icon: const Icon(Icons.arrow_back,color: Colors.white,),
+                  icon: const Icon(
+                    Icons.arrow_back,
+                    color: Colors.white,
+                  ),
                   onPressed: () {
                     if (widget.flag == 0) {
                       selectedEmployerNotifier.value = StatementType.conductor;
-                      Navigator.pushReplacement(context, Approutes().settingscreen);
+                      Navigator.pushReplacement(
+                          context, Approutes().settingscreen);
                     } else if (widget.flag == 1) {
                       Navigator.pushReplacement(
                           context, Approutes().conductorListNewScreen);
@@ -168,8 +172,7 @@ class _ScreenEmployeeNewState extends State<ScreenEmployeeNew> {
                 ),
                 title: Text(
                   "Employee",
-                  style:
-                      TextStyle(color:Colors.white),
+                  style: TextStyle(color: Colors.white),
                 )),
             body: widget.flag == 0
                 ? DefaultTabController(
@@ -192,8 +195,8 @@ class _ScreenEmployeeNewState extends State<ScreenEmployeeNew> {
                             borderRadius: BorderRadius.circular(8),
                             color: const Color(0xffffa600),
                             border: Border.all(
-                                        color:Colors.white,
-                                      ),
+                              color: Colors.white,
+                            ),
                           ),
                           indicatorSize: TabBarIndicatorSize.tab,
                           tabs: const [
@@ -204,12 +207,12 @@ class _ScreenEmployeeNewState extends State<ScreenEmployeeNew> {
                         ),
                         Expanded(
                           child: TabBarView(
-                                children: [
-                                  conductorForm(context),
-                                  driverForm(context),
-                                  const ScreenEmployeeAssignNew()
-                                ],
-                              ),
+                            children: [
+                              conductorForm(context),
+                              driverForm(context),
+                              const ScreenEmployeeAssignNew()
+                            ],
+                          ),
                           // Card(
                           //   margin: const EdgeInsets.only(
                           //       top: 3, left: 10, right: 10, bottom: 10),
@@ -261,7 +264,7 @@ class _ScreenEmployeeNewState extends State<ScreenEmployeeNew> {
                           //                   Theme.of(context).colorScheme.onPrimary,
                           //                 ])),
                           //         child: conductorForm(context))),
-                                  conductorForm(context),
+                          conductorForm(context),
                         if (widget.flag == 2)
                           // Card(
                           //     margin: const EdgeInsets.only(
@@ -502,86 +505,93 @@ class _ScreenEmployeeNewState extends State<ScreenEmployeeNew> {
                       const SizedBox(
                         height: 20,
                       ),
-                     widget.flag == 0 ? 
-                     Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          
-                          Container(
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              gradient: LinearGradient(
-                                begin: Alignment.topLeft,
-                                end: Alignment.bottomRight,
-                                colors: [
-                                  Theme.of(context).colorScheme.primary,
-                                  Theme.of(context).colorScheme.secondary,
-                                ],
+                      widget.flag == 0
+                          ? Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                Container(
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10),
+                                    gradient: LinearGradient(
+                                      begin: Alignment.topLeft,
+                                      end: Alignment.bottomRight,
+                                      colors: [
+                                        Theme.of(context).colorScheme.primary,
+                                        Theme.of(context).colorScheme.secondary,
+                                      ],
+                                    ),
+                                  ),
+                                  child: Theme(
+                                    data: MyTheme.buttonStyleTheme,
+                                    child: ElevatedButton(
+                                      onPressed: () {
+                                        if (_formKey1.currentState!
+                                            .validate()) {
+                                          conductorMasterSave(context);
+                                        }
+                                      },
+                                      child: Text('SAVE',
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .titleMedium),
+                                    ),
+                                  ),
+                                ),
+                                Container(
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10),
+                                    gradient: LinearGradient(
+                                      begin: Alignment.topLeft,
+                                      end: Alignment.bottomRight,
+                                      colors: [
+                                        Theme.of(context).colorScheme.primary,
+                                        Theme.of(context).colorScheme.secondary,
+                                      ],
+                                    ),
+                                  ),
+                                  child: Theme(
+                                    data: MyTheme.buttonStyleTheme,
+                                    child: ElevatedButton(
+                                      onPressed: () {
+                                        Navigator.push(context,
+                                            Approutes().conductorListNewScreen);
+                                      },
+                                      child: Text('VIEW',
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .titleMedium),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            )
+                          : Container(
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                gradient: LinearGradient(
+                                  begin: Alignment.topLeft,
+                                  end: Alignment.bottomRight,
+                                  colors: [
+                                    Theme.of(context).colorScheme.primary,
+                                    Theme.of(context).colorScheme.secondary,
+                                  ],
+                                ),
+                              ),
+                              child: Theme(
+                                data: MyTheme.buttonStyleTheme,
+                                child: ElevatedButton(
+                                  onPressed: () {
+                                    if (_formKey1.currentState!.validate()) {
+                                      conductorMasterSave(context);
+                                    }
+                                  },
+                                  child: Text('UPDATE',
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .titleMedium),
+                                ),
                               ),
                             ),
-                            child: Theme(
-                              data: MyTheme.buttonStyleTheme,
-                              child: ElevatedButton(
-                                onPressed: () {
-                                  if (_formKey1.currentState!.validate()) {
-                                    conductorMasterSave(context);
-                                  }
-                                },
-                                child: Text('SAVE',
-                                    style: Theme.of(context).textTheme.titleMedium),
-                              ),
-                            ),
-                          ),
-                          Container(
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              gradient: LinearGradient(
-                                begin: Alignment.topLeft,
-                                end: Alignment.bottomRight,
-                                colors: [
-                                  Theme.of(context).colorScheme.primary,
-                                  Theme.of(context).colorScheme.secondary,
-                                ],
-                              ),
-                            ),
-                            child: Theme(
-                              data: MyTheme.buttonStyleTheme,
-                              child: ElevatedButton(
-                                onPressed: () {
-                                  Navigator.push(context, Approutes().conductorListNewScreen);
-                                },
-                                child: Text('VIEW',
-                                    style: Theme.of(context).textTheme.titleMedium),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ):
-                      Container(
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              gradient: LinearGradient(
-                                begin: Alignment.topLeft,
-                                end: Alignment.bottomRight,
-                                colors: [
-                                  Theme.of(context).colorScheme.primary,
-                                  Theme.of(context).colorScheme.secondary,
-                                ],
-                              ),
-                            ),
-                            child: Theme(
-                              data: MyTheme.buttonStyleTheme,
-                              child: ElevatedButton(
-                                onPressed: () {
-                                  if (_formKey1.currentState!.validate()) {
-                                    conductorMasterSave(context);
-                                  }
-                                },
-                                child: Text('UPDATE',
-                                    style: Theme.of(context).textTheme.titleMedium),
-                              ),
-                            ),
-                          ),
                       const SizedBox(height: 10),
                       Consumer<LoadingProvider>(
                           builder: (context, loadingProvider, child) {
@@ -831,85 +841,93 @@ class _ScreenEmployeeNewState extends State<ScreenEmployeeNew> {
                       const SizedBox(
                         height: 20,
                       ),
-                     widget.flag == 0 ?
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          Container(
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              gradient: LinearGradient(
-                                begin: Alignment.topLeft,
-                                end: Alignment.bottomRight,
-                                colors: [
-                                  Theme.of(context).colorScheme.primary,
-                                  Theme.of(context).colorScheme.secondary,
-                                ],
+                      widget.flag == 0
+                          ? Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                Container(
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10),
+                                    gradient: LinearGradient(
+                                      begin: Alignment.topLeft,
+                                      end: Alignment.bottomRight,
+                                      colors: [
+                                        Theme.of(context).colorScheme.primary,
+                                        Theme.of(context).colorScheme.secondary,
+                                      ],
+                                    ),
+                                  ),
+                                  child: Theme(
+                                    data: MyTheme.buttonStyleTheme,
+                                    child: ElevatedButton(
+                                      onPressed: () {
+                                        if (_formKey2.currentState!
+                                            .validate()) {
+                                          driverMasterSave(context);
+                                        }
+                                      },
+                                      child: Text('SAVE',
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .titleMedium),
+                                    ),
+                                  ),
+                                ),
+                                Container(
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10),
+                                    gradient: LinearGradient(
+                                      begin: Alignment.topLeft,
+                                      end: Alignment.bottomRight,
+                                      colors: [
+                                        Theme.of(context).colorScheme.primary,
+                                        Theme.of(context).colorScheme.secondary,
+                                      ],
+                                    ),
+                                  ),
+                                  child: Theme(
+                                    data: MyTheme.buttonStyleTheme,
+                                    child: ElevatedButton(
+                                      onPressed: () {
+                                        Navigator.push(context,
+                                            Approutes().screenDriverNewView);
+                                      },
+                                      child: Text('VIEW',
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .titleMedium),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            )
+                          : Container(
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                gradient: LinearGradient(
+                                  begin: Alignment.topLeft,
+                                  end: Alignment.bottomRight,
+                                  colors: [
+                                    Theme.of(context).colorScheme.primary,
+                                    Theme.of(context).colorScheme.secondary,
+                                  ],
+                                ),
+                              ),
+                              child: Theme(
+                                data: MyTheme.buttonStyleTheme,
+                                child: ElevatedButton(
+                                  onPressed: () {
+                                    if (_formKey2.currentState!.validate()) {
+                                      driverMasterSave(context);
+                                    }
+                                  },
+                                  child: Text('UPDATE',
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .titleMedium),
+                                ),
                               ),
                             ),
-                            child: Theme(
-                              data: MyTheme.buttonStyleTheme,
-                              child: ElevatedButton(
-                                onPressed: () {
-                                  if (_formKey2.currentState!.validate()) {
-                                    driverMasterSave(context);
-                                  }
-                                },
-                                child: Text('SAVE',
-                                    style: Theme.of(context).textTheme.titleMedium),
-                              ),
-                            ),
-                          ),
-                          Container(
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              gradient: LinearGradient(
-                                begin: Alignment.topLeft,
-                                end: Alignment.bottomRight,
-                                colors: [
-                                  Theme.of(context).colorScheme.primary,
-                                  Theme.of(context).colorScheme.secondary,
-                                ],
-                              ),
-                            ),
-                            child: Theme(
-                              data: MyTheme.buttonStyleTheme,
-                              child: ElevatedButton(
-                                onPressed: () {
-                                  Navigator.push(context, Approutes().screenDriverNewView);
-                                  
-                                },
-                                child: Text('VIEW',
-                                    style: Theme.of(context).textTheme.titleMedium),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ):Container(
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              gradient: LinearGradient(
-                                begin: Alignment.topLeft,
-                                end: Alignment.bottomRight,
-                                colors: [
-                                  Theme.of(context).colorScheme.primary,
-                                  Theme.of(context).colorScheme.secondary,
-                                ],
-                              ),
-                            ),
-                            child: Theme(
-                              data: MyTheme.buttonStyleTheme,
-                              child: ElevatedButton(
-                                onPressed: () {
-                                  if (_formKey2.currentState!.validate()) {
-                                    driverMasterSave(context);
-                                  }
-                                },
-                                child: Text('UPDATE',
-                                    style: Theme.of(context).textTheme.titleMedium),
-                              ),
-                            ),
-                          ),
                       const SizedBox(height: 10),
                       Consumer<LoadingProvider>(
                           builder: (context, loadingProvider, child) {

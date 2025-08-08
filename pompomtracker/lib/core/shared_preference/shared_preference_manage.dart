@@ -42,7 +42,7 @@ class SharedPrefManager {
         userType: usertype,
         userName: username,
         ownerName: ownername,
-        token:token);
+        token: token);
     return valshared;
   }
 

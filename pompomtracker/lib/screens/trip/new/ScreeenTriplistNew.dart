@@ -28,7 +28,7 @@ class _ScreenTripListNewState extends State<ScreenTripListNew> {
   }
 
   Future<bool?> popscreen(BuildContext context) async {
-    TripListFuntions.instance.getTripListNotifier.value=[];
+    TripListFuntions.instance.getTripListNotifier.value = [];
     Navigator.push(context, Approutes().tripmasterNewscreen);
     return true;
   }
@@ -46,17 +46,21 @@ class _ScreenTripListNewState extends State<ScreenTripListNew> {
       },
       child: Stack(
         children: [
-          BackgroundColorGradient(),
+          // BackgroundColorGradient(),
           Scaffold(
-            backgroundColor: Colors.transparent,
+            backgroundColor: Colors.white,
             appBar: AppBar(
               backgroundColor: Theme.of(context).colorScheme.primary,
               leading: IconButton(
-                icon: const Icon(Icons.arrow_back,color: Colors.white,),
+                icon: const Icon(
+                  Icons.arrow_back,
+                  color: Colors.white,
+                ),
                 onPressed: () {
-                 TripListFuntions.instance.getTripListNotifier.value=[];
+                  TripListFuntions.instance.getTripListNotifier.value = [];
 
-                  Navigator.pushReplacement(context, Approutes().tripmasterNewscreen);
+                  Navigator.pushReplacement(
+                      context, Approutes().tripmasterNewscreen);
                 },
               ),
               title: Text(
@@ -67,7 +71,7 @@ class _ScreenTripListNewState extends State<ScreenTripListNew> {
             body: Column(
               children: [
                 Card(
-                    margin: const EdgeInsets.all(5),
+                  margin: const EdgeInsets.all(5),
                   child: Container(
                     decoration: BoxDecoration(
                       border: Border.all(
@@ -97,14 +101,15 @@ class _ScreenTripListNewState extends State<ScreenTripListNew> {
                                   onChanged: (newValue) {
                                     setState(() {
                                       selectedBusList = newValue;
-                            
+
                                       //TripListFuntions.instance.getTripList();
                                     });
                                   },
                                   value: selectedBusList,
                                   style: TextStyle(
-                                      color:
-                                          Theme.of(context).colorScheme.onPrimary),
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .onPrimary),
                                   icon: Theme(
                                     data: Theme.of(context),
                                     child: const Icon(
@@ -147,20 +152,18 @@ class _ScreenTripListNewState extends State<ScreenTripListNew> {
                                       context
                                           .read<ElevatedBtnProvider>()
                                           .changeSelectedVal(false);
-                                      if(selectedBusList==null){
+                                      if (selectedBusList == null) {
                                         Wklycollectfn.instance.showApierror(
-                                            context,
-                                            "Please select Bus",
-                                          );
-                                      }else{
+                                          context,
+                                          "Please select Bus",
+                                        );
+                                      } else {
                                         TripListFuntions.instance
-                                          .getTripList(selectedBusList);
-                                      context
-                                          .read<ElevatedBtnProvider>()
-                                          .changeSelectedVal(true);
+                                            .getTripList(selectedBusList);
+                                        context
+                                            .read<ElevatedBtnProvider>()
+                                            .changeSelectedVal(true);
                                       }
-                                      
-                                      
                                     },
                                     child: Text('SHOW',
                                         style: Theme.of(context)
@@ -177,7 +180,8 @@ class _ScreenTripListNewState extends State<ScreenTripListNew> {
                   if (widgetProvider.selectedVal == false) {
                     return Container();
                   } else if (widgetProvider.selectedVal == true) {
-                    return Expanded(child: ScrollableWidget(child: tableDispay()));
+                    return Expanded(
+                        child: ScrollableWidget(child: tableDispay()));
                   }
                   return Container();
                 }),
@@ -199,7 +203,7 @@ class _ScreenTripListNewState extends State<ScreenTripListNew> {
                 Container(
                   decoration: BoxDecoration(
                     border: Border.all(
-                        color: Theme.of(context).colorScheme.onSecondary),
+                        color: Colors.black),
                     borderRadius: BorderRadius.circular(10),
                   ),
                   child: DataTable(
@@ -207,8 +211,8 @@ class _ScreenTripListNewState extends State<ScreenTripListNew> {
                     dataRowMinHeight: 35,
                     headingRowHeight: 35,
                     columnSpacing: 15,
-                    headingRowColor:
-                        WidgetStateProperty.all(Color.fromARGB(255, 204, 123, 2)),
+                    headingRowColor: WidgetStateProperty.all(
+                        Color.fromARGB(255, 204, 123, 2)),
                     columns: getColumns(columns = [
                       'S.No',
                       'Reg No',
@@ -232,7 +236,7 @@ class _ScreenTripListNewState extends State<ScreenTripListNew> {
                             vertical: MediaQuery.of(context).size.height / 2.5,
                             horizontal: MediaQuery.of(context).size.width / 2.3,
                           ),
-                          child: const CircularProgressIndicator(),
+                          child: const CircularProgressIndicator(color: Color.fromARGB(255, 204, 123, 2),),
                         ),
                       );
                     } else {
@@ -246,8 +250,7 @@ class _ScreenTripListNewState extends State<ScreenTripListNew> {
                           child: Text(
                             'No data found',
                             style: TextStyle(
-                                color:
-                                    Theme.of(context).colorScheme.onSecondary),
+                                color:Colors.black),
                           ),
                         ),
                       );
@@ -265,7 +268,7 @@ class _ScreenTripListNewState extends State<ScreenTripListNew> {
       return DataColumn(
         label: Text(
           column,
-          style: Theme.of(context).textTheme.bodyLarge,
+          style: Theme.of(context).textTheme.bodyLarge?.copyWith(color: Colors.white),
         ),
       );
     }).toList();
@@ -289,7 +292,7 @@ class _ScreenTripListNewState extends State<ScreenTripListNew> {
                 '$index', // Display the serial number
                 style: TextStyle(
                     fontWeight: FontWeight.bold,
-                    color: Theme.of(context).colorScheme.onSecondary),
+                    color: Colors.black),
               ),
             ),
           ),
@@ -300,11 +303,11 @@ class _ScreenTripListNewState extends State<ScreenTripListNew> {
                 child: Text('$cell',
                     style: taskbold
                         ? const TextStyle(
-                            fontWeight: FontWeight.bold,
-                            )
+                            fontWeight: FontWeight.bold,color: Colors.black
+                          )
                         : TextStyle(
                             fontWeight: FontWeight.normal,
-                            color: Theme.of(context).colorScheme.onSecondary)),
+                            color: Colors.black)),
               ),
             );
           }),

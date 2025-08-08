@@ -1,5 +1,3 @@
-
-
 import 'package:pompomtracker/core/hook/hook.dart';
 import 'package:pompomtracker/model/track/real_bus_det/bus_list.dart';
 import 'package:pompomtracker/model/track/real_bus_det/real_bus_det.dart';
@@ -11,8 +9,8 @@ class BusTrackFunctions {
     return instance;
   }
 
-
-  Future<List<BusDetList>?> realbusdet(BusListReq req ,BuildContext context) async {
+  Future<List<BusDetList>?> realbusdet(
+      BusListReq req, BuildContext context) async {
     try {
       final bnkLstresp = await Busdata().realBusDet(req);
       String? message;

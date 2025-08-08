@@ -95,23 +95,25 @@ class _ScreenBusMasterNewState extends State<ScreenBusMasterNew> {
             key: _scafoldkey,
             backgroundColor: Colors.transparent,
             appBar: AppBar(
-              backgroundColor: Theme.of(context).colorScheme.primary,
+                backgroundColor: Theme.of(context).colorScheme.primary,
                 leading: IconButton(
-                  icon: const Icon(Icons.arrow_back,color: Colors.white,),
+                  icon: const Icon(
+                    Icons.arrow_back,
+                    color: Colors.white,
+                  ),
                   onPressed: () {
                     if (widget.flag == 0) {
-                      Navigator.pushReplacement(
-                          _scafoldkey.currentContext!, Approutes().settingscreen);
+                      Navigator.pushReplacement(_scafoldkey.currentContext!,
+                          Approutes().settingscreen);
                     } else {
-                      Navigator.pushReplacement(
-                          _scafoldkey.currentContext!, Approutes().busListNewScreen);
+                      Navigator.pushReplacement(_scafoldkey.currentContext!,
+                          Approutes().busListNewScreen);
                     }
                   },
                 ),
                 title: Text(
                   "Add Bus",
-                  style:
-                      TextStyle(color: Colors.white),
+                  style: TextStyle(color: Colors.white),
                 )),
             body: Center(
               child: ListView(
@@ -129,7 +131,8 @@ class _ScreenBusMasterNewState extends State<ScreenBusMasterNew> {
                           margin: const EdgeInsets.all(10),
                           decoration: BoxDecoration(
                             border: Border.all(
-                                color: Theme.of(context).colorScheme.onSecondary),
+                                color:
+                                    Theme.of(context).colorScheme.onSecondary),
                             borderRadius: BorderRadius.circular(12),
                           ),
                           child: Form(
@@ -141,17 +144,19 @@ class _ScreenBusMasterNewState extends State<ScreenBusMasterNew> {
                                   child: Column(
                                     children: [
                                       const CircleAvatar(
-                                        backgroundImage:
-                                            AssetImage('assets/bus/busmaster.png'),
+                                        backgroundImage: AssetImage(
+                                            'assets/bus/busmaster.png'),
                                         radius: 50,
                                       ),
                                       const SizedBox(height: 10),
                                       SizedBox(
-                                        width: MediaQuery.of(context).size.width,
+                                        width:
+                                            MediaQuery.of(context).size.width,
                                         child: TextFormField(
                                           controller: _nameControler,
-                                          style:
-                                              Theme.of(context).textTheme.bodySmall,
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .bodySmall,
                                           decoration: InputDecoration(
                                               labelText: 'Name',
                                               labelStyle: Theme.of(context)
@@ -170,11 +175,13 @@ class _ScreenBusMasterNewState extends State<ScreenBusMasterNew> {
                                         height: 10,
                                       ),
                                       SizedBox(
-                                        width: MediaQuery.of(context).size.width,
+                                        width:
+                                            MediaQuery.of(context).size.width,
                                         child: TextFormField(
                                           controller: _shortnameControler,
-                                          style:
-                                              Theme.of(context).textTheme.bodySmall,
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .bodySmall,
                                           decoration: InputDecoration(
                                               labelText: 'Short Name',
                                               labelStyle: Theme.of(context)
@@ -193,11 +200,13 @@ class _ScreenBusMasterNewState extends State<ScreenBusMasterNew> {
                                         height: 10,
                                       ),
                                       SizedBox(
-                                        width: MediaQuery.of(context).size.width,
+                                        width:
+                                            MediaQuery.of(context).size.width,
                                         child: TextFormField(
                                           controller: _registartionNoControler,
-                                          style:
-                                              Theme.of(context).textTheme.bodySmall,
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .bodySmall,
                                           decoration: InputDecoration(
                                               labelText: 'Registration No',
                                               labelStyle: Theme.of(context)
@@ -217,11 +226,13 @@ class _ScreenBusMasterNewState extends State<ScreenBusMasterNew> {
                                         height: 10,
                                       ),
                                       SizedBox(
-                                        width: MediaQuery.of(context).size.width,
+                                        width:
+                                            MediaQuery.of(context).size.width,
                                         child: TextFormField(
                                           controller: _permitNoController,
-                                          style:
-                                              Theme.of(context).textTheme.bodySmall,
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .bodySmall,
                                           decoration: InputDecoration(
                                               labelText: 'Permit No',
                                               labelStyle: Theme.of(context)
@@ -270,11 +281,13 @@ class _ScreenBusMasterNewState extends State<ScreenBusMasterNew> {
                                             )),
                                         decoration: InputDecoration(
                                           labelText: 'Bus Type',
-                                          labelStyle:
-                                              Theme.of(context).textTheme.bodySmall,
+                                          labelStyle: Theme.of(context)
+                                              .textTheme
+                                              .bodySmall,
                                         ),
-                                        dropdownColor:
-                                            Theme.of(context).colorScheme.tertiary,
+                                        dropdownColor: Theme.of(context)
+                                            .colorScheme
+                                            .tertiary,
                                         validator: (value) {
                                           if (value!.isEmpty) {
                                             return 'Select Bus Type';
@@ -287,15 +300,19 @@ class _ScreenBusMasterNewState extends State<ScreenBusMasterNew> {
                                         height: 10,
                                       ),
                                       SizedBox(
-                                        width: MediaQuery.of(context).size.width,
+                                        width:
+                                            MediaQuery.of(context).size.width,
                                       ),
                                       TextFormField(
                                         controller: _dateValidController,
-                                        style: Theme.of(context).textTheme.bodySmall,
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodySmall,
                                         decoration: InputDecoration(
                                           labelText: 'Valid From',
-                                          labelStyle:
-                                              Theme.of(context).textTheme.bodySmall,
+                                          labelStyle: Theme.of(context)
+                                              .textTheme
+                                              .bodySmall,
                                           suffixIcon: Theme(
                                               data: Theme.of(context),
                                               child: const Icon(
@@ -316,15 +333,19 @@ class _ScreenBusMasterNewState extends State<ScreenBusMasterNew> {
                                         height: 10,
                                       ),
                                       SizedBox(
-                                        width: MediaQuery.of(context).size.width,
+                                        width:
+                                            MediaQuery.of(context).size.width,
                                       ),
                                       TextFormField(
                                         controller: _dateToController,
-                                        style: Theme.of(context).textTheme.bodySmall,
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodySmall,
                                         decoration: InputDecoration(
                                           labelText: 'Valid To',
-                                          labelStyle:
-                                              Theme.of(context).textTheme.bodySmall,
+                                          labelStyle: Theme.of(context)
+                                              .textTheme
+                                              .bodySmall,
                                           suffixIcon: Theme(
                                             data: Theme.of(context),
                                             child: const Icon(
@@ -332,8 +353,8 @@ class _ScreenBusMasterNewState extends State<ScreenBusMasterNew> {
                                             ),
                                           ),
                                         ),
-                                        onTap: () =>
-                                            _selectDate(context, _dateToController),
+                                        onTap: () => _selectDate(
+                                            context, _dateToController),
                                         validator: (value) {
                                           if (value!.isEmpty) {
                                             return 'Select Date';
@@ -345,100 +366,127 @@ class _ScreenBusMasterNewState extends State<ScreenBusMasterNew> {
                                       const SizedBox(
                                         height: 10,
                                       ),
-                                     widget.flag == 0 ? Row(
-                                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                        children: [
-                                          Container(
-                                            decoration: BoxDecoration(
-                                              borderRadius: BorderRadius.circular(10),
-                                              gradient: LinearGradient(
-                                                begin: Alignment.topLeft,
-                                                end: Alignment.bottomRight,
-                                                colors: [
-                                                  Theme.of(context).colorScheme.primary,
-                                                  Theme.of(context).colorScheme.secondary,
-                                                ],
+                                      widget.flag == 0
+                                          ? Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.spaceEvenly,
+                                              children: [
+                                                Container(
+                                                  decoration: BoxDecoration(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            10),
+                                                    gradient: LinearGradient(
+                                                      begin: Alignment.topLeft,
+                                                      end:
+                                                          Alignment.bottomRight,
+                                                      colors: [
+                                                        Theme.of(context)
+                                                            .colorScheme
+                                                            .primary,
+                                                        Theme.of(context)
+                                                            .colorScheme
+                                                            .secondary,
+                                                      ],
+                                                    ),
+                                                  ),
+                                                  child: Theme(
+                                                    data: MyTheme
+                                                        .buttonStyleTheme,
+                                                    child: ElevatedButton(
+                                                      onPressed: () {
+                                                        busMasterSave(context);
+                                                      },
+                                                      child: Text('SAVE',
+                                                          style:
+                                                              Theme.of(context)
+                                                                  .textTheme
+                                                                  .titleMedium),
+                                                    ),
+                                                  ),
+                                                ),
+                                                Container(
+                                                  decoration: BoxDecoration(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            10),
+                                                    gradient: LinearGradient(
+                                                      begin: Alignment.topLeft,
+                                                      end:
+                                                          Alignment.bottomRight,
+                                                      colors: [
+                                                        Theme.of(context)
+                                                            .colorScheme
+                                                            .primary,
+                                                        Theme.of(context)
+                                                            .colorScheme
+                                                            .secondary,
+                                                      ],
+                                                    ),
+                                                  ),
+                                                  child: Theme(
+                                                    data: MyTheme
+                                                        .buttonStyleTheme,
+                                                    child: ElevatedButton(
+                                                      onPressed: () {
+                                                        //busMasterSave(context);
+                                                        Navigator.push(
+                                                            context,
+                                                            Approutes()
+                                                                .busListNewScreen);
+                                                      },
+                                                      child: Text('VIEW',
+                                                          style:
+                                                              Theme.of(context)
+                                                                  .textTheme
+                                                                  .titleMedium),
+                                                    ),
+                                                  ),
+                                                )
+                                              ],
+                                            )
+                                          : Container(
+                                              decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(10),
+                                                gradient: LinearGradient(
+                                                  begin: Alignment.topLeft,
+                                                  end: Alignment.bottomRight,
+                                                  colors: [
+                                                    Theme.of(context)
+                                                        .colorScheme
+                                                        .primary,
+                                                    Theme.of(context)
+                                                        .colorScheme
+                                                        .secondary,
+                                                  ],
+                                                ),
+                                              ),
+                                              child: Theme(
+                                                data: MyTheme.buttonStyleTheme,
+                                                child: ElevatedButton(
+                                                  onPressed: () {
+                                                    busMasterSave(context);
+                                                  },
+                                                  child: Text('UPDATE',
+                                                      style: Theme.of(context)
+                                                          .textTheme
+                                                          .titleMedium),
+                                                ),
                                               ),
                                             ),
-                                            child: Theme(
-                                              data: MyTheme.buttonStyleTheme,
-                                              child: ElevatedButton(
-                                                onPressed: () {
-                                                  busMasterSave(context);
-                                                },
-                                                child: Text(
-                                                    'SAVE',
-                                                    style: Theme.of(context)
-                                                        .textTheme
-                                                        .titleMedium),
-                                              ),
-                                            ),
-                                          ),
-                                          Container(
-                                            decoration: BoxDecoration(
-                                              borderRadius: BorderRadius.circular(10),
-                                              gradient: LinearGradient(
-                                                begin: Alignment.topLeft,
-                                                end: Alignment.bottomRight,
-                                                colors: [
-                                                  Theme.of(context).colorScheme.primary,
-                                                  Theme.of(context).colorScheme.secondary,
-                                                ],
-                                              ),
-                                            ),
-                                            child: Theme(
-                                              data: MyTheme.buttonStyleTheme,
-                                              child: ElevatedButton(
-                                                onPressed: () {
-                                                  //busMasterSave(context);
-                                                   Navigator.push(context, Approutes().busListNewScreen);
-                                         
-                                                },
-                                                child: Text(
-                                                    'VIEW',
-                                                    style: Theme.of(context)
-                                                        .textTheme
-                                                        .titleMedium),
-                                              ),
-                                            ),
-                                          )
-                                        ],
-                                      ):
-                                      Container(
-                                            decoration: BoxDecoration(
-                                              borderRadius: BorderRadius.circular(10),
-                                              gradient: LinearGradient(
-                                                begin: Alignment.topLeft,
-                                                end: Alignment.bottomRight,
-                                                colors: [
-                                                  Theme.of(context).colorScheme.primary,
-                                                  Theme.of(context).colorScheme.secondary,
-                                                ],
-                                              ),
-                                            ),
-                                            child: Theme(
-                                              data: MyTheme.buttonStyleTheme,
-                                              child: ElevatedButton(
-                                                onPressed: () {
-                                                  busMasterSave(context);
-                                                },
-                                                child: Text(
-                                                    'UPDATE',
-                                                    style: Theme.of(context)
-                                                        .textTheme
-                                                        .titleMedium),
-                                              ),
-                                            ),
-                                          ),
                                       const SizedBox(height: 10),
-                                      Consumer<LoadingProvider>(
-                                          builder: (context, loadingProvider, child) {
+                                      Consumer<LoadingProvider>(builder:
+                                          (context, loadingProvider, child) {
                                         return loadingProvider.isLoading
                                             ? const Center(
-                                                child: CircularProgressIndicator(
+                                                child:
+                                                    CircularProgressIndicator(
                                                   valueColor:
-                                                      AlwaysStoppedAnimation<Color>(
-                                                    Color.fromARGB(255, 2, 128, 6),
+                                                      AlwaysStoppedAnimation<
+                                                          Color>(
+                                                    Color.fromARGB(
+                                                        255, 2, 128, 6),
                                                   ),
                                                 ),
                                               )
@@ -526,9 +574,9 @@ class _ScreenBusMasterNewState extends State<ScreenBusMasterNew> {
           textColor: Colors.black,
           fontSize: 15.0);
       if (!context.mounted) return;
-      widget.flag==0?
-      Navigator.pushReplacement(context, Approutes().busmasternewscreen):
-      Navigator.pushReplacement(context, Approutes().busListNewScreen);
+      widget.flag == 0
+          ? Navigator.pushReplacement(context, Approutes().busmasternewscreen)
+          : Navigator.pushReplacement(context, Approutes().busListNewScreen);
     } else if (busResponseValue.status == 'Failed') {
       showerror(_scafoldkey.currentContext!, 2);
     } else {

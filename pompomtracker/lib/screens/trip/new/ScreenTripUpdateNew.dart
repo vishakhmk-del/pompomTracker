@@ -7,7 +7,8 @@ class ScreenTripUpdateNew extends StatefulWidget {
   final String? bus;
 
   final int flag;
-  const ScreenTripUpdateNew({super.key, this.trip_id, this.regNo,this.bus, required this.flag});
+  const ScreenTripUpdateNew(
+      {super.key, this.trip_id, this.regNo, this.bus, required this.flag});
 
   @override
   State<ScreenTripUpdateNew> createState() => _ScreenTripUpdateNewState();
@@ -98,12 +99,10 @@ class _ScreenTripUpdateNewState extends State<ScreenTripUpdateNew> {
 
   Future<bool?> popscreen(BuildContext context) async {
     if (widget.flag == 0) {
-      Navigator.pushReplacement(
-          context, Approutes().settingscreen);
+      Navigator.pushReplacement(context, Approutes().settingscreen);
       return true;
     } else {
-      Navigator.push(
-          context, Approutes().tripListNewScreen);
+      Navigator.push(context, Approutes().tripListNewScreen);
       return true;
     }
   }
@@ -125,23 +124,24 @@ class _ScreenTripUpdateNewState extends State<ScreenTripUpdateNew> {
             backgroundColor: Colors.transparent,
             key: _scafoldkey,
             appBar: AppBar(
-              backgroundColor: Theme.of(context).colorScheme.primary,
+                backgroundColor: Theme.of(context).colorScheme.primary,
                 leading: IconButton(
-                  icon: const Icon(Icons.arrow_back,color: Colors.white,),
+                  icon: const Icon(
+                    Icons.arrow_back,
+                    color: Colors.white,
+                  ),
                   onPressed: () {
                     if (widget.flag == 0) {
                       Navigator.pushReplacement(
                           context, Approutes().settingscreen);
                     } else {
-                      Navigator.push(
-                          context, Approutes().tripListNewScreen);
+                      Navigator.push(context, Approutes().tripListNewScreen);
                     }
                   },
                 ),
                 title: Text(
                   "Trip Master",
-                  style:
-                      TextStyle(color: Colors.white),
+                  style: TextStyle(color: Colors.white),
                 )),
             body: Center(
               child: ListView(
@@ -151,7 +151,7 @@ class _ScreenTripUpdateNewState extends State<ScreenTripUpdateNew> {
                       margin: const EdgeInsets.all(5),
                       elevation: 5,
                       child: Container(
-                       // height: MediaQuery.of(context).size.height * .8,
+                        // height: MediaQuery.of(context).size.height * .8,
                         margin: const EdgeInsets.all(10),
                         decoration: BoxDecoration(
                           border: Border.all(
@@ -167,8 +167,8 @@ class _ScreenTripUpdateNewState extends State<ScreenTripUpdateNew> {
                                 child: Column(
                                   children: [
                                     const CircleAvatar(
-                                      backgroundImage:
-                                          AssetImage('assets/bus/busmaster.png'),
+                                      backgroundImage: AssetImage(
+                                          'assets/bus/busmaster.png'),
                                       radius: 50,
                                     ),
                                     const SizedBox(
@@ -177,9 +177,11 @@ class _ScreenTripUpdateNewState extends State<ScreenTripUpdateNew> {
                                     SizedBox(
                                       width: MediaQuery.of(context).size.width,
                                       child: IgnorePointer(
-                                        ignoring: widget.flag == 0 ? false : true,
+                                        ignoring:
+                                            widget.flag == 0 ? false : true,
                                         child: DropdownButtonFormField(
-                                          items: registarionlst.map((valueItem) {
+                                          items:
+                                              registarionlst.map((valueItem) {
                                             return DropdownMenuItem(
                                               value: valueItem,
                                               child: Text(
@@ -209,11 +211,13 @@ class _ScreenTripUpdateNewState extends State<ScreenTripUpdateNew> {
                                           ),
                                           decoration: InputDecoration(
                                             labelText: 'Select Bus',
-                                            labelStyle:
-                                                Theme.of(context).textTheme.bodySmall,
+                                            labelStyle: Theme.of(context)
+                                                .textTheme
+                                                .bodySmall,
                                           ),
-                                          dropdownColor:
-                                              Theme.of(context).colorScheme.tertiary,
+                                          dropdownColor: Theme.of(context)
+                                              .colorScheme
+                                              .tertiary,
                                           validator: (value) {
                                             if (value!.isEmpty) {
                                               return 'Select Bus Type';
@@ -230,19 +234,23 @@ class _ScreenTripUpdateNewState extends State<ScreenTripUpdateNew> {
                                     SizedBox(
                                       width: MediaQuery.of(context).size.width,
                                       child: IgnorePointer(
-                                        ignoring: widget.flag == 0 ? false : true,
+                                        ignoring:
+                                            widget.flag == 0 ? false : true,
                                         child: DropdownButtonFormField(
                                           items: routelist.map((busMap) {
                                             return DropdownMenuItem<String>(
-                                              value: busMap['routeId'] as String,
+                                              value:
+                                                  busMap['routeId'] as String,
                                               // Use routeId as the value
                                               child: ConstrainedBox(
-                                                constraints: const BoxConstraints(
-                                                    maxWidth: 200),
+                                                constraints:
+                                                    const BoxConstraints(
+                                                        maxWidth: 200),
                                                 child: Text(
                                                   busMap['display']
                                                       as String, // Display the route name and via
-                                                  overflow: TextOverflow.ellipsis,
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
                                                   style: TextStyle(
                                                     color: Theme.of(context)
                                                         .colorScheme
@@ -255,7 +263,8 @@ class _ScreenTripUpdateNewState extends State<ScreenTripUpdateNew> {
                                           onChanged: (newValue) {
                                             setState(() {
                                               selectedRouteList = newValue;
-                                              selectedRouteId = int.parse(newValue!);
+                                              selectedRouteId =
+                                                  int.parse(newValue!);
                                               // Store the selected routeId
                                             });
                                           },
@@ -274,11 +283,13 @@ class _ScreenTripUpdateNewState extends State<ScreenTripUpdateNew> {
                                           ),
                                           decoration: InputDecoration(
                                             labelText: 'Select Route',
-                                            labelStyle:
-                                                Theme.of(context).textTheme.bodySmall,
+                                            labelStyle: Theme.of(context)
+                                                .textTheme
+                                                .bodySmall,
                                           ),
-                                          dropdownColor:
-                                              Theme.of(context).colorScheme.tertiary,
+                                          dropdownColor: Theme.of(context)
+                                              .colorScheme
+                                              .tertiary,
                                           validator: (value) {
                                             if (value == null) {
                                               return 'Select Route';
@@ -295,7 +306,9 @@ class _ScreenTripUpdateNewState extends State<ScreenTripUpdateNew> {
                                       child: TextFormField(
                                         readOnly: true,
                                         controller: _fromController,
-                                        style: Theme.of(context).textTheme.bodySmall,
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodySmall,
                                         decoration: InputDecoration(
                                             labelText: 'From Station',
                                             labelStyle: Theme.of(context)
@@ -316,7 +329,9 @@ class _ScreenTripUpdateNewState extends State<ScreenTripUpdateNew> {
                                       child: TextFormField(
                                         readOnly: true,
                                         controller: _toController,
-                                        style: Theme.of(context).textTheme.bodySmall,
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodySmall,
                                         decoration: InputDecoration(
                                             labelText: 'To Station',
                                             labelStyle: Theme.of(context)
@@ -331,17 +346,20 @@ class _ScreenTripUpdateNewState extends State<ScreenTripUpdateNew> {
                                         },
                                       ),
                                     ),
-                                
+
                                     const SizedBox(height: 20),
                                     SizedBox(
                                       width: MediaQuery.of(context).size.width,
                                       child: TextFormField(
                                         controller: _startTimeController,
-                                        style: Theme.of(context).textTheme.bodySmall,
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodySmall,
                                         decoration: InputDecoration(
                                           labelText: 'Starting Time',
-                                          labelStyle:
-                                              Theme.of(context).textTheme.bodySmall,
+                                          labelStyle: Theme.of(context)
+                                              .textTheme
+                                              .bodySmall,
                                           suffixIcon: Theme(
                                               data: Theme.of(context),
                                               child: const Icon(Icons.timer)),
@@ -362,16 +380,20 @@ class _ScreenTripUpdateNewState extends State<ScreenTripUpdateNew> {
                                       width: MediaQuery.of(context).size.width,
                                       child: TextFormField(
                                         controller: _endTimeController,
-                                        style: Theme.of(context).textTheme.bodySmall,
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodySmall,
                                         decoration: InputDecoration(
                                             labelText: 'End Time',
-                                            labelStyle:
-                                                Theme.of(context).textTheme.bodySmall,
+                                            labelStyle: Theme.of(context)
+                                                .textTheme
+                                                .bodySmall,
                                             suffixIcon: Theme(
                                                 data: Theme.of(context),
-                                                child: const Icon(Icons.timer))),
-                                        onTap: () =>
-                                            _selectTime(context, _endTimeController),
+                                                child:
+                                                    const Icon(Icons.timer))),
+                                        onTap: () => _selectTime(
+                                            context, _endTimeController),
                                         validator: (value) {
                                           if (value!.isEmpty) {
                                             return 'Enter End Time';
@@ -391,8 +413,12 @@ class _ScreenTripUpdateNewState extends State<ScreenTripUpdateNew> {
                                           begin: Alignment.topLeft,
                                           end: Alignment.bottomRight,
                                           colors: [
-                                            Theme.of(context).colorScheme.primary,
-                                            Theme.of(context).colorScheme.secondary,
+                                            Theme.of(context)
+                                                .colorScheme
+                                                .primary,
+                                            Theme.of(context)
+                                                .colorScheme
+                                                .secondary,
                                           ],
                                         ),
                                       ),
@@ -403,7 +429,9 @@ class _ScreenTripUpdateNewState extends State<ScreenTripUpdateNew> {
                                             tripMasterSave(context);
                                           },
                                           child: Text(
-                                              widget.flag == 0 ? 'SAVE' : 'UPDATE',
+                                              widget.flag == 0
+                                                  ? 'SAVE'
+                                                  : 'UPDATE',
                                               style: Theme.of(context)
                                                   .textTheme
                                                   .titleMedium),
@@ -411,14 +439,16 @@ class _ScreenTripUpdateNewState extends State<ScreenTripUpdateNew> {
                                       ),
                                     ),
                                     const SizedBox(height: 10),
-                                    Consumer<LoadingProvider>(
-                                        builder: (context, loadingProvider, child) {
+                                    Consumer<LoadingProvider>(builder:
+                                        (context, loadingProvider, child) {
                                       return loadingProvider.isLoading
                                           ? const Center(
                                               child: CircularProgressIndicator(
                                                 valueColor:
-                                                    AlwaysStoppedAnimation<Color>(
-                                                  Color.fromARGB(255, 2, 128, 6),
+                                                    AlwaysStoppedAnimation<
+                                                        Color>(
+                                                  Color.fromARGB(
+                                                      255, 2, 128, 6),
                                                 ),
                                               ),
                                             )
@@ -493,9 +523,9 @@ class _ScreenTripUpdateNewState extends State<ScreenTripUpdateNew> {
           backgroundColor: Colors.white,
           textColor: Colors.black,
           fontSize: 15.0);
-         await TripListFuntions.instance.getTripList(widget.bus);
-          if(!context.mounted) return;
-           Navigator.push(context, Approutes().tripListNewScreen);
+      await TripListFuntions.instance.getTripList(widget.bus);
+      if (!context.mounted) return;
+      Navigator.push(context, Approutes().tripListNewScreen);
     } else if (resValue.status == 'Failed') {
       showerror(_scafoldkey.currentContext, 2);
     } else {

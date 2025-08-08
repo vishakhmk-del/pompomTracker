@@ -13,7 +13,6 @@ Sharedpref _$SharedprefFromJson(Map<String, dynamic> json) => Sharedpref(
       userName: json['user_name'] as String?,
       ownerName: json['owner_name'] as String?,
       token: json['access_token'] as String?,
-
     );
 
 Map<String, dynamic> _$SharedprefToJson(Sharedpref instance) =>
@@ -23,5 +22,5 @@ Map<String, dynamic> _$SharedprefToJson(Sharedpref instance) =>
       'user_type': instance.userType,
       'user_name': instance.userName,
       'owner_name': instance.ownerName,
-      'access_token':instance.token
+      'access_token': instance.token,
     };

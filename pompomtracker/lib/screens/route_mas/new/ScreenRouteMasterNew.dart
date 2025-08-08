@@ -1,4 +1,3 @@
-
 import 'package:pompomtracker/core/hook/hook.dart';
 
 class ScreenRoutemasterNew extends StatefulWidget {
@@ -130,12 +129,8 @@ class _ScreenRoutemasterNewState extends State<ScreenRoutemasterNew> {
                                     begin: Alignment.topLeft,
                                     end: Alignment.bottomRight,
                                     colors: [
-                                      Theme.of(context)
-                                          .colorScheme
-                                          .primary,
-                                      Theme.of(context)
-                                          .colorScheme
-                                          .secondary,
+                                      Theme.of(context).colorScheme.primary,
+                                      Theme.of(context).colorScheme.secondary,
                                     ],
                                   ),
                                 ),
@@ -143,8 +138,7 @@ class _ScreenRoutemasterNewState extends State<ScreenRoutemasterNew> {
                                   data: MyTheme.buttonStyleTheme,
                                   child: ElevatedButton(
                                     onPressed: () async {
-                                      if (_formKey.currentState!
-                                          .validate()) {
+                                      if (_formKey.currentState!.validate()) {
                                         await routeMasterSave(context);
                                       }
                                     },
@@ -188,8 +182,7 @@ class _ScreenRoutemasterNewState extends State<ScreenRoutemasterNew> {
   }
 
   Future<void> routeMasterSave(BuildContext context) async {
-    final loadingProvider =
-        _scafoldkey.currentContext!.read<LoadingProvider>();
+    final loadingProvider = _scafoldkey.currentContext!.read<LoadingProvider>();
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       loadingProvider.toggleLoading(); // Start loading
@@ -228,7 +221,7 @@ class _ScreenRoutemasterNewState extends State<ScreenRoutemasterNew> {
         textColor: Colors.black,
         fontSize: 15.0,
       );
-      if(!context.mounted) return;
+      if (!context.mounted) return;
       Navigator.push(context, Approutes().settingscreen);
     } else if (resValue.status == 'Failed') {
       showError(_scafoldkey.currentContext, 2);
@@ -238,9 +231,7 @@ class _ScreenRoutemasterNewState extends State<ScreenRoutemasterNew> {
   }
 
   void showError(BuildContext? context, int stat) {
-    String msg = stat == 2
-        ? "Route details not saved"
-        : "Something went wrong";
+    String msg = stat == 2 ? "Route details not saved" : "Something went wrong";
     Fluttertoast.showToast(
       msg: msg,
       toastLength: Toast.LENGTH_SHORT,

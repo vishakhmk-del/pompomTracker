@@ -77,6 +77,7 @@ export 'package:pompomtracker/screens/forgot/screenforgot.dart';
 export 'package:pompomtracker/screens/error/screenError.dart';
 export 'package:pompomtracker/screens/Emp_Details/assign/ScreenEmployeeAssign.dart';
 export 'package:pompomtracker/screens/Emp_Details/employee/driver/screendriverView.dart';
+export 'package:pompomtracker/screens/main/screenmainPage.dart';
 /**************************************/
 
 /*model*/
@@ -176,6 +177,16 @@ export 'package:pompomtracker/model/getRoute/ger_route_resp/emplist/emplist.dart
 export 'package:pompomtracker/model/employee/employee_assign/employee_assign.dart';
 
 export 'package:pompomtracker/model/employee/employee_req/employee_req.dart';
+
+export 'package:pompomtracker/model/track/real_bus_det/bus_list.dart';
+
+export 'package:pompomtracker/model/track/stoploc_resp/bus_location.dart';
+
+export 'package:pompomtracker/model/track/stoploc_resp/stop.dart';
+
+export 'package:pompomtracker/model/daycollection/daycollectionresp/collection.dart';
+
+export 'package:pompomtracker/model/daycollection/daycollectionresp/data.dart';
 /**************************************/
 
 /*FUNCTION*/
@@ -194,6 +205,11 @@ export 'package:pompomtracker/function/Bus_route/BusRouteFun.dart';
 
 export 'package:pompomtracker/function/trip/TripListFun.dart';
 
+export 'package:pompomtracker/function/location_fun/liveLocationFun.dart';
+
+export 'package:pompomtracker/function/track/busTrackFun.dart';
+
+export 'package:pompomtracker/function/track/search_fun/searchFun.dart';
 /**************************************/
 
 /*WIDGETS*/

@@ -1,6 +1,7 @@
 import 'package:pompomtracker/core/hook/hook.dart';
 import 'package:pompomtracker/screens/Bus/new/ScreenBusListNew.dart';
 import 'package:pompomtracker/screens/Bus/new/ScreenBusMasterNew.dart';
+import 'package:pompomtracker/screens/Daily%20Collection/screenDailyCollection.dart';
 import 'package:pompomtracker/screens/Emp_Details/employee/Employee/new/ScreenEmployeeNew.dart';
 import 'package:pompomtracker/screens/Emp_Details/employee/conductor/new/ScreenconductorListNew.dart';
 import 'package:pompomtracker/screens/Emp_Details/employee/driver/new/screendriverViewNew.dart';
@@ -29,7 +30,7 @@ class Approutes {
     curve: Curves.easeInOutBack,
     duration: const Duration(microseconds: 500),
   );
-   PageTransition settingscreen = PageTransition(
+  PageTransition settingscreen = PageTransition(
     child: const ScreenSettings(),
     type: PageTransitionType.fade,
     alignment: Alignment.center,
@@ -45,7 +46,7 @@ class Approutes {
     curve: Curves.easeInOutBack,
     duration: const Duration(microseconds: 500),
   );
-   PageTransition busmasternewscreen = PageTransition(
+  PageTransition busmasternewscreen = PageTransition(
     child: const ScreenBusMasterNew(
       flag: 0,
     ),
@@ -105,7 +106,6 @@ class Approutes {
     curve: Curves.easeInOutBack,
     duration: const Duration(microseconds: 500),
   );
-  
 
   PageTransition linkbusroutescreen = PageTransition(
     child: const ScreenLinkBusRoute(
@@ -125,8 +125,6 @@ class Approutes {
     curve: Curves.easeInOutBack,
     duration: const Duration(microseconds: 500),
   );
-  
-  
 
   PageTransition busListScreen = PageTransition(
     child: const ScreenBusList(),
@@ -204,14 +202,14 @@ class Approutes {
   );
 
   PageTransition stopListScreen = PageTransition(
-    child: const ScreenStopList(flag:0),
+    child: const ScreenStopList(flag: 0),
     type: PageTransitionType.fade,
     alignment: Alignment.center,
     curve: Curves.easeInOutBack,
     duration: const Duration(microseconds: 500),
   );
   PageTransition stopListScreenNew = PageTransition(
-    child: const ScreenStopListNew(flag:0),
+    child: const ScreenStopListNew(flag: 0),
     type: PageTransitionType.fade,
     alignment: Alignment.center,
     curve: Curves.easeInOutBack,
@@ -240,7 +238,7 @@ class Approutes {
     curve: Curves.easeInOutBack,
     duration: const Duration(microseconds: 500),
   );
-  
+
   PageTransition employeeAssign = PageTransition(
     child: const ScreenEmployeeAssign(),
     type: PageTransitionType.fade,
@@ -255,4 +253,12 @@ class Approutes {
     curve: Curves.easeInOutBack,
     duration: const Duration(microseconds: 500),
   );
+   PageTransition dailycollectionScreen = PageTransition(
+    child: const ScreenDailyCollection(),
+    type: PageTransitionType.fade,
+    alignment: Alignment.center,
+    curve: Curves.easeInOutBack,
+    duration: const Duration(microseconds: 500),
+  );
+  
 }

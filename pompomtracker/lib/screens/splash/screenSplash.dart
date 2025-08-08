@@ -98,14 +98,14 @@ class _ScreenSplashState extends State<ScreenSplash> {
             );
 
             // await Future.delayed(const Duration(seconds: 3));
-           // await Wklycollectfn.instance.wklycolctfn();
+            // await Wklycollectfn.instance.wklycolctfn();
           }
         } catch (e) {
           if (!context.mounted) return;
 
           Navigator.pushReplacement(context, Approutes().mainScreen);
           // await Future.delayed(const Duration(seconds: 3));
-         // await Wklycollectfn.instance.wklycolctfn();
+          // await Wklycollectfn.instance.wklycolctfn();
         }
       } else {
         if (!context.mounted) return;

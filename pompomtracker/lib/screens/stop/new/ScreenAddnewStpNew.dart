@@ -1,5 +1,3 @@
-
-
 import 'package:intl/intl.dart';
 import 'package:pompomtracker/core/hook/hook.dart';
 
@@ -78,45 +76,46 @@ class _ScreenAddNewStopNewState extends State<ScreenAddNewStopNew> {
     //fetchBusregistraionList();
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Stack(
       children: [
         BackgroundColorGradient(),
         Scaffold(
-          backgroundColor: Colors.transparent,
+            backgroundColor: Colors.transparent,
             key: _scafoldkey,
             appBar: AppBar(
               backgroundColor: Theme.of(context).colorScheme.primary,
               leading: IconButton(
                   onPressed: () {
-                                        Navigator.pop(context, false);
-    
+                    Navigator.pop(context, false);
                   },
-                  icon: const Icon(Icons.arrow_back,color: Colors.white,)),
+                  icon: const Icon(
+                    Icons.arrow_back,
+                    color: Colors.white,
+                  )),
               title: Text(
                 'Add New Stop',
                 style: TextStyle(color: Colors.white),
               ),
             ),
             body: Center(
-            child: SingleChildScrollView(
-              child:Card(
+              child: SingleChildScrollView(
+                child: Card(
                   margin: const EdgeInsets.all(5),
-                        elevation: 3,
+                  elevation: 3,
                   child: Container(
-                  //height: MediaQuery.of(context).size.height * .85,
-                  margin: const EdgeInsets.all(8),
-                  decoration: BoxDecoration(
-                      border: Border.all(
-                          color: Theme.of(context).colorScheme.onSecondary),
-                      borderRadius: BorderRadius.circular(12)),
+                    //height: MediaQuery.of(context).size.height * .85,
+                    margin: const EdgeInsets.all(8),
+                    decoration: BoxDecoration(
+                        border: Border.all(
+                            color: Theme.of(context).colorScheme.onSecondary),
+                        borderRadius: BorderRadius.circular(12)),
                     child: Form(
                       key: _formKey,
                       child: Padding(
-                        padding:
-                            const EdgeInsets.symmetric(vertical: 15.0, horizontal: 0),
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 15.0, horizontal: 0),
                         child: Theme(
                           data: MyTheme.googleFormTheme,
                           child: Column(
@@ -134,11 +133,13 @@ class _ScreenAddNewStopNewState extends State<ScreenAddNewStopNew> {
                                   child: TextFormField(
                                     readOnly: true,
                                     controller: _tripNameController,
-                                    style: Theme.of(context).textTheme.bodySmall,
+                                    style:
+                                        Theme.of(context).textTheme.bodySmall,
                                     decoration: InputDecoration(
                                         labelText: 'Route Name',
-                                        labelStyle:
-                                            Theme.of(context).textTheme.bodySmall),
+                                        labelStyle: Theme.of(context)
+                                            .textTheme
+                                            .bodySmall),
                                     validator: (value) {
                                       if (value!.isEmpty) {
                                         return 'Enter Route Name';
@@ -159,34 +160,41 @@ class _ScreenAddNewStopNewState extends State<ScreenAddNewStopNew> {
                                       FormatRadioButton(
                                         title: 'Before',
                                         type: StatementType.before,
-                                        color:
-                                            Theme.of(context).colorScheme.secondary,
-                                        txtstyl:
-                                            Theme.of(context).textTheme.labelLarge,
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .secondary,
+                                        txtstyl: Theme.of(context)
+                                            .textTheme
+                                            .labelLarge,
                                       ),
                                       FormatRadioButton(
                                         title: 'After',
                                         type: StatementType.after,
-                                        color:
-                                            Theme.of(context).colorScheme.secondary,
-                                        txtstyl:
-                                            Theme.of(context).textTheme.labelLarge,
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .secondary,
+                                        txtstyl: Theme.of(context)
+                                            .textTheme
+                                            .labelLarge,
                                       ),
                                       Expanded(
                                         child: SizedBox(
-                                         // width: MediaQuery.of(context).size.width / 2,
+                                          // width: MediaQuery.of(context).size.width / 2,
                                           child: DropdownButtonFormField(
                                             items: routelist.map((busMap) {
                                               return DropdownMenuItem<String>(
-                                                value: busMap['stopId'] as String,
+                                                value:
+                                                    busMap['stopId'] as String,
                                                 // Use routeId as the value
                                                 child: ConstrainedBox(
-                                                  constraints: const BoxConstraints(
-                                                      maxWidth: 200),
+                                                  constraints:
+                                                      const BoxConstraints(
+                                                          maxWidth: 200),
                                                   child: Text(
                                                     busMap['display']
                                                         as String, // Display the route name and via
-                                                    overflow: TextOverflow.ellipsis,
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
                                                     style: TextStyle(
                                                       color: Theme.of(context)
                                                           .colorScheme
@@ -199,7 +207,8 @@ class _ScreenAddNewStopNewState extends State<ScreenAddNewStopNew> {
                                             onChanged: (newValue) {
                                               setState(() {
                                                 selectedRouteList = newValue;
-                                                selectedRouteId = int.parse(newValue!);
+                                                selectedRouteId =
+                                                    int.parse(newValue!);
                                                 // Store the selected routeId
                                               });
                                             },
@@ -218,11 +227,13 @@ class _ScreenAddNewStopNewState extends State<ScreenAddNewStopNew> {
                                             ),
                                             decoration: InputDecoration(
                                               labelText: 'Stop Name',
-                                              labelStyle:
-                                                  Theme.of(context).textTheme.bodySmall,
+                                              labelStyle: Theme.of(context)
+                                                  .textTheme
+                                                  .bodySmall,
                                             ),
-                                            dropdownColor:
-                                                Theme.of(context).colorScheme.tertiary,
+                                            dropdownColor: Theme.of(context)
+                                                .colorScheme
+                                                .tertiary,
                                             validator: (value) {
                                               if (value == null) {
                                                 return 'Select Stop Name';
@@ -244,12 +255,15 @@ class _ScreenAddNewStopNewState extends State<ScreenAddNewStopNew> {
                                       top: 20, left: 5, right: 5),
                                   child: TextFormField(
                                     controller: _stopNameController,
-                                    style: Theme.of(context).textTheme.bodySmall,
-                                    textCapitalization: TextCapitalization.characters,
+                                    style:
+                                        Theme.of(context).textTheme.bodySmall,
+                                    textCapitalization:
+                                        TextCapitalization.characters,
                                     decoration: InputDecoration(
                                         labelText: 'Stop Name',
-                                        labelStyle:
-                                            Theme.of(context).textTheme.bodySmall),
+                                        labelStyle: Theme.of(context)
+                                            .textTheme
+                                            .bodySmall),
                                     validator: (value) {
                                       if (value!.isEmpty) {
                                         return 'Enter Stop Name';
@@ -267,19 +281,21 @@ class _ScreenAddNewStopNewState extends State<ScreenAddNewStopNew> {
                                       top: 20, left: 5, right: 5),
                                   child: TextFormField(
                                     controller: _arrivingController,
-                                    style: Theme.of(context).textTheme.bodySmall,
+                                    style:
+                                        Theme.of(context).textTheme.bodySmall,
                                     decoration: InputDecoration(
                                         labelText: 'Arriving Time',
-                                        labelStyle:
-                                            Theme.of(context).textTheme.bodySmall,
+                                        labelStyle: Theme.of(context)
+                                            .textTheme
+                                            .bodySmall,
                                         suffixIcon: Theme(
                                             data: Theme.of(context),
                                             child: Icon(Icons.timer,
                                                 color: Theme.of(context)
                                                     .colorScheme
                                                     .secondary))),
-                                    onTap: () =>
-                                        _selectTime(context, _arrivingController),
+                                    onTap: () => _selectTime(
+                                        context, _arrivingController),
                                     validator: (value) {
                                       if (value!.isEmpty) {
                                         return 'Enter Value';
@@ -291,20 +307,25 @@ class _ScreenAddNewStopNewState extends State<ScreenAddNewStopNew> {
                                 ),
                               ),
                               Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
                                   SizedBox(
-                                    width: MediaQuery.of(context).size.width / 2,
+                                    width:
+                                        MediaQuery.of(context).size.width / 2,
                                     child: Padding(
                                       padding: const EdgeInsets.only(
                                           top: 20, left: 5, right: 5),
                                       child: TextFormField(
                                         controller: _kilometerController,
-                                        style: Theme.of(context).textTheme.bodySmall,
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodySmall,
                                         decoration: InputDecoration(
                                           labelText: 'Kilo Meter',
-                                          labelStyle:
-                                              Theme.of(context).textTheme.bodySmall,
+                                          labelStyle: Theme.of(context)
+                                              .textTheme
+                                              .bodySmall,
                                         ),
                                         validator: (value) {
                                           if (value!.isEmpty) {
@@ -330,41 +351,51 @@ class _ScreenAddNewStopNewState extends State<ScreenAddNewStopNew> {
                                       child: Text(
                                     "Is stage",
                                     textAlign: TextAlign.left,
-                                    style: Theme.of(context).textTheme.labelLarge,
+                                    style:
+                                        Theme.of(context).textTheme.labelLarge,
                                   )),
                                 ],
                               ),
                               Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
                                 children: [
                                   SizedBox(
-                                    width: MediaQuery.of(context).size.width / 2.3,
+                                    width:
+                                        MediaQuery.of(context).size.width / 2.3,
                                     child: Padding(
                                       padding: const EdgeInsets.only(
                                           top: 20, left: 5, right: 5),
                                       child: TextFormField(
                                         controller: _latitudeController,
-                                        style: Theme.of(context).textTheme.bodySmall,
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodySmall,
                                         decoration: InputDecoration(
                                           labelText: 'Latitude',
-                                          labelStyle:
-                                              Theme.of(context).textTheme.bodySmall,
+                                          labelStyle: Theme.of(context)
+                                              .textTheme
+                                              .bodySmall,
                                         ),
                                       ),
                                     ),
                                   ),
                                   SizedBox(
-                                    width: MediaQuery.of(context).size.width / 2.3,
+                                    width:
+                                        MediaQuery.of(context).size.width / 2.3,
                                     child: Padding(
                                       padding: const EdgeInsets.only(
                                           top: 20, left: 5, right: 5),
                                       child: TextFormField(
                                         controller: _longitudeController,
-                                        style: Theme.of(context).textTheme.bodySmall,
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodySmall,
                                         decoration: InputDecoration(
                                           labelText: 'Longitude',
-                                          labelStyle:
-                                              Theme.of(context).textTheme.bodySmall,
+                                          labelStyle: Theme.of(context)
+                                              .textTheme
+                                              .bodySmall,
                                         ),
                                       ),
                                     ),
@@ -372,7 +403,8 @@ class _ScreenAddNewStopNewState extends State<ScreenAddNewStopNew> {
                                 ],
                               ),
                               Padding(
-                                padding: const EdgeInsets.only(top: 30.0, bottom: 20),
+                                padding: const EdgeInsets.only(
+                                    top: 30.0, bottom: 20),
                                 child: Container(
                                   height: 45,
                                   width: 200,
@@ -394,10 +426,10 @@ class _ScreenAddNewStopNewState extends State<ScreenAddNewStopNew> {
                                         if (_formKey.currentState!.validate()) {
                                           final tripid = widget.tripId;
                                           final stopid = selectedRouteList;
-                                          var proval =
-                                              context.read<RadiobuttonProvider>();
+                                          var proval = context
+                                              .read<RadiobuttonProvider>();
                                           final mode = proval.selectedFormat;
-                              
+
                                           if (mode == StatementType.after) {
                                             modeval = flag1;
                                           } else {
@@ -410,14 +442,17 @@ class _ScreenAddNewStopNewState extends State<ScreenAddNewStopNew> {
                                           //   }else{
                                           //     isstage=flag0;
                                           //   }
-                                          final stpname = _stopNameController.text;
-                                          final arvtime = _arrivingController.text;
+                                          final stpname =
+                                              _stopNameController.text;
+                                          final arvtime =
+                                              _arrivingController.text;
                                           final km = _kilometerController.text;
                                           final lat = _latitudeController.text;
-                                          final long = _longitudeController.text;
-                                          final sharevalue = await SharedPrefManager
-                                              .instance
-                                              .getSharedData();
+                                          final long =
+                                              _longitudeController.text;
+                                          final sharevalue =
+                                              await SharedPrefManager.instance
+                                                  .getSharedData();
                                           final usrid = sharevalue!.userId;
                                           final value = MasterListReq(
                                             tripId: tripid,
@@ -431,15 +466,15 @@ class _ScreenAddNewStopNewState extends State<ScreenAddNewStopNew> {
                                             userId: usrid,
                                             //isStage: isstage
                                           );
-                                          if(!context.mounted)return;
-                                          stopSaveFun(
-                                              context, value);
+                                          if (!context.mounted) return;
+                                          stopSaveFun(context, value);
                                         }
                                       },
                                       child: Text(
                                         'SAVE',
-                                        style:
-                                            Theme.of(context).textTheme.titleMedium,
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .titleMedium,
                                       ),
                                     ),
                                   ),
@@ -450,7 +485,8 @@ class _ScreenAddNewStopNewState extends State<ScreenAddNewStopNew> {
                                 return loadingProvider.isLoading
                                     ? const Center(
                                         child: CircularProgressIndicator(
-                                          valueColor: AlwaysStoppedAnimation<Color>(
+                                          valueColor:
+                                              AlwaysStoppedAnimation<Color>(
                                             Color.fromARGB(255, 2, 128, 6),
                                           ),
                                         ),
@@ -481,8 +517,8 @@ class _ScreenAddNewStopNewState extends State<ScreenAddNewStopNew> {
 
     if (stopMasterResp == 'success') {
       StopFunctions.instance.stopDetFn(widget.tripId);
-      if(!context.mounted)return;
-      Navigator.pop(context,false);
+      if (!context.mounted) return;
+      Navigator.pop(context, false);
       // Navigator.pushReplacement(
       //     _scafoldkey.currentContext!, Approutes().stopListScreenNew);
     }

@@ -9,59 +9,55 @@ import 'package:http/http.dart' as http;
 // import 'package:http/http.dart' as http;
 import 'package:latlong2/latlong.dart';
 import 'package:pompomtracker/core/hook/hook.dart';
-import 'package:pompomtracker/function/location_fun/liveLocationFun.dart';
-import 'package:pompomtracker/function/track/busTrackFun.dart';
-import 'package:pompomtracker/function/track/search_fun/searchFun.dart';
-import 'package:pompomtracker/model/track/real_bus_det/bus_list.dart';
-import 'package:pompomtracker/model/track/stoploc_resp/bus_location.dart';
-import 'package:pompomtracker/model/track/stoploc_resp/stop.dart';
 import 'package:sizer/sizer.dart';
-
 
 class _StopMarker extends fmap.Marker {
   final Stop stop;
   final BusDetList stoploc;
 
-
-  _StopMarker({required this.stop,required this.stoploc})
+  _StopMarker({required this.stop, required this.stoploc})
       : super(
-          point: LatLng(double.parse(stop.latitude!), double.parse(stop.longitude!)),
-        width: 40,
-        height: 40,
-        child:stop.stopName == stoploc.toStation ? Icon(
+          point: LatLng(
+              double.parse(stop.latitude!), double.parse(stop.longitude!)),
+          width: 40,
+          height: 40,
+          child: stop.stopName == stoploc.toStation
+              ? Icon(
                   Icons.location_pin,
-                  color:  Colors.red,
+                  color: Colors.red,
                   size: 40,
-                ):Icon(
+                )
+              : Icon(
                   Icons.circle,
-                  color:  Colors.red,
+                  color: Colors.red,
                   size: 20,
                 ),
-        
         );
 }
+
 class _BusMarker extends fmap.Marker {
   final BusDetList bus;
 
   _BusMarker({required this.bus})
       : super(
-          point: LatLng(double.parse(bus.liveLatitude!), double.parse(bus.liveLongitude!)),
-        width: 40,
-        height: 40,
-        child:Image.asset(
-                  'assets/tracking/Untitled_design__8_-removebg-preview.png', 
-                  width: 40,
-                  height: 40,
-                )
-        );
+            point: LatLng(double.parse(bus.liveLatitude!),
+                double.parse(bus.liveLongitude!)),
+            width: 40,
+            height: 40,
+            child: Image.asset(
+              'assets/tracking/Untitled_design__8_-removebg-preview.png',
+              width: 40,
+              height: 40,
+            ));
 }
+
 class ScreenMapTrack extends StatefulWidget {
   const ScreenMapTrack({super.key});
- 
 
   @override
   State<ScreenMapTrack> createState() => _ScreenMapTrackState();
 }
+
 class _ScreenMapTrackState extends State<ScreenMapTrack> {
   final fmap.MapController _mapController = fmap.MapController();
   final PopupController _popupLayerController = PopupController();
@@ -70,13 +66,13 @@ class _ScreenMapTrackState extends State<ScreenMapTrack> {
   bool _isMapReady = false;
   bool _isUserInteracting = false;
   bool _showRecenter = false;
-  LatLng? _lastBusPos;   // ← new
+  LatLng? _lastBusPos; // ← new
   // String? _selectedBusId;
   List<LatLng> _routePoints = [];
   LatLng? _starting;
-  List<BusDetList>? realtmBuslist=[];
-  List<BusDetList>? realtmBus=[];
-  List<LatLng> points=[];
+  List<BusDetList>? realtmBuslist = [];
+  List<BusDetList>? realtmBus = [];
+  List<LatLng> points = [];
   List<fmap.Marker> _popupMarkers = [];
   List<Stop> stops = [];
   BusLocation? busLocation;
@@ -84,108 +80,117 @@ class _ScreenMapTrackState extends State<ScreenMapTrack> {
   bool isbuslistFetch = false;
   BusDetList? busDetails;
 
-
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) => _initialize(context));
   }
 
- Future<void> _initialize(BuildContext context) async {
-  final sharedValue = await SharedPrefManager.instance.getSharedData();
-  final usrid = sharedValue!.userId;
-  final value = BusListReq(userId: usrid);
-  if (!context.mounted) return;
-  Livelocationfun.instance.startTracking(
-    context: context,
-    onLocationUpdate: (position) async {
-      if (position.latitude != 0 && position.longitude != 0) {
-        if (!mounted) return;
-        setState(() {
-          isLoading = false;
-          _starting = LatLng(position.latitude, position.longitude); } );
-          
-        if (!isbuslistFetch) {
-            isbuslistFetch =true; // Set the flag to true after the first call
-            realtmBuslist = await BusTrackFunctions.instance.realbusdet(value, context);
-          }
-         if (realtmBuslist == null || realtmBuslist!.isEmpty) return;
-        // Check if all trip_status are "0" or null
-        final allInactive = realtmBuslist!.every((bus) =>
-          bus.tripStatus == null || bus.tripStatus == "0"
-        );
-        if (allInactive) {
-          if(!context.mounted) return;
-          if (mounted) {
-            messageBox(context);
-          }
-         // Don't show default locations or markers
+  Future<void> _initialize(BuildContext context) async {
+    final sharedValue = await SharedPrefManager.instance.getSharedData();
+    final usrid = sharedValue!.userId;
+    final value = BusListReq(userId: usrid);
+    if (!context.mounted) return;
+    Livelocationfun.instance.startTracking(
+      context: context,
+      onLocationUpdate: (position) async {
+        if (position.latitude != 0 && position.longitude != 0) {
+          if (!mounted) return;
           setState(() {
-            _popupMarkers = [];
-            _routePoints = [];
+            isLoading = false;
+            _starting = LatLng(position.latitude, position.longitude);
           });
-          return;
+
+          if (!isbuslistFetch) {
+            isbuslistFetch = true; // Set the flag to true after the first call
+            realtmBuslist =
+                await BusTrackFunctions.instance.realbusdet(value, context);
+          }
+          if (realtmBuslist == null || realtmBuslist!.isEmpty) return;
+          // Check if all trip_status are "0" or null
+          final allInactive = realtmBuslist!
+              .every((bus) => bus.tripStatus == null || bus.tripStatus == "0");
+          if (allInactive) {
+            if (!context.mounted) return;
+            if (mounted) {
+              messageBox(context);
+            }
+            // Don't show default locations or markers
+            setState(() {
+              _popupMarkers = [];
+              _routePoints = [];
+            });
+            return;
+          }
+          // Filter out buses with valid live lat/lng and active trip
+          final validBuses = realtmBuslist!.where((bus) {
+            final lat = double.tryParse(bus.liveLatitude ?? '');
+            final lng = double.tryParse(bus.liveLongitude ?? '');
+            return lat != null && lng != null && bus.tripStatus != "0";
+          }).toList();
+
+          if (validBuses.isEmpty) return;
+
+          points = validBuses
+              .map((bus) => LatLng(double.parse(bus.liveLatitude!),
+                  double.parse(bus.liveLongitude!)))
+              .toList();
+
+          //_routePoints = points;
+          realtmBus = validBuses;
+
+          _buildMarkers();
+
+          if (!mounted) return;
+          setState(() {});
         }
-        // Filter out buses with valid live lat/lng and active trip
-        final validBuses = realtmBuslist!.where((bus) {
-          final lat = double.tryParse(bus.liveLatitude ?? '');
-          final lng = double.tryParse(bus.liveLongitude ?? '');
-          return lat != null && lng != null && bus.tripStatus != "0";
-        }).toList();
+      },
+    );
+  }
 
-        if (validBuses.isEmpty) return;
-
-        points = validBuses.map((bus) => LatLng(
-          double.parse(bus.liveLatitude!),
-          double.parse(bus.liveLongitude!)
-        )).toList();
-
-        //_routePoints = points;
-        realtmBus = validBuses;
-
-        _buildMarkers();
-
-        if (!mounted) return;
-        setState(() {});
-      }
-    },
-  );
-}
-
-messageBox(BuildContext context)async{
-await showDialog(
-              context: context,
-              barrierDismissible: false,
-              builder: (context) => AlertDialog(
-                backgroundColor: Colors.white,
-                title:  Text("No Active Trips",style: TextStyle(
-                fontFamily: 'Poppins-Medium',
-                fontSize: 18.sp,
-                fontWeight: FontWeight.bold,
-                color: Colors.black,
-              ),),
-                content:  Text("There is no active trip available. You can't track your bus.",style: TextStyle(
+  messageBox(BuildContext context) async {
+    await showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) => AlertDialog(
+        backgroundColor: Colors.white,
+        title: Text(
+          "No Active Trips",
+          style: TextStyle(
+            fontFamily: 'Poppins-Medium',
+            fontSize: 18.sp,
+            fontWeight: FontWeight.bold,
+            color: Colors.black,
+          ),
+        ),
+        content: Text(
+          "There is no active trip available. You can't track your bus.",
+          style: TextStyle(
             fontFamily: 'Poppins-Medium',
             fontSize: 16.sp,
             fontWeight: FontWeight.bold,
             color: Colors.black,
-          ),),
-                actions: [
-                  TextButton(
-                    onPressed: () => Navigator.of(context).pop(),
-                    child:  Text("OK",style: TextStyle(
-                      fontFamily: 'Poppins-Medium',
-                      fontSize: 18.sp,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black,
-                    ),),
-                  ),
-                ],
+          ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: Text(
+              "OK",
+              style: TextStyle(
+                fontFamily: 'Poppins-Medium',
+                fontSize: 18.sp,
+                fontWeight: FontWeight.bold,
+                color: Colors.black,
               ),
-            );
-}
+            ),
+          ),
+        ],
+      ),
+    );
+  }
 
-// --------------------------------------------------------  
+// --------------------------------------------------------
 //   void _buildMarkers() {
 //   _popupMarkers = realtmBus!.map((bus) => _StopMarker(bus: bus)).toList();
 
@@ -202,7 +207,7 @@ await showDialog(
 //       point: LatLng(lat, lng),
 //       width: 40,
 //       height: 40,
-//       child: 
+//       child:
 //       stop.stopName == realtmBuslist?.first.toStation ? Icon(
 //                   Icons.location_pin,
 //                   color:  Colors.red,
@@ -276,89 +281,88 @@ await showDialog(
 //   setState(() {});
 // }
 
-void _buildMarkers() {
-  // final selectedBus = realtmBus?.first;
+  void _buildMarkers() {
+    // final selectedBus = realtmBus?.first;
 
-  _popupMarkers = [
-    // Stop markers
-    ...stops.map((stop) => _StopMarker(
-          stop: stop,
-          stoploc: busDetails!,
-        )),
-    // All bus markers
-    ...realtmBus!.map((bus) => _BusMarker(bus: bus)),
-  ];
+    _popupMarkers = [
+      // Stop markers
+      ...stops.map((stop) => _StopMarker(
+            stop: stop,
+            stoploc: busDetails!,
+          )),
+      // All bus markers
+      ...realtmBus!.map((bus) => _BusMarker(bus: bus)),
+    ];
 
-  // 1. Calculate bounds to fit all bus positions
-  final allBusPoints = realtmBus!
-      .where((b) => b.liveLatitude != null && b.liveLongitude != null)
-      .map((b) => LatLng(
-            double.parse(b.liveLatitude!),
-            double.parse(b.liveLongitude!),
-          ))
-      .toList();
+    // 1. Calculate bounds to fit all bus positions
+    final allBusPoints = realtmBus!
+        .where((b) => b.liveLatitude != null && b.liveLongitude != null)
+        .map((b) => LatLng(
+              double.parse(b.liveLatitude!),
+              double.parse(b.liveLongitude!),
+            ))
+        .toList();
 
-  // If there are at least 2 points to fit
-  if (allBusPoints.length >= 2) {
-    final bounds = fmap.LatLngBounds.fromPoints(allBusPoints);
+    // If there are at least 2 points to fit
+    if (allBusPoints.length >= 2) {
+      final bounds = fmap.LatLngBounds.fromPoints(allBusPoints);
 
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        _mapController.fitCamera(
+          fmap.CameraFit.bounds(
+              bounds: bounds, padding: const EdgeInsets.all(50)),
+        );
+      });
+    } else if (allBusPoints.length == 1) {
+      // Single bus? Center to it.
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        _mapController.move(allBusPoints.first, 15);
+      });
+    }
+
+    // Optional: Show popups for all buses on initial load
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      _mapController.fitCamera(
-        fmap.CameraFit.bounds(bounds: bounds, padding: const EdgeInsets.all(50)),
+      _popupLayerController.showPopupsOnlyFor(
+        _popupMarkers.whereType<_BusMarker>().toList(),
       );
     });
-  } else if (allBusPoints.length == 1) {
-    // Single bus? Center to it.
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      _mapController.move(allBusPoints.first, 15);
-    });
+    if (!mounted) return;
+    setState(() {});
   }
 
-  // Optional: Show popups for all buses on initial load
-  WidgetsBinding.instance.addPostFrameCallback((_) {
-    _popupLayerController.showPopupsOnlyFor(
-      _popupMarkers.whereType<_BusMarker>().toList(),
+  void _onBusSelected(String? busId) {
+    if (busId == null) return;
+
+    final bus = realtmBus?.firstWhere(
+      (b) => b.busId == busId,
+      orElse: () => BusDetList(
+        busId: '',
+        busName: '',
+        registrationNo: '',
+        busType: '',
+        liveLatitude: null,
+        liveLongitude: null,
+        liveDate: null,
+      ),
     );
-  });
-if (!mounted) return;
-  setState(() {});
-}
+    if (bus == null) return;
 
+    final lat = double.tryParse(bus.liveLatitude ?? '');
+    final lng = double.tryParse(bus.liveLongitude ?? '');
 
-void _onBusSelected(String? busId) {
-  if (busId == null) return;
+    if (lat != null && lng != null) {
+      final markerIndex = _popupMarkers.indexWhere(
+          (m) => m is _BusMarker && (m as _BusMarker).bus.busId == busId);
 
-  final bus = realtmBus?.firstWhere(
-  (b) => b.busId == busId,
-  orElse: () => BusDetList(
-    busId: '',
-    busName: '',
-    registrationNo: '',
-    busType: '',
-    liveLatitude: null,
-    liveLongitude: null,
-    liveDate: null,
-  ),
-);
-  if (bus == null) return;
+      final marker = _popupMarkers[markerIndex];
 
-  final lat = double.tryParse(bus.liveLatitude ?? '');
-  final lng = double.tryParse(bus.liveLongitude ?? '');
+      _mapController.move(LatLng(lat, lng), 16);
 
-  if (lat != null && lng != null) {
-    final markerIndex = _popupMarkers.indexWhere((m) =>
-      m is _BusMarker && (m as _BusMarker).bus.busId == busId
-    );
-
-    final marker = _popupMarkers[markerIndex];
-
-    _mapController.move(LatLng(lat, lng), 16);
-
-    Future.delayed(const Duration(milliseconds: 300), () {
-      _popupLayerController.showPopupsOnlyFor([marker]);
-    });
+      Future.delayed(const Duration(milliseconds: 300), () {
+        _popupLayerController.showPopupsOnlyFor([marker]);
+      });
+    }
   }
-}
 // fetchRouteForBus(String busid,BuildContext context) async{
 //   setState(() => isLoading = true);
 //   final sharedValue = await SharedPrefManager.instance.getSharedData();
@@ -398,164 +402,168 @@ void _onBusSelected(String? busId) {
 //            // _fetchBusLiveLocation(context);
 
 // }
-fetchRouteForBus(String busid, BuildContext context) async {
-  // Cancel previous live update timer
-  _busLocationTimer?.cancel();
-  _busLocationTimer = null;
+  fetchRouteForBus(String busid, BuildContext context) async {
+    // Cancel previous live update timer
+    _busLocationTimer?.cancel();
+    _busLocationTimer = null;
 
-  // Clear old data
-  _routePoints.clear();
-  _popupMarkers.clear();
-  stops.clear();
-  _lastBusPos = null;
-  busLocation = null;
-  _popupLayerController.hideAllPopups();
+    // Clear old data
+    _routePoints.clear();
+    _popupMarkers.clear();
+    stops.clear();
+    _lastBusPos = null;
+    busLocation = null;
+    _popupLayerController.hideAllPopups();
 
-  setState(() => isLoading = true);
+    setState(() => isLoading = true);
 
-  final sharedValue = await SharedPrefManager.instance.getSharedData();
-  final usrid = sharedValue!.userId;
+    final sharedValue = await SharedPrefManager.instance.getSharedData();
+    final usrid = sharedValue!.userId;
 
-  // Find the bus that matches the given busid
-   busDetails = realtmBuslist?.firstWhere(
-    (bus) => bus.busId == busid,
-    orElse: () => BusDetList(), // Provide a fallback empty object
-  );
-
-  final stopreq = BusListReq(
-    userId: usrid,
-    busId: busid,
-    fromPlace: busDetails?.fromStation ?? '',
-    toPlace: busDetails?.toStation ?? '',
-    tripId: busDetails?.tripId,
-  );
-
-  if (!context.mounted) return;
-
-  final stopValue = await SearchFun.instance.fetchStopLoc(stopreq, context);
-  stops = stopValue?.stops ?? [];
-  busLocation = stopValue?.busLocation;
-
-  setState(() => isLoading = false);
-
-  List<LatLng> points = stops
-      .map((s) => LatLng(double.parse(s.latitude!), double.parse(s.longitude!)))
-      .toList();
-
-  if (points.isNotEmpty) {
-    await _fetchRoute(points);
-  }
-
-  _buildMarkers();
-
-  if (!mounted) return;
-  setState(() {});
-
-  _busLocationTimer = Timer.periodic(const Duration(seconds: 3), (_) {
-    _fetchBusLiveLocation(busid, context);
-  });
-  // if(!context.mounted) return;
-  //   _fetchBusLiveLocation(busid, context);
-
-}
-
-Future<void> _fetchRoute(List<LatLng> points) async {
-  final coords = points.map((e) => '${e.longitude},${e.latitude}').join(';');
-  final url = Uri.parse(
-    'http://117.221.68.183:5000/route/v1/driving/$coords?overview=full&geometries=geojson',
-  );
-
-  final response = await http.get(url);
-  if (response.statusCode == 200) {
-    final data = json.decode(response.body);
-    final geometry = data['routes'][0]['geometry'];
-    final List<LatLng> polylinePoints = List<LatLng>.from(
-      geometry['coordinates'].map((coord) => LatLng(coord[1], coord[0])),
+    // Find the bus that matches the given busid
+    busDetails = realtmBuslist?.firstWhere(
+      (bus) => bus.busId == busid,
+      orElse: () => BusDetList(), // Provide a fallback empty object
     );
 
-    setState(() {
-      _routePoints = polylinePoints;
-      _isMapReady = false;
+    final stopreq = BusListReq(
+      userId: usrid,
+      busId: busid,
+      fromPlace: busDetails?.fromStation ?? '',
+      toPlace: busDetails?.toStation ?? '',
+      tripId: busDetails?.tripId,
+    );
+
+    if (!context.mounted) return;
+
+    final stopValue = await SearchFun.instance.fetchStopLoc(stopreq, context);
+    stops = stopValue?.stops ?? [];
+    busLocation = stopValue?.busLocation;
+
+    setState(() => isLoading = false);
+
+    List<LatLng> points = stops
+        .map((s) =>
+            LatLng(double.parse(s.latitude!), double.parse(s.longitude!)))
+        .toList();
+
+    if (points.isNotEmpty) {
+      await _fetchRoute(points);
+    }
+
+    _buildMarkers();
+
+    if (!mounted) return;
+    setState(() {});
+
+    _busLocationTimer = Timer.periodic(const Duration(seconds: 3), (_) {
+      _fetchBusLiveLocation(busid, context);
     });
-  } else {
-    log('Failed to fetch route');
-
-    throw Exception('Failed to fetch route');
+    // if(!context.mounted) return;
+    //   _fetchBusLiveLocation(busid, context);
   }
-}
-Future<void> _fetchBusLiveLocation(String busid,BuildContext context) async {
-  final livloc=BusListReq(busId: busid);
-  final updated = await SearchFun.instance.fetchLiveBusLoc(livloc, context);
-  if (!mounted) return;
 
-  // ------------------------------------------------------------------//
-  // 1. Decide which coordinates to use                                //
-  // ------------------------------------------------------------------//
-  final double busLat, busLng;
-  if (updated != null && updated.latitude != null && updated.longitude != null) {
-    busLocation = updated;
-    busLat = double.parse(updated.latitude!);
-    busLng = double.parse(updated.longitude!);
-  } else if (_starting != null) {
-    busLat = _starting!.latitude;
-    busLng = _starting!.longitude;
-  } else {
-    return; // nothing to show yet
-  }
-  _lastBusPos = LatLng(busLat, busLng);
+  Future<void> _fetchRoute(List<LatLng> points) async {
+    final coords = points.map((e) => '${e.longitude},${e.latitude}').join(';');
+    final url = Uri.parse(
+      'http://117.221.68.183:5000/route/v1/driving/$coords?overview=full&geometries=geojson',
+    );
 
-  // ------------------------------------------------------------------//
-  // 2. Update (or create) the BUS marker                              //
-  // ------------------------------------------------------------------//
-  _popupMarkers.removeWhere((m) => m.key == const ValueKey('bus_marker'));
-  _popupMarkers.add(
-    fmap.Marker(
-      key: const ValueKey('bus_marker'),
-      point: _lastBusPos!,
-      width: 40,
-      height: 40,
-      child: Image.asset(
-        'assets/tracking/Untitled_design__8_-removebg-preview.png',
-        width: 40,
-        height: 40,
-      ),
-    ),
-  );
+    final response = await http.get(url);
+    if (response.statusCode == 200) {
+      final data = json.decode(response.body);
+      final geometry = data['routes'][0]['geometry'];
+      final List<LatLng> polylinePoints = List<LatLng>.from(
+        geometry['coordinates'].map((coord) => LatLng(coord[1], coord[0])),
+      );
 
-  // ------------------------------------------------------------------//
-  // 3. Find NEAREST stop                                              //
-  // ------------------------------------------------------------------//
-  final Distance hv = const Distance();
-  int? nearestDist;
-  _StopMarker? nearestStopMarker;
+      setState(() {
+        _routePoints = polylinePoints;
+        _isMapReady = false;
+      });
+    } else {
+      log('Failed to fetch route');
 
-  for (final m in _popupMarkers) {
-    if (m is _StopMarker) {
-      final d = hv(m.point, _lastBusPos!).round(); // metres
-      if (nearestDist == null || d < nearestDist) {
-        nearestDist = d;
-        nearestStopMarker = m;
-      }
+      throw Exception('Failed to fetch route');
     }
   }
 
-  // threshold ≈ 200 m
-  if (nearestStopMarker != null && nearestDist! < 200) {
-    // Show ONLY that stop’s popup
-    _popupLayerController.showPopupsOnlyFor([nearestStopMarker]);
-  } else {
-    _popupLayerController.hideAllPopups();
+  Future<void> _fetchBusLiveLocation(String busid, BuildContext context) async {
+    final livloc = BusListReq(busId: busid);
+    final updated = await SearchFun.instance.fetchLiveBusLoc(livloc, context);
+    if (!mounted) return;
+
+    // ------------------------------------------------------------------//
+    // 1. Decide which coordinates to use                                //
+    // ------------------------------------------------------------------//
+    final double busLat, busLng;
+    if (updated != null &&
+        updated.latitude != null &&
+        updated.longitude != null) {
+      busLocation = updated;
+      busLat = double.parse(updated.latitude!);
+      busLng = double.parse(updated.longitude!);
+    } else if (_starting != null) {
+      busLat = _starting!.latitude;
+      busLng = _starting!.longitude;
+    } else {
+      return; // nothing to show yet
+    }
+    _lastBusPos = LatLng(busLat, busLng);
+
+    // ------------------------------------------------------------------//
+    // 2. Update (or create) the BUS marker                              //
+    // ------------------------------------------------------------------//
+    _popupMarkers.removeWhere((m) => m.key == const ValueKey('bus_marker'));
+    _popupMarkers.add(
+      fmap.Marker(
+        key: const ValueKey('bus_marker'),
+        point: _lastBusPos!,
+        width: 40,
+        height: 40,
+        child: Image.asset(
+          'assets/tracking/Untitled_design__8_-removebg-preview.png',
+          width: 40,
+          height: 40,
+        ),
+      ),
+    );
+
+    // ------------------------------------------------------------------//
+    // 3. Find NEAREST stop                                              //
+    // ------------------------------------------------------------------//
+    final Distance hv = const Distance();
+    int? nearestDist;
+    _StopMarker? nearestStopMarker;
+
+    for (final m in _popupMarkers) {
+      if (m is _StopMarker) {
+        final d = hv(m.point, _lastBusPos!).round(); // metres
+        if (nearestDist == null || d < nearestDist) {
+          nearestDist = d;
+          nearestStopMarker = m;
+        }
+      }
+    }
+
+    // threshold ≈ 200 m
+    if (nearestStopMarker != null && nearestDist! < 200) {
+      // Show ONLY that stop’s popup
+      _popupLayerController.showPopupsOnlyFor([nearestStopMarker]);
+    } else {
+      _popupLayerController.hideAllPopups();
+    }
+
+    // ------------------------------------------------------------------//
+    // 4. Keep map centred unless user dragged it                        //
+    // ------------------------------------------------------------------//
+    if (!_isUserInteracting) {
+      _mapController.move(_lastBusPos!, 15);
+    }
+
+    if (mounted) setState(() {});
   }
 
-  // ------------------------------------------------------------------//
-  // 4. Keep map centred unless user dragged it                        //
-  // ------------------------------------------------------------------//
-  if (!_isUserInteracting) {
-    _mapController.move(_lastBusPos!, 15);
-  }
-
-  if (mounted) setState(() {});
-}
   void _recenterMap() {
     if (busLocation != null &&
         busLocation!.latitude != null &&
@@ -569,9 +577,9 @@ Future<void> _fetchBusLiveLocation(String busid,BuildContext context) async {
       setState(() => _showRecenter = false);
     }
   }
+
   @override
   void dispose() {
-    
     Livelocationfun.instance.stopTracking();
     super.dispose();
   }
@@ -583,7 +591,8 @@ Future<void> _fetchBusLiveLocation(String busid,BuildContext context) async {
         Future.delayed(Duration.zero, () {
           final bounds = fmap.LatLngBounds.fromPoints(_routePoints);
           _mapController.fitCamera(
-            fmap.CameraFit.bounds(bounds: bounds, padding: const EdgeInsets.all(50)),
+            fmap.CameraFit.bounds(
+                bounds: bounds, padding: const EdgeInsets.all(50)),
           );
           _isMapReady = true;
         });
@@ -595,74 +604,79 @@ Future<void> _fetchBusLiveLocation(String busid,BuildContext context) async {
         toolbarHeight: 100,
         backgroundColor: Theme.of(context).colorScheme.primary,
         leading: IconButton(
-              icon: const Icon(Icons.arrow_back,color: Colors.white,),
-              onPressed: () {
-                
-                  Navigator.pushReplacement(
-                      context, Approutes().mainScreen);
-                
-              },
-            ),
+          icon: const Icon(
+            Icons.arrow_back,
+            color: Colors.white,
+          ),
+          onPressed: () {
+            Navigator.pushReplacement(context, Approutes().mainScreen);
+          },
+        ),
         title: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text("Track your bus",style: TextStyle(
-                      fontFamily: 'Poppins-Medium',
-                      fontSize: 18.sp,
-                      fontWeight: FontWeight.w700,
-                      color: Colors.white,
-                    ),),
-                    SizedBox(height: 5,),
-            DropdownButtonFormField<String>(  
-              //style: TextStyle(color:Colors.black), 
+            Text(
+              "Track your bus",
+              style: TextStyle(
+                fontFamily: 'Poppins-Medium',
+                fontSize: 18.sp,
+                fontWeight: FontWeight.w700,
+                color: Colors.white,
+              ),
+            ),
+            SizedBox(
+              height: 5,
+            ),
+            DropdownButtonFormField<String>(
+              //style: TextStyle(color:Colors.black),
               decoration: InputDecoration(
                 filled: true,
                 fillColor: Colors.white.withAlpha((0.5 * 255).toInt()),
-                
-                contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                contentPadding:
+                    const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(10),
                   borderSide: BorderSide.none,
                 ),
                 hintText: 'Select your Bus',
-                hintStyle: TextStyle(
-                              color: Colors.black
-                            ),
+                hintStyle: TextStyle(color: Colors.black),
               ),
-              icon: const Icon(Icons.arrow_drop_down,color: Color.fromARGB(255, 204, 123, 2),),
+              icon: const Icon(
+                Icons.arrow_drop_down,
+                color: Color.fromARGB(255, 204, 123, 2),
+              ),
               onChanged: (String? busId) {
                 if (busId == null) return;
-                    
+
                 final selectedBus = realtmBuslist!.firstWhere(
                   (bus) => bus.busId == busId,
                   orElse: () => BusDetList(busId: '', tripStatus: '0'),
                 );
-                    
+
                 if (selectedBus.tripStatus == "0") {
                   messageBox(context);
                   return;
-                }else {
-                   _onBusSelected(busId); // Proceed to show on map
-                // You can call your route-fetching function here too
-                fetchRouteForBus(busId,context);
+                } else {
+                  _onBusSelected(busId); // Proceed to show on map
+                  // You can call your route-fetching function here too
+                  fetchRouteForBus(busId, context);
                 }
-                    
+
                 final lat = double.tryParse(selectedBus.liveLatitude ?? '');
                 final lng = double.tryParse(selectedBus.liveLongitude ?? '');
-                    
+
                 if (lat != null && lng != null) {
                   final marker = _popupMarkers.firstWhere(
                     (m) =>
-                        m is _BusMarker &&
-                        (m as _BusMarker).bus.busId == busId,
+                        m is _BusMarker && (m as _BusMarker).bus.busId == busId,
                     orElse: () => fmap.Marker(
                       point: LatLng(lat, lng),
                       child: const Icon(Icons.location_on),
                     ),
                   );
-                    
+
                   _mapController.move(LatLng(lat, lng), 16);
-                    
+
                   Future.delayed(const Duration(milliseconds: 300), () {
                     _popupLayerController.showPopupsOnlyFor([marker]);
                   });
@@ -694,7 +708,6 @@ Future<void> _fetchBusLiveLocation(String busid,BuildContext context) async {
             ),
           ],
         ),
-
       ),
       body: isLoading
           ? const Center(child: CircularProgressIndicator())
@@ -723,20 +736,20 @@ Future<void> _fetchBusLiveLocation(String busid,BuildContext context) async {
                     //       'https://tile.openstreetmap.org/{z}/{x}/{y}.png?key=Pm9Ul6BqvQ3zxhbRXQ5T',
                     //   userAgentPackageName: 'com.example.pompompay',
                     // ),
-                  //   fmap.TileLayer(
-                  //   urlTemplate:
-                  //     'http://117.221.68.183:7001/tiles/{z}/{x}/{y}.png',
-                  //   userAgentPackageName: 'com.example.pompompay',
-                  // ),
-                  fmap.TileLayer(
-                    urlTemplate: 'http://117.221.68.183:7001/tile/{z}/{x}/{y}.png',
-                    tileProvider:  NetworkTileProvider(),
-                    errorTileCallback: (tile, error, stackTrace) {
-                      debugPrint('Tile load error: $error │ $tile');
-                      log('Tile load error: $error │ $tile');
-                    },
-                  ),
-
+                    //   fmap.TileLayer(
+                    //   urlTemplate:
+                    //     'http://117.221.68.183:7001/tiles/{z}/{x}/{y}.png',
+                    //   userAgentPackageName: 'com.example.pompompay',
+                    // ),
+                    fmap.TileLayer(
+                      urlTemplate:
+                          'http://117.221.68.183:7001/tile/{z}/{x}/{y}.png',
+                      tileProvider: NetworkTileProvider(),
+                      errorTileCallback: (tile, error, stackTrace) {
+                        debugPrint('Tile load error: $error │ $tile');
+                        log('Tile load error: $error │ $tile');
+                      },
+                    ),
 
                     if (_routePoints.isNotEmpty)
                       fmap.PolylineLayer(
@@ -748,7 +761,6 @@ Future<void> _fetchBusLiveLocation(String busid,BuildContext context) async {
                           ),
                         ],
                       ),
-                    
 
                     PopupMarkerLayer(
                       options: PopupMarkerLayerOptions(
@@ -759,7 +771,9 @@ Future<void> _fetchBusLiveLocation(String busid,BuildContext context) async {
                             if (marker is _StopMarker) {
                               int? dist;
                               if (_lastBusPos != null) {
-                                dist = const Distance().call(marker.point, _lastBusPos!).round();
+                                dist = const Distance()
+                                    .call(marker.point, _lastBusPos!)
+                                    .round();
                               }
                               return Card(
                                 child: Padding(
@@ -771,7 +785,8 @@ Future<void> _fetchBusLiveLocation(String busid,BuildContext context) async {
                                       if (dist != null) ...[
                                         const SizedBox(height: 4),
                                         Text('Distance ≈ $dist m',
-                                            style: const TextStyle(color: Colors.grey)),
+                                            style: const TextStyle(
+                                                color: Colors.grey)),
                                       ],
                                     ],
                                   ),
@@ -788,7 +803,8 @@ Future<void> _fetchBusLiveLocation(String busid,BuildContext context) async {
                                     children: [
                                       Text(marker.bus.busName ?? 'Bus Name'),
                                       const SizedBox(height: 4),
-                                      Text('Reg No: ${marker.bus.registrationNo ?? 'N/A'}'),
+                                      Text(
+                                          'Reg No: ${marker.bus.registrationNo ?? 'N/A'}'),
                                     ],
                                   ),
                                 ),
@@ -798,15 +814,12 @@ Future<void> _fetchBusLiveLocation(String busid,BuildContext context) async {
                             return const SizedBox.shrink();
                           },
                         ),
-
                       ),
                     ),
                     const CurrentLocationLayer(),
-                    
                   ],
                 ),
-
-                 if (_showRecenter)
+                if (_showRecenter)
                   Positioned(
                     bottom: 90,
                     right: 16,
@@ -831,4 +844,3 @@ Future<void> _fetchBusLiveLocation(String busid,BuildContext context) async {
     );
   }
 }
-

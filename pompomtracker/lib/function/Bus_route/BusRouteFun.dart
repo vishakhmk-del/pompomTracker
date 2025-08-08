@@ -23,17 +23,17 @@ class BusRouteListFunctions {
       getBusRouteListNotifier.notifyListeners();
     } else if (busRouteReqListRespVar.statusCode == 200) {
       final resultAsJson = jsonDecode(busRouteReqListRespVar.toString());
-      final BusRouteListRespVal =
+      final busRouteListRespVal =
           MasterListMdl.fromJson(resultAsJson as Map<String, dynamic>);
-      if (BusRouteListRespVal.status == 'success') {
+      if (busRouteListRespVal.status == 'success') {
         //print('sucess');
-        final item_det = BusRouteListRespVal.listDet;
+        final item_det = busRouteListRespVal.listDet;
         //print(item_det.);
         getBusRouteListNotifier.value.clear();
         getBusRouteListNotifier.value.addAll(item_det);
         getBusRouteListNotifier.notifyListeners();
-      } else if (BusRouteListRespVal.status == 'Failed') {
-        final item_det = BusRouteListRespVal.listDet;
+      } else if (busRouteListRespVal.status == 'Failed') {
+        final item_det = busRouteListRespVal.listDet;
         getBusRouteListNotifier.value.clear();
         getBusRouteListNotifier.value.addAll(item_det);
         getBusRouteListNotifier.notifyListeners();

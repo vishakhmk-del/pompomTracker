@@ -256,7 +256,7 @@ class _ScreenLoginState extends State<ScreenLogin> {
             loginval.data?.userType ?? '',
             loginval.data?.userName ?? '',
             loginval.data?.ownerName ?? '',
-            loginval.data?.token??'');
+            loginval.data?.token ?? '');
         if (!context.mounted) return;
 
         Navigator.of(context).pushReplacement(
@@ -308,17 +308,16 @@ class _ScreenLoginState extends State<ScreenLogin> {
     }
   }
 
-  addLoginShareddata(userId, userType, userName, ownerName,token) async {
+  addLoginShareddata(userId, userType, userName, ownerName, token) async {
     final sharedPrefLogin = Sharedpref(
-      userId: userId,
-      userType: userType,
-      userName: userName,
-      ownerName: ownerName,
-      token: token
-    );
+        userId: userId,
+        userType: userType,
+        userName: userName,
+        ownerName: ownerName,
+        token: token);
 
     await SharedPrefManager.instance.addSharedData(sharedPrefLogin);
 
-   // await Wklycollectfn.instance.wklycolctfn();
+    // await Wklycollectfn.instance.wklycolctfn();
   }
 }

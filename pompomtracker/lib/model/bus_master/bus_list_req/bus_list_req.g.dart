@@ -13,6 +13,7 @@ BusListReq _$BusListReqFromJson(Map<String, dynamic> json) => BusListReq(
       fromPlace: json['from_place'],
       toPlace: json['to_place'],
       tripId: json['trip_id'],
+      collectionDt: json['collection_date'] as String?,
     );
 
 Map<String, dynamic> _$BusListReqToJson(BusListReq instance) =>
@@ -22,5 +23,6 @@ Map<String, dynamic> _$BusListReqToJson(BusListReq instance) =>
       'bus_id': instance.busId,
       'from_place': instance.fromPlace,
       'to_place': instance.toPlace,
-      'trip_id':instance.tripId
+      'trip_id': instance.tripId,
+      'collection_date': instance.collectionDt,
     };

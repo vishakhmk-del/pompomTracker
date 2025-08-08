@@ -3,8 +3,8 @@ import 'package:pompomtracker/core/hook/hook.dart';
 import 'package:pompomtracker/screens/main/screenmainPage.dart';
 
 class ScreenStopList extends StatefulWidget {
-  const ScreenStopList({super.key,required this.flag});
-final int flag;
+  const ScreenStopList({super.key, required this.flag});
+  final int flag;
   @override
   State<ScreenStopList> createState() => _ScreenStopListState();
 }

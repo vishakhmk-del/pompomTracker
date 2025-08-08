@@ -16,15 +16,17 @@ class BusListReq {
   dynamic toPlace;
   @JsonKey(name: 'trip_id')
   dynamic tripId;
-  
+  @JsonKey(name: 'collection_date')
+  String? collectionDt;
 
-  BusListReq({
-    this.userId,
-    this.userType,
-    this.busId,
-    this.fromPlace,
-    this.toPlace,
-    this.tripId});
+  BusListReq(
+      {this.userId,
+      this.userType,
+      this.busId,
+      this.fromPlace,
+      this.toPlace,
+      this.tripId,
+      this.collectionDt});
 
   factory BusListReq.fromJson(Map<String, dynamic> json) {
     return _$BusListReqFromJson(json);

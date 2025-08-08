@@ -204,8 +204,7 @@ class Wklycollectfn implements Commonfn {
   Future<dynamic> conductorList(BuildContext context) async {
     try {
       final value = await SharedPrefManager.instance.getSharedData();
-      GetRouteReq routeReq =
-          GetRouteReq(userId: value!.userId,empType: 3);
+      GetRouteReq routeReq = GetRouteReq(userId: value!.userId, empType: 3);
       final getRouteList = await Busdata().empList(routeReq);
 
       List<Emplist>? routeDetailslist = [];
@@ -256,8 +255,7 @@ class Wklycollectfn implements Commonfn {
   Future<dynamic> driverList(BuildContext context) async {
     try {
       final value = await SharedPrefManager.instance.getSharedData();
-      GetRouteReq routeReq =
-          GetRouteReq(userId: value!.userId,empType: 5);
+      GetRouteReq routeReq = GetRouteReq(userId: value!.userId, empType: 5);
       final getRouteList = await Busdata().empList(routeReq);
 
       List<Emplist>? routeDetailslist = [];
