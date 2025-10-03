@@ -1,10 +1,8 @@
 import 'dart:async';
 import 'dart:math';
 import 'package:pompomtracker/core/hook/hook.dart';
+import 'package:pompomtracker/core/security/security_check.dart';
 import 'package:pompomtracker/screens/Collection/new/screencollectionNew.dart';
-import 'package:pompomtracker/screens/Daily%20Collection/screenDailyCollection.dart';
-import 'package:pompomtracker/screens/Track/ScreenTrackMyBus.dart';
-import 'package:pompomtracker/screens/home/new/screenSettings.dart';
 import 'package:pompomtracker/widgets/navBar/navbarDM.dart';
 
 class ScreenMainPage extends StatefulWidget {
@@ -22,7 +20,11 @@ class _ScreenMainPageState extends State<ScreenMainPage> {
   @override
   void initState() {
     super.initState();
-    _startAutoScroll();
+     WidgetsBinding.instance.addPostFrameCallback((_) async {
+     // await SecurityCheck.checkAndExitIfCompromised(context);
+       _startAutoScroll();
+
+    });
   }
 
   void _startAutoScroll() {
@@ -200,7 +202,7 @@ class _ScreenMainPageState extends State<ScreenMainPage> {
                             if (index == 0) {
                               Navigator.of(context).push(
                                 MaterialPageRoute(
-                                  builder: (context) => const ScreenMapTrack(),
+                                  builder: (context) => const ScreenListMyBus(),
                                 ),
                               );
                             } else if (index == 1) {

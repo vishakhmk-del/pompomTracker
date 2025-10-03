@@ -11,9 +11,11 @@ class Collection {
   @JsonKey(name: 'registration_no')
   String? registrationNo;
   @JsonKey(name: 'total_amount')
-  String? totalAmount;
+  dynamic totalAmount;
   @JsonKey(name: 'collection_date')
   String? collectionDate;
+  @JsonKey(name: 'total_expense')
+  dynamic totalExpense;
 
   Collection({
     this.busId,
@@ -21,6 +23,7 @@ class Collection {
     this.registrationNo,
     this.totalAmount,
     this.collectionDate,
+    this.totalExpense
   });
 
   factory Collection.fromJson(Map<String, dynamic> json) {

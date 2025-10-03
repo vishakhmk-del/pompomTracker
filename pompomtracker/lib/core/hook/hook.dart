@@ -78,6 +78,23 @@ export 'package:pompomtracker/screens/error/screenError.dart';
 export 'package:pompomtracker/screens/Emp_Details/assign/ScreenEmployeeAssign.dart';
 export 'package:pompomtracker/screens/Emp_Details/employee/driver/screendriverView.dart';
 export 'package:pompomtracker/screens/main/screenmainPage.dart';
+export 'package:pompomtracker/screens/Bus/new/ScreenBusListNew.dart';
+export 'package:pompomtracker/screens/Bus/new/ScreenBusMasterNew.dart';
+export 'package:pompomtracker/screens/Daily%20Collection/screenDailyCollection.dart';
+export 'package:pompomtracker/screens/Emp_Details/employee/Employee/new/ScreenEmployeeNew.dart';
+export 'package:pompomtracker/screens/Emp_Details/employee/conductor/new/ScreenconductorListNew.dart';
+export 'package:pompomtracker/screens/Emp_Details/employee/driver/new/screendriverViewNew.dart';
+export 'package:pompomtracker/screens/LinkBusRoute/new/BusRouteListNew.dart';
+export 'package:pompomtracker/screens/LinkBusRoute/new/ScreenLinkBusRouteNew.dart';
+export 'package:pompomtracker/screens/Track/screenListMyBus.dart';
+export 'package:pompomtracker/screens/home/new/screenSettings.dart';
+export 'package:pompomtracker/screens/route_mas/new/ScreenRouteMasterNew.dart';
+export 'package:pompomtracker/screens/stop/new/ScreenStopListNew.dart';
+export 'package:pompomtracker/screens/stop/new/ScreenStopMasterNew.dart';
+export 'package:pompomtracker/screens/trip/new/ScreeenTriplistNew.dart';
+export 'package:pompomtracker/screens/trip/new/ScreenTripMasterNew.dart';
+export 'package:pompomtracker/screens/Track/ScreenTrackMyBus.dart';
+
 /**************************************/
 
 /*model*/
@@ -187,6 +204,18 @@ export 'package:pompomtracker/model/track/stoploc_resp/stop.dart';
 export 'package:pompomtracker/model/daycollection/daycollectionresp/collection.dart';
 
 export 'package:pompomtracker/model/daycollection/daycollectionresp/data.dart';
+
+export 'package:pompomtracker/model/track/live_busresp/live_busresp.dart';
+
+export 'package:pompomtracker/model/track/stoploc_resp/data.dart';
+
+export 'package:pompomtracker/model/track/stoploc_resp/stoploc_resp.dart';
+
+export 'package:pompomtracker/model/track/real_bus_det/real_bus_det.dart';
+
+export 'package:pompomtracker/model/daycollection/collection_det/data.dart';
+
+export 'package:pompomtracker/model/daycollection/collection_det/trip.dart';
 /**************************************/
 
 /*FUNCTION*/

@@ -6,8 +6,10 @@ part 'bus_list.g.dart';
 class BusRegList {
   @JsonKey(name: 'registration_no')
   String? registrationNo;
+  @JsonKey(name: 'bus_id')
+  String? busId;
 
-  BusRegList({this.registrationNo});
+  BusRegList({this.registrationNo,this.busId});
 
   factory BusRegList.fromJson(Map<String, dynamic> json) {
     return _$BusRegListFromJson(json);

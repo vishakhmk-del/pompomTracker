@@ -11,13 +11,14 @@ class StopFunctions {
 
   ValueNotifier<List<Listdet>> getStopDetNotifier = ValueNotifier([]);
   ValueNotifier<List<Listdet>> getExistingStopNotifier = ValueNotifier([]);
-  Future<List<Listdet>> tripNameList() async {
+  Future<List<Listdet>> tripNameList(String? busid,BuildContext context) async {
     final sharevalue = await SharedPrefManager.instance.getSharedData();
 
     Response<dynamic>? dtwiseresp;
     List<Listdet> triplist = [];
 
     final dtwiserqst = MasterListReq(
+      busId:busid,
       userId: sharevalue!.userId,
       usertype: sharevalue.userType,
     );
@@ -49,8 +50,9 @@ class StopFunctions {
     return triplist;
   }
 
-  Future stopDetFn(String? tripId) async {
+  Future<List<Listdet>> stopDetFn(String? tripId) async {
     final stopreq = MasterListReq(tripId: tripId);
+    List<Listdet> stplist = [];
 
     final stpresp = await Busdata().getStopdet(stopreq);
 
@@ -59,6 +61,8 @@ class StopFunctions {
       getStopDetNotifier.value.clear();
       getStopDetNotifier.value.addAll([]);
       getStopDetNotifier.notifyListeners();
+      stplist = stplist;
+      return stplist;
     } else if (stpresp.statusCode == 200) {
       final resultAsjson = jsonDecode(stpresp.toString());
       final stprspval =
@@ -66,24 +70,32 @@ class StopFunctions {
       if (stprspval.status == 'success') {
         log('stop list data fetch success');
 
-        final stplist = stprspval.listDet;
+        final stoplist = stprspval.listDet;
 
         getStopDetNotifier.value.clear();
         getStopDetNotifier.value.addAll(stplist);
         getStopDetNotifier.notifyListeners();
+        stplist = stoplist;
+      return stplist;
       } else if (stprspval.status == 'Failed') {
         log('stop list data fetch failed');
-        final stplist = stprspval.listDet;
+        final stoplist = stprspval.listDet;
         getStopDetNotifier.value.clear();
         getStopDetNotifier.value.addAll(stplist);
         getStopDetNotifier.notifyListeners();
+        stplist = stoplist;
+      return stplist;
       }
     } else {
       log('Stop list data fetch exception');
       getStopDetNotifier.value.clear();
       getStopDetNotifier.value.addAll([]);
       getStopDetNotifier.notifyListeners();
+      stplist = stplist;
+      return stplist;
     }
+      return stplist;
+
   }
 
   Future deleteStop(String? tripId, String? stopId) async {
@@ -305,6 +317,7 @@ class StopFunctions {
       stageId: value.stageId,
       stopName: value.stopName,
       arrivingTime: value.arrivingTime,
+      departureTime: value.departureTime
     );
 
     dtwiseresp = await Busdata().editArvTime(dtwiserqst);
@@ -368,7 +381,7 @@ class StopFunctions {
     }
   }
 
-  Future<List<Listdet>> tripNewNameList() async {
+  Future<List<Listdet>> tripNewNameList(String? busid,BuildContext context) async {
     final sharevalue = await SharedPrefManager.instance.getSharedData();
 
     Response<dynamic>? dtwiseresp;
@@ -377,6 +390,7 @@ class StopFunctions {
     final dtwiserqst = MasterListReq(
       userId: sharevalue!.userId,
       usertype: sharevalue.userType,
+      busId: busid
     );
     dtwiseresp = await Busdata().getNewTripdet(dtwiserqst);
 

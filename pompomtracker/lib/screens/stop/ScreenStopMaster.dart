@@ -65,7 +65,7 @@ class _ScreenStopMasterState extends State<ScreenStopMaster> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      routeDetailslist = await StopFunctions.instance.tripNewNameList();
+      routeDetailslist = await StopFunctions.instance.tripNewNameList("",context);
       setState(() {
         routelist = routeDetailslist!.map((bus) {
           String routeDisplay =
@@ -85,7 +85,7 @@ class _ScreenStopMasterState extends State<ScreenStopMaster> {
   Future<bool?> popscreen(BuildContext context) async {
     selectedTaskNotifier.value = StatementType.collectionType;
     selectedModeNotifier.value = StatementType.both;
-    context.read<DropdownProvider>().changeSelectedVal(null);
+    context.read<DropdownProvider>().changeSelectedVal(null,0);
     Navigator.push(context, Approutes().settingscreen);
     return true;
   }
@@ -112,7 +112,7 @@ class _ScreenStopMasterState extends State<ScreenStopMaster> {
                   leading: IconButton(
                     icon: const Icon(Icons.arrow_back),
                     onPressed: () {
-                      context.read<DropdownProvider>().changeSelectedVal(null);
+                      context.read<DropdownProvider>().changeSelectedVal(null,0);
                       Navigator.of(context).pushAndRemoveUntil(
                           MaterialPageRoute(
                               builder: (context) => const ScreenSettings()),
@@ -220,11 +220,11 @@ class _ScreenStopMasterState extends State<ScreenStopMaster> {
                                               if (existingStpdet!.isEmpty) {
                                                 _scafoldkey.currentContext!
                                                     .read<DropdownProvider>()
-                                                    .changeSelectedVal(false);
+                                                    .changeSelectedVal(false,1);
                                               } else {
                                                 _scafoldkey.currentContext!
                                                     .read<DropdownProvider>()
-                                                    .changeSelectedVal(true);
+                                                    .changeSelectedVal(true,0);
                                               }
                                             },
                                             value: selectedRouteList,

@@ -11,7 +11,7 @@ DataDetails _$DataDetailsFromJson(Map<String, dynamic> json) => DataDetails(
       trips: (json['trips'] as List<dynamic>?)
           ?.map((e) => Trip.fromJson(e as Map<String, dynamic>))
           .toList(),
-      totalExpense: json['total_expense'] as String?,
+      totalExpense: json['total_expense'] as dynamic,
       grandTotal: json['grand_total'] as dynamic,
 
     );

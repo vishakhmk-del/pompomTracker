@@ -10,7 +10,7 @@ class DataDetails {
   String? busId;
   List<Trip>? trips;
   @JsonKey(name: 'total_expense')
-  String? totalExpense;
+  dynamic totalExpense;
   @JsonKey(name: 'grand_total')
   dynamic grandTotal;
 

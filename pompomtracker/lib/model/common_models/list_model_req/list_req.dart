@@ -33,6 +33,8 @@ class MasterListReq {
 
   @JsonKey(name: 'arriving_time')
   String? arrivingTime;
+  @JsonKey(name: 'departure_time')
+  String? departureTime;
   @JsonKey(name: 'stop_name')
   String? stopName;
   @JsonKey(name: 'stop_name_old')
@@ -48,13 +50,15 @@ class MasterListReq {
   @JsonKey(name: 'longitude')
   String? longitude;
   @JsonKey(name: 'is_stage')
-  String? isStage;
+  dynamic isStage;
   @JsonKey(name: 'stage_id')
   String? stageId;
   @JsonKey(name: 'reg_no')
   String? regNo;
   @JsonKey(name: 'route_id')
   int? routeId;
+  @JsonKey(name: 'bus_id')
+  String? busId;
   @JsonKey(name: 'flag')
   String? flag;
   @JsonKey(name: 'role')
@@ -76,6 +80,7 @@ class MasterListReq {
       this.tripId,
       this.licenceNo,
       this.arrivingTime,
+      this.departureTime,
       this.stopName,
       this.stopNameOld,
       this.stopId,
@@ -87,6 +92,7 @@ class MasterListReq {
       this.stageId,
       this.regNo,
       this.routeId,
+      this.busId,
       this.flag,
       this.role,
       this.emptype});
@@ -114,15 +120,16 @@ class MasterListReq {
       int? after,
       String? latitude,
       String? longitude,
-      String? isStage,
+      dynamic isStage,
       String? stageId,
       String? regNo,
       int? routeId,
+      String? busId,
       String? flag,
       int? role,
       int? emptype}) {
     return MasterListReq(
-      empId: conductorId ?? this.empId,
+      empId: conductorId ?? empId,
       cname: cname ?? this.cname,
       caddress: caddress ?? this.caddress,
       mobNo: mobNo ?? this.mobNo,
@@ -147,6 +154,7 @@ class MasterListReq {
       stageId: stageId ?? this.stageId,
       regNo: regNo ?? this.regNo,
       routeId: routeId ?? this.routeId,
+      busId: busId ?? this.busId,
       flag: flag ?? this.flag,
       role: role ?? this.role,
       emptype: emptype ?? this.emptype,

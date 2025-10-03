@@ -1,19 +1,5 @@
 import 'package:pompomtracker/core/hook/hook.dart';
-import 'package:pompomtracker/screens/Bus/new/ScreenBusListNew.dart';
-import 'package:pompomtracker/screens/Bus/new/ScreenBusMasterNew.dart';
-import 'package:pompomtracker/screens/Daily%20Collection/screenDailyCollection.dart';
-import 'package:pompomtracker/screens/Emp_Details/employee/Employee/new/ScreenEmployeeNew.dart';
-import 'package:pompomtracker/screens/Emp_Details/employee/conductor/new/ScreenconductorListNew.dart';
-import 'package:pompomtracker/screens/Emp_Details/employee/driver/new/screendriverViewNew.dart';
-import 'package:pompomtracker/screens/LinkBusRoute/new/BusRouteListNew.dart';
-import 'package:pompomtracker/screens/LinkBusRoute/new/ScreenLinkBusRouteNew.dart';
-import 'package:pompomtracker/screens/home/new/screenSettings.dart';
-import 'package:pompomtracker/screens/main/screenmainPage.dart';
-import 'package:pompomtracker/screens/route_mas/new/ScreenRouteMasterNew.dart';
-import 'package:pompomtracker/screens/stop/new/ScreenStopListNew.dart';
-import 'package:pompomtracker/screens/stop/new/ScreenStopMasterNew.dart';
-import 'package:pompomtracker/screens/trip/new/ScreeenTriplistNew.dart';
-import 'package:pompomtracker/screens/trip/new/ScreenTripMasterNew.dart';
+
 
 class Approutes {
   PageTransition loginscreen = PageTransition(
@@ -255,6 +241,13 @@ class Approutes {
   );
    PageTransition dailycollectionScreen = PageTransition(
     child: const ScreenDailyCollection(),
+    type: PageTransitionType.fade,
+    alignment: Alignment.center,
+    curve: Curves.easeInOutBack,
+    duration: const Duration(microseconds: 500),
+  );
+  PageTransition realBusListScreen = PageTransition(
+    child: const ScreenListMyBus(),
     type: PageTransitionType.fade,
     alignment: Alignment.center,
     curve: Curves.easeInOutBack,

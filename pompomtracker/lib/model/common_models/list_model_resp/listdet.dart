@@ -23,6 +23,8 @@ class Listdet {
   String? km;
   @JsonKey(name: 'arriving_time')
   String? arrivingTime;
+  @JsonKey(name: 'departure_time')
+  String? departureTime;
   @JsonKey(name: 'name')
   String? cname;
   @JsonKey(name: 'mobile_no')
@@ -69,6 +71,7 @@ class Listdet {
       this.isStage,
       this.km,
       this.arrivingTime,
+      this.departureTime,
       this.cname,
       this.mobileNo,
       this.address,

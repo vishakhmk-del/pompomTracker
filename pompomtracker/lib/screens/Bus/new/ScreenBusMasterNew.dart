@@ -395,7 +395,10 @@ class _ScreenBusMasterNewState extends State<ScreenBusMasterNew> {
                                                         .buttonStyleTheme,
                                                     child: ElevatedButton(
                                                       onPressed: () {
-                                                        busMasterSave(context);
+                                                         if (_formkey.currentState!.validate()) {
+                                                             busMasterSave(context);
+                                                          }
+                                                                             
                                                       },
                                                       child: Text('SAVE',
                                                           style:

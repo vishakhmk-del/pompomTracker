@@ -1,11 +1,16 @@
+import 'dart:developer';
+
+import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:intl/intl.dart';
 import 'package:pompomtracker/core/hook/hook.dart';
 
 class ScreenAddNewStopNew extends StatefulWidget {
   const ScreenAddNewStopNew(
-      {super.key, required this.tripName, required this.tripId});
+      {super.key, required this.tripName, required this.tripId,this.busId});
   final String? tripName;
   final String? tripId;
+  final String? busId;
+
   @override
   State<ScreenAddNewStopNew> createState() => _ScreenAddNewStopNewState();
 }
@@ -17,10 +22,11 @@ class _ScreenAddNewStopNewState extends State<ScreenAddNewStopNew> {
   final _stopNameController = TextEditingController();
   final _kilometerController = TextEditingController();
   final _arrivingController = TextEditingController();
+  final _departureController = TextEditingController();
   final _latitudeController = TextEditingController();
   final _longitudeController = TextEditingController();
   int? modeval;
-  int? isstage;
+  dynamic isstage;
   TimeOfDay _time = const TimeOfDay(hour: 7, minute: 15);
   bool isChecked = true;
   List<Map<String, Object>> routelist = [];
@@ -58,13 +64,14 @@ class _ScreenAddNewStopNewState extends State<ScreenAddNewStopNew> {
       routeDetailslist =
           await StopFunctions.instance.stopNameList(widget.tripId);
       setState(() {
+        log("${widget.busId},\n${widget.tripName}");
         _tripNameController.text = widget.tripName ?? "";
         routelist = routeDetailslist!.map((bus) {
           String routeDisplay = bus.stopName ?? "";
 
           return {
-            'stopId': bus.stopId!, // routeId as int
-            'display': routeDisplay, // Display label
+            'stopId': bus.stopId!, 
+            'display': routeDisplay,
           };
         }).toList();
       });
@@ -178,52 +185,42 @@ class _ScreenAddNewStopNewState extends State<ScreenAddNewStopNew> {
                                             .labelLarge,
                                       ),
                                       Expanded(
-                                        child: SizedBox(
-                                          // width: MediaQuery.of(context).size.width / 2,
-                                          child: DropdownButtonFormField(
-                                            items: routelist.map((busMap) {
-                                              return DropdownMenuItem<String>(
-                                                value:
-                                                    busMap['stopId'] as String,
-                                                // Use routeId as the value
-                                                child: ConstrainedBox(
-                                                  constraints:
-                                                      const BoxConstraints(
-                                                          maxWidth: 200),
-                                                  child: Text(
-                                                    busMap['display']
-                                                        as String, // Display the route name and via
-                                                    overflow:
-                                                        TextOverflow.ellipsis,
-                                                    style: TextStyle(
-                                                      color: Theme.of(context)
-                                                          .colorScheme
-                                                          .onSecondary,
+                                        child: DropdownButtonFormField2<String>(
+                                                isExpanded: true,
+                                                items: routelist.map((busMap) {
+                                                return DropdownMenuItem<String>(
+                                                  value:
+                                                      busMap['stopId'] as String,
+                                                  // Use routeId as the value
+                                                  child: ConstrainedBox(
+                                                    constraints:
+                                                        const BoxConstraints(
+                                                            maxWidth: 200),
+                                                    child: Text(
+                                                      busMap['display']
+                                                          as String, // Display the route name and via
+                                                      overflow:
+                                                          TextOverflow.ellipsis,
+                                                      style: TextStyle(
+                                                        color: Theme.of(context)
+                                                            .colorScheme
+                                                            .onSecondary,
+                                                      ),
                                                     ),
                                                   ),
-                                                ),
-                                              );
-                                            }).toList(),
-                                            onChanged: (newValue) {
-                                              setState(() {
-                                                selectedRouteList = newValue;
-                                                selectedRouteId =
-                                                    int.parse(newValue!);
-                                                // Store the selected routeId
-                                              });
-                                            },
-                                            value: selectedRouteList,
-                                            // Use the selected routeId
-                                            style: TextStyle(
+                                                );
+                                              }).toList(),
+                                              onChanged: (newValue) {
+                                                setState(() {
+                                                  selectedRouteList = newValue;
+                                                  selectedRouteId =
+                                                      int.parse(newValue!);
+                                                });
+                                              },
+                                               style: TextStyle(
                                               color: Theme.of(context)
                                                   .colorScheme
                                                   .onPrimary,
-                                            ),
-                                            icon: Theme(
-                                              data: Theme.of(context),
-                                              child: const Icon(
-                                                Icons.arrow_drop_down,
-                                              ),
                                             ),
                                             decoration: InputDecoration(
                                               labelText: 'Stop Name',
@@ -231,19 +228,28 @@ class _ScreenAddNewStopNewState extends State<ScreenAddNewStopNew> {
                                                   .textTheme
                                                   .bodySmall,
                                             ),
-                                            dropdownColor: Theme.of(context)
+                                                dropdownStyleData: DropdownStyleData(
+                                                  maxHeight: 200,
+                                                  width:
+                                                      MediaQuery.of(
+                                                        context,
+                                                      ).size.width *
+                                                      0.9,
+                                                  padding:
+                                                      const EdgeInsets.symmetric(
+                                                        horizontal: 10,
+                                                      ),
+                                                  decoration: BoxDecoration(
+                                                    color: Theme.of(context)
                                                 .colorScheme
                                                 .tertiary,
-                                            validator: (value) {
-                                              if (value == null) {
-                                                return 'Select Stop Name';
-                                              } else {
-                                                return null;
-                                              }
-                                            },
-                                          ),
-                                        ),
+                                                    borderRadius:
+                                                        BorderRadius.circular(8),
+                                                  ),
+                                                ),
+                                              ),
                                       ),
+                                      
                                     ],
                                   ),
                                 ),
@@ -296,6 +302,38 @@ class _ScreenAddNewStopNewState extends State<ScreenAddNewStopNew> {
                                                     .secondary))),
                                     onTap: () => _selectTime(
                                         context, _arrivingController),
+                                    validator: (value) {
+                                      if (value!.isEmpty) {
+                                        return 'Enter Value';
+                                      } else {
+                                        return null;
+                                      }
+                                    },
+                                  ),
+                                ),
+                              ),
+                              SizedBox(
+                                width: MediaQuery.of(context).size.width,
+                                child: Padding(
+                                  padding: const EdgeInsets.only(
+                                      top: 20, left: 5, right: 5),
+                                  child: TextFormField(
+                                    controller: _departureController,
+                                    style:
+                                        Theme.of(context).textTheme.bodySmall,
+                                    decoration: InputDecoration(
+                                        labelText: 'Departure Time',
+                                        labelStyle: Theme.of(context)
+                                            .textTheme
+                                            .bodySmall,
+                                        suffixIcon: Theme(
+                                            data: Theme.of(context),
+                                            child: Icon(Icons.timer,
+                                                color: Theme.of(context)
+                                                    .colorScheme
+                                                    .secondary))),
+                                    onTap: () => _selectTime(
+                                        context, _departureController),
                                     validator: (value) {
                                       if (value!.isEmpty) {
                                         return 'Enter Value';
@@ -435,17 +473,19 @@ class _ScreenAddNewStopNewState extends State<ScreenAddNewStopNew> {
                                           } else {
                                             modeval = flag0;
                                           }
-                                          // var pro = context.read<CheckProvider>();
-                                          // final val = pro.isAccepted;
-                                          //   if(val==true){
-                                          //     isstage=flag1;
-                                          //   }else{
-                                          //     isstage=flag0;
-                                          //   }
+                                          var pro = context.read<CheckProvider>();
+                                          final val = pro.isAccepted;
+                                            if(val==true){
+                                              isstage="y";
+                                         // String stage = value.isStage == "y" ? "y" : "n";
+
+                                            }else{
+                                              isstage="n";
+                                            }
                                           final stpname =
                                               _stopNameController.text;
-                                          final arvtime =
-                                              _arrivingController.text;
+                                          final arvtime =_arrivingController.text;
+                                         final deptime= _departureController.text;
                                           final km = _kilometerController.text;
                                           final lat = _latitudeController.text;
                                           final long =
@@ -454,17 +494,26 @@ class _ScreenAddNewStopNewState extends State<ScreenAddNewStopNew> {
                                               await SharedPrefManager.instance
                                                   .getSharedData();
                                           final usrid = sharevalue!.userId;
+                                          final DateFormat inputFormat = DateFormat('hh:mm a');
+                                          final DateTime dateTime = inputFormat.parse(arvtime);
+                                          final DateTime depTim = inputFormat.parse(deptime);
+
+                                          final DateFormat outputFormat = DateFormat('HH:mm:ss');
+                                          final arvingtime= outputFormat.format(dateTime);
+                                          final departTim= outputFormat.format(depTim);
+
                                           final value = MasterListReq(
                                             tripId: tripid,
                                             after: modeval,
                                             stopId: stopid,
                                             stopName: stpname,
-                                            arrivingTime: arvtime,
+                                            arrivingTime: arvingtime,
+                                            departureTime: departTim,
                                             km: km,
                                             latitude: lat,
                                             longitude: long,
                                             userId: usrid,
-                                            //isStage: isstage
+                                            isStage: isstage
                                           );
                                           if (!context.mounted) return;
                                           stopSaveFun(context, value);

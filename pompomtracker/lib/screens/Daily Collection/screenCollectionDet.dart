@@ -1,13 +1,6 @@
 import 'dart:developer';
-
-import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:pompomtracker/function/statementfns/statementFunctions.dart';
-import 'package:pompomtracker/model/daycollection/collection_det/data.dart';
-import 'package:pompomtracker/model/daycollection/collection_det/trip.dart';
-import 'package:pompomtracker/model/daycollection/daycollectionresp/collection.dart';
-import 'package:pompomtracker/widgets/scrollablewidget/scrollableWidget.dart';
-import 'package:pompomtracker/widgets/statementTable_Utils/stmnt_tble_Utils.dart';
+import 'package:pompomtracker/core/hook/hook.dart';
 
 class ScreenCollectionDet extends StatefulWidget {
   const ScreenCollectionDet({super.key,required this.task});
@@ -36,8 +29,9 @@ class _ScreenCollectionDetState extends State<ScreenCollectionDet> {
 
   Future<bool?> popscreen(BuildContext context) async {
     StatementFunctions.instance.getCollectDetNotifier.value=null;
-    // Navigator.push(context, Approutes().dailycollectionScreen);
-    Navigator.pop(context);
+    // Navigator.pop(context);
+    Navigator.pushReplacement(context, Approutes().dailycollectionScreen);
+
     return true;
   }
 
@@ -62,9 +56,9 @@ class _ScreenCollectionDetState extends State<ScreenCollectionDet> {
               leading: IconButton(
                   onPressed: () {
                   StatementFunctions.instance.getCollectDetNotifier.value=null;
+                    // Navigator.pop(context);
+                    Navigator.pushReplacement(context, Approutes().dailycollectionScreen);
 
-                    // Navigator.pushReplacement(context, Approutes().dailycollectionScreen);
-                    Navigator.pop(context);
 
                   },
                   icon: const Icon(Icons.arrow_back, color: Colors.white)),
@@ -76,86 +70,18 @@ class _ScreenCollectionDetState extends State<ScreenCollectionDet> {
             ),
             body: Column(
               children: [
-                Expanded(
-                  child: ScrollableWidget(
-                    child: ValueListenableBuilder(
-                        valueListenable: StatementFunctions.instance.getCollectDetNotifier,
-                        builder: (BuildContext context, DataDetails? data,
-                            Widget? _) {
-                          final collectionList = data?.trips ?? [];
-                          final expnse = data?.totalExpense ?? 0;
-                          final grandtotal = data?.grandTotal ?? 0;
+                
+                ValueListenableBuilder(
+                  valueListenable: StatementFunctions.instance.getCollectDetNotifier,
+                  builder: (BuildContext context, DataDetails? data, Widget? _) {
+                    final collectionList = data?.trips ?? [];
+                    final expnse = double.tryParse(data?.totalExpense??'0') ?? 0;
+                    final grandtotal = double.tryParse(data?.grandTotal??'0') ?? 0;
+                   final cashInHand = grandtotal-expnse;
 
-
-                          return Column(crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              if (collectionList.isNotEmpty) ...[
-                                // Show Grand Total
-                                Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Text(
-                                  '${widget.task.busName?.toUpperCase()??''}-(${widget.task.registrationNo?.toUpperCase()??''})',
-                                    style: TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.black,
-                                    ),
-                                  ),
-                                ),
-                                // DataTable for Collection List
-                                Container(
-                                  decoration: BoxDecoration(
-                                    border: Border.all(
-                                        color: Colors.black),
-                                  ),
-                                  child: DataTable(
-                                    dataRowMaxHeight: 35,
-                                    dataRowMinHeight: 35,
-                                    headingRowHeight: 35,
-                                    columnSpacing: 10,
-                                    headingRowColor: WidgetStateProperty.all(
-                                        Color.fromARGB(255, 204, 123, 2)),
-                                    columns: getColumns(columns = [
-                                      'S.No',
-                                      'Trip Name',
-                                      'Date',
-                                      'Time',
-                                      'Online',
-                                      'Offline',
-                                      'refund',
-                                      'Total',
-                                    ]),
-                                    rows: getRows(collectionList),
-                                  ),
-                                ),
-
-                                
-                                Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Text(
-                                    'Total Expense: ₹$expnse',
-                                    style: TextStyle(
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.black,
-                                    ),
-                                  ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Text(
-                                    'Grand Total: ₹$grandtotal',
-                                    style: TextStyle(
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.black,
-                                    ),
-                                  ),
-                                ),
-                              ] else ...[
-                                FutureBuilder(
-                                  future: Future.delayed(const Duration(
-                                      seconds: 10)), // Add a delay of 5 seconds
+                    if (collectionList.isEmpty) {
+                      return FutureBuilder(
+                                  future: Future.delayed(const Duration(seconds: 10)), // Add a delay of 5 seconds
                                   builder: (context, snapshot) {
                                     if (snapshot.connectionState ==
                                         ConnectionState.waiting) {
@@ -200,13 +126,128 @@ class _ScreenCollectionDetState extends State<ScreenCollectionDet> {
                                       );
                                     }
                                   },
-                                ),
-                              ]
-                            ],
-                          );
-                        }),
-                  ),
-                ),
+                                );
+                    }
+
+                    return SingleChildScrollView(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          // Date
+                          Container(
+                            width:  MediaQuery.of(context).size.width,
+                           color:  Color.fromARGB(255, 204, 123, 2),
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  // Bus name & Reg No
+                                  Text(
+                                    '${widget.task.busName?.toUpperCase() ?? ''} - (${widget.task.registrationNo?.toUpperCase() ?? ''})',
+                                    style: const TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.white,
+                                      fontSize: 15,),
+                                  ),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                       "Date: ${ widget.task.collectionDate ?? ''}",
+                                        style: const TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.white,
+                                          fontSize: 16,
+                                        ),
+                                      ),
+                                      SizedBox(width: 20,),
+                                      Text(
+                                       "Cash in Hand: ₹$cashInHand",
+                                        style: const TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.white,
+                                          fontSize: 16,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  
+                                ],
+                              ),
+                            ),
+                          ),
+                    
+                          
+                    
+                          const SizedBox(height: 10),
+                    
+                          // Trip List
+                          ...collectionList.asMap().entries.map((entry) {
+                            final index = entry.key + 1;
+                            final trip = entry.value;
+                    
+                            return Padding(
+                              padding: const EdgeInsets.all(10.0),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  // Trip name + time
+                                  Text(
+                                    '$index. ${trip.tripName ?? ''}   ${trip.startTime ?? ''}-${trip.endTime ?? ''}',
+                                    style: const TextStyle(
+                                        fontWeight: FontWeight.bold, fontSize: 14,color: Colors.black),
+                                  ),
+                                  const SizedBox(height: 4),
+                                  // Row for Online/Offline
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                    children: [
+                                      Text('Online: ₹${trip.online ?? '0'}',style: const TextStyle(
+                                        fontWeight: FontWeight.w500, fontSize: 14,color: Colors.black),),
+                                      Text('Offline:₹${trip.offline ?? '0'}',style: const TextStyle(
+                                        fontWeight: FontWeight.w500, fontSize: 14,color: Colors.black),),
+                                    ],
+                                  ),
+                                  // Row for Refund/Total
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                    children: [
+                                      Text('Refund: ₹${trip.refund ?? '0'}',style: const TextStyle(
+                                        fontWeight: FontWeight.w500, fontSize: 14,color: Colors.black),),
+                                      Text('Total: ₹${trip.totalCollection ?? '0'}',style: const TextStyle(
+                                        fontWeight: FontWeight.w500, fontSize: 14,color: Colors.black),),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            );
+                          }),
+                    
+                          const Divider(thickness: 1,color: Colors.black54,),
+                    
+                          // Totals
+                          Text(
+                            'Grand Total: ₹$grandtotal',
+                            style: const TextStyle(
+                                fontWeight: FontWeight.bold, fontSize: 18,color: Colors.black),
+                          ),
+                          Text(
+                            'Total Expense: ₹$expnse',
+                            style: const TextStyle(
+                                fontWeight: FontWeight.bold, fontSize: 18,color: Colors.black),
+                          ),
+                          Text(
+                            'Cash in Hand: ₹$cashInHand',
+                            style: const TextStyle(
+                                fontWeight: FontWeight.bold, fontSize: 18,color: Colors.black),
+                          ),
+                        ],
+                      ),
+                    );
+                  },
+                )
+
               ],
             ),
           ),

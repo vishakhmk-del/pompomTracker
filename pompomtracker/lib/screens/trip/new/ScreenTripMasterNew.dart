@@ -666,7 +666,7 @@ class _ScreenTripMasterNewState extends State<ScreenTripMasterNew> {
           textColor: Colors.black,
           fontSize: 15.0);
       Navigator.pushReplacement(
-          _scafoldkey.currentContext!, Approutes().homescreen);
+          _scafoldkey.currentContext!, Approutes().settingscreen);
     } else if (resValue.status == 'Failed') {
       showerror(_scafoldkey.currentContext, 2);
     } else {

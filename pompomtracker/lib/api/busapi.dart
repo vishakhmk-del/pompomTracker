@@ -1989,14 +1989,13 @@ class Busdata extends Apicalls {
       if (ex.type == DioExceptionType.connectionTimeout) {
         return Response(
           requestOptions: ex.requestOptions,
-          statusCode: 408, // HTTP 408 Request Timeout
+          statusCode: 408,
           statusMessage: "Connection Timeout",
         );
       }
       return Response(
         requestOptions: ex.requestOptions,
-        statusCode: ex.response?.statusCode ??
-            500, // Default to HTTP 500 if no status code
+        statusCode: ex.response?.statusCode ?? 500, // Default to HTTP 500 if no status code
         statusMessage: ex.message,
         data: ex.response?.data, // Include error data if available
       );

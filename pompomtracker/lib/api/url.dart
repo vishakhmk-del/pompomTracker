@@ -24,26 +24,19 @@ class Url {
   String fetchBusEditList = '/Owner_C/bus_details';
   String updateBus = '/Owner_C/update_bus';
   String fetchCondutorList = '/Owner_C/conductor_view';
-
   String getTripdetUrl = '/RouteMaster_C/get_trip_name_list';
-
   String getStopUrl = '/Master_C/get_stop_details';
-
   String updateCon = '/Owner_C/update_conductor';
   String fetchBusRouteList = '/Owner_C/bus_route_view';
   String updateBusRouteList = '/Master_C/bus_route_link_update';
-
   String fetchTripList = '/Owner_C/trip_view';
   String fetchTripEdit = '/Master_C/get_routeTripEdit';
   String tripUpdate = '/Owner_C/update_trip';
-
   String stopNameChangeUrl = '/RouteMaster_C/get_stop_name_update';
   String deleteStopUrl = '/RouteMaster_C/get_stop_delete';
   String getStopNameUrl = '/RouteMaster_C/get_stop_name';
   String addNewStopUrl = '/RouteMaster_C/get_stop_adding';
-
   String linkConductorBus = '/Master_C/conductor_bus_link';
-
   String sortRouteUrl = '/Master_C/get_linked_route';
   String fromtoStnUrl = '/Master_C/get_existing_tripname';
   String existingStpUrl = '/Owner_C/get_existing_stop';
@@ -51,7 +44,6 @@ class Url {
   String getnewTripUrl = '/Owner_C/get_new_trip';
   String frgetPswrdUrl = '/Home_C/forgot_password';
   String deviceInfoUrl = '/Home_C/create_or_update_device';
-
   // String driverSaveUrl = '/Master_C/driver_save';
   String driverViewUrl = '/Owner_C/driver_view';
   String busDetailsUrl = '/Master_C/get_bus_trip_details';

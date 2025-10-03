@@ -14,6 +14,8 @@ class StopMasterReq {
   String? userId;
   @JsonKey(name: 'arriving_time')
   String? arrivingTime;
+  @JsonKey(name: 'departure_time')
+  String? departureTime;
 
   StopMasterReq({
     required this.tripId,
@@ -22,6 +24,7 @@ class StopMasterReq {
     required this.stop,
     required this.userId,
     required this.arrivingTime,
+    this.departureTime
   });
 
   factory StopMasterReq.fromJson(Map<String, dynamic> json) {

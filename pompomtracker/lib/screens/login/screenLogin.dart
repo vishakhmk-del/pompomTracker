@@ -1,4 +1,5 @@
 import 'package:pompomtracker/core/hook/hook.dart';
+import 'package:pompomtracker/core/security/security_check.dart';
 import 'package:pompomtracker/screens/main/screenmainPage.dart';
 
 class ScreenLogin extends StatefulWidget {
@@ -17,6 +18,13 @@ class _ScreenLoginState extends State<ScreenLogin> {
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   final _formkey = GlobalKey<FormState>();
   bool passtoggle = true;
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      // await SecurityCheck.checkAndExitIfCompromised(context);
+    });
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(

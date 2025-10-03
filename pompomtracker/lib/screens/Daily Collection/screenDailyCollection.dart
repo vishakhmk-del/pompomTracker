@@ -27,15 +27,14 @@ class _ScreenDailyCollectionState extends State<ScreenDailyCollection> {
       });
 
       print(formattedDate);
-      await StatementFunctions.instance
-          .getDayCollection(formattedDate, context);
+      await StatementFunctions.instance.getDayCollection(formattedDate, context);
     });
   }
 
   Future<bool?> popscreen(BuildContext context) async {
     StatementFunctions.instance.getDayCollectionNotifier.value=null;
 
-    Navigator.push(context, Approutes().mainScreen);
+    Navigator.pushReplacement(context, Approutes().mainScreen);
     return true;
   }
 
@@ -104,7 +103,13 @@ class _ScreenDailyCollectionState extends State<ScreenDailyCollection> {
                             .instance.getDayCollectionNotifier,
                         builder: (BuildContext context, DataCollection? data,Widget? _) {
                           final collectionList = data?.collection ?? [];
-                          final grandTotal = data?.grandTotal ?? 0;
+                          // final grandTotal = double.tryParse(data?.grandTotal??'0') ?? 0;
+                          // final grandExpense = double.tryParse(data?.grandExpense??'0') ?? 0;
+                          // final cash=grandTotal-grandExpense;
+
+                          final grandTotal = parseDouble(data?.grandTotal);
+                          final grandExpense = parseDouble(data?.grandExpense);
+                          final cash = grandTotal - grandExpense;
                          // final cdate = data?.collection?.first.collectionDate??'';
 
 
@@ -151,7 +156,7 @@ class _ScreenDailyCollectionState extends State<ScreenDailyCollection> {
                                 Padding(
                                   padding: const EdgeInsets.all(8.0),
                                   child: Text(
-                                    'Grand Total: ₹$grandTotal',
+                                    'Cash in hand: ₹$cash',
                                     style: TextStyle(
                                       fontSize: 18,
                                       fontWeight: FontWeight.bold,
@@ -221,7 +226,11 @@ class _ScreenDailyCollectionState extends State<ScreenDailyCollection> {
       ),
     );
   }
-
+double parseDouble(dynamic value) {
+  if (value == null) return 0;
+  if (value is num) return value.toDouble();
+  return double.tryParse(value.toString().trim().replaceAll(RegExp(r'[^0-9.]'), '')) ?? 0;
+}
   List<DataColumn> getColumns(List<String> columns) {
     return columns.map((String column) {
       return DataColumn(
@@ -240,10 +249,13 @@ class _ScreenDailyCollectionState extends State<ScreenDailyCollection> {
     return newList.asMap().entries.map((entry) {
       int index = entry.key + 1; // Serial number starts from 1
       Collection task = entry.value;
+      final totAmnt=double.tryParse(task.totalAmount??'0') ?? 0;
+      final expns= double.tryParse(task.totalExpense??'0') ?? 0;
+      final cashinhand=totAmnt - expns;
       cells = [
         task.registrationNo ?? '',
         task.busName ?? '',
-        task.totalAmount ?? '',
+        cashinhand.toString(),
        // task.collectionDate ?? '',
       ];
       return DataRow(

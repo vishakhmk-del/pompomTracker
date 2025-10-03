@@ -6,7 +6,6 @@ import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_map_location_marker/flutter_map_location_marker.dart';
 import 'package:flutter_map_marker_popup/flutter_map_marker_popup.dart';
 import 'package:http/http.dart' as http;
-// import 'package:http/http.dart' as http;
 import 'package:latlong2/latlong.dart';
 import 'package:pompomtracker/core/hook/hook.dart';
 import 'package:sizer/sizer.dart';
@@ -52,8 +51,8 @@ class _BusMarker extends fmap.Marker {
 }
 
 class ScreenMapTrack extends StatefulWidget {
-  const ScreenMapTrack({super.key});
-
+  const ScreenMapTrack({super.key,this.task});
+  final BusDetList? task;
   @override
   State<ScreenMapTrack> createState() => _ScreenMapTrackState();
 }
@@ -61,7 +60,7 @@ class ScreenMapTrack extends StatefulWidget {
 class _ScreenMapTrackState extends State<ScreenMapTrack> {
   final fmap.MapController _mapController = fmap.MapController();
   final PopupController _popupLayerController = PopupController();
-  Set<String> _shownPopups = {};
+  // Set<String> _shownPopups = {};
   bool isLoading = true;
   bool _isMapReady = false;
   bool _isUserInteracting = false;
@@ -78,11 +77,19 @@ class _ScreenMapTrackState extends State<ScreenMapTrack> {
   BusLocation? busLocation;
   Timer? _busLocationTimer;
   bool isbuslistFetch = false;
+  bool isStopFetch = false;
+BusListReq? stopreq;
   BusDetList? busDetails;
+  String? selectedbusId;
+List<LatLng> _travelledPoints = [];    // Completed part
+List<LatLng> _remainingPoints = [];    // Remaining part
 
   @override
   void initState() {
     super.initState();
+    if (widget.task?.busId != null && widget.task!.busId!.isNotEmpty) {
+    selectedbusId = widget.task!.busId;
+  }
     WidgetsBinding.instance.addPostFrameCallback((_) => _initialize(context));
   }
 
@@ -106,7 +113,9 @@ class _ScreenMapTrackState extends State<ScreenMapTrack> {
             realtmBuslist =
                 await BusTrackFunctions.instance.realbusdet(value, context);
           }
-          if (realtmBuslist == null || realtmBuslist!.isEmpty) return;
+          if(widget.task==null)
+          {
+            if (realtmBuslist == null || realtmBuslist!.isEmpty) return;
           // Check if all trip_status are "0" or null
           final allInactive = realtmBuslist!
               .every((bus) => bus.tripStatus == null || bus.tripStatus == "0");
@@ -143,6 +152,18 @@ class _ScreenMapTrackState extends State<ScreenMapTrack> {
 
           if (!mounted) return;
           setState(() {});
+          }else{
+            _onBusSelected(widget.task?.busId);
+            if (!isStopFetch) {
+            isStopFetch = true; // Set the flag to true after the first call
+             
+          if (!context.mounted) return;
+
+            fetchRouteForBus(widget.task?.busId??'', context);
+          }
+             
+          }
+          
         }
       },
     );
@@ -425,18 +446,30 @@ class _ScreenMapTrackState extends State<ScreenMapTrack> {
       (bus) => bus.busId == busid,
       orElse: () => BusDetList(), // Provide a fallback empty object
     );
+    
+    if (realtmBuslist == null || realtmBuslist!.isEmpty) {
+      stopreq = BusListReq(
+        userId: usrid,
+        busId: busid,
+        fromPlace: widget.task?.fromStation ?? '',
+        toPlace: widget.task?.toStation ?? '',
+        tripId: widget.task?.tripId ?? '',
+      );
+    } else {
+      stopreq = BusListReq(
+        userId: usrid,
+        busId: busid,
+        fromPlace: busDetails?.fromStation ?? '',
+        toPlace: busDetails?.toStation ?? '',
+        tripId: busDetails?.tripId,
+      );
+    }
 
-    final stopreq = BusListReq(
-      userId: usrid,
-      busId: busid,
-      fromPlace: busDetails?.fromStation ?? '',
-      toPlace: busDetails?.toStation ?? '',
-      tripId: busDetails?.tripId,
-    );
+    
 
     if (!context.mounted) return;
 
-    final stopValue = await SearchFun.instance.fetchStopLoc(stopreq, context);
+    final stopValue = await SearchFun.instance.fetchStopLoc(stopreq!, context);
     stops = stopValue?.stops ?? [];
     busLocation = stopValue?.busLocation;
 
@@ -547,12 +580,23 @@ class _ScreenMapTrackState extends State<ScreenMapTrack> {
     }
 
     // threshold ≈ 200 m
-    if (nearestStopMarker != null && nearestDist! < 200) {
-      // Show ONLY that stop’s popup
-      _popupLayerController.showPopupsOnlyFor([nearestStopMarker]);
-    } else {
-      _popupLayerController.hideAllPopups();
+    // if (nearestStopMarker != null && nearestDist! < 200) {
+    //   // Show ONLY that stop’s popup
+    //   _popupLayerController.showPopupsOnlyFor([nearestStopMarker]);
+    // } else {
+    //   _popupLayerController.hideAllPopups();
+    // }
+    const int stopProximityThreshold = 200;
+    if (nearestStopMarker != null) {
+      if (nearestDist! < stopProximityThreshold) {
+        _popupLayerController.showPopupsOnlyFor([nearestStopMarker]);
+      } else if (nearestDist < stopProximityThreshold + 50) {
+        
+      } else {
+        _popupLayerController.hideAllPopups();
+      }
     }
+
 
     // ------------------------------------------------------------------//
     // 4. Keep map centred unless user dragged it                        //
@@ -563,6 +607,26 @@ class _ScreenMapTrackState extends State<ScreenMapTrack> {
 
     if (mounted) setState(() {});
   }
+void _updateRouteProgress(LatLng busPos) {
+  if (_routePoints.isEmpty) return;
+
+  // Find the nearest route point to the bus
+  final nearest = _routePoints.reduce((a, b) =>
+      _distance(busPos, a) < _distance(busPos, b) ? a : b);
+
+  final index = _routePoints.indexOf(nearest);
+  if (index == -1) return;
+
+  setState(() {
+    _travelledPoints = _routePoints.sublist(0, index + 1);
+    _remainingPoints = _routePoints.sublist(index);
+  });
+}
+
+double _distance(LatLng p1, LatLng p2) {
+  final d = Distance();
+  return d.as(LengthUnit.Meter, p1, p2);
+}
 
   void _recenterMap() {
     if (busLocation != null &&
@@ -579,11 +643,19 @@ class _ScreenMapTrackState extends State<ScreenMapTrack> {
   }
 
   @override
-  void dispose() {
-    Livelocationfun.instance.stopTracking();
-    super.dispose();
-  }
+void dispose() {
+  _busLocationTimer?.cancel();
+  Livelocationfun.instance.stopTracking();
+  super.dispose();
+}
 
+Future<bool?> popscreen(BuildContext context) async {
+    BusTrackFunctions.instance.getRealBusDetailsNotifier.value=[];
+     Navigator.pushReplacement(context, Approutes().realBusListScreen);
+
+
+    return true;
+  }
   @override
   Widget build(BuildContext context) {
     if (!_isMapReady && _routePoints.isNotEmpty) {
@@ -599,247 +671,258 @@ class _ScreenMapTrackState extends State<ScreenMapTrack> {
       });
     }
 
-    return Scaffold(
-      appBar: AppBar(
-        toolbarHeight: 100,
-        backgroundColor: Theme.of(context).colorScheme.primary,
-        leading: IconButton(
-          icon: const Icon(
-            Icons.arrow_back,
-            color: Colors.white,
+    return PopScope(
+      canPop: false,
+      onPopInvoked: (bool didPop) async {
+        if (!didPop) {
+          if (didPop) return;
+          await popscreen(context);
+        }
+        log('BackButton pressed!');
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          toolbarHeight: 100,
+          backgroundColor: Theme.of(context).colorScheme.primary,
+          leading: IconButton(
+            icon: const Icon(
+              Icons.arrow_back,
+              color: Colors.white,
+            ),
+            onPressed: () {
+              Navigator.pushReplacement(context, Approutes().realBusListScreen);
+            },
           ),
-          onPressed: () {
-            Navigator.pushReplacement(context, Approutes().mainScreen);
-          },
-        ),
-        title: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              "Track your bus",
-              style: TextStyle(
-                fontFamily: 'Poppins-Medium',
-                fontSize: 18.sp,
-                fontWeight: FontWeight.w700,
-                color: Colors.white,
-              ),
-            ),
-            SizedBox(
-              height: 5,
-            ),
-            DropdownButtonFormField<String>(
-              //style: TextStyle(color:Colors.black),
-              decoration: InputDecoration(
-                filled: true,
-                fillColor: Colors.white.withAlpha((0.5 * 255).toInt()),
-                contentPadding:
-                    const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10),
-                  borderSide: BorderSide.none,
+          title: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                "Track my bus",
+                style: TextStyle(
+                  fontFamily: 'Poppins-Medium',
+                  fontSize: 18.sp,
+                  fontWeight: FontWeight.w700,
+                  color: Colors.white,
                 ),
-                hintText: 'Select your Bus',
-                hintStyle: TextStyle(color: Colors.black),
               ),
-              icon: const Icon(
-                Icons.arrow_drop_down,
-                color: Color.fromARGB(255, 204, 123, 2),
+              SizedBox(
+                height: 5,
               ),
-              onChanged: (String? busId) {
-                if (busId == null) return;
-
-                final selectedBus = realtmBuslist!.firstWhere(
-                  (bus) => bus.busId == busId,
-                  orElse: () => BusDetList(busId: '', tripStatus: '0'),
-                );
-
-                if (selectedBus.tripStatus == "0") {
-                  messageBox(context);
-                  return;
-                } else {
-                  _onBusSelected(busId); // Proceed to show on map
-                  // You can call your route-fetching function here too
-                  fetchRouteForBus(busId, context);
-                }
-
-                final lat = double.tryParse(selectedBus.liveLatitude ?? '');
-                final lng = double.tryParse(selectedBus.liveLongitude ?? '');
-
-                if (lat != null && lng != null) {
-                  final marker = _popupMarkers.firstWhere(
-                    (m) =>
-                        m is _BusMarker && (m as _BusMarker).bus.busId == busId,
-                    orElse: () => fmap.Marker(
-                      point: LatLng(lat, lng),
-                      child: const Icon(Icons.location_on),
+              DropdownButtonFormField<String>(
+                //style: TextStyle(color:Colors.black),
+                value: selectedbusId,
+                decoration: InputDecoration(
+                  filled: true,
+                  fillColor: Colors.white.withAlpha((0.5 * 255).toInt()),
+                  contentPadding:
+                      const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10),
+                    borderSide: BorderSide.none,
+                  ),
+                  hintText: 'Select Bus',
+                  hintStyle: TextStyle(color: Colors.black),
+                ),
+                icon: const Icon(
+                  Icons.arrow_drop_down,
+                  color: Color.fromARGB(255, 204, 123, 2),
+                ),
+                onChanged: (selectedbusId) {
+                  if (selectedbusId == null) return;
+      
+                  final selectedBus = realtmBuslist!.firstWhere(
+                    (bus) => bus.busId == selectedbusId,
+                    orElse: () => BusDetList(busId: '', tripStatus: '0'),
+                  );
+      
+                  if (selectedBus.tripStatus == "0") {
+                    messageBox(context);
+                    return;
+                  } else {
+                    _onBusSelected(selectedbusId); // Proceed to show on map
+                    // You can call your route-fetching function here too
+                    fetchRouteForBus(selectedbusId, context);
+                  }
+      
+                  final lat = double.tryParse(selectedBus.liveLatitude ?? '');
+                  final lng = double.tryParse(selectedBus.liveLongitude ?? '');
+      
+                  if (lat != null && lng != null) {
+                    final marker = _popupMarkers.firstWhere(
+                      (m) =>
+                          m is _BusMarker && (m as _BusMarker).bus.busId == selectedbusId,
+                      orElse: () => fmap.Marker(
+                        point: LatLng(lat, lng),
+                        child: const Icon(Icons.location_on),
+                      ),
+                    );
+      
+                    _mapController.move(LatLng(lat, lng), 16);
+      
+                    Future.delayed(const Duration(milliseconds: 300), () {
+                      _popupLayerController.showPopupsOnlyFor([marker]);
+                    });
+                  }
+                },
+                dropdownColor: Colors.white,
+                items: realtmBuslist!.map((bus) {
+                  final isActive = bus.tripStatus == "1";
+                  return DropdownMenuItem<String>(
+                    value: bus.busId,
+                    child: Row(
+                      children: [
+                        Icon(
+                          Icons.circle,
+                          color: isActive ? Colors.green : Colors.red,
+                          size: 12,
+                        ),
+                        const SizedBox(width: 8),
+                        Text(
+                          bus.registrationNo ?? bus.busName ?? 'Unknown',
+                          style: TextStyle(
+                            color: isActive ? Colors.green : Colors.red,
+                          ),
+                        ),
+                      ],
                     ),
                   );
-
-                  _mapController.move(LatLng(lat, lng), 16);
-
-                  Future.delayed(const Duration(milliseconds: 300), () {
-                    _popupLayerController.showPopupsOnlyFor([marker]);
-                  });
-                }
-              },
-              dropdownColor: Colors.white,
-              items: realtmBuslist!.map((bus) {
-                final isActive = bus.tripStatus == "1";
-                return DropdownMenuItem<String>(
-                  value: bus.busId,
-                  child: Row(
-                    children: [
-                      Icon(
-                        Icons.circle,
-                        color: isActive ? Colors.green : Colors.red,
-                        size: 12,
-                      ),
-                      const SizedBox(width: 8),
-                      Text(
-                        bus.registrationNo ?? bus.busName ?? 'Unknown',
-                        style: TextStyle(
-                          color: isActive ? Colors.green : Colors.red,
-                        ),
-                      ),
-                    ],
-                  ),
-                );
-              }).toList(),
-            ),
-          ],
+                }).toList(),
+              ),
+            ],
+          ),
         ),
-      ),
-      body: isLoading
-          ? const Center(child: CircularProgressIndicator())
-          : Stack(
-              children: [
-                fmap.FlutterMap(
-                  mapController: _mapController,
-                  options: fmap.MapOptions(
-                    initialCenter: _starting ?? LatLng(0, 0),
-                    initialZoom: 15,
-                    minZoom: 5,
-                    maxZoom: 18,
-                    onTap: (_, __) => _popupLayerController.hideAllPopups(),
-                    onPositionChanged: (position, hasGesture) {
-                      if (hasGesture) {
-                        _isUserInteracting = true;
-                        if (!_showRecenter) {
-                          setState(() => _showRecenter = true);
+        body: isLoading
+            ? const Center(child: CircularProgressIndicator())
+            : Stack(
+                children: [
+                  fmap.FlutterMap(
+                    mapController: _mapController,
+                    options: fmap.MapOptions(
+                      initialCenter: _starting ?? LatLng(0, 0),
+                      initialZoom: 15,
+                      minZoom: 5,
+                      maxZoom: 18,
+                      onTap: (_, __) => _popupLayerController.hideAllPopups(),
+                      onPositionChanged: (position, hasGesture) {
+                        if (hasGesture) {
+                          _isUserInteracting = true;
+                          if (!_showRecenter) {
+                            setState(() => _showRecenter = true);
+                          }
                         }
-                      }
-                    },
-                  ),
-                  children: [
-                    // fmap.TileLayer(
-                    //   urlTemplate:
-                    //       'https://tile.openstreetmap.org/{z}/{x}/{y}.png?key=Pm9Ul6BqvQ3zxhbRXQ5T',
-                    //   userAgentPackageName: 'com.example.pompompay',
-                    // ),
-                    //   fmap.TileLayer(
-                    //   urlTemplate:
-                    //     'http://117.221.68.183:7001/tiles/{z}/{x}/{y}.png',
-                    //   userAgentPackageName: 'com.example.pompompay',
-                    // ),
-                    fmap.TileLayer(
-                      urlTemplate:
-                          'http://117.221.68.183:7001/tile/{z}/{x}/{y}.png',
-                      tileProvider: NetworkTileProvider(),
-                      errorTileCallback: (tile, error, stackTrace) {
-                        debugPrint('Tile load error: $error │ $tile');
-                        log('Tile load error: $error │ $tile');
                       },
                     ),
-
-                    if (_routePoints.isNotEmpty)
-                      fmap.PolylineLayer(
-                        polylines: [
-                          fmap.Polyline(
-                            points: _routePoints,
-                            color: Colors.blue,
-                            strokeWidth: 4,
-                          ),
-                        ],
+                    children: [
+                      // fmap.TileLayer(
+                      //   urlTemplate:
+                      //       'https://tile.openstreetmap.org/{z}/{x}/{y}.png?key=Pm9Ul6BqvQ3zxhbRXQ5T',
+                      //   userAgentPackageName: 'com.example.pompompay',
+                      // ),
+                      //   fmap.TileLayer(
+                      //   urlTemplate:
+                      //     'http://117.221.68.183:7001/tiles/{z}/{x}/{y}.png',
+                      //   userAgentPackageName: 'com.example.pompompay',
+                      // ),
+                      fmap.TileLayer(
+                        urlTemplate:
+                            'http://117.221.68.183:7001/tile/{z}/{x}/{y}.png',
+                        tileProvider: NetworkTileProvider(),
+                        errorTileCallback: (tile, error, stackTrace) {
+                          debugPrint('Tile load error: $error │ $tile');
+                          log('Tile load error: $error │ $tile');
+                        },
                       ),
-
-                    PopupMarkerLayer(
-                      options: PopupMarkerLayerOptions(
-                        markers: _popupMarkers,
-                        popupController: _popupLayerController,
-                        popupDisplayOptions: PopupDisplayOptions(
-                          builder: (BuildContext context, fmap.Marker marker) {
-                            if (marker is _StopMarker) {
-                              int? dist;
-                              if (_lastBusPos != null) {
-                                dist = const Distance()
-                                    .call(marker.point, _lastBusPos!)
-                                    .round();
-                              }
-                              return Card(
-                                child: Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Column(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      Text(marker.stop.stopName ?? 'Stop'),
-                                      if (dist != null) ...[
-                                        const SizedBox(height: 4),
-                                        Text('Distance ≈ $dist m',
-                                            style: const TextStyle(
-                                                color: Colors.grey)),
+      
+                      if (_routePoints.isNotEmpty)
+                        fmap.PolylineLayer(
+                          polylines: [
+                            fmap.Polyline(
+                              points: _routePoints,
+                              color: Colors.blue,
+                              strokeWidth: 4,
+                            ),
+                          ],
+                        ),
+      
+                      PopupMarkerLayer(
+                        options: PopupMarkerLayerOptions(
+                          markers: _popupMarkers,
+                          popupController: _popupLayerController,
+                          popupDisplayOptions: PopupDisplayOptions(
+                            builder: (BuildContext context, fmap.Marker marker) {
+                              if (marker is _StopMarker) {
+                                int? dist;
+                                if (_lastBusPos != null) {
+                                  dist = const Distance()
+                                      .call(marker.point, _lastBusPos!)
+                                      .round();
+                                }
+                                return Card(
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        Text(marker.stop.stopName ?? 'Stop'),
+                                        if (dist != null) ...[
+                                          const SizedBox(height: 4),
+                                          Text('Distance ≈ $dist m',
+                                              style: const TextStyle(
+                                                  color: Colors.grey)),
+                                        ],
                                       ],
-                                    ],
+                                    ),
                                   ),
-                                ),
-                              );
-                            }
-
-                            if (marker is _BusMarker) {
-                              return Card(
-                                child: Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Column(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      Text(marker.bus.busName ?? 'Bus Name'),
-                                      const SizedBox(height: 4),
-                                      Text(
-                                          'Reg No: ${marker.bus.registrationNo ?? 'N/A'}'),
-                                    ],
+                                );
+                              }
+      
+                              if (marker is _BusMarker) {
+                                return Card(
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        Text(marker.bus.busName ?? 'Bus Name'),
+                                        const SizedBox(height: 4),
+                                        Text(
+                                            'Reg No: ${marker.bus.registrationNo ?? 'N/A'}'),
+                                      ],
+                                    ),
                                   ),
-                                ),
-                              );
-                            }
-
-                            return const SizedBox.shrink();
-                          },
+                                );
+                              }
+      
+                              return const SizedBox.shrink();
+                            },
+                          ),
                         ),
                       ),
-                    ),
-                    const CurrentLocationLayer(),
-                  ],
-                ),
-                if (_showRecenter)
-                  Positioned(
-                    bottom: 90,
-                    right: 16,
-                    child: FloatingActionButton(
-                      heroTag: 'recenter',
-                      mini: true,
-                      onPressed: _recenterMap,
-                      child: const Icon(Icons.center_focus_strong),
-                    ),
+                      const CurrentLocationLayer(),
+                    ],
                   ),
-              ],
-            ),
-      floatingActionButton: FloatingActionButton(
-        heroTag: 'mylocation',
-        onPressed: () {
-          if (_starting != null) {
-            _mapController.move(_starting!, 16); // Center to user's location
-          }
-        },
-        child: const Icon(Icons.my_location),
+                  if (_showRecenter)
+                    Positioned(
+                      bottom: 90,
+                      right: 16,
+                      child: FloatingActionButton(
+                        heroTag: 'recenter',
+                        mini: true,
+                        onPressed: _recenterMap,
+                        child: const Icon(Icons.center_focus_strong),
+                      ),
+                    ),
+                ],
+              ),
+        floatingActionButton: FloatingActionButton(
+          heroTag: 'mylocation',
+          onPressed: () {
+            if (_starting != null) {
+              _mapController.move(_starting!, 16); // Center to user's location
+            }
+          },
+          child: const Icon(Icons.my_location),
+        ),
       ),
     );
   }

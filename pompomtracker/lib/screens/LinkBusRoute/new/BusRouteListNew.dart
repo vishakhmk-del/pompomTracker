@@ -24,7 +24,7 @@ class _BusRouteListNewState extends State<BusRouteListNew> {
   Future<bool?> popscreen(BuildContext context) async {
     // Navigator.push(context, Approutes().linkbusrouteNewscreen);
     BusRouteListFunctions.instance.getBusRouteListNotifier.value=[];
-    Navigator.pop(context);
+    Navigator.pushReplacement(context, Approutes().linkbusrouteNewscreen);
     return true;
   }
 
@@ -48,10 +48,11 @@ class _BusRouteListNewState extends State<BusRouteListNew> {
               backgroundColor: Theme.of(context).colorScheme.primary,
               leading: IconButton(
                   onPressed: () {
-                    // Navigator.pushReplacement(
-                    //     context, Approutes().linkbusrouteNewscreen);
                     BusRouteListFunctions.instance.getBusRouteListNotifier.value=[];
-                     Navigator.pop(context);
+
+                    Navigator.pushReplacement(
+                        context, Approutes().linkbusrouteNewscreen);
+                    //  Navigator.pop(context);
                   },
                   icon: const Icon(Icons.arrow_back, color: Colors.white)),
               title: const Text(

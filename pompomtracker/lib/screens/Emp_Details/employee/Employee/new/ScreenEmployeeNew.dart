@@ -393,6 +393,21 @@ class _ScreenEmployeeNewState extends State<ScreenEmployeeNew> {
                           inputFormatters: [
                             LengthLimitingTextInputFormatter(16),
                           ],
+                          validator: (value) {
+                            if (value!.isEmpty) {
+                              return 'Enter Licence No';
+                            } else if (value.contains('.') ||
+                                value.contains("-") ||
+                                value.contains(" ") ||
+                                value.contains(",")) {
+                              return "Enter valid Licence Number";
+                            } else if (_condlicenceNoController.text.length <
+                                    16 ||
+                                _condlicenceNoController.text.length > 16) {
+                              return "Enter valid Licence number";
+                            }
+                            return null;
+                          },
                         ),
                       ),
 

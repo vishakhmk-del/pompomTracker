@@ -4,8 +4,9 @@ import 'package:pompomtracker/screens/stop/new/ScreenAddnewStpNew.dart';
 import 'package:pompomtracker/screens/stop/new/ScreenChangeStopNameNew.dart';
 
 class ScreenStopListNew extends StatefulWidget {
-  const ScreenStopListNew({super.key, required this.flag});
+  const ScreenStopListNew({super.key, required this.flag,this.routeId});
   final int flag;
+  final int? routeId;
   @override
   State<ScreenStopListNew> createState() => _ScreenStopListNewState();
 }
@@ -15,13 +16,20 @@ class _ScreenStopListNewState extends State<ScreenStopListNew> {
 
   List<String> columns = [];
   List<String?> cells = [];
-  List<Listdet>? triplist = [];
   final _formkey = GlobalKey<FormState>();
   final _formkey1 = GlobalKey<FormState>();
   String? dropdownbusvalue;
-  String? display;
+  String? routeName;
   String? tripId;
+  List<Listdet>? triplist = [];
   List<Map<String, Object>> tripnamelst = [];
+    List<Map<String, dynamic>> registarionlst = [];
+
+  List<BusRegList>? busreglist = [];
+ // String? selectedBusList;
+  Map<String, dynamic>? selectedBusList;
+
+
   @override
   void initState() {
     super.initState();
@@ -31,17 +39,25 @@ class _ScreenStopListNewState extends State<ScreenStopListNew> {
     });
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      triplist = await StopFunctions.instance.tripNameList();
-      setState(() {
-        tripnamelst = triplist!.map((trip) {
-          String routeDisplay = trip.tripName ?? "";
+      try {
+        busreglist = await Wklycollectfn.instance.busReglistfn(context);
 
-          return {
-            'tripId': trip.tripId!, // routeId as int
-            'display': routeDisplay // Display label
-          };
-        }).toList(); //calling registarion list  from main model
-      });
+        setState(() {
+          registarionlst = busreglist!.map((bus) {
+            return {
+              'busId': bus.busId,
+              'display': bus.registrationNo ?? '',
+            };
+          }).toList();
+        });
+
+        if (!mounted) return;
+        final checkProvider = context.read<CheckProvider>();
+        checkProvider.reset();
+      } catch (e, st) {
+        log('Error loading bus list: \$e');
+        log(st.toString());
+      }
     });
   }
 
@@ -120,6 +136,75 @@ class _ScreenStopListNewState extends State<ScreenStopListNew> {
                                                 .textTheme
                                                 .titleLarge,
                                           ),
+                                    const SizedBox(height: 10),
+
+                                          SizedBox(
+                                      width: MediaQuery.of(context).size.width,
+                                      child: DropdownButtonFormField<Map<String, dynamic>>(
+                                        value: selectedBusList,
+                                        items: registarionlst.map((busItem) {
+                                          return DropdownMenuItem<Map<String, dynamic>>(
+                                            value: busItem,
+                                            child: Text(
+                                              busItem['display'] ?? '',
+                                              style: TextStyle(
+                                                color: Theme.of(context).colorScheme.onSecondary,
+                                              ),
+                                            ),
+                                          );
+                                        }).toList(),
+                                        onChanged: (newValue)async {
+                                  if (newValue == null) return;
+
+                                          triplist = await StopFunctions.instance.tripNameList(newValue['busId'],context);
+
+                                          setState(() {
+
+                                            selectedBusList = newValue;
+                                            
+                                            tripnamelst = triplist!.map((trip) {
+                                              String routeDisplay =
+                                                  "${trip.tripName ?? ""}->${trip.startTime ?? ""}-${trip.endTime ?? ""}";
+
+                                              return {
+                                                'tripId': trip.tripId!, // routeId as int
+                                                'display': routeDisplay // Display label
+                                              };
+                                            }).toList();
+                                          });
+                                          // setState(() {
+                                          //   selectedBusList = newValue;
+                                          // });
+                                        },
+                                      //  value: selectedBusList,
+                                        style: TextStyle(
+                                            color: Theme.of(context)
+                                                .colorScheme
+                                                .onPrimary),
+                                        icon: Theme(
+                                          data: Theme.of(context),
+                                          child: const Icon(
+                                            Icons.arrow_drop_down,
+                                          ),
+                                        ),
+                                        decoration: InputDecoration(
+                                          labelText: 'Select Bus',
+                                          labelStyle: Theme.of(context)
+                                              .textTheme
+                                              .bodySmall,
+                                        ),
+                                        dropdownColor: Theme.of(context)
+                                            .colorScheme
+                                            .tertiary,
+                                        validator: (value) {
+                                          if (value!.isEmpty) {
+                                            return 'Select Bus Type';
+                                          } else {
+                                            return null;
+                                          }
+                                        },
+                                      ),
+                                    ),
                                           SizedBox(
                                             width: MediaQuery.of(context)
                                                 .size
@@ -150,33 +235,47 @@ class _ScreenStopListNewState extends State<ScreenStopListNew> {
                                                 ),
                                                 items:
                                                     tripnamelst.map((tripMap) {
-                                                  String combinedValue =
-                                                      '${tripMap['tripId']}+${tripMap['display']}';
-                                                  return DropdownMenuItem<
-                                                      String>(
-                                                    value: combinedValue,
-                                                    child: Text(
-                                                      tripMap['display']
-                                                          as String, // Display the route name and via
-                                                      overflow:
-                                                          TextOverflow.ellipsis,
-                                                      style: TextStyle(
-                                                        color: Theme.of(context)
-                                                            .colorScheme
-                                                            .onSecondary,
+                                                      final routeText =(tripMap['display'] as String).split('->');
+                                              final routeName =routeText[0]; // First part
+                                              final viaPart =routeText.length > 1? '-> ${routeText[1]}': '';
+                                                  // String combinedValue =
+                                                  //     '${tripMap['tripId']}+${tripMap['display']}';
+                                                  return DropdownMenuItem<String>(
+                                                    value: tripMap['tripId'] as String,
+                                                    child: ConstrainedBox(
+                                                    constraints:
+                                                        const BoxConstraints(
+                                                            maxWidth: 200),
+                                                    child: RichText(
+                                                      text: TextSpan(
+                                                        style: TextStyle(
+                                                          color:Theme.of(context).colorScheme.onSecondary,
+                                                        ),
+                                                        children: [
+                                                          TextSpan(
+                                                            text:'$routeName\n', // Route name on the first line
+                                                          ),
+                                                          TextSpan(
+                                                            text:
+                                                                viaPart, // "via" part on the second line
+                                                            style: TextStyle(
+                                                              color: Theme.of(
+                                                                      context)
+                                                                  .colorScheme
+                                                                  .onSecondary,
+                                                            ),
+                                                          ),
+                                                        ],
                                                       ),
-                                                    ),
+                                                    )),
                                                   );
                                                 }).toList(),
                                                 onChanged: (newvalue) {
                                                   log('Bus :$newvalue');
-                                                  List<String> parts =
-                                                      newvalue!.split('+');
-                                                  tripId = parts[0];
-                                                  display = parts[1];
-                                                  //  print(tripId);
-                                                  //  print(display);
-                                                  //final value=tripMap['display'] as String;
+                                                  // List<String> parts =
+                                                  //     newvalue!.split('+');
+                                                  // tripId = parts[0];
+                                                  // display = parts[1];
 
                                                   context
                                                       .read<
@@ -226,14 +325,10 @@ class _ScreenStopListNewState extends State<ScreenStopListNew> {
                                                   onPressed: () async {
                                                     if (_formkey.currentState!
                                                         .validate()) {
-                                                      context
-                                                          .read<
-                                                              ElevatedBtnProvider>()
-                                                          .changeSelectedVal(
-                                                              true);
+                                                      context.read<ElevatedBtnProvider>()
+                                                          .changeSelectedVal(true);
 
-                                                      StopFunctions.instance
-                                                          .stopDetFn(tripId);
+                                                      StopFunctions.instance.stopDetFn(dropdownbusvalue);
                                                     }
                                                   },
                                                   child: Text(
@@ -290,8 +385,8 @@ class _ScreenStopListNewState extends State<ScreenStopListNew> {
                                   context,
                                   MaterialPageRoute(
                                     builder: (context) => ScreenAddNewStopNew(
-                                      tripName: display,
-                                      tripId: tripId,
+                                      tripName: routeName,
+                                      tripId: dropdownbusvalue,
                                     ),
                                   ),
                                 );
@@ -324,6 +419,7 @@ class _ScreenStopListNewState extends State<ScreenStopListNew> {
                             'Stop Name',
                             'Is Stage',
                             'Arriving ',
+                            'Departure',
                             'Action'
                           ]),
                           rows: getRows(newList),
@@ -388,6 +484,7 @@ class _ScreenStopListNewState extends State<ScreenStopListNew> {
           task.stopName ?? '',
           task.isStage ?? '',
           task.arrivingTime ?? '',
+          task.departureTime ?? ''
         ];
 
         return DataRow(cells: [
@@ -426,7 +523,7 @@ class _ScreenStopListNewState extends State<ScreenStopListNew> {
                           MaterialPageRoute(
                             builder: (context) => ScreenStopNameChangeNew(
                               stopdet: task,
-                              tripName: display,
+                              tripName: routeName,
                               tripid: task.tripId,
                             ),
                           ),
