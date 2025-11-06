@@ -212,12 +212,12 @@ class _ScreenStopMasterState extends State<ScreenStopMaster> {
                                                 // Store the selected routeId
                                               });
 
-                                              existingStpdet =
+                                              final data =
                                                   await StopFunctions.instance
                                                       .getExistingStpFn(
                                                           selectedRouteList);
                                               //existingStpdet=StopFunctions.instance.getExistingStopNotifier.value;
-                                              if (existingStpdet!.isEmpty) {
+                                              if (data["stops"]!.isEmpty) {
                                                 _scafoldkey.currentContext!
                                                     .read<DropdownProvider>()
                                                     .changeSelectedVal(false,1);

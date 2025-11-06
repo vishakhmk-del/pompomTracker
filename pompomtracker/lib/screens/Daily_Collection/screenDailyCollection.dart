@@ -2,7 +2,7 @@ import 'dart:developer';
 
 import 'package:intl/intl.dart';
 import 'package:pompomtracker/core/hook/hook.dart';
-import 'package:pompomtracker/screens/Daily%20Collection/screenCollectionDet.dart';
+import 'package:pompomtracker/screens/Daily_Collection/screenCollectionDet.dart';
 
 class ScreenDailyCollection extends StatefulWidget {
   const ScreenDailyCollection({super.key});
@@ -67,32 +67,32 @@ class _ScreenDailyCollectionState extends State<ScreenDailyCollection> {
                 'Day Collection',
                 style: TextStyle(color: Colors.white),
               ),
-              actions: [
-                IconButton(
-                  icon: Icon(Icons.calendar_month, color: Colors.white),
-                  onPressed: () async {
-                    final DateTime? pickedDate = await showDatePicker(
-                      context: context,
-                      initialDate: DateTime.now(),
-                      firstDate: DateTime(2000),
-                      lastDate: DateTime.now(),
-                    );
+              // actions: [
+              //   IconButton(
+              //     icon: Icon(Icons.calendar_month, color: Colors.white),
+              //     onPressed: () async {
+              //       final DateTime? pickedDate = await showDatePicker(
+              //         context: context,
+              //         initialDate: DateTime.now(),
+              //         firstDate: DateTime(2000),
+              //         lastDate: DateTime.now(),
+              //       );
 
-                    if (pickedDate != null) {
-                      final formattedDate =
-                          DateFormat('yyyy-MM-dd').format(pickedDate);
-                          setState(() {
-                            cDate =
-                          DateFormat('dd-MM-yyyy').format(pickedDate);
-                          });
+              //       if (pickedDate != null) {
+              //         final formattedDate =
+              //             DateFormat('yyyy-MM-dd').format(pickedDate);
+              //             setState(() {
+              //               cDate =
+              //             DateFormat('dd-MM-yyyy').format(pickedDate);
+              //             });
                            
-                      if (!context.mounted) return;
-                      await StatementFunctions.instance
-                          .getDayCollection(formattedDate, context);
-                    }
-                  },
-                ),
-              ],
+              //         if (!context.mounted) return;
+              //         await StatementFunctions.instance
+              //             .getDayCollection(formattedDate, context);
+              //       }
+              //     },
+              //   ),
+              // ],
             ),
             body: Column(
               children: [
@@ -118,14 +118,53 @@ class _ScreenDailyCollectionState extends State<ScreenDailyCollection> {
                             children: [
                               if (collectionList.isNotEmpty) ...[
                                 Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Text(
-                                    'Date: $cDate',
-                                    style: TextStyle(
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.black,
+                                  padding: const EdgeInsets.all(6.0),
+                                  child: 
+                                  // Text(
+                                  //       'Date: $cDate',
+                                  //       style: TextStyle(
+                                  //         fontSize: 18,
+                                  //         fontWeight: FontWeight.bold,
+                                  //         color: Colors.black,
+                                  //       ),
+                                  //     ),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text(
+                                        'Date: $cDate',
+                                        style: TextStyle(
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.black,
+                                        ),
+                                      ),
+                                   //   SizedBox(width: 20,),
+                                      IconButton(
+                                      icon: Icon(Icons.calendar_month,size:32, color: Colors.black),
+                                      onPressed: () async {
+                                        final DateTime? pickedDate = await showDatePicker(
+                                          context: context,
+                                          initialDate: DateTime.now(),
+                                          firstDate: DateTime(2000),
+                                          lastDate: DateTime.now(),
+                                        );
+
+                                        if (pickedDate != null) {
+                                          final formattedDate =
+                                              DateFormat('yyyy-MM-dd').format(pickedDate);
+                                              setState(() {
+                                                cDate =
+                                              DateFormat('dd-MM-yyyy').format(pickedDate);
+                                              });
+                                              
+                                          if (!context.mounted) return;
+                                          await StatementFunctions.instance
+                                              .getDayCollection(formattedDate, context);
+                                        }
+                                      },
                                     ),
+                                    ],
                                   ),
                                 ),
                                 Container(

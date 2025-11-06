@@ -8,6 +8,7 @@ import 'package:flutter_map_marker_popup/flutter_map_marker_popup.dart';
 import 'package:http/http.dart' as http;
 import 'package:latlong2/latlong.dart';
 import 'package:pompomtracker/core/hook/hook.dart';
+import 'package:pompomtracker/model/track/stoploc_resp/bus.dart';
 import 'package:sizer/sizer.dart';
 
 class _StopMarker extends fmap.Marker {
@@ -34,20 +35,42 @@ class _StopMarker extends fmap.Marker {
         );
 }
 
+// class _BusMarker extends fmap.Marker {
+//   final BusDetList bus;
+
+//   _BusMarker({required this.bus})
+//       : super(
+//             point: LatLng(double.parse(bus.liveLatitude!),
+//                 double.parse(bus.liveLongitude!)),
+//             width: 40,
+//             height: 40,
+//             child: Image.asset(
+//               'assets/tracking/Untitled_design__8_-removebg-preview.png',
+//               width: 40,
+//               height: 40,
+//             ));
+// }
+// ------------------- BUS MARKER ------------------- //
 class _BusMarker extends fmap.Marker {
+  final BusLocation? busloc;
+  final BusValue? busvalue;
   final BusDetList bus;
 
-  _BusMarker({required this.bus})
-      : super(
-            point: LatLng(double.parse(bus.liveLatitude!),
-                double.parse(bus.liveLongitude!)),
-            width: 40,
-            height: 40,
-            child: Image.asset(
-              'assets/tracking/Untitled_design__8_-removebg-preview.png',
-              width: 40,
-              height: 40,
-            ));
+  _BusMarker({required this.bus, this.busvalue, this.busloc})
+    : super(
+        key: const ValueKey('bus_marker'),
+        point: LatLng(
+          double.parse(busloc?.latitude??''),
+          double.parse(busloc?.longitude??''),
+        ),
+        width: 40,
+        height: 40,
+        child: Image.asset(
+          'assets/tracking/Untitled_design__8_-removebg-preview.png',
+          width: 40,
+          height: 40,
+        ),
+      );
 }
 
 class ScreenMapTrack extends StatefulWidget {
@@ -83,6 +106,7 @@ BusListReq? stopreq;
   String? selectedbusId;
 List<LatLng> _travelledPoints = [];    // Completed part
 List<LatLng> _remainingPoints = [];    // Remaining part
+  BusValue? busvalue;
 
   @override
   void initState() {
@@ -110,59 +134,67 @@ List<LatLng> _remainingPoints = [];    // Remaining part
 
           if (!isbuslistFetch) {
             isbuslistFetch = true; // Set the flag to true after the first call
-            realtmBuslist =
-                await BusTrackFunctions.instance.realbusdet(value, context);
-          }
-          if(widget.task==null)
-          {
-            if (realtmBuslist == null || realtmBuslist!.isEmpty) return;
-          // Check if all trip_status are "0" or null
-          final allInactive = realtmBuslist!
-              .every((bus) => bus.tripStatus == null || bus.tripStatus == "0");
-          if (allInactive) {
-            if (!context.mounted) return;
-            if (mounted) {
-              messageBox(context);
-            }
-            // Don't show default locations or markers
-            setState(() {
-              _popupMarkers = [];
-              _routePoints = [];
-            });
-            return;
-          }
-          // Filter out buses with valid live lat/lng and active trip
-          final validBuses = realtmBuslist!.where((bus) {
-            final lat = double.tryParse(bus.liveLatitude ?? '');
-            final lng = double.tryParse(bus.liveLongitude ?? '');
-            return lat != null && lng != null && bus.tripStatus != "0";
-          }).toList();
+            realtmBuslist = await BusTrackFunctions.instance.realbusdet(value, context);
 
-          if (validBuses.isEmpty) return;
-
-          points = validBuses
-              .map((bus) => LatLng(double.parse(bus.liveLatitude!),
-                  double.parse(bus.liveLongitude!)))
-              .toList();
-
-          //_routePoints = points;
-          realtmBus = validBuses;
-
-          _buildMarkers();
-
-          if (!mounted) return;
-          setState(() {});
-          }else{
-            _onBusSelected(widget.task?.busId);
+          _onBusSelected(widget.task?.busId);
             if (!isStopFetch) {
             isStopFetch = true; // Set the flag to true after the first call
              
-          if (!context.mounted) return;
+            if (!context.mounted) return;
 
             fetchRouteForBus(widget.task?.busId??'', context);
           }
-             
           }
+          // if(widget.task==null)
+          // {
+          //   if (realtmBuslist == null || realtmBuslist!.isEmpty) return;
+          // // Check if all trip_status are "0" or null
+          // final allInactive = realtmBuslist!
+          //     .every((bus) => bus.tripStatus == null || bus.tripStatus == "0");
+          // if (allInactive) {
+          //   if (!context.mounted) return;
+          //   if (mounted) {
+          //     messageBox(context);
+          //   }
+          //   // Don't show default locations or markers
+          //   setState(() {
+          //     _popupMarkers = [];
+          //     _routePoints = [];
+          //   });
+          //   return;
+          // }
+          // // Filter out buses with valid live lat/lng and active trip
+          // final validBuses = realtmBuslist!.where((bus) {
+          //   final lat = double.tryParse(bus.liveLatitude ?? '');
+          //   final lng = double.tryParse(bus.liveLongitude ?? '');
+          //   return lat != null && lng != null && bus.tripStatus != "0";
+          // }).toList();
+
+          // if (validBuses.isEmpty) return;
+
+          // points = validBuses
+          //     .map((bus) => LatLng(double.parse(bus.liveLatitude!),
+          //         double.parse(bus.liveLongitude!)))
+          //     .toList();
+
+          // //_routePoints = points;
+          // realtmBus = validBuses;
+
+          // _buildMarkers();
+
+          // if (!mounted) return;
+          // setState(() {});
+          // }else{
+          //   _onBusSelected(widget.task?.busId);
+          //   if (!isStopFetch) {
+          //   isStopFetch = true; // Set the flag to true after the first call
+             
+          // if (!context.mounted) return;
+
+          //   fetchRouteForBus(widget.task?.busId??'', context);
+          // }
+             
+          // }
           
         }
       },
@@ -211,97 +243,6 @@ List<LatLng> _remainingPoints = [];    // Remaining part
     );
   }
 
-// --------------------------------------------------------
-//   void _buildMarkers() {
-//   _popupMarkers = realtmBus!.map((bus) => _StopMarker(bus: bus)).toList();
-
-//   // Automatically show all popups
-//   WidgetsBinding.instance.addPostFrameCallback((_) {
-//     _popupLayerController.showPopupsOnlyFor(_popupMarkers);
-//   });
-// }
-// void _buildMarkers() {
-//   List<fmap.Marker> stopMarkers = stops.map((stop) {
-//     final lat = double.parse(stop.latitude!);
-//     final lng = double.parse(stop.longitude!);
-//     return fmap.Marker(
-//       point: LatLng(lat, lng),
-//       width: 40,
-//       height: 40,
-//       child:
-//       stop.stopName == realtmBuslist?.first.toStation ? Icon(
-//                   Icons.location_pin,
-//                   color:  Colors.red,
-//                   size: 40,
-//                 ):Icon(
-//                   Icons.circle,
-//                   color:  Colors.red,
-//                   size: 20,
-//                 ),
-//     );
-//   }).toList();
-
-//   List<_BusMarker> busStopMarkers = realtmBus!.map((bus) => _BusMarker(bus: bus)).toList();
-
-//   // Add bus marker separately
-//   List<fmap.Marker> allMarkers = [...stopMarkers, ...busStopMarkers];
-
-//   // Add live bus marker (if exists)
-//   if (_lastBusPos != null) {
-//     allMarkers.add(
-//       fmap.Marker(
-//         key: const ValueKey('bus_marker'),
-//         point: _lastBusPos!,
-//         width: 40,
-//         height: 40,
-//         child: Image.asset(
-//           'assets/tracking/Untitled_design__8_-removebg-preview.png',
-//           width: 40,
-//           height: 40,
-//         ),
-//       ),
-//     );
-//   }
-
-//   setState(() {
-//     _popupMarkers = allMarkers;
-//   });
-
-//   WidgetsBinding.instance.addPostFrameCallback((_) {
-//     _popupLayerController.showPopupsOnlyFor(_popupMarkers.whereType<_StopMarker>().toList());
-//   });
-// }
-// void _buildMarkers() {
-//   final selectedBus = realtmBus?.first;
-//   final busLat = double.tryParse(selectedBus?.liveLatitude ?? '');
-//   final busLng = double.tryParse(selectedBus?.liveLongitude ?? '');
-
-//   _popupMarkers = [
-//     // Stop markers
-//     ...stops.map((stop) => _StopMarker(
-//           stop: stop,
-//           stoploc: selectedBus!,
-//         )),
-
-//     // Bus marker (only one)
-//     // if (busLat != null && busLng != null)
-//     //   _BusMarker(
-//     //     bus: selectedBus!,
-//     //   ),
-//       ...realtmBus!.map((bus) => _BusMarker(bus: bus))
-//      // List<_BusMarker> busStopMarkers = realtmBus!.map((bus) => _BusMarker(bus: bus)).toList();
-//   ];
-
-//   WidgetsBinding.instance.addPostFrameCallback((_) {
-//     _popupLayerController.showPopupsOnlyFor(
-//         _popupMarkers.whereType<_BusMarker>().toList());
-//         // _popupLayerController.showPopupsOnlyFor(
-//         // _popupMarkers.whereType<_StopMarker>().toList());
-//   });
-
-//   setState(() {});
-// }
-
   void _buildMarkers() {
     // final selectedBus = realtmBus?.first;
 
@@ -312,7 +253,9 @@ List<LatLng> _remainingPoints = [];    // Remaining part
             stoploc: busDetails!,
           )),
       // All bus markers
-      ...realtmBus!.map((bus) => _BusMarker(bus: bus)),
+      // if (busLocation?.latitude != null && busLocation?.longitude != null)
+        // _BusMarker(bus: busLocation!,busdet: bus!, stoploc: widget.stoploc),
+      ...realtmBus!.map((bus) => _BusMarker(bus: bus,busloc: busLocation,busvalue:busvalue)),
     ];
 
     // 1. Calculate bounds to fit all bus positions
@@ -384,45 +327,7 @@ List<LatLng> _remainingPoints = [];    // Remaining part
       });
     }
   }
-// fetchRouteForBus(String busid,BuildContext context) async{
-//   setState(() => isLoading = true);
-//   final sharedValue = await SharedPrefManager.instance.getSharedData();
-//   final usrid = sharedValue!.userId;
-//           final stopreq=BusListReq(
-//             userId: usrid,
-//             busId: busid,
-//             fromPlace: realtmBuslist?.first.fromStation??'',
-//             toPlace: realtmBuslist?.first.toStation??'',
-//             tripId: realtmBuslist?.first.tripId
-//           );
-//           if(!context.mounted) return;
-//           final stopValue = await SearchFun.instance.fetchStopLoc(stopreq, context);
-//           stops = stopValue?.stops ?? [];
-//           busLocation = stopValue?.busLocation;
-//            setState(() => isLoading = false);
 
-//           List<LatLng> points = stops
-//               .map((s) => LatLng(double.parse(s.latitude!), double.parse(s.longitude!)))
-//               .toList();
-
-//           if (points.isNotEmpty) {
-//             await _fetchRoute(points);
-
-//           }
-
-//           _buildMarkers();
-
-//           if (!mounted) return;
-//           setState(() {});
-
-//           _busLocationTimer = Timer.periodic(const Duration(seconds: 3), (_) {
-//             _fetchBusLiveLocation(busid,context);
-//           });
-//           // if (!context.mounted) return;
-
-//            // _fetchBusLiveLocation(context);
-
-// }
   fetchRouteForBus(String busid, BuildContext context) async {
     // Cancel previous live update timer
     _busLocationTimer?.cancel();
@@ -472,7 +377,8 @@ List<LatLng> _remainingPoints = [];    // Remaining part
     final stopValue = await SearchFun.instance.fetchStopLoc(stopreq!, context);
     stops = stopValue?.stops ?? [];
     busLocation = stopValue?.busLocation;
-
+    busvalue=stopValue?.bus;
+    if(!mounted)return;
     setState(() => isLoading = false);
 
     List<LatLng> points = stops
@@ -548,19 +454,9 @@ List<LatLng> _remainingPoints = [];    // Remaining part
     // 2. Update (or create) the BUS marker                              //
     // ------------------------------------------------------------------//
     _popupMarkers.removeWhere((m) => m.key == const ValueKey('bus_marker'));
-    _popupMarkers.add(
-      fmap.Marker(
-        key: const ValueKey('bus_marker'),
-        point: _lastBusPos!,
-        width: 40,
-        height: 40,
-        child: Image.asset(
-          'assets/tracking/Untitled_design__8_-removebg-preview.png',
-          width: 40,
-          height: 40,
-        ),
-      ),
-    );
+    if (busLocation != null) {
+      _popupMarkers.add(_BusMarker(bus: busDetails!,busloc: busLocation,busvalue: busvalue));
+    }
 
     // ------------------------------------------------------------------//
     // 3. Find NEAREST stop                                              //
@@ -876,17 +772,44 @@ Future<bool?> popscreen(BuildContext context) async {
                                 );
                               }
       
+                              // if (marker is _BusMarker) {
+                              //   return Card(
+                              //     child: Padding(
+                              //       padding: const EdgeInsets.all(8.0),
+                              //       child: Column(
+                              //         mainAxisSize: MainAxisSize.min,
+                              //         children: [
+                              //           Text(marker.bus.busName ?? 'Bus Name'),
+                              //           const SizedBox(height: 4),
+                              //           Text(
+                              //               'Reg No: ${marker.bus.registrationNo ?? 'N/A'}'),
+                              //         ],
+                              //       ),
+                              //     ),
+                              //   );
+                              // }
+                              // ----- BUS MARKER POPUP ----- //
                               if (marker is _BusMarker) {
                                 return Card(
                                   child: Padding(
                                     padding: const EdgeInsets.all(8.0),
                                     child: Column(
                                       mainAxisSize: MainAxisSize.min,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
                                       children: [
-                                        Text(marker.bus.busName ?? 'Bus Name'),
+                                        Text(marker.busvalue?.busName?.toUpperCase() ?? 'Bus',
+                                            style: const TextStyle(
+                                                fontWeight: FontWeight.bold)),
                                         const SizedBox(height: 4),
                                         Text(
-                                            'Reg No: ${marker.bus.registrationNo ?? 'N/A'}'),
+                                            'Reg No: ${marker.busvalue?.registrationNo ?? 'N/A'}'),
+                                        const SizedBox(height: 4),
+                                        Text(
+                                            '${marker.busvalue?.fromStation} → ${marker.busvalue?.toStation}'),
+                                        const SizedBox(height: 4),
+                                        Text(
+                                            '(${marker.busvalue?.startTime ?? 'N/A'}-${marker.busvalue?.endTime ?? 'N/A'})'),
                                       ],
                                     ),
                                   ),

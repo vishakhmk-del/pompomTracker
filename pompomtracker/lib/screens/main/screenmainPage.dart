@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:math';
 import 'package:pompomtracker/core/hook/hook.dart';
-import 'package:pompomtracker/core/security/security_check.dart';
 import 'package:pompomtracker/screens/Collection/new/screencollectionNew.dart';
 import 'package:pompomtracker/widgets/navBar/navbarDM.dart';
 

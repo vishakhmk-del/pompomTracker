@@ -1,10 +1,8 @@
 import 'package:pompomtracker/core/hook/hook.dart';
 
 class IconChangeProvider with ChangeNotifier {
-  //bool _selectedVal = false;
   Map<String?, bool> _iconStates = {};
 
-  // bool get selectedVal => _selectedVal;
   bool isVerified(String? taskId) {
     return _iconStates[taskId] ?? false; // Default to false if no state exists
   }
@@ -13,8 +11,10 @@ class IconChangeProvider with ChangeNotifier {
     _iconStates[taskId] = value;
     notifyListeners(); // Notify listeners when state changes
   }
-  // void changeSelectedVal(bool value) {
-  //   _selectedVal = value;
-  //   notifyListeners();
-  // }
+
+  void clearAll() {
+    _iconStates.clear();
+    notifyListeners(); // Notify listeners after clearing
+  }
 }
+

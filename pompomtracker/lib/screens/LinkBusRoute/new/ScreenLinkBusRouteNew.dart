@@ -443,6 +443,8 @@ class _ScreenLinkBusRouteNewState extends State<ScreenLinkBusRouteNew> {
     loadingProvider.toggleLoading();
     //print(resValue.status);
     if (resValue.status == 'success') {
+    loadingProvider.reset();
+
       Fluttertoast.showToast(
           msg: "Details ${widget.flag == 0 ? 'saved' : 'updated'} successfully",
           toastLength: Toast.LENGTH_SHORT,
@@ -456,8 +458,12 @@ class _ScreenLinkBusRouteNewState extends State<ScreenLinkBusRouteNew> {
           ? Navigator.push(context, Approutes().settingscreen)
           : Navigator.push(context, Approutes().busRouteListNewScreen);
     } else if (resValue.status == 'failed') {
+      loadingProvider.reset();
+
       showerror(_scafoldkey.currentContext, 2);
     } else {
+      loadingProvider.reset();
+
       showerror(_scafoldkey.currentContext, 3);
     }
   }

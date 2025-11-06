@@ -1,14 +1,15 @@
-import 'dart:developer';
 
+import 'dart:developer';
 import 'package:intl/intl.dart';
 import 'package:pompomtracker/core/hook/hook.dart';
 import 'package:pompomtracker/model/daycollection/collection_det/collection_det.dart';
-import 'package:pompomtracker/model/daycollection/collection_det/data.dart';
 import 'package:pompomtracker/model/daycollection/daycollectionresp/daycollectionresp.dart';
 
 class StatementFunctions {
+
   StatementFunctions._internal();
   static StatementFunctions instance = StatementFunctions._internal();
+
   StatementFunctions factory() {
     return instance;
   }
@@ -103,6 +104,7 @@ class StatementFunctions {
         getDayCollectionNotifier.value = null;
         getDayCollectionNotifier.notifyListeners();
       } else if (conductorListRespVar.statusCode == 200) {
+
         final resultAsJson = jsonDecode(conductorListRespVar.toString());
         final conductorListRespVal =
             Daycollectionresp.fromJson(resultAsJson as Map<String, dynamic>);
@@ -114,12 +116,17 @@ class StatementFunctions {
           getDayCollectionNotifier.value = null;
           getDayCollectionNotifier.notifyListeners();
         }
+
       } else if (conductorListRespVar.statusCode == 401) {
+
         if (!context.mounted) return;
         Wklycollectfn.instance.showApierror(context, "Unauthenticated");
+
       } else if (conductorListRespVar.statusCode == 500) {
+
         if (!context.mounted) return;
         Wklycollectfn.instance.showApierror(context, "Server Not reached");
+
       } else if (conductorListRespVar.statusCode == 408) {
         if (!context.mounted) return;
         Wklycollectfn.instance.showApierror(context, "Connection time out");
@@ -152,6 +159,7 @@ class StatementFunctions {
         final conductorListRespVal =CollectionDet.fromJson(resultAsJson as Map<String, dynamic>);
 
         if (conductorListRespVal.status == 'success') {
+          // final data=conductorListRespVal.data;
           getCollectDetNotifier.value = conductorListRespVal.data;
           getCollectDetNotifier.notifyListeners();
         } else if (conductorListRespVal.status == 'failed') {

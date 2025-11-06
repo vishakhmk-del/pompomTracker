@@ -4,6 +4,8 @@ class Url {
   // String baseUrl = 'http://117.221.68.183:81/Qrpayuser/index.php';
 
   String baseUrl = 'http://117.221.68.183:81/Qrpay/index.php';
+  // String baseUrl = 'http://117.221.68.183:81/Qrpaylive_test/index.php';
+
 
   String loginUrl = '/Home_C/owner_login_v';
   String getBusUrl = '/Master_C/get_bustype';
@@ -40,6 +42,8 @@ class Url {
   String sortRouteUrl = '/Master_C/get_linked_route';
   String fromtoStnUrl = '/Master_C/get_existing_tripname';
   String existingStpUrl = '/Owner_C/get_existing_stop';
+  String prvwStpUrl = '/Owner_C/get_preview_stop';
+  String updateStpUrl = '/Owner_C/update_stop';
   String editArrivingTmUrl = '/Owner_C/add_existing_stop';
   String getnewTripUrl = '/Owner_C/get_new_trip';
   String frgetPswrdUrl = '/Home_C/forgot_password';
@@ -62,4 +66,5 @@ class Url {
   String busLiveLocUrl = '/Home_C/bus_location';
   String dayCollectionUrl = '/Master_C/bus_collection';
   String collectDetUrl = '/Master_C/trip_collection_by_bus';
+  String collectDetNwUrl='/Master_C/trip_collection_by_bus_new';
 }

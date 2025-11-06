@@ -11,6 +11,8 @@ class StopFunctions {
 
   ValueNotifier<List<Listdet>> getStopDetNotifier = ValueNotifier([]);
   ValueNotifier<List<Listdet>> getExistingStopNotifier = ValueNotifier([]);
+  ValueNotifier<List<Listdet>> getPriviewStopNotifier = ValueNotifier([]);
+
   Future<List<Listdet>> tripNameList(String? busid,BuildContext context) async {
     final sharevalue = await SharedPrefManager.instance.getSharedData();
 
@@ -247,7 +249,61 @@ class StopFunctions {
     }
   }
 
-  Future<List<Listdet>> getExistingStpFn(String? tripId) async {
+  // Future<List<Listdet>> getExistingStpFn(String? tripId) async {
+  //   final sharevalue = await SharedPrefManager.instance.getSharedData();
+
+  //   final stopreq = MasterListReq(
+  //       tripId: tripId,
+  //       userId: sharevalue!.userId,
+  //       usertype: sharevalue.userType);
+  //   List<Listdet> stplist = [];
+
+  //   final stpresp = await Busdata().exstingStop(stopreq);
+
+  //   if (stpresp == null) {
+  //     log('stop list data fetch null');
+  //     getExistingStopNotifier.value.clear();
+  //     getExistingStopNotifier.value.addAll([]);
+  //     getExistingStopNotifier.notifyListeners();
+  //     stplist = stplist;
+  //     return stplist;
+  //   } else if (stpresp.statusCode == 200) {
+  //     final resultAsjson = jsonDecode(stpresp.toString());
+  //     final stprspval =
+  //         MasterListMdl.fromJson(resultAsjson as Map<String, dynamic>);
+  //     if (stprspval.status == 'success') {
+  //       log('stop list data fetch success');
+
+  //       final stoplist = stprspval.listDet;
+
+  //       getExistingStopNotifier.value.clear();
+  //       getExistingStopNotifier.value.addAll(stoplist);
+  //       getExistingStopNotifier.notifyListeners();
+  //       //final routeList = dtwiserspval.listDet;
+  //       stplist = stoplist;
+  //       return stplist;
+  //     } else if (stprspval.status == 'Failed') {
+  //       log('stop list data fetch failed');
+  //       final stoplist = stprspval.listDet;
+  //       getExistingStopNotifier.value.clear();
+  //       getExistingStopNotifier.value.addAll(stoplist);
+  //       getExistingStopNotifier.notifyListeners();
+
+  //       //final routeList = dtwiserspval.listDet;
+  //       stplist = stoplist;
+  //       return stplist;
+  //     }
+  //   } else {
+  //     log('Stop list data fetch exception');
+  //     getExistingStopNotifier.value.clear();
+  //     getExistingStopNotifier.value.addAll([]);
+  //     getExistingStopNotifier.notifyListeners();
+  //     stplist = stplist;
+  //     return stplist;
+  //   }
+  //   return stplist;
+  // }
+  Future<Map<String, dynamic>>  getExistingStpFn(String? tripId) async {
     final sharevalue = await SharedPrefManager.instance.getSharedData();
 
     final stopreq = MasterListReq(
@@ -255,7 +311,7 @@ class StopFunctions {
         userId: sharevalue!.userId,
         usertype: sharevalue.userType);
     List<Listdet> stplist = [];
-
+    int flag = 0;
     final stpresp = await Busdata().exstingStop(stopreq);
 
     if (stpresp == null) {
@@ -264,7 +320,10 @@ class StopFunctions {
       getExistingStopNotifier.value.addAll([]);
       getExistingStopNotifier.notifyListeners();
       stplist = stplist;
-      return stplist;
+      return {
+        'stops': stplist,
+        'flag': flag,
+      };
     } else if (stpresp.statusCode == 200) {
       final resultAsjson = jsonDecode(stpresp.toString());
       final stprspval =
@@ -273,14 +332,17 @@ class StopFunctions {
         log('stop list data fetch success');
 
         final stoplist = stprspval.listDet;
-
+        final flagvalue=stprspval.flag;
         getExistingStopNotifier.value.clear();
         getExistingStopNotifier.value.addAll(stoplist);
         getExistingStopNotifier.notifyListeners();
         //final routeList = dtwiserspval.listDet;
         stplist = stoplist;
-        return stplist;
-      } else if (stprspval.status == 'Failed') {
+        return {
+          'stops': stplist,
+          'flag': flagvalue,
+        };
+      } else if (stprspval.status == 'failed') {
         log('stop list data fetch failed');
         final stoplist = stprspval.listDet;
         getExistingStopNotifier.value.clear();
@@ -289,17 +351,156 @@ class StopFunctions {
 
         //final routeList = dtwiserspval.listDet;
         stplist = stoplist;
-        return stplist;
+        return {
+        'stops': stplist,
+        'flag': flag,
+      };
       }
     } else {
       log('Stop list data fetch exception');
-      getStopDetNotifier.value.clear();
-      getStopDetNotifier.value.addAll([]);
-      getStopDetNotifier.notifyListeners();
+      getExistingStopNotifier.value.clear();
+      getExistingStopNotifier.value.addAll([]);
+      getExistingStopNotifier.notifyListeners();
       stplist = stplist;
-      return stplist;
+      return {
+        'stops': stplist,
+        'flag': flag,
+      };
     }
-    return stplist;
+    return {
+        'stops': stplist,
+        'flag': flag,
+      };
+  }
+  Future getPrvwStpFn(String? tripId,int? flag) async {
+    final sharevalue = await SharedPrefManager.instance.getSharedData();
+
+    final stopreq = MasterListReq(
+        tripId: tripId,
+        userId: sharevalue!.userId,
+        usertype: sharevalue.userType);
+    // List<Listdet> stplist = [];
+
+    final stpresp = await Busdata().prvwStop(stopreq);
+
+    if (stpresp == null) {
+      log('stop list data fetch null');
+      if(flag==0){
+        getPriviewStopNotifier.value.clear();
+      getPriviewStopNotifier.value.addAll([]);
+      getPriviewStopNotifier.notifyListeners();
+      }else{
+        getExistingStopNotifier.value.clear();
+      getExistingStopNotifier.value.addAll([]);
+      getExistingStopNotifier.notifyListeners();
+      }
+      
+      
+    } else if (stpresp.statusCode == 200) {
+      final resultAsjson = jsonDecode(stpresp.toString());
+      final stprspval =
+          MasterListMdl.fromJson(resultAsjson as Map<String, dynamic>);
+      if (stprspval.status == 'success') {
+        log('stop list data fetch success');
+
+        final stoplist = stprspval.listDet;
+        if(flag==0){
+        getPriviewStopNotifier.value.clear();
+        getPriviewStopNotifier.value.addAll(stoplist);
+        getPriviewStopNotifier.notifyListeners();
+        }else{
+          getExistingStopNotifier.value.clear();
+          getExistingStopNotifier.value.addAll(stoplist);
+          getExistingStopNotifier.notifyListeners();
+        }
+        
+        //final routeList = dtwiserspval.listDet;
+        // stplist = stoplist;
+        // return stplist;
+      } else if (stprspval.status == 'failed') {
+        log('stop list data fetch failed');
+        if(flag==0){
+        getPriviewStopNotifier.value.clear();
+        getPriviewStopNotifier.value.addAll([]);
+        getPriviewStopNotifier.notifyListeners();
+        }else{
+          getExistingStopNotifier.value.clear();
+        getExistingStopNotifier.value.addAll([]);
+        getExistingStopNotifier.notifyListeners();
+        }
+
+        //final routeList = dtwiserspval.listDet;
+        // stplist = stoplist;
+        // return stplist;
+      }
+    } else {
+      log('Stop list data fetch exception');
+      if(flag==0){
+        getPriviewStopNotifier.value.clear();
+        getPriviewStopNotifier.value.addAll([]);
+        getPriviewStopNotifier.notifyListeners();
+        }else{
+          getExistingStopNotifier.value.clear();
+          getExistingStopNotifier.value.addAll([]);
+          getExistingStopNotifier.notifyListeners();
+          }
+      // stplist = stplist;
+      // return stplist;
+    }
+    // return stplist;
+  }
+Future updateStopdet(String? tripid, BuildContext context) async {
+    try {
+      Response<dynamic>? conductorListRespVar;
+      final sharevalue = await SharedPrefManager.instance.getSharedData();
+
+    final stopreq = MasterListReq(
+        tripId: tripid,
+        userId: sharevalue!.userId,
+        usertype: sharevalue.userType);
+   // List<Listdet> stplist = [];
+
+      conductorListRespVar = await Busdata().updateStop(stopreq);
+
+      if (conductorListRespVar == null) {
+      } else if (conductorListRespVar.statusCode == 200) {
+        final resultAsJson = jsonDecode(conductorListRespVar.toString());
+        final conductorListRespVal = MasterListMdl.fromJson(resultAsJson as Map<String, dynamic>);
+
+        if (conductorListRespVal.status == 'success') {
+        if (!context.mounted) return;
+
+        Wklycollectfn.instance.showApierror(context, "updated successfully");
+        Navigator.pushReplacement(context,
+                  MaterialPageRoute(builder: (context) => ScreenStopMasterNew(),
+                    ),
+                  );
+
+        } else if (conductorListRespVal.status == 'failed') {
+        if (!context.mounted) return;
+
+        Wklycollectfn.instance.showApierror(context, "Unable to update stop.");
+
+        }
+      } else if (conductorListRespVar.statusCode == 401) {
+        if (!context.mounted) return;
+        Wklycollectfn.instance.showApierror(context, "Unauthenticated");
+      } else if (conductorListRespVar.statusCode == 500) {
+        if (!context.mounted) return;
+        Wklycollectfn.instance.showApierror(context, "Server Not reached");
+      } else if (conductorListRespVar.statusCode == 408) {
+        if (!context.mounted) return;
+        Wklycollectfn.instance.showApierror(context, "Connection time out");
+      } else {
+        if (!context.mounted) return;
+        Wklycollectfn.instance.showApierror(context, "Something went wrong");
+      }
+    } catch (e) {
+      if (!context.mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('An unexpected error occurred')),
+      );
+    }
   }
 
   Future<String?> editArrivingTime(Listdet value) async {
@@ -343,7 +544,7 @@ class StopFunctions {
             fontSize: 15.0);
 
         return dtwiserspval.status;
-      } else if (dtwiserspval.status == 'Failed') {
+      } else if (dtwiserspval.status == 'failed') {
         log('stop details added failed');
         final routeList = dtwiserspval.listDet;
         triplist = routeList;
@@ -419,4 +620,6 @@ class StopFunctions {
     }
     return triplist;
   }
+
+
 }

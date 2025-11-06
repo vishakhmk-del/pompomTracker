@@ -2,8 +2,11 @@
 import 'dart:developer';
 import 'package:intl/intl.dart';
 import 'package:pompomtracker/core/hook/hook.dart';
+import 'package:pompomtracker/function/time/timeconvertFun.dart';
 import 'package:pompomtracker/provider/iconChange/iconChangeProvider.dart';
 import 'package:pompomtracker/screens/stop/new/ScreenAddnewStpNew.dart';
+import 'package:pompomtracker/screens/stop/new/ScreenStopPreview.dart';
+import 'package:sizer/sizer.dart';
 
 class ScreenStopMasterNew extends StatefulWidget {
   const ScreenStopMasterNew({super.key,});
@@ -39,7 +42,7 @@ class _ScreenStopMasterNewState extends State<ScreenStopMasterNew> {
   bool respIcon = false;
   String? selectedrouteName;
   String? routeName;
-String routeDisplay='';
+  String routeDisplay='';
   List<BusRegList>? busreglist = [];
   List<Map<String, dynamic>> registarionlst = [];
 
@@ -269,23 +272,42 @@ String routeDisplay='';
                                     selectedRouteList = newValue;
                                     selectedRouteId = int.tryParse(newValue['routeId']);
                                     //selectedrouteName=routeName;
+                                    kmControllers.clear();
+                                    arrivingTimeControllers.clear();
+                                    departureTimeControllers.clear();
+                                    _departureController.clear();
+                                    _arrivingController.clear();
+                                    _kiloMeterController.clear();
+                                  //  if(!context.mounted)return;
+                                              context.read<DropdownProvider>().clear();
+                                              StopFunctions.instance.getExistingStopNotifier.value=[];
+                                   Provider.of<IconChangeProvider>(context, listen: false).clearAll();
                                   });
+                                  //   StopFunctions.instance.getExistingStopNotifier.value=[];
+                                  //  Provider.of<IconChangeProvider>(context, listen: false).clearAll();
 
-                                  existingStpdet = await StopFunctions.instance.getExistingStpFn(newValue['routeId']);
+                                  final data = await StopFunctions.instance.getExistingStpFn(newValue['routeId']);
 
-                                  if (existingStpdet == null || existingStpdet!.isEmpty) {
+                                  if (data['stops'] == null || data['stops']!.isEmpty) {
                                          stpLstdet=await StopFunctions.instance.stopDetFn(newValue['routeId']);
                                           if(stpLstdet==null || stpLstdet!.isEmpty){
                                               if(!context.mounted)return;
                                               context.read<DropdownProvider>().changeSelectedVal(false,1);
                                           }else{
                                               if(!context.mounted)return;
-                                              context.read<DropdownProvider>().changeSelectedVal(false,2);
+                                              context.read<DropdownProvider>().changeSelectedVal(false,1);
                                           }
                                     
                                   } else {
-                                    if(!context.mounted)return;
+                                    
+                                    if(data['flag']==1){
+                                      if(!context.mounted)return;
+                                      popMessage(context);
+                                    }else{
+                                      if(!context.mounted)return;
                                     context.read<DropdownProvider>().changeSelectedVal(true,3);
+                                    }
+                                    
                                   }
                                 },
                                 icon: const Icon(Icons.arrow_drop_down),
@@ -489,44 +511,42 @@ String routeDisplay='';
                  child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                    children: [
-                     Padding(
-                       padding: const EdgeInsets.all(8.0),
-                       child: GestureDetector(
-                        onTap: (){
-                           Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                              builder: (context) => ScreenAddNewStopNew(
-                                                tripName: selectedRouteList?['display'],
-                                                tripId: selectedRouteList?['routeId'],
+                       Padding(
+                         padding: const EdgeInsets.all(8.0),
+                         child: GestureDetector(
+                              onTap: (){
+                                    kmControllers.clear();
+                                    arrivingTimeControllers.clear();
+                                    departureTimeControllers.clear();
+                                    _departureController.clear();
+                                    _arrivingController.clear();
+                                    _kiloMeterController.clear();
+                                    StopFunctions.instance.getExistingStopNotifier.value=[];
+                                Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                    builder: (context) => ScreenAddNewStopNew(
+                                                      tripName: selectedRouteList?['display'],
+                                                      tripId: selectedRouteList?['routeId'],
+                                                    ),
+                                                  ),
+                                                );
+                              },
+                              child: Row(
+                                        children: [
+                                              Icon(
+                                                Icons.add_circle_outline,
+                                                color: Colors.white,
+                                                size: 25,
                                               ),
-                                            ),
-                                          );
-                        },
-                         child: Row(
-                                  children: [
-                                    // IconButton(
-                                    //     onPressed: () {
-                                         
-                                    //     },
-                                    //     icon: Icon(
-                                    //       Icons.add_circle_outline,
-                                    //       color: Colors.white,
-                                    //       size: 25,
-                                    //     )),
-                                        Icon(
-                                          Icons.add_circle_outline,
-                                          color: Colors.white,
-                                          size: 25,
-                                        ),
-                                    Text(
-                                      'Add New Stop',
-                                      style: Theme.of(context).textTheme.titleLarge?.copyWith(color: Colors.white),
-                                    ),
-                                  ],
-                                ),
-                       ),
-                     ),
+                                          Text(
+                                            'Add New Stop',
+                                            style: Theme.of(context).textTheme.titleLarge?.copyWith(color: Colors.white),
+                                          ),
+                                        ],
+                                      ),
+                            ),
+                          ),
                             Card(
                             margin: const EdgeInsets.all(10),
                             color: Colors.white,
@@ -537,7 +557,7 @@ String routeDisplay='';
                                 borderRadius: BorderRadius.circular(12),
                               ),
                               child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
+                               crossAxisAlignment: CrossAxisAlignment.end,
                                 children: [
                                   DataTable(
                                     dataRowMaxHeight: 35,
@@ -545,7 +565,7 @@ String routeDisplay='';
                                     headingRowHeight: 35,
                                     columnSpacing: 15,
                                     headingRowColor: WidgetStateProperty.all(
-                                        Color.fromARGB(255, 204, 123, 2)),
+                                        const Color.fromARGB(255, 204, 123, 2)),
                                     columns: getColumns(columns = [
                                       'Stop Id',
                                       'Stop Name',
@@ -557,10 +577,57 @@ String routeDisplay='';
                                     ]),
                                     rows: getRows(newList),
                                   ),
+
+                                 
+                                  Align(
+                                    alignment: Alignment.bottomRight,
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(10.0),
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.circular(10),
+                                          gradient: const LinearGradient(
+                                            begin: Alignment.topLeft,
+                                            end: Alignment.bottomRight,
+                                            colors: [
+                                              Colors.orange,
+                                              Color.fromARGB(255, 204, 123, 2),
+                                            ],
+                                          ),
+                                        ),
+                                        child: Theme(
+                                          data: MyTheme.buttonStyleTheme,
+                                          child: ElevatedButton(
+                                            onPressed: () async {
+                                              Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                  builder: (context) => ScreenStopPreview(
+                                                    tripid: selectedRouteList?['routeId'],
+                                                      tripName: selectedRouteList?['display'],
+
+                                                  ),
+                                                ),
+                                              );
+                                            },
+                                            child: Text(
+                                              'Preview',
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .titleMedium
+                                                  ?.copyWith(color: Colors.white),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
                                 ],
                               ),
                             ),
                           ),
+
+                   
                    ],
                  ),
                ),
@@ -618,14 +685,16 @@ String routeDisplay='';
         if (!kmControllers.containsKey(task.stopId)) { 
           kmControllers[task.stopId] = TextEditingController(text: task.km); 
           }
-           if (!arrivingTimeControllers.containsKey(task.stopId))
-            {
-               arrivingTimeControllers[task.stopId] = TextEditingController(text: task.arrivingTime);
-             } 
-             if (!departureTimeControllers.containsKey(task.stopId))
-            {
-               departureTimeControllers[task.stopId] = TextEditingController(text: task.departureTime );
-             } 
+          if (!arrivingTimeControllers.containsKey(task.stopId)) {
+              arrivingTimeControllers[task.stopId] =
+                  TextEditingController(text:TimeConvertFun.instance.formatTo12Hour(task.arrivingTime));
+            }
+
+            if (!departureTimeControllers.containsKey(task.stopId)) {
+              departureTimeControllers[task.stopId] =
+                  TextEditingController(text: TimeConvertFun.instance.formatTo12Hour(task.departureTime));
+            }
+
         cells = [
           task.stopId ?? '',
           task.stopName ?? '',
@@ -744,14 +813,25 @@ String routeDisplay='';
               child: Row(
                 children: [
                   IconButton(
-                      onPressed: () async {
-                        await editArriveTime(
+                      onPressed: ()  {
+                      //   Provider.of<IconChangeProvider>(context).isVerified(task.stopId)?
+                      // Wklycollectfn.instance.showApierror(context, "Already Varified"):                       
+                        messageBox(
                           context,
                           task,
                           kmControllers[task.stopId],
-                          arrivingTimeControllers[task.stopId],
-                          departureTimeControllers[task.stopId],
-                        );
+                          // arrivingTimeControllers[task.stopId],
+                          // departureTimeControllers[task.stopId],
+                           TextEditingController(
+                            text: TimeConvertFun.instance.formatTo24Hour(arrivingTimeControllers[task.stopId]?.text),
+                          ),
+                          TextEditingController(
+                            text: TimeConvertFun.instance.formatTo24Hour(departureTimeControllers[task.stopId]?.text),
+                          ),
+                        );   
+                      
+  
+             
                       },
                       icon: Icon(
                         Provider.of<IconChangeProvider>(context).isVerified(task.stopId)
@@ -845,9 +925,9 @@ String routeDisplay='';
       //       ),
       //   );
 
-        existingStpdet = await StopFunctions.instance.getExistingStpFn(selectedRouteList?['routeId']);
+        final data = await StopFunctions.instance.getExistingStpFn(selectedRouteList?['routeId']);
 
-                                  if (existingStpdet == null || existingStpdet!.isEmpty) {
+                                  if (data['stops'] == null || data['stops']!.isEmpty) {
                                          stpLstdet=await StopFunctions.instance.stopDetFn(selectedRouteList?['routeId']);
                                           if(stpLstdet==null || stpLstdet!.isEmpty){
                                               if(!context.mounted)return;
@@ -874,6 +954,175 @@ String routeDisplay='';
     } else {
       Fluttertoast.showToast(msg: "Something went wrong", backgroundColor: Colors.white, textColor: Colors.black);
     }
+  }
+messageBox(BuildContext context,Listdet value, TextEditingController? kmcntrlr, TextEditingController? arvtm, TextEditingController? departm) async {
+    await showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) => AlertDialog(
+        backgroundColor: Colors.white,
+        title: Text(
+          "Add Stop",
+          style: TextStyle(
+            fontFamily: 'Poppins-Medium',
+            fontSize: 18.sp,
+            fontWeight: FontWeight.bold,
+            color: Colors.black,
+          ),
+        ),
+        content: Text(
+          "Do you want to add this stop across your trip?",
+          style: TextStyle(
+            fontFamily: 'Poppins-Medium',
+            fontSize: 16.sp,
+            fontWeight: FontWeight.bold,
+            color: Colors.black,
+          ),
+        ),
+        actions: [
+          Row(
+            children: [
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: Text(
+                  "Cancel",
+                  style: TextStyle(
+                    fontFamily: 'Poppins-Medium',
+                    fontSize: 18.sp,
+                    fontWeight: FontWeight.bold,
+                    color: Theme.of(context).colorScheme.primary,
+                  ),
+                ),
+              ),
+              TextButton(
+                onPressed: () async {
+                  await editArriveTime(
+                          context,
+                          value,
+                          kmcntrlr,
+                          arvtm,
+                          departm,
+                        );
+                        if(!context.mounted)return;
+                  Navigator.of(context).pop();
+                  
+                },
+                child: Text(
+                  "Add",
+                  style: TextStyle(
+                    fontFamily: 'Poppins-Medium',
+                    fontSize: 18.sp,
+                    fontWeight: FontWeight.bold,
+                    color: Theme.of(context).colorScheme.primary,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  popMessage(BuildContext context) async {
+    await showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context){
+        return PopScope(
+          canPop: false,
+          child: Center(
+            child: Material(
+                  color: Colors.transparent,
+              child: Container(
+                      margin: const EdgeInsets.all(16),
+                      padding: const EdgeInsets.all(20),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(16),
+                        boxShadow: const [
+                          BoxShadow(
+                            color: Colors.black26,
+                            blurRadius: 10,
+                            offset: Offset(0, -4),
+                          ),
+                        ],
+                      ),
+                child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                  Text(
+                  "Alert..!",
+                  style: TextStyle(
+                    fontFamily: 'Poppins-Medium',
+                    fontSize: 18.sp,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.green,
+                  ),
+                ),
+                 Text(
+                  "No stops found for your trip.\nWould you like to view the stops already added to the same route?\nYou can modify their timings or add new stops to this trip.",
+                  style: TextStyle(
+                    fontFamily: 'Poppins-Medium',
+                    fontSize: 16.sp,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black,
+                  ),
+                ),
+                Row(mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      TextButton(
+                        onPressed: () {
+                          if(!context.mounted)return;
+                          context.read<DropdownProvider>().changeSelectedVal(false,1);
+                          Navigator.of(context).pop();
+                        },
+                        child: Text(
+                          "No",
+                          style: TextStyle(
+                            fontFamily: 'Poppins-Medium',
+                            fontSize: 18.sp,
+                            fontWeight: FontWeight.bold,
+                            color: Theme.of(context).colorScheme.primary,
+                          ),
+                        ),
+                      ),
+                      TextButton(
+                        onPressed: () async {
+                           if(!context.mounted)return;
+                          context.read<DropdownProvider>().changeSelectedVal(true,3);
+                          Navigator.of(context).pop();
+                
+                        },
+                        child: Text(
+                          "Yes",
+                          style: TextStyle(
+                            fontFamily: 'Poppins-Medium',
+                            fontSize: 18.sp,
+                            fontWeight: FontWeight.bold,
+                            color: Theme.of(context).colorScheme.primary,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],),
+              ),
+            ),
+          ),
+        );
+      } 
+      // AlertDialog(
+      //   backgroundColor: Colors.white,
+      //   title: 
+      //   actions: [
+          
+      //   ],
+      // ),
+    );
   }
 
   Future<void> editArriveTime(BuildContext ctx, Listdet value, TextEditingController? kmcntrlr, TextEditingController? arvtm, TextEditingController? departm) async {

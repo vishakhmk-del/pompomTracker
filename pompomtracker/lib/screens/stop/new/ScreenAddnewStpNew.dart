@@ -34,12 +34,41 @@ class _ScreenAddNewStopNewState extends State<ScreenAddNewStopNew> {
   int? selectedRouteId;
   List<Listdet>? routeDetailslist = [];
 
+  // Future<void> _selectTime(
+  //     BuildContext context, TextEditingController controller) async {
+  //   final DateFormat timeFormat = DateFormat('HH:mm');
+  //   final TimeOfDay? newTime = await showTimePicker(
+  //     context: context,
+  //     initialTime: _time,
+  //   );
+  //   if (newTime != null) {
+  //     setState(() {
+  //       _time = newTime;
+  //       final now = DateTime.now();
+  //       final DateTime formattedTime = DateTime(
+  //         now.year,
+  //         now.month,
+  //         now.day,
+  //         newTime.hour,
+  //         newTime.minute,
+  //       );
+  //       controller.text = timeFormat.format(formattedTime);
+  //     });
+  //   }
+  // }
   Future<void> _selectTime(
       BuildContext context, TextEditingController controller) async {
-    final DateFormat timeFormat = DateFormat('HH:mm');
+    final DateFormat timeFormat = DateFormat('hh:mm a'); // 12-hour format with AM/PM
     final TimeOfDay? newTime = await showTimePicker(
       context: context,
       initialTime: _time,
+      builder: (BuildContext context, Widget? child) {
+        return MediaQuery(
+          data: MediaQuery.of(context)
+              .copyWith(alwaysUse24HourFormat: false), // Force 12-hour format
+          child: child!,
+        );
+      },
     );
     if (newTime != null) {
       setState(() {
@@ -52,7 +81,7 @@ class _ScreenAddNewStopNewState extends State<ScreenAddNewStopNew> {
           newTime.hour,
           newTime.minute,
         );
-        controller.text = timeFormat.format(formattedTime);
+        controller.text = timeFormat.format(formattedTime); // Show AM/PM format
       });
     }
   }
@@ -490,12 +519,13 @@ class _ScreenAddNewStopNewState extends State<ScreenAddNewStopNew> {
                                           final lat = _latitudeController.text;
                                           final long =
                                               _longitudeController.text;
+                                              
                                           final sharevalue =
-                                              await SharedPrefManager.instance
-                                                  .getSharedData();
+                                              await SharedPrefManager.instance.getSharedData();
                                           final usrid = sharevalue!.userId;
                                           final DateFormat inputFormat = DateFormat('hh:mm a');
                                           final DateTime dateTime = inputFormat.parse(arvtime);
+                                          // deptime.isEmpty?depTim=:
                                           final DateTime depTim = inputFormat.parse(deptime);
 
                                           final DateFormat outputFormat = DateFormat('HH:mm:ss');
@@ -565,7 +595,10 @@ class _ScreenAddNewStopNewState extends State<ScreenAddNewStopNew> {
     loadingProvider.toggleLoading();
 
     if (stopMasterResp == 'success') {
-      StopFunctions.instance.stopDetFn(widget.tripId);
+      // StopFunctions.instance.stopDetFn(widget.tripId);
+       //StopFunctions.instance.getExistingStpFn(widget.tripId);
+       StopFunctions.instance.getPrvwStpFn(widget.tripId,1);
+
       if (!context.mounted) return;
       Navigator.pop(context, false);
       // Navigator.pushReplacement(

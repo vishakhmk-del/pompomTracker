@@ -568,9 +568,7 @@ class _ScreenCollectionNewState extends State<ScreenCollectionNew> {
                     data: MyTheme.buttonStyleTheme,
                     child: ElevatedButton(
                       onPressed: () async {
-                        context
-                            .read<ElevatedBtnProvider>()
-                            .changeSelectedVal(true);
+                        context.read<ElevatedBtnProvider>().changeSelectedVal(true);
 
                         if (_formkey2.currentState!.validate()) {
                           final frmdt = _clbusFromController.text;

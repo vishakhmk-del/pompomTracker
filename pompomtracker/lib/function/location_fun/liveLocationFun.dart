@@ -136,20 +136,20 @@ class Livelocationfun {
     await showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        backgroundColor: Theme.of(context).colorScheme.primaryFixed,
-        title: const Text("Enable Location Services"),
-        content: const Text("Location services need to be enabled."),
+        backgroundColor: Colors.white,
+        title: const Text("Enable Location Services",style: TextStyle(color:Colors.black),),
+        content: const Text("Location services need to be enabled.",style: TextStyle(color:Colors.black)),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(),
-            child: const Text("Cancel"),
+            child: const Text("Cancel",style: TextStyle(color:Colors.black)),
           ),
           TextButton(
             onPressed: () async {
               Navigator.of(context).pop();
               await Geolocator.openLocationSettings();
             },
-            child: const Text("Open Settings"),
+            child: const Text("Open Settings",style: TextStyle(color:Colors.black)),
           ),
         ],
       ),
@@ -160,22 +160,22 @@ class Livelocationfun {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        backgroundColor: Theme.of(context).colorScheme.primaryFixed,
-        title: const Text("Permission Denied Forever"),
+        backgroundColor: Colors.white,
+        title: const Text("Permission Denied Forever",style: TextStyle(color:Colors.black)),
         content: const Text(
-          "Location permission is permanently denied. Please enable it in settings.",
+          "Location permission is permanently denied. Please enable it in settings.",style: TextStyle(color:Colors.black)
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(),
-            child: const Text("Cancel"),
+            child: const Text("Cancel",style: TextStyle(color:Colors.black)),
           ),
           TextButton(
             onPressed: () async {
               Navigator.of(context).pop();
               await openAppSettings();
             },
-            child: const Text("Open Settings"),
+            child: const Text("Open Settings",style: TextStyle(color:Colors.black)),
           ),
         ],
       ),

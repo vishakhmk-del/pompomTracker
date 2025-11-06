@@ -566,6 +566,8 @@ class _ScreenBusMasterNewState extends State<ScreenBusMasterNew> {
     if (busMasterResp == null) {
       showerror(_scafoldkey.currentContext!, 1);
     } else if (busResponseValue.status == 'success') {
+      loadingProvider.reset();
+
       // print('sucess');
       Fluttertoast.showToast(
           msg:
@@ -580,9 +582,13 @@ class _ScreenBusMasterNewState extends State<ScreenBusMasterNew> {
       widget.flag == 0
           ? Navigator.pushReplacement(context, Approutes().busmasternewscreen)
           : Navigator.pushReplacement(context, Approutes().busListNewScreen);
-    } else if (busResponseValue.status == 'Failed') {
+    } else if (busResponseValue.status == 'failed') {
+      loadingProvider.reset();
+
       showerror(_scafoldkey.currentContext!, 2);
     } else {
+      loadingProvider.reset();
+
       showerror(_scafoldkey.currentContext!, 1);
     }
   }

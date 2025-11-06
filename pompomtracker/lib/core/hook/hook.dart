@@ -80,7 +80,7 @@ export 'package:pompomtracker/screens/Emp_Details/employee/driver/screendriverVi
 export 'package:pompomtracker/screens/main/screenmainPage.dart';
 export 'package:pompomtracker/screens/Bus/new/ScreenBusListNew.dart';
 export 'package:pompomtracker/screens/Bus/new/ScreenBusMasterNew.dart';
-export 'package:pompomtracker/screens/Daily%20Collection/screenDailyCollection.dart';
+export 'package:pompomtracker/screens/Daily_Collection/screenDailyCollection.dart';
 export 'package:pompomtracker/screens/Emp_Details/employee/Employee/new/ScreenEmployeeNew.dart';
 export 'package:pompomtracker/screens/Emp_Details/employee/conductor/new/ScreenconductorListNew.dart';
 export 'package:pompomtracker/screens/Emp_Details/employee/driver/new/screendriverViewNew.dart';

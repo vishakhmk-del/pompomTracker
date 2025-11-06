@@ -1,6 +1,4 @@
 import 'package:pompomtracker/core/hook/hook.dart';
-import 'package:pompomtracker/core/security/security_check.dart';
-import 'package:pompomtracker/screens/main/screenmainPage.dart';
 
 class ScreenLogin extends StatefulWidget {
   const ScreenLogin({super.key});
@@ -208,7 +206,7 @@ class _ScreenLoginState extends State<ScreenLogin> {
                                 ? const Center(
                                     child: CircularProgressIndicator(
                                       valueColor: AlwaysStoppedAnimation<Color>(
-                                        Color.fromARGB(255, 2, 128, 6),
+                                        Colors.white,
                                       ),
                                     ),
                                   )

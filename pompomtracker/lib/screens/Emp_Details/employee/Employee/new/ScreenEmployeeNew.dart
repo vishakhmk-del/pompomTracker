@@ -1017,6 +1017,8 @@ class _ScreenEmployeeNewState extends State<ScreenEmployeeNew> {
     //print(resValue.status);
     final message = resValue.message.toString();
     if (resValue.status == 'success') {
+      loadingProvider.reset();
+
       Fluttertoast.showToast(
           msg:
               "Conductor details ${widget.flag == 0 ? 'saved' : 'updated'} successfully",
@@ -1035,10 +1037,14 @@ class _ScreenEmployeeNewState extends State<ScreenEmployeeNew> {
         Navigator.pushReplacement(context, Approutes().conductorListNewScreen);
       }
     } else if (resValue.status == 'failed') {
+      loadingProvider.reset();
+
       if (!context.mounted) return;
 
       showerror(context, 2, message);
     } else {
+      loadingProvider.reset();
+
       if (!context.mounted) return;
 
       showerror(context, 3, message);
@@ -1097,6 +1103,8 @@ class _ScreenEmployeeNewState extends State<ScreenEmployeeNew> {
     //print(resValue.status);
     final message = resValue.message.toString();
     if (resValue.status == 'success') {
+      loadingProvider.reset();
+
       Fluttertoast.showToast(
           msg:
               "Driver details ${widget.flag == 0 ? 'saved' : 'updated'} successfully",
@@ -1115,10 +1123,14 @@ class _ScreenEmployeeNewState extends State<ScreenEmployeeNew> {
         Navigator.pushReplacement(context, Approutes().screenDriverNewView);
       }
     } else if (resValue.status == 'failed') {
+      loadingProvider.reset();
+
       if (!context.mounted) return;
 
       showerror(context, 2, message);
     } else {
+      loadingProvider.reset();
+
       if (!context.mounted) return;
 
       showerror(context, 3, message);

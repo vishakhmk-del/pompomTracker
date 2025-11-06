@@ -13,4 +13,9 @@ class DropdownProvider with ChangeNotifier {
     _selectnum=val;
     notifyListeners();
   }
+   void clear() {
+    _selectedVal = null;
+    _selectnum = null;
+    notifyListeners();
+  }
 }

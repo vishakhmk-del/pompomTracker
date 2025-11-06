@@ -182,7 +182,7 @@ class _ScreenRoutemasterNewState extends State<ScreenRoutemasterNew> {
   }
 
   Future<void> routeMasterSave(BuildContext context) async {
-    final loadingProvider = _scafoldkey.currentContext!.read<LoadingProvider>();
+    final loadingProvider = context.read<LoadingProvider>();
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       loadingProvider.toggleLoading(); // Start loading
