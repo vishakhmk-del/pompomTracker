@@ -6,7 +6,8 @@ class MasterListMdl {
   int? flag;
 
   List<Listdet> listDet;
-  MasterListMdl({this.status, this.message,this.flag, this.listDet = const []});
+  MasterListMdl(
+      {this.status, this.message, this.flag, this.listDet = const []});
   factory MasterListMdl.fromJson(Map<String, dynamic> json) {
     var tklst = ((json["list_det"] ?? []) as List);
     List<Listdet> wklylist = tklst.map((e) => Listdet.fromJson(e)).toList();
@@ -18,5 +19,5 @@ class MasterListMdl {
     );
   }
   Map<String, dynamic> toJson() =>
-      {"status": status, "message": message,"flag":flag, "list_det": listDet};
+      {"status": status, "message": message, "flag": flag, "list_det": listDet};
 }

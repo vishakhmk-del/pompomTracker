@@ -17,8 +17,10 @@ class ConductorListFunctions {
     try {
       Response<dynamic>? conductorListRespVar;
       final sharedValue = await SharedPrefManager.instance.getSharedData();
-      final condutorReq =
-          MasterListReq(userId: sharedValue!.userId, emptype: 3);
+      final condutorReq = MasterListReq(
+          userId: sharedValue!.userId,
+          emptype: 3,
+          usertype: sharedValue.userType);
       conductorListRespVar = await Busdata().fetchempList(condutorReq);
       if (conductorListRespVar == null) {
         getConductoristNotifier.value.clear();
@@ -72,8 +74,10 @@ class ConductorListFunctions {
     try {
       Response<dynamic>? conductorListRespVar;
       final sharedValue = await SharedPrefManager.instance.getSharedData();
-      final condutorReq =
-          MasterListReq(userId: sharedValue!.userId, emptype: 5);
+      final condutorReq = MasterListReq(
+          userId: sharedValue!.userId,
+          emptype: 5,
+          usertype: sharedValue.userType);
       conductorListRespVar = await Busdata().fetchempList(condutorReq);
       if (conductorListRespVar == null) {
 //print('null');

@@ -15,7 +15,7 @@ class BusDetail {
   @JsonKey(name: 'valid_to')
   String? validTo;
   @JsonKey(name: 'active_trip')
-  String? activeTrip;
+  dynamic activeTrip;
   @JsonKey(name: 'short_name')
   String? shortName;
   @JsonKey(name: 'bus_type')

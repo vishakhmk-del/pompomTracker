@@ -24,6 +24,10 @@ class _ScreenSplashState extends State<ScreenSplash> {
 
       gotoLogin(context);
     } else {
+      if (!context.mounted) return;
+
+      getdeviceinform(context);
+
       final value = await SharedPrefManager.instance.getSharedData();
 
       if (value!.userId != '') {
@@ -32,7 +36,7 @@ class _ScreenSplashState extends State<ScreenSplash> {
         final val = await SharedPrefManager.instance.getdeviceinfo();
 
         final shareddevice = Deviceinfo(
-          userId: value.userId ?? '',
+          userid: value.userId ?? '',
           phone: val.phone,
           deviceid: val.deviceid,
           phoneos: val.phoneos,
@@ -60,23 +64,20 @@ class _ScreenSplashState extends State<ScreenSplash> {
               //await Future.delayed(const Duration(seconds: 3));
               //await Wklycollectfn.instance.wklycolctfn();
             } else {
-              if (deviceinfoval.data == null) {
-                if (!context.mounted) return;
-                Navigator.pushReplacement(
-                  context,
-                  Approutes().mainScreen,
-                );
-                //await Wklycollectfn.instance.wklycolctfn();
-              } else if (deviceinfoval.data?.errorCode == 'VERSION001') {
+              if (deviceinfoval.errorCode == 'VERSION_UPDATE') {
                 if (!context.mounted) return;
 
                 Navigator.of(context).pushReplacement(
                   MaterialPageRoute(
                     builder: (context) => ScreenError(
-                      message: deviceinfoval.message,
+                      version: deviceinfoval,
                     ),
                   ),
                 );
+                // Navigator.pushReplacement(
+                //   context,
+                //   Approutes().mainScreen,
+                // );
               } else {
                 if (!context.mounted) return;
                 Navigator.pushReplacement(
@@ -167,8 +168,8 @@ class _ScreenSplashState extends State<ScreenSplash> {
       final appversion = await Appinfo.getappVersion();
       log(appversion);
       final appver = appversion.split('+');
-      final version = appver[0];
-      final buildno = appver[1];
+      final version = appver[0].trim();
+      final buildno = appver[1].trim();
       final platformId = await DeviceInformation.initPlatformId();
       log('android id: $platformId');
       // final buildtime = await DeviceInformation.getbuildTime();

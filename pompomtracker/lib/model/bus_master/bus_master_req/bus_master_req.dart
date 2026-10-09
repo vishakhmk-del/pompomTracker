@@ -12,28 +12,45 @@ class BusMasterReq {
   @JsonKey(name: 'bus_type')
   String? busType;
   String? permitno;
+  @JsonKey(name: 'valid_from')
   String? vfrom;
+  @JsonKey(name: 'valid_to')
   String? vto;
   @JsonKey(name: 'user_id')
   String? userId;
   String? active;
+  @JsonKey(name: 'doc_type')
+  String? docType;
+  @JsonKey(name: 'permit_id')
+  String? permitId;
+  @JsonKey(name: 'bus_id')
+  String? busId;
+  @JsonKey(name: 'notify_expiry')
+  dynamic notifyExpiry;
+  @JsonKey(name: 'document_id')
+  String? documentId;
 
-  BusMasterReq({
-    this.busName,
-    this.shName,
-    this.regno,
-    this.busType,
-    this.permitno,
-    this.vfrom,
-    this.vto,
-    this.userId,
-    this.active,
-  });
+  BusMasterReq(
+      {this.busName,
+      this.shName,
+      this.regno,
+      this.busType,
+      this.permitno,
+      this.vfrom,
+      this.vto,
+      this.userId,
+      this.active,
+      this.docType,
+      this.permitId,
+      this.busId,
+      this.notifyExpiry,
+      this.documentId});
+
   BusMasterReq.req({
     required this.busName,
-    required this.shName,
+    this.shName,
     required this.regno,
-    required this.busType,
+    this.busType,
     required this.permitno,
     required this.vfrom,
     required this.vto,

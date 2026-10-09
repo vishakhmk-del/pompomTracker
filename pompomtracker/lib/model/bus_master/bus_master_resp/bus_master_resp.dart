@@ -8,9 +8,12 @@ class BusMasterResp {
   String? message;
   @JsonKey(name: 'bus_id')
   String? busId;
+  @JsonKey(name: 'document_id')
+  String? docId;
+  @JsonKey(name: 'expiry_count')
+  dynamic expiryCount;
 
-  BusMasterResp(
-      {required this.status, required this.message, required this.busId});
+  BusMasterResp({this.status, this.message, this.busId, this.docId,this.expiryCount});
 
   factory BusMasterResp.fromJson(Map<String, dynamic> json) {
     return _$BusMasterRespFromJson(json);

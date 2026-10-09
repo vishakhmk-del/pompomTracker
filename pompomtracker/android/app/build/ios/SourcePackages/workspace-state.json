@@ -1,0 +1,237 @@
+{
+  "object" : {
+    "artifacts" : [
+
+    ],
+    "dependencies" : [
+      {
+        "basedOn" : null,
+        "packageRef" : {
+          "identity" : "app_settings-5.2.0",
+          "kind" : "fileSystem",
+          "location" : "/Users/dits/flutterpro/busownerapp/pompomtracker/ios/Flutter/ephemeral/Packages/.packages/app_settings-5.2.0",
+          "name" : "app_settings"
+        },
+        "state" : {
+          "name" : "fileSystem",
+          "path" : "/Users/dits/flutterpro/busownerapp/pompomtracker/ios/Flutter/ephemeral/Packages/.packages/app_settings-5.2.0"
+        },
+        "subpath" : "app_settings-5.2.0"
+      },
+      {
+        "basedOn" : null,
+        "packageRef" : {
+          "identity" : "device_info_plus-11.5.0",
+          "kind" : "fileSystem",
+          "location" : "/Users/dits/flutterpro/busownerapp/pompomtracker/ios/Flutter/ephemeral/Packages/.packages/device_info_plus-11.5.0",
+          "name" : "device_info_plus"
+        },
+        "state" : {
+          "name" : "fileSystem",
+          "path" : "/Users/dits/flutterpro/busownerapp/pompomtracker/ios/Flutter/ephemeral/Packages/.packages/device_info_plus-11.5.0"
+        },
+        "subpath" : "device_info_plus-11.5.0"
+      },
+      {
+        "basedOn" : null,
+        "packageRef" : {
+          "identity" : "flutter_foreground_task-11.0.3",
+          "kind" : "fileSystem",
+          "location" : "/Users/dits/flutterpro/busownerapp/pompomtracker/ios/Flutter/ephemeral/Packages/.packages/flutter_foreground_task-11.0.3",
+          "name" : "flutter_foreground_task"
+        },
+        "state" : {
+          "name" : "fileSystem",
+          "path" : "/Users/dits/flutterpro/busownerapp/pompomtracker/ios/Flutter/ephemeral/Packages/.packages/flutter_foreground_task-11.0.3"
+        },
+        "subpath" : "flutter_foreground_task-11.0.3"
+      },
+      {
+        "basedOn" : null,
+        "packageRef" : {
+          "identity" : "flutter_rotation_sensor-0.3.0",
+          "kind" : "fileSystem",
+          "location" : "/Users/dits/flutterpro/busownerapp/pompomtracker/ios/Flutter/ephemeral/Packages/.packages/flutter_rotation_sensor-0.3.0",
+          "name" : "flutter_rotation_sensor"
+        },
+        "state" : {
+          "name" : "fileSystem",
+          "path" : "/Users/dits/flutterpro/busownerapp/pompomtracker/ios/Flutter/ephemeral/Packages/.packages/flutter_rotation_sensor-0.3.0"
+        },
+        "subpath" : "flutter_rotation_sensor-0.3.0"
+      },
+      {
+        "basedOn" : null,
+        "packageRef" : {
+          "identity" : "flutter_secure_storage_darwin-0.3.2",
+          "kind" : "fileSystem",
+          "location" : "/Users/dits/flutterpro/busownerapp/pompomtracker/ios/Flutter/ephemeral/Packages/.packages/flutter_secure_storage_darwin-0.3.2",
+          "name" : "flutter_secure_storage_darwin"
+        },
+        "state" : {
+          "name" : "fileSystem",
+          "path" : "/Users/dits/flutterpro/busownerapp/pompomtracker/ios/Flutter/ephemeral/Packages/.packages/flutter_secure_storage_darwin-0.3.2"
+        },
+        "subpath" : "flutter_secure_storage_darwin-0.3.2"
+      },
+      {
+        "basedOn" : null,
+        "packageRef" : {
+          "identity" : "flutterframework",
+          "kind" : "fileSystem",
+          "location" : "/Users/dits/flutterpro/busownerapp/pompomtracker/ios/Flutter/ephemeral/Packages/.packages/FlutterFramework",
+          "name" : "FlutterFramework"
+        },
+        "state" : {
+          "name" : "fileSystem",
+          "path" : "/Users/dits/flutterpro/busownerapp/pompomtracker/ios/Flutter/ephemeral/Packages/.packages/FlutterFramework"
+        },
+        "subpath" : "flutterframework"
+      },
+      {
+        "basedOn" : null,
+        "packageRef" : {
+          "identity" : "fluttertoast-10.0.0",
+          "kind" : "fileSystem",
+          "location" : "/Users/dits/flutterpro/busownerapp/pompomtracker/ios/Flutter/ephemeral/Packages/.packages/fluttertoast-10.0.0",
+          "name" : "fluttertoast"
+        },
+        "state" : {
+          "name" : "fileSystem",
+          "path" : "/Users/dits/flutterpro/busownerapp/pompomtracker/ios/Flutter/ephemeral/Packages/.packages/fluttertoast-10.0.0"
+        },
+        "subpath" : "fluttertoast-10.0.0"
+      },
+      {
+        "basedOn" : null,
+        "packageRef" : {
+          "identity" : "geolocator_apple-2.3.14",
+          "kind" : "fileSystem",
+          "location" : "/Users/dits/flutterpro/busownerapp/pompomtracker/ios/Flutter/ephemeral/Packages/.packages/geolocator_apple-2.3.14",
+          "name" : "geolocator_apple"
+        },
+        "state" : {
+          "name" : "fileSystem",
+          "path" : "/Users/dits/flutterpro/busownerapp/pompomtracker/ios/Flutter/ephemeral/Packages/.packages/geolocator_apple-2.3.14"
+        },
+        "subpath" : "geolocator_apple-2.3.14"
+      },
+      {
+        "basedOn" : null,
+        "packageRef" : {
+          "identity" : "location-10.0.2",
+          "kind" : "fileSystem",
+          "location" : "/Users/dits/flutterpro/busownerapp/pompomtracker/ios/Flutter/ephemeral/Packages/.packages/location-10.0.2",
+          "name" : "location"
+        },
+        "state" : {
+          "name" : "fileSystem",
+          "path" : "/Users/dits/flutterpro/busownerapp/pompomtracker/ios/Flutter/ephemeral/Packages/.packages/location-10.0.2"
+        },
+        "subpath" : "location-10.0.2"
+      },
+      {
+        "basedOn" : null,
+        "packageRef" : {
+          "identity" : "native_device_orientation-2.1.1",
+          "kind" : "fileSystem",
+          "location" : "/Users/dits/flutterpro/busownerapp/pompomtracker/ios/Flutter/ephemeral/Packages/.packages/native_device_orientation-2.1.1",
+          "name" : "native_device_orientation"
+        },
+        "state" : {
+          "name" : "fileSystem",
+          "path" : "/Users/dits/flutterpro/busownerapp/pompomtracker/ios/Flutter/ephemeral/Packages/.packages/native_device_orientation-2.1.1"
+        },
+        "subpath" : "native_device_orientation-2.1.1"
+      },
+      {
+        "basedOn" : null,
+        "packageRef" : {
+          "identity" : "package_info_plus-8.3.1",
+          "kind" : "fileSystem",
+          "location" : "/Users/dits/flutterpro/busownerapp/pompomtracker/ios/Flutter/ephemeral/Packages/.packages/package_info_plus-8.3.1",
+          "name" : "package_info_plus"
+        },
+        "state" : {
+          "name" : "fileSystem",
+          "path" : "/Users/dits/flutterpro/busownerapp/pompomtracker/ios/Flutter/ephemeral/Packages/.packages/package_info_plus-8.3.1"
+        },
+        "subpath" : "package_info_plus-8.3.1"
+      },
+      {
+        "basedOn" : null,
+        "packageRef" : {
+          "identity" : "permission_handler_apple-9.4.10",
+          "kind" : "fileSystem",
+          "location" : "/Users/dits/flutterpro/busownerapp/pompomtracker/ios/Flutter/ephemeral/Packages/.packages/permission_handler_apple-9.4.10",
+          "name" : "permission_handler_apple"
+        },
+        "state" : {
+          "name" : "fileSystem",
+          "path" : "/Users/dits/flutterpro/busownerapp/pompomtracker/ios/Flutter/ephemeral/Packages/.packages/permission_handler_apple-9.4.10"
+        },
+        "subpath" : "permission_handler_apple-9.4.10"
+      },
+      {
+        "basedOn" : null,
+        "packageRef" : {
+          "identity" : "root_checker_plus-1.1.1",
+          "kind" : "fileSystem",
+          "location" : "/Users/dits/flutterpro/busownerapp/pompomtracker/ios/Flutter/ephemeral/Packages/.packages/root_checker_plus-1.1.1",
+          "name" : "root_checker_plus"
+        },
+        "state" : {
+          "name" : "fileSystem",
+          "path" : "/Users/dits/flutterpro/busownerapp/pompomtracker/ios/Flutter/ephemeral/Packages/.packages/root_checker_plus-1.1.1"
+        },
+        "subpath" : "root_checker_plus-1.1.1"
+      },
+      {
+        "basedOn" : null,
+        "packageRef" : {
+          "identity" : "shared_preferences_foundation-2.5.6",
+          "kind" : "fileSystem",
+          "location" : "/Users/dits/flutterpro/busownerapp/pompomtracker/ios/Flutter/ephemeral/Packages/.packages/shared_preferences_foundation-2.5.6",
+          "name" : "shared_preferences_foundation"
+        },
+        "state" : {
+          "name" : "fileSystem",
+          "path" : "/Users/dits/flutterpro/busownerapp/pompomtracker/ios/Flutter/ephemeral/Packages/.packages/shared_preferences_foundation-2.5.6"
+        },
+        "subpath" : "shared_preferences_foundation-2.5.6"
+      },
+      {
+        "basedOn" : null,
+        "packageRef" : {
+          "identity" : "url_launcher_ios-6.4.1",
+          "kind" : "fileSystem",
+          "location" : "/Users/dits/flutterpro/busownerapp/pompomtracker/ios/Flutter/ephemeral/Packages/.packages/url_launcher_ios-6.4.1",
+          "name" : "url_launcher_ios"
+        },
+        "state" : {
+          "name" : "fileSystem",
+          "path" : "/Users/dits/flutterpro/busownerapp/pompomtracker/ios/Flutter/ephemeral/Packages/.packages/url_launcher_ios-6.4.1"
+        },
+        "subpath" : "url_launcher_ios-6.4.1"
+      },
+      {
+        "basedOn" : null,
+        "packageRef" : {
+          "identity" : "webview_flutter_wkwebview-3.26.1",
+          "kind" : "fileSystem",
+          "location" : "/Users/dits/flutterpro/busownerapp/pompomtracker/ios/Flutter/ephemeral/Packages/.packages/webview_flutter_wkwebview-3.26.1",
+          "name" : "webview_flutter_wkwebview"
+        },
+        "state" : {
+          "name" : "fileSystem",
+          "path" : "/Users/dits/flutterpro/busownerapp/pompomtracker/ios/Flutter/ephemeral/Packages/.packages/webview_flutter_wkwebview-3.26.1"
+        },
+        "subpath" : "webview_flutter_wkwebview-3.26.1"
+      }
+    ],
+    "prebuilts" : [
+
+    ]
+  },
+  "version" : 7
+}

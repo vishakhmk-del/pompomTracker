@@ -17,15 +17,14 @@ class StopMasterReq {
   @JsonKey(name: 'departure_time')
   String? departureTime;
 
-  StopMasterReq({
-    required this.tripId,
-    required this.kilometer,
-    required this.isStage,
-    required this.stop,
-    required this.userId,
-    required this.arrivingTime,
-    this.departureTime
-  });
+  StopMasterReq(
+      {required this.tripId,
+      required this.kilometer,
+      required this.isStage,
+      required this.stop,
+      required this.userId,
+      required this.arrivingTime,
+      this.departureTime});
 
   factory StopMasterReq.fromJson(Map<String, dynamic> json) {
     return _$StopMasterReqFromJson(json);

@@ -10,13 +10,19 @@ class BusRouteLinkReq {
   int? routeId;
   @JsonKey(name: 'user_id')
   String? userId;
+  @JsonKey(name: 'permit_id')
+  String? permitId;
+  @JsonKey(name: 'bus_id')
+  String? busId;
   @JsonKey(name: 'old_route_id')
   String? oldRouteId;
 
   BusRouteLinkReq(
-      {required this.regNo,
-      required this.routeId,
-      required this.userId,
+      {this.regNo,
+      this.routeId,
+      this.permitId,
+      this.busId,
+      this.userId,
       this.oldRouteId});
 
   factory BusRouteLinkReq.fromJson(Map<String, dynamic> json) {

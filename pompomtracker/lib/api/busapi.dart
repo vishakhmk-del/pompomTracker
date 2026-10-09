@@ -1,16 +1,25 @@
 import 'package:pompomtracker/core/hook/hook.dart';
 import 'package:pompomtracker/model/forget/frgtreq/frgtreq.dart';
+import 'package:pompomtracker/model/userModel/user_cmn_req/user_cmn_req.dart';
 
 abstract class Apicalls {
   Future<Response<dynamic>?> login(Loginreq value);
+  Future<Response<dynamic>?> resndOtp(UserCmnReq value);
+  Future<Response<dynamic>?> regOtpvrf(UserCmnReq value);
+  Future<Response<dynamic>?> frgtPswrdOtp(UserCmnReq value);
+  Future<Response<dynamic>?> frgtpswrdvrfy(UserCmnReq value);
+
   Future<Response<dynamic>?> weeklycollection(Weeklycollectionreq value);
   Future<Response<dynamic>?> getBusList();
   Future<Response<dynamic>?> busMasterSave(BusMasterReq value);
   Future<Response<dynamic>?> routeMasterSave(RouteMasterReq value);
   Future<Response<dynamic>?> getBusRegistartionList(RegistrationReq value);
   Future<Response<dynamic>?> getRouteList(GetRouteReq value);
+  Future<Response<dynamic>?> getPermitList(GetRouteReq value);
+  Future<Response<dynamic>?> getDocTypeList();
 
   Future<Response<dynamic>?> tripMasterSave(TripMasterReq value);
+  Future<Response<dynamic>?> getDailyStmnt(Datewisereq value);
 
   Future<Response<dynamic>?> getDatewiseStmnt(Datewisereq value);
   Future<Response<dynamic>?> getBuswiseStmnt(Datewisereq value);
@@ -20,10 +29,25 @@ abstract class Apicalls {
 
   Future<Response<dynamic>?> stopMasterSave(StopMasterReq value);
   Future<Response<dynamic>?> busRouteLinkMasterSave(BusRouteLinkReq value);
+  Future<Response<dynamic>?> permitBusLinkSave(BusRouteLinkReq value);
+  Future<Response<dynamic>?> permitBusLinkUpdate(BusRouteLinkReq value);
+
   // Future<Response<dynamic>?> conductorMasterSave(MasterListReq value);
   // Future<Response<dynamic>?> driverMasterSave(MasterListReq value);
 
   Future<Response<dynamic>?> fetchBusList(BusListReq value);
+
+  Future<Response<dynamic>?> fetchDocList(BusListReq value);
+
+  Future<Response<dynamic>?> documentUpdate(BusMasterReq value);
+
+  Future<Response<dynamic>?> documentDlt(BusMasterReq value);
+  
+  Future<Response<dynamic>?> documentNotification(BusMasterReq value);
+
+
+
+
   Future<Response<dynamic>?> fetchBusEditDetails(BusEditReq value);
   Future<Response<dynamic>?> updateBus(BusMasterReq value);
 
@@ -66,7 +90,6 @@ abstract class Apicalls {
   Future<Response<dynamic>?> prvwStop(MasterListReq value);
   Future<Response<dynamic>?> updateStop(MasterListReq value);
 
-
   Future<Response<dynamic>?> editArvTime(MasterListReq value);
   Future<Response<dynamic>?> getNewTripdet(MasterListReq value);
   Future<Response<dynamic>?> frgtPswrd(Frgtreq value);
@@ -82,6 +105,7 @@ abstract class Apicalls {
   Future<Response<dynamic>?> liveBusLoc(BusListReq value);
   Future<Response<dynamic>?> daycollection(BusListReq value);
   Future<Response<dynamic>?> collectDetails(BusListReq value);
+  Future<Response<dynamic>?> documentSave(BusMasterReq value);
 }
 
 class Busdata extends Apicalls {
@@ -113,7 +137,6 @@ class Busdata extends Apicalls {
           statusMessage: "Connection Timeout",
         );
       }
-
       // Return the error response from DioException
       return Response(
         requestOptions: ex.requestOptions,
@@ -142,17 +165,13 @@ class Busdata extends Apicalls {
       );
       return result;
     } on DioException catch (ex) {
-      // Check for timeout or other errors
       if (ex.type == DioExceptionType.connectionTimeout) {
-        // Return a custom response or throw an exception with more details
         return Response(
           requestOptions: ex.requestOptions,
           statusCode: 408, // HTTP 408 Request Timeout
           statusMessage: "Connection Timeout",
         );
       }
-
-      // Return the error response from DioException
       return Response(
         requestOptions: ex.requestOptions,
         statusCode: ex.response?.statusCode ??
@@ -392,6 +411,7 @@ class Busdata extends Apicalls {
       );
     }
   }
+
   @override
   Future<Response?> getDatewiseStmnt(Datewisereq value) async {
     final sharedValue = await SharedPrefManager.instance.getSharedData();
@@ -575,7 +595,6 @@ class Busdata extends Apicalls {
           statusMessage: "Connection Timeout",
         );
       }
-
       // Return the error response from DioException
       return Response(
         requestOptions: ex.requestOptions,
@@ -614,7 +633,6 @@ class Busdata extends Apicalls {
           statusMessage: "Connection Timeout",
         );
       }
-
       // Return the error response from DioException
       return Response(
         requestOptions: ex.requestOptions,
@@ -791,7 +809,6 @@ class Busdata extends Apicalls {
           statusMessage: "Connection Timeout",
         );
       }
-
       // Return the error response from DioException
       return Response(
         requestOptions: ex.requestOptions,
@@ -1032,7 +1049,6 @@ class Busdata extends Apicalls {
       );
       return result;
     } on DioException catch (ex) {
-      // Check for timeout or other errors
       if (ex.type == DioExceptionType.connectionTimeout) {
         // Return a custom response or throw an exception with more details
         return Response(
@@ -1218,7 +1234,6 @@ class Busdata extends Apicalls {
           statusMessage: "Connection Timeout",
         );
       }
-
       // Return the error response from DioException
       return Response(
         requestOptions: ex.requestOptions,
@@ -1696,7 +1711,6 @@ class Busdata extends Apicalls {
     }
   }
 
-
   @override
   Future<Response?> editArvTime(MasterListReq value) async {
     final sharedValue = await SharedPrefManager.instance.getSharedData();
@@ -1834,15 +1848,12 @@ class Busdata extends Apicalls {
     } on DioException catch (ex) {
       // Check for timeout or other errors
       if (ex.type == DioExceptionType.connectionTimeout) {
-        // Return a custom response or throw an exception with more details
         return Response(
           requestOptions: ex.requestOptions,
           statusCode: 408, // HTTP 408 Request Timeout
           statusMessage: "Connection Timeout",
         );
       }
-
-      // Return the error response from DioException
       return Response(
         requestOptions: ex.requestOptions,
         statusCode: ex.response?.statusCode ??
@@ -1997,7 +2008,8 @@ class Busdata extends Apicalls {
       }
       return Response(
         requestOptions: ex.requestOptions,
-        statusCode: ex.response?.statusCode ?? 500, // Default to HTTP 500 if no status code
+        statusCode: ex.response?.statusCode ??
+            500, // Default to HTTP 500 if no status code
         statusMessage: ex.message,
         data: ex.response?.data, // Include error data if available
       );
@@ -2130,15 +2142,15 @@ class Busdata extends Apicalls {
       if (ex.type == DioExceptionType.connectionTimeout) {
         return Response(
           requestOptions: ex.requestOptions,
-          statusCode: 408, 
+          statusCode: 408,
           statusMessage: "Connection Timeout",
         );
       }
       return Response(
         requestOptions: ex.requestOptions,
-        statusCode: ex.response?.statusCode ?? 500, 
+        statusCode: ex.response?.statusCode ?? 500,
         statusMessage: ex.message,
-        data: ex.response?.data, 
+        data: ex.response?.data,
       );
     }
   }
@@ -2165,26 +2177,99 @@ class Busdata extends Apicalls {
       if (ex.type == DioExceptionType.connectionTimeout) {
         return Response(
           requestOptions: ex.requestOptions,
-          statusCode: 408, 
+          statusCode: 408,
           statusMessage: "Connection Timeout",
         );
       }
       return Response(
         requestOptions: ex.requestOptions,
-        statusCode: ex.response?.statusCode ?? 500, 
+        statusCode: ex.response?.statusCode ?? 500,
         statusMessage: ex.message,
-        data: ex.response?.data, 
+        data: ex.response?.data,
       );
     }
   }
-  
+
   @override
-  Future<Response?> prvwStop(MasterListReq value) async{
+  Future<Response?> prvwStop(MasterListReq value) async {
     final sharedValue = await SharedPrefManager.instance.getSharedData();
     final token = sharedValue!.token;
     try {
       final result = await dio.post(
         url.prvwStpUrl,
+        data: value.toJson(),
+        options: Options(
+          responseType: ResponseType.plain,
+          headers: {
+            "Authorization": "Bearer $token",
+            "Accept": "application/json",
+          },
+        ),
+      );
+      return result;
+    } on DioException catch (ex) {
+      if (ex.type == DioExceptionType.connectionTimeout) {
+        return Response(
+          requestOptions: ex.requestOptions,
+          statusCode: 408,
+          statusMessage: "Connection Timeout",
+        );
+      }
+
+      // Return the error response from DioException
+      return Response(
+        requestOptions: ex.requestOptions,
+        statusCode: ex.response?.statusCode ??
+            500, // Default to HTTP 500 if no status code
+        statusMessage: ex.message,
+        data: ex.response?.data, // Include error data if available
+      );
+    }
+  }
+
+  @override
+  Future<Response?> updateStop(MasterListReq value) async {
+    final sharedValue = await SharedPrefManager.instance.getSharedData();
+    final token = sharedValue!.token;
+    try {
+      final result = await dio.post(
+        url.updateStpUrl,
+        data: value.toJson(),
+        options: Options(
+          responseType: ResponseType.plain,
+          headers: {
+            "Authorization": "Bearer $token",
+            "Accept": "application/json",
+          },
+        ),
+      );
+      return result;
+    } on DioException catch (ex) {
+      if (ex.type == DioExceptionType.connectionTimeout) {
+        return Response(
+          requestOptions: ex.requestOptions,
+          statusCode: 408,
+          statusMessage: "Connection Timeout",
+        );
+      }
+
+      return Response(
+        requestOptions: ex.requestOptions,
+        statusCode: ex.response?.statusCode ??
+            500, // Default to HTTP 500 if no status code
+        statusMessage: ex.message,
+        data: ex.response?.data, // Include error data if available
+      );
+    }
+  }
+
+  @override
+  Future<Response<dynamic>?> getDailyStmnt(Datewisereq value) async {
+    final sharedValue = await SharedPrefManager.instance.getSharedData();
+    final token = sharedValue!.token;
+    try {
+      final result = await dio.post(
+        url.dailyCollectionUrl,
         data: value.toJson(),
         options: Options(
           responseType: ResponseType.plain,
@@ -2216,14 +2301,269 @@ class Busdata extends Apicalls {
       );
     }
   }
-  
+
   @override
-  Future<Response?> updateStop(MasterListReq value) async{
+  Future<Response<dynamic>?> resndOtp(UserCmnReq value) async {
+    try {
+      final result = await dio.post(url.rsndOtpUrl, data: value.toJson());
+      return result;
+    } on DioException catch (ex) {
+      // Check for timeout or other errors
+      if (ex.type == DioExceptionType.connectionTimeout) {
+        // Return a custom response or throw an exception with more details
+        return Response(
+          requestOptions: ex.requestOptions,
+          statusCode: 408, // HTTP 408 Request Timeout
+          statusMessage: "Connection Timeout",
+        );
+      }
+      // Return the error response from DioException
+      return Response(
+        requestOptions: ex.requestOptions,
+        statusCode: ex.response?.statusCode ??
+            500, // Default to HTTP 500 if no status code
+        statusMessage: ex.message,
+        data: ex.response?.data, // Include error data if available
+      );
+    }
+  }
+
+  @override
+  Future<Response<dynamic>?> regOtpvrf(UserCmnReq value) async {
+    try {
+      final result = await dio.post(url.regvrfyUrl, data: value.toJson());
+      return result;
+    } on DioException catch (ex) {
+      // Check for timeout or other errors
+      if (ex.type == DioExceptionType.connectionTimeout) {
+        // Return a custom response or throw an exception with more details
+        return Response(
+          requestOptions: ex.requestOptions,
+          statusCode: 408, // HTTP 408 Request Timeout
+          statusMessage: "Connection Timeout",
+        );
+      }
+
+      // Return the error response from DioException
+      return Response(
+        requestOptions: ex.requestOptions,
+        statusCode: ex.response?.statusCode ??
+            500, // Default to HTTP 500 if no status code
+        statusMessage: ex.message,
+        data: ex.response?.data, // Include error data if available
+      );
+    }
+  }
+
+  @override
+  Future<Response<dynamic>?> frgtPswrdOtp(UserCmnReq value) async {
+    try {
+      final result = await dio.post(url.frgtOtpUrl, data: value.toJson());
+      return result;
+    } on DioException catch (ex) {
+      // Check for timeout or other errors
+      if (ex.type == DioExceptionType.connectionTimeout) {
+        // Return a custom response or throw an exception with more details
+        return Response(
+          requestOptions: ex.requestOptions,
+          statusCode: 408, // HTTP 408 Request Timeout
+          statusMessage: "Connection Timeout",
+        );
+      }
+
+      // Return the error response from DioException
+      return Response(
+        requestOptions: ex.requestOptions,
+        statusCode: ex.response?.statusCode ?? 500,
+        statusMessage: ex.message,
+        data: ex.response?.data,
+      );
+    }
+  }
+
+  @override
+  Future<Response<dynamic>?> frgtpswrdvrfy(UserCmnReq value) async {
+    try {
+      final result = await dio.post(
+        url.frgtOtpvrfyUrl,
+        data: value.toJson(),
+      );
+      return result;
+    } on DioException catch (ex) {
+      if (ex.type == DioExceptionType.connectionTimeout) {
+        return Response(
+          requestOptions: ex.requestOptions,
+          statusCode: 408,
+          statusMessage: "Connection Timeout",
+        );
+      }
+      return Response(
+        requestOptions: ex.requestOptions,
+        statusCode: ex.response?.statusCode ?? 500,
+        statusMessage: ex.message,
+        data: ex.response?.data,
+      );
+    }
+  }
+
+  @override
+  Future<Response<dynamic>?> getPermitList(GetRouteReq value) async {
     final sharedValue = await SharedPrefManager.instance.getSharedData();
     final token = sharedValue!.token;
     try {
       final result = await dio.post(
-        url.updateStpUrl,
+        url.getPermitListUrl,
+        data: value.toJson(),
+        options: Options(
+          responseType: ResponseType.plain,
+          headers: {
+            "Authorization": "Bearer $token",
+            "Accept": "application/json",
+          },
+        ),
+      );
+      return result;
+    } on DioException catch (ex) {
+      // Check for timeout or other errors
+      if (ex.type == DioExceptionType.connectionTimeout) {
+        // Return a custom response or throw an exception with more details
+        return Response(
+          requestOptions: ex.requestOptions,
+          statusCode: 408, // HTTP 408 Request Timeout
+          statusMessage: "Connection Timeout",
+        );
+      }
+      // Return the error response from DioException
+      return Response(
+        requestOptions: ex.requestOptions,
+        statusCode: ex.response?.statusCode ??
+            500, // Default to HTTP 500 if no status code
+        statusMessage: ex.message,
+        data: ex.response?.data, // Include error data if available
+      );
+    }
+  }
+
+  @override
+  Future<Response<dynamic>?> permitBusLinkSave(BusRouteLinkReq value) async {
+    final sharedValue = await SharedPrefManager.instance.getSharedData();
+    final token = sharedValue!.token;
+    try {
+      final result = await dio.post(
+        url.permitBusLinkUrl,
+        data: value.toJson(),
+        options: Options(
+          responseType: ResponseType.plain,
+          headers: {
+            "Authorization": "Bearer $token",
+            "Accept": "application/json",
+          },
+        ),
+      );
+      return result;
+    } on DioException catch (ex) {
+      // Check for timeout or other errors
+      if (ex.type == DioExceptionType.connectionTimeout) {
+        // Return a custom response or throw an exception with more details
+        return Response(
+          requestOptions: ex.requestOptions,
+          statusCode: 408, // HTTP 408 Request Timeout
+          statusMessage: "Connection Timeout",
+        );
+      }
+      // Return the error response from DioException
+      return Response(
+        requestOptions: ex.requestOptions,
+        statusCode: ex.response?.statusCode ??
+            500, // Default to HTTP 500 if no status code
+        statusMessage: ex.message,
+        data: ex.response?.data, // Include error data if available
+      );
+    }
+  }
+
+  @override
+  Future<Response<dynamic>?> permitBusLinkUpdate(BusRouteLinkReq value) async {
+    final sharedValue = await SharedPrefManager.instance.getSharedData();
+    final token = sharedValue!.token;
+    try {
+      final result = await dio.post(
+        url.permitBusLinkUpdateUrl,
+        data: value.toJson(),
+        options: Options(
+          responseType: ResponseType.plain,
+          headers: {
+            "Authorization": "Bearer $token",
+            "Accept": "application/json",
+          },
+        ),
+      );
+      return result;
+    } on DioException catch (ex) {
+      // Check for timeout or other errors
+      if (ex.type == DioExceptionType.connectionTimeout) {
+        // Return a custom response or throw an exception with more details
+        return Response(
+          requestOptions: ex.requestOptions,
+          statusCode: 408, // HTTP 408 Request Timeout
+          statusMessage: "Connection Timeout",
+        );
+      }
+      // Return the error response from DioException
+      return Response(
+        requestOptions: ex.requestOptions,
+        statusCode: ex.response?.statusCode ??
+            500, // Default to HTTP 500 if no status code
+        statusMessage: ex.message,
+        data: ex.response?.data, // Include error data if available
+      );
+    }
+  }
+
+  @override
+  Future<Response<dynamic>?> getDocTypeList() async {
+    final sharedValue = await SharedPrefManager.instance.getSharedData();
+    final token = sharedValue!.token;
+    try {
+      final result = await dio.post(
+        url.getDocTypeListUrl,
+        options: Options(
+          responseType: ResponseType.plain,
+          headers: {
+            "Authorization": "Bearer $token",
+            "Accept": "application/json",
+          },
+        ),
+      );
+      return result;
+    } on DioException catch (ex) {
+      // Check for timeout or other errors
+      if (ex.type == DioExceptionType.connectionTimeout) {
+        // Return a custom response or throw an exception with more details
+        return Response(
+          requestOptions: ex.requestOptions,
+          statusCode: 408, // HTTP 408 Request Timeout
+          statusMessage: "Connection Timeout",
+        );
+      }
+      // Return the error response from DioException
+      return Response(
+        requestOptions: ex.requestOptions,
+        statusCode: ex.response?.statusCode ??
+            500, // Default to HTTP 500 if no status code
+        statusMessage: ex.message,
+        data: ex.response?.data, // Include error data if available
+      );
+    }
+  }
+
+  @override
+  Future<Response<dynamic>?> documentSave(BusMasterReq value) async {
+    final sharedValue = await SharedPrefManager.instance.getSharedData();
+    final token = sharedValue!.token;
+    try {
+      final result = await dio.post(
+        url.docSaveUrl,
         data: value.toJson(),
         options: Options(
           responseType: ResponseType.plain,
@@ -2250,6 +2590,147 @@ class Busdata extends Apicalls {
         requestOptions: ex.requestOptions,
         statusCode: ex.response?.statusCode ??
             500, // Default to HTTP 500 if no status code
+        statusMessage: ex.message,
+        data: ex.response?.data, // Include error data if available
+      );
+    }
+  }
+
+  @override
+  Future<Response?> fetchDocList(BusListReq value) async {
+    final sharedValue = await SharedPrefManager.instance.getSharedData();
+    final token = sharedValue!.token;
+    try {
+      final result = await dio.post(
+        url.docListUrl,
+        data: value.toJson(),
+        options: Options(
+          responseType: ResponseType.plain,
+          headers: {
+            "Authorization": "Bearer $token",
+            "Accept": "application/json",
+          },
+        ),
+      );
+      return result;
+    } on DioException catch (ex) {
+      // Check for timeout or other errors
+      if (ex.type == DioExceptionType.connectionTimeout) {
+        // Return a custom response or throw an exception with more details
+        return Response(
+          requestOptions: ex.requestOptions,
+          statusCode: 408, // HTTP 408 Request Timeout
+          statusMessage: "Connection Timeout",
+        );
+      }
+
+      // Return the error response from DioException
+      return Response(
+        requestOptions: ex.requestOptions,
+        statusCode: ex.response?.statusCode ??
+            500, // Default to HTTP 500 if no status code
+        statusMessage: ex.message,
+        data: ex.response?.data, // Include error data if available
+      );
+    }
+  }
+  @override
+  Future<Response?> documentUpdate(BusMasterReq value) async {
+    final sharedValue = await SharedPrefManager.instance.getSharedData();
+    final token = sharedValue!.token;
+    try {
+      final result = await dio.post(
+        url.docUpdtUrl,
+        data: value.toJson(),
+        options: Options(
+          responseType: ResponseType.plain,
+          headers: {
+            "Authorization": "Bearer $token",
+            "Accept": "application/json",
+          },
+        ),
+      );
+      return result;
+    } on DioException catch (ex) {
+      if (ex.type == DioExceptionType.connectionTimeout) {
+        return Response(
+          requestOptions: ex.requestOptions,
+          statusCode: 408, // HTTP 408 Request Timeout
+          statusMessage: "Connection Timeout",
+        );
+      }
+
+      // Return the error response from DioException
+      return Response(
+        requestOptions: ex.requestOptions,
+        statusCode: ex.response?.statusCode ??
+            500, // Default to HTTP 500 if no status code
+        statusMessage: ex.message,
+        data: ex.response?.data, // Include error data if available
+      );
+    }
+  }
+  @override
+  Future<Response?> documentDlt(BusMasterReq value) async {
+    final sharedValue = await SharedPrefManager.instance.getSharedData();
+    final token = sharedValue!.token;
+    try {
+      final result = await dio.post(
+        url.docDltUrl,
+        data: value.toJson(),
+        options: Options(
+          responseType: ResponseType.plain,
+          headers: {
+            "Authorization": "Bearer $token",
+            "Accept": "application/json",
+          },
+        ),
+      );
+      return result;
+    } on DioException catch (ex) {
+      if (ex.type == DioExceptionType.connectionTimeout) {
+        return Response(
+          requestOptions: ex.requestOptions,
+          statusCode: 408, // HTTP 408 Request Timeout
+          statusMessage: "Connection Timeout",
+        );
+      }
+      return Response(
+        requestOptions: ex.requestOptions,
+        statusCode: ex.response?.statusCode ?? 500, // Default to HTTP 500 if no status code
+        statusMessage: ex.message,
+        data: ex.response?.data, // Include error data if available
+      );
+    }
+  }
+  @override
+  Future<Response?> documentNotification(BusMasterReq value) async {
+    final sharedValue = await SharedPrefManager.instance.getSharedData();
+    final token = sharedValue!.token;
+    try {
+      final result = await dio.post(
+        url.docNotifyUrl,
+        data: value.toJson(),
+        options: Options(
+          responseType: ResponseType.plain,
+          headers: {
+            "Authorization": "Bearer $token",
+            "Accept": "application/json",
+          },
+        ),
+      );
+      return result;
+    } on DioException catch (ex) {
+      if (ex.type == DioExceptionType.connectionTimeout) {
+        return Response(
+          requestOptions: ex.requestOptions,
+          statusCode: 408, // HTTP 408 Request Timeout
+          statusMessage: "Connection Timeout",
+        );
+      }
+      return Response(
+        requestOptions: ex.requestOptions,
+        statusCode: ex.response?.statusCode ?? 500, // Default to HTTP 500 if no status code
         statusMessage: ex.message,
         data: ex.response?.data, // Include error data if available
       );

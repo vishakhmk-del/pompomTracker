@@ -5,7 +5,7 @@ class LoadingProvider with ChangeNotifier {
   bool get isLoading => isloading;
 
   void toggleLoading() {
-    isloading = !isloading;
+    isloading = true;
     notifyListeners();
   }
 

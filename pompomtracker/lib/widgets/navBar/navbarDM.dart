@@ -193,6 +193,21 @@ class _NavbarDMState extends State<NavbarDM> {
             //     onTap: () {
             //       Navigator.push(context, Approutes().stopListScreenNew);
             //     }),
+            // ListTile(
+            //     leading: const Icon(
+            //       Icons.announcement,
+            //       color: Colors.black,
+            //     ),
+            //     title: Text(
+            //       "Announcement",
+            //       style: Theme.of(context)
+            //           .textTheme
+            //           .bodyLarge
+            //           ?.copyWith(color: Colors.black),
+            //     ),
+            //     onTap: () {
+            //       Navigator.push(context, Approutes().announcement);
+            //     }),
             ListTile(
                 leading: const Icon(
                   Icons.privacy_tip_outlined,
@@ -205,7 +220,12 @@ class _NavbarDMState extends State<NavbarDM> {
                       .bodyLarge
                       ?.copyWith(color: Colors.black),
                 ),
-                onTap: () {}),
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    Approutes().privacyScreen,
+                  );
+                }),
             ListTile(
                 leading: const Icon(
                   Icons.info_outline,

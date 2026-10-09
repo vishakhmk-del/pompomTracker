@@ -7,13 +7,13 @@ class DropdownProvider with ChangeNotifier {
   bool? get selectedVal => _selectedVal;
   int? get selectedNum => _selectnum;
 
-
-  void changeSelectedVal(bool? value,int? val) {
+  void changeSelectedVal(bool? value, int? val) {
     _selectedVal = value;
-    _selectnum=val;
+    _selectnum = val;
     notifyListeners();
   }
-   void clear() {
+
+  void clear() {
     _selectedVal = null;
     _selectnum = null;
     notifyListeners();

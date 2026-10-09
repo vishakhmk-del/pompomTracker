@@ -17,4 +17,3 @@ class IconChangeProvider with ChangeNotifier {
     notifyListeners(); // Notify listeners after clearing
   }
 }
-

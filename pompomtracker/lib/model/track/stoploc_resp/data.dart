@@ -14,7 +14,7 @@ class DataList {
   @JsonKey(name: 'bus')
   BusValue? bus;
 
-  DataList({this.stops, this.busLocation,this.bus});
+  DataList({this.stops, this.busLocation, this.bus});
 
   factory DataList.fromJson(Map<String, dynamic> json) =>
       _$DataListFromJson(json);

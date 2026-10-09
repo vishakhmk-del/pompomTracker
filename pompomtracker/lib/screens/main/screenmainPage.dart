@@ -1,7 +1,11 @@
 import 'dart:async';
 import 'dart:math';
 import 'package:pompomtracker/core/hook/hook.dart';
+import 'package:pompomtracker/function/documents/documentFun.dart';
 import 'package:pompomtracker/screens/Collection/new/screencollectionNew.dart';
+// import 'package:pompomtracker/screens/documents/screenDoc.dart';
+import 'package:pompomtracker/screens/documents/screenDocList.dart';
+import 'package:pompomtracker/screens/wallet/screenWallet.dart';
 import 'package:pompomtracker/widgets/navBar/navbarDM.dart';
 
 class ScreenMainPage extends StatefulWidget {
@@ -15,14 +19,21 @@ class _ScreenMainPageState extends State<ScreenMainPage> {
   int _currentIndex = 0;
   final PageController _pageController = PageController();
   Timer? _autoPageTimer;
-
+  int? notCount;
   @override
   void initState() {
     super.initState();
-     WidgetsBinding.instance.addPostFrameCallback((_) async {
-     // await SecurityCheck.checkAndExitIfCompromised(context);
-       _startAutoScroll();
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      // await SecurityCheck.checkAndExitIfCompromised(context);
+      _startAutoScroll();
+      final value = await SharedPrefManager.instance.getSharedData();
+      final req = BusMasterReq(
+        userId: value!.userId,
+      );
 
+      if (!mounted) return;
+
+      notCount = await DocumentsFun.instance.documentNotification(req, context);
     });
   }
 
@@ -103,7 +114,7 @@ class _ScreenMainPageState extends State<ScreenMainPage> {
             CustomPaint(
               painter: ArcPainter(),
               child: SizedBox(
-                height: screenSize.height / 1.25,
+                height: screenSize.height / 1.29,
                 width: screenSize.width,
               ),
             ),
@@ -114,7 +125,7 @@ class _ScreenMainPageState extends State<ScreenMainPage> {
               child: Column(
                 children: [
                   SizedBox(
-                    height: screenSize.height * 0.57,
+                    height: screenSize.height * 0.535,
                     child: PageView.builder(
                       controller: _pageController,
                       itemCount: tabs.length,
@@ -169,10 +180,10 @@ class _ScreenMainPageState extends State<ScreenMainPage> {
             Align(
               alignment: Alignment.bottomCenter,
               child: SizedBox(
-                height: 250,
+                height: 280,
                 child: GridView.builder(
                   padding: const EdgeInsets.only(top: 50),
-                  itemCount: 4,
+                  itemCount: 6,
                   physics: const NeverScrollableScrollPhysics(),
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 2,
@@ -185,13 +196,17 @@ class _ScreenMainPageState extends State<ScreenMainPage> {
                       'Track my Bus',
                       'Collection',
                       'Reports',
-                      'Settings'
+                      'Settings',
+                      'Documents',
+                      'Wallet'
                     ];
                     final List<IconData> icons = [
                       Icons.search,
                       Icons.list,
                       Icons.bar_chart,
-                      Icons.settings
+                      Icons.settings,
+                      Icons.document_scanner,
+                      Icons.wallet
                     ];
 
                     return LayoutBuilder(
@@ -224,82 +239,211 @@ class _ScreenMainPageState extends State<ScreenMainPage> {
                                   builder: (context) => const ScreenSettings(),
                                 ),
                               );
+                            } else if (index == 4) {
+                              Navigator.of(context).push(
+                                MaterialPageRoute(
+                                  builder: (context) => const ScreenDocList(),
+                                ),
+                              );
+                            } else if (index == 5) {
+                              // Navigator.of(context).push(
+                              //   MaterialPageRoute(
+                              //     builder: (context) => const WalletScreen(),
+                              //   ),
+                              // );
                             }
                           },
                           child: SizedBox(
                             width: double.infinity,
                             height: double.infinity,
-                            child: Container(
-                              decoration: BoxDecoration(
-                                gradient: const LinearGradient(
-                                  colors: [
-                                    Colors.orange,
-                                    Color.fromARGB(255, 204, 123, 2)
-                                  ],
-                                  begin: Alignment.topCenter,
-                                  end: Alignment.bottomCenter,
-                                ),
-                                borderRadius: BorderRadius.only(
-                                  topLeft: index == 0 || index == 2
-                                      ? Radius.zero
-                                      : const Radius.circular(20),
-                                  topRight: index == 1 || index == 3
-                                      ? Radius.zero
-                                      : const Radius.circular(20),
-                                  bottomLeft: index == 0 || index == 2
-                                      ? Radius.zero
-                                      : const Radius.circular(20),
-                                  bottomRight: index == 1 || index == 3
-                                      ? Radius.zero
-                                      : const Radius.circular(20),
-                                ),
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Colors.black.withOpacity(0.1),
-                                    offset: const Offset(2, 4),
-                                    blurRadius: 6,
+                            child: Stack(
+                              clipBehavior: Clip.none,
+                              children: [
+                                Container(
+                                  width: double.infinity,
+                                  height: double.infinity,
+                                  decoration: BoxDecoration(
+                                    gradient: const LinearGradient(
+                                      colors: [
+                                        Colors.orange,
+                                        Color.fromARGB(255, 204, 123, 2),
+                                      ],
+                                      begin: Alignment.topCenter,
+                                      end: Alignment.bottomCenter,
+                                    ),
+                                    borderRadius: BorderRadius.only(
+                                      topLeft:
+                                          index == 0 || index == 2 || index == 4
+                                              ? Radius.zero
+                                              : const Radius.circular(20),
+                                      topRight:
+                                          index == 1 || index == 3 || index == 5
+                                              ? Radius.zero
+                                              : const Radius.circular(20),
+                                      bottomLeft:
+                                          index == 0 || index == 2 || index == 4
+                                              ? Radius.zero
+                                              : const Radius.circular(20),
+                                      bottomRight:
+                                          index == 1 || index == 3 || index == 5
+                                              ? Radius.zero
+                                              : const Radius.circular(20),
+                                    ),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.black.withOpacity(0.1),
+                                        offset: const Offset(2, 4),
+                                        blurRadius: 6,
+                                      ),
+                                    ],
                                   ),
-                                ],
-                              ),
-                              child: Center(
-                                  child: index == 0 || index == 2
-                                      ? Row(
-                                          // mainAxisSize: MainAxisSize.min,
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceAround,
-                                          children: [
-                                            Text(
-                                              titles[index],
-                                              textAlign: TextAlign.center,
-                                              style: const TextStyle(
-                                                fontSize: 14,
-                                                fontFamily: 'Poppins-Medium',
+                                  child: Center(
+                                    child: index == 0 ||
+                                            index == 2 ||
+                                            index == 4
+                                        ? Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceAround,
+                                            children: [
+                                              Text(
+                                                titles[index],
+                                                textAlign: TextAlign.center,
+                                                style: const TextStyle(
+                                                  fontSize: 14,
+                                                  fontFamily: 'Poppins-Medium',
+                                                  color: Colors.white,
+                                                ),
+                                              ),
+                                              Icon(
+                                                icons[index],
                                                 color: Colors.white,
                                               ),
-                                            ),
-                                            //  const SizedBox(width: 8),
-                                            Icon(icons[index],
-                                                color: Colors
-                                                    .white), // matches theme
-                                          ],
-                                        )
-                                      : Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceEvenly,
-                                          children: [
-                                            Icon(icons[index],
-                                                color: Colors.white),
-                                            Text(
-                                              titles[index],
-                                              textAlign: TextAlign.center,
-                                              style: const TextStyle(
-                                                fontSize: 14,
-                                                fontFamily: 'Poppins-Medium',
+                                            ],
+                                          )
+                                        : Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceEvenly,
+                                            children: [
+                                              Icon(
+                                                icons[index],
                                                 color: Colors.white,
                                               ),
-                                            ),
+                                              Text(
+                                                titles[index],
+                                                textAlign: TextAlign.center,
+                                                style: const TextStyle(
+                                                  fontSize: 14,
+                                                  fontFamily: 'Poppins-Medium',
+                                                  color: Colors.white,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                  ),
+                                ),
+                                if (index == 5)
+                                  Positioned(
+                                    top: -9,
+                                    left: 8,
+                                    child: Container(
+                                      padding: const EdgeInsets.symmetric(
+                                        horizontal: 10,
+                                        vertical: 4,
+                                      ),
+                                      decoration: BoxDecoration(
+                                        gradient: const LinearGradient(
+                                          colors: [
+                                            Color(0xFFFF5A5F),
+                                            Color(0xFFE53935),
                                           ],
-                                        )),
+                                        ),
+                                        borderRadius: BorderRadius.circular(20),
+                                        border: Border.all(
+                                          color: Colors.white,
+                                          width: 1.5,
+                                        ),
+                                        boxShadow: [
+                                          BoxShadow(
+                                            color:
+                                                Colors.black.withOpacity(0.22),
+                                            blurRadius: 5,
+                                            offset: const Offset(0, 2),
+                                          ),
+                                        ],
+                                      ),
+                                      child: const Row(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          Icon(
+                                            Icons.schedule_rounded,
+                                            color: Colors.white,
+                                            size: 11,
+                                          ),
+                                          SizedBox(width: 4),
+                                          Text(
+                                            'COMING SOON',
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 8,
+                                              fontWeight: FontWeight.w800,
+                                              fontFamily: 'Poppins-Medium',
+                                              letterSpacing: 0.4,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                // Notification badge - Documents only
+                                if (index == 4 &&
+                                    notCount != null &&
+                                    notCount! > 0)
+                                  Positioned(
+                                    top: -8,
+                                    right: -8,
+                                    child: Container(
+                                      constraints: const BoxConstraints(
+                                        minWidth: 24,
+                                        minHeight: 24,
+                                      ),
+                                      padding: const EdgeInsets.symmetric(
+                                        horizontal: 6,
+                                        vertical: 3,
+                                      ),
+                                      decoration: BoxDecoration(
+                                        color: Colors.red,
+                                        shape: notCount! > 99
+                                            ? BoxShape.rectangle
+                                            : BoxShape.circle,
+                                        borderRadius: notCount! > 99
+                                            ? BorderRadius.circular(12)
+                                            : null,
+                                        border: Border.all(
+                                          color: Colors.white,
+                                          width: 2,
+                                        ),
+                                        boxShadow: [
+                                          BoxShadow(
+                                            color:
+                                                Colors.black.withOpacity(0.2),
+                                            blurRadius: 4,
+                                            offset: const Offset(0, 2),
+                                          ),
+                                        ],
+                                      ),
+                                      child: Center(
+                                        child: Text(
+                                          notCount! > 99 ? '99+' : '$notCount',
+                                          style: const TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 11,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                              ],
                             ),
                           ),
                         );

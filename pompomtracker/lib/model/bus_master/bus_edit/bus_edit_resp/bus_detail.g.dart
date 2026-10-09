@@ -12,7 +12,7 @@ BusDetail _$BusDetailFromJson(Map<String, dynamic> json) => BusDetail(
       permitNo: json['permit_no'] as String?,
       validFrom: json['valid_from'] as String?,
       validTo: json['valid_to'] as String?,
-      activeTrip: json['active_trip'] as String?,
+      activeTrip: json['active_trip'],
       shortName: json['short_name'] as String?,
       busType: json['bus_type'] as String?,
     );

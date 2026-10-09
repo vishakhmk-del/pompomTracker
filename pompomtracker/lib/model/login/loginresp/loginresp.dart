@@ -7,9 +7,13 @@ part 'loginresp.g.dart';
 class Loginresp {
   String? status;
   String? message;
+  @JsonKey(name: 'error_code')
+  String? errorCode;
+  bool? mandatory;
   DataCount? data;
 
-  Loginresp({this.status, this.message, this.data});
+  Loginresp(
+      {this.status, this.message, this.errorCode, this.mandatory, this.data});
 
   factory Loginresp.fromJson(Map<String, dynamic> json) {
     return _$LoginrespFromJson(json);

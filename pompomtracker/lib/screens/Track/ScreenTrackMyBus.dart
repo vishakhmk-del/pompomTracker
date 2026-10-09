@@ -57,24 +57,24 @@ class _BusMarker extends fmap.Marker {
   final BusDetList bus;
 
   _BusMarker({required this.bus, this.busvalue, this.busloc})
-    : super(
-        key: const ValueKey('bus_marker'),
-        point: LatLng(
-          double.parse(busloc?.latitude??''),
-          double.parse(busloc?.longitude??''),
-        ),
-        width: 40,
-        height: 40,
-        child: Image.asset(
-          'assets/tracking/Untitled_design__8_-removebg-preview.png',
+      : super(
+          key: const ValueKey('bus_marker'),
+          point: LatLng(
+            double.parse(busloc?.latitude ?? ''),
+            double.parse(busloc?.longitude ?? ''),
+          ),
           width: 40,
           height: 40,
-        ),
-      );
+          child: Image.asset(
+            'assets/tracking/Untitled_design__8_-removebg-preview.png',
+            width: 40,
+            height: 40,
+          ),
+        );
 }
 
 class ScreenMapTrack extends StatefulWidget {
-  const ScreenMapTrack({super.key,this.task});
+  const ScreenMapTrack({super.key, this.task});
   final BusDetList? task;
   @override
   State<ScreenMapTrack> createState() => _ScreenMapTrackState();
@@ -101,19 +101,19 @@ class _ScreenMapTrackState extends State<ScreenMapTrack> {
   Timer? _busLocationTimer;
   bool isbuslistFetch = false;
   bool isStopFetch = false;
-BusListReq? stopreq;
+  BusListReq? stopreq;
   BusDetList? busDetails;
   String? selectedbusId;
-List<LatLng> _travelledPoints = [];    // Completed part
-List<LatLng> _remainingPoints = [];    // Remaining part
+  List<LatLng> _travelledPoints = []; // Completed part
+  List<LatLng> _remainingPoints = []; // Remaining part
   BusValue? busvalue;
 
   @override
   void initState() {
     super.initState();
     if (widget.task?.busId != null && widget.task!.busId!.isNotEmpty) {
-    selectedbusId = widget.task!.busId;
-  }
+      selectedbusId = widget.task!.busId;
+    }
     WidgetsBinding.instance.addPostFrameCallback((_) => _initialize(context));
   }
 
@@ -134,16 +134,17 @@ List<LatLng> _remainingPoints = [];    // Remaining part
 
           if (!isbuslistFetch) {
             isbuslistFetch = true; // Set the flag to true after the first call
-            realtmBuslist = await BusTrackFunctions.instance.realbusdet(value, context);
+            realtmBuslist =
+                await BusTrackFunctions.instance.realbusdet(value, context);
 
-          _onBusSelected(widget.task?.busId);
+            _onBusSelected(widget.task?.busId);
             if (!isStopFetch) {
-            isStopFetch = true; // Set the flag to true after the first call
-             
-            if (!context.mounted) return;
+              isStopFetch = true; // Set the flag to true after the first call
 
-            fetchRouteForBus(widget.task?.busId??'', context);
-          }
+              if (!context.mounted) return;
+
+              fetchRouteForBus(widget.task?.busId ?? '', context);
+            }
           }
           // if(widget.task==null)
           // {
@@ -188,14 +189,13 @@ List<LatLng> _remainingPoints = [];    // Remaining part
           //   _onBusSelected(widget.task?.busId);
           //   if (!isStopFetch) {
           //   isStopFetch = true; // Set the flag to true after the first call
-             
+
           // if (!context.mounted) return;
 
           //   fetchRouteForBus(widget.task?.busId??'', context);
           // }
-             
+
           // }
-          
         }
       },
     );
@@ -254,8 +254,9 @@ List<LatLng> _remainingPoints = [];    // Remaining part
           )),
       // All bus markers
       // if (busLocation?.latitude != null && busLocation?.longitude != null)
-        // _BusMarker(bus: busLocation!,busdet: bus!, stoploc: widget.stoploc),
-      ...realtmBus!.map((bus) => _BusMarker(bus: bus,busloc: busLocation,busvalue:busvalue)),
+      // _BusMarker(bus: busLocation!,busdet: bus!, stoploc: widget.stoploc),
+      ...realtmBus!.map((bus) =>
+          _BusMarker(bus: bus, busloc: busLocation, busvalue: busvalue)),
     ];
 
     // 1. Calculate bounds to fit all bus positions
@@ -351,7 +352,7 @@ List<LatLng> _remainingPoints = [];    // Remaining part
       (bus) => bus.busId == busid,
       orElse: () => BusDetList(), // Provide a fallback empty object
     );
-    
+
     if (realtmBuslist == null || realtmBuslist!.isEmpty) {
       stopreq = BusListReq(
         userId: usrid,
@@ -370,15 +371,13 @@ List<LatLng> _remainingPoints = [];    // Remaining part
       );
     }
 
-    
-
     if (!context.mounted) return;
 
     final stopValue = await SearchFun.instance.fetchStopLoc(stopreq!, context);
     stops = stopValue?.stops ?? [];
     busLocation = stopValue?.busLocation;
-    busvalue=stopValue?.bus;
-    if(!mounted)return;
+    busvalue = stopValue?.bus;
+    if (!mounted) return;
     setState(() => isLoading = false);
 
     List<LatLng> points = stops
@@ -405,7 +404,7 @@ List<LatLng> _remainingPoints = [];    // Remaining part
   Future<void> _fetchRoute(List<LatLng> points) async {
     final coords = points.map((e) => '${e.longitude},${e.latitude}').join(';');
     final url = Uri.parse(
-      'http://117.221.68.183:5000/route/v1/driving/$coords?overview=full&geometries=geojson',
+      'http://pompay.in:5000/route/v1/driving/$coords?overview=full&geometries=geojson',
     );
 
     final response = await http.get(url);
@@ -455,7 +454,8 @@ List<LatLng> _remainingPoints = [];    // Remaining part
     // ------------------------------------------------------------------//
     _popupMarkers.removeWhere((m) => m.key == const ValueKey('bus_marker'));
     if (busLocation != null) {
-      _popupMarkers.add(_BusMarker(bus: busDetails!,busloc: busLocation,busvalue: busvalue));
+      _popupMarkers.add(_BusMarker(
+          bus: busDetails!, busloc: busLocation, busvalue: busvalue));
     }
 
     // ------------------------------------------------------------------//
@@ -487,12 +487,10 @@ List<LatLng> _remainingPoints = [];    // Remaining part
       if (nearestDist! < stopProximityThreshold) {
         _popupLayerController.showPopupsOnlyFor([nearestStopMarker]);
       } else if (nearestDist < stopProximityThreshold + 50) {
-        
       } else {
         _popupLayerController.hideAllPopups();
       }
     }
-
 
     // ------------------------------------------------------------------//
     // 4. Keep map centred unless user dragged it                        //
@@ -503,26 +501,27 @@ List<LatLng> _remainingPoints = [];    // Remaining part
 
     if (mounted) setState(() {});
   }
-void _updateRouteProgress(LatLng busPos) {
-  if (_routePoints.isEmpty) return;
 
-  // Find the nearest route point to the bus
-  final nearest = _routePoints.reduce((a, b) =>
-      _distance(busPos, a) < _distance(busPos, b) ? a : b);
+  void _updateRouteProgress(LatLng busPos) {
+    if (_routePoints.isEmpty) return;
 
-  final index = _routePoints.indexOf(nearest);
-  if (index == -1) return;
+    // Find the nearest route point to the bus
+    final nearest = _routePoints
+        .reduce((a, b) => _distance(busPos, a) < _distance(busPos, b) ? a : b);
 
-  setState(() {
-    _travelledPoints = _routePoints.sublist(0, index + 1);
-    _remainingPoints = _routePoints.sublist(index);
-  });
-}
+    final index = _routePoints.indexOf(nearest);
+    if (index == -1) return;
 
-double _distance(LatLng p1, LatLng p2) {
-  final d = Distance();
-  return d.as(LengthUnit.Meter, p1, p2);
-}
+    setState(() {
+      _travelledPoints = _routePoints.sublist(0, index + 1);
+      _remainingPoints = _routePoints.sublist(index);
+    });
+  }
+
+  double _distance(LatLng p1, LatLng p2) {
+    final d = Distance();
+    return d.as(LengthUnit.Meter, p1, p2);
+  }
 
   void _recenterMap() {
     if (busLocation != null &&
@@ -539,19 +538,19 @@ double _distance(LatLng p1, LatLng p2) {
   }
 
   @override
-void dispose() {
-  _busLocationTimer?.cancel();
-  Livelocationfun.instance.stopTracking();
-  super.dispose();
-}
+  void dispose() {
+    _busLocationTimer?.cancel();
+    Livelocationfun.instance.stopTracking();
+    super.dispose();
+  }
 
-Future<bool?> popscreen(BuildContext context) async {
-    BusTrackFunctions.instance.getRealBusDetailsNotifier.value=[];
-     Navigator.pushReplacement(context, Approutes().realBusListScreen);
-
+  Future<bool?> popscreen(BuildContext context) async {
+    BusTrackFunctions.instance.getRealBusDetailsNotifier.value = [];
+    Navigator.pushReplacement(context, Approutes().realBusListScreen);
 
     return true;
   }
+
   @override
   Widget build(BuildContext context) {
     if (!_isMapReady && _routePoints.isNotEmpty) {
@@ -625,36 +624,37 @@ Future<bool?> popscreen(BuildContext context) async {
                 ),
                 onChanged: (selectedbusId) {
                   if (selectedbusId == null) return;
-      
+
                   final selectedBus = realtmBuslist!.firstWhere(
                     (bus) => bus.busId == selectedbusId,
                     orElse: () => BusDetList(busId: '', tripStatus: '0'),
                   );
-      
-                  if (selectedBus.tripStatus == "0") {
-                    messageBox(context);
-                    return;
-                  } else {
+
+                  if (selectedBus.tripStatus == "1") {
                     _onBusSelected(selectedbusId); // Proceed to show on map
                     // You can call your route-fetching function here too
                     fetchRouteForBus(selectedbusId, context);
+                  } else {
+                    messageBox(context);
+                    return;
                   }
-      
+
                   final lat = double.tryParse(selectedBus.liveLatitude ?? '');
                   final lng = double.tryParse(selectedBus.liveLongitude ?? '');
-      
+
                   if (lat != null && lng != null) {
                     final marker = _popupMarkers.firstWhere(
                       (m) =>
-                          m is _BusMarker && (m as _BusMarker).bus.busId == selectedbusId,
+                          m is _BusMarker &&
+                          (m as _BusMarker).bus.busId == selectedbusId,
                       orElse: () => fmap.Marker(
                         point: LatLng(lat, lng),
                         child: const Icon(Icons.location_on),
                       ),
                     );
-      
+
                     _mapController.move(LatLng(lat, lng), 16);
-      
+
                     Future.delayed(const Duration(milliseconds: 300), () {
                       _popupLayerController.showPopupsOnlyFor([marker]);
                     });
@@ -721,14 +721,14 @@ Future<bool?> popscreen(BuildContext context) async {
                       // ),
                       fmap.TileLayer(
                         urlTemplate:
-                            'http://117.221.68.183:7001/tile/{z}/{x}/{y}.png',
+                            'http://pompay.in:7001/tile/{z}/{x}/{y}.png',
                         tileProvider: NetworkTileProvider(),
                         errorTileCallback: (tile, error, stackTrace) {
                           debugPrint('Tile load error: $error │ $tile');
                           log('Tile load error: $error │ $tile');
                         },
                       ),
-      
+
                       if (_routePoints.isNotEmpty)
                         fmap.PolylineLayer(
                           polylines: [
@@ -739,13 +739,14 @@ Future<bool?> popscreen(BuildContext context) async {
                             ),
                           ],
                         ),
-      
+
                       PopupMarkerLayer(
                         options: PopupMarkerLayerOptions(
                           markers: _popupMarkers,
                           popupController: _popupLayerController,
                           popupDisplayOptions: PopupDisplayOptions(
-                            builder: (BuildContext context, fmap.Marker marker) {
+                            builder:
+                                (BuildContext context, fmap.Marker marker) {
                               if (marker is _StopMarker) {
                                 int? dist;
                                 if (_lastBusPos != null) {
@@ -771,7 +772,7 @@ Future<bool?> popscreen(BuildContext context) async {
                                   ),
                                 );
                               }
-      
+
                               // if (marker is _BusMarker) {
                               //   return Card(
                               //     child: Padding(
@@ -798,7 +799,10 @@ Future<bool?> popscreen(BuildContext context) async {
                                       crossAxisAlignment:
                                           CrossAxisAlignment.center,
                                       children: [
-                                        Text(marker.busvalue?.busName?.toUpperCase() ?? 'Bus',
+                                        Text(
+                                            marker.busvalue?.busName
+                                                    ?.toUpperCase() ??
+                                                'Bus',
                                             style: const TextStyle(
                                                 fontWeight: FontWeight.bold)),
                                         const SizedBox(height: 4),
@@ -815,7 +819,7 @@ Future<bool?> popscreen(BuildContext context) async {
                                   ),
                                 );
                               }
-      
+
                               return const SizedBox.shrink();
                             },
                           ),

@@ -14,7 +14,7 @@ class ScreenDailyCollection extends StatefulWidget {
 class _ScreenDailyCollectionState extends State<ScreenDailyCollection> {
   List<String> columns = [];
   List<String?> cells = [];
-  String cDate='';
+  String cDate = '';
   @override
   void initState() {
     super.initState();
@@ -22,17 +22,17 @@ class _ScreenDailyCollectionState extends State<ScreenDailyCollection> {
       final crndt = DateTime.now();
       final formattedDate = DateFormat('yyyy-MM-dd').format(crndt);
       setState(() {
-      cDate = DateFormat('dd-MM-yyyy').format(crndt);
-        
+        cDate = DateFormat('dd-MM-yyyy').format(crndt);
       });
 
       print(formattedDate);
-      await StatementFunctions.instance.getDayCollection(formattedDate, context);
+      await StatementFunctions.instance
+          .getDayCollection(formattedDate, context);
     });
   }
 
   Future<bool?> popscreen(BuildContext context) async {
-    StatementFunctions.instance.getDayCollectionNotifier.value=null;
+    StatementFunctions.instance.getDayCollectionNotifier.value = null;
 
     Navigator.pushReplacement(context, Approutes().mainScreen);
     return true;
@@ -58,7 +58,8 @@ class _ScreenDailyCollectionState extends State<ScreenDailyCollection> {
               backgroundColor: Theme.of(context).colorScheme.primary,
               leading: IconButton(
                   onPressed: () {
-                   StatementFunctions.instance.getDayCollectionNotifier.value=null;
+                    StatementFunctions.instance.getDayCollectionNotifier.value =
+                        null;
 
                     Navigator.pushReplacement(context, Approutes().mainScreen);
                   },
@@ -85,7 +86,7 @@ class _ScreenDailyCollectionState extends State<ScreenDailyCollection> {
               //               cDate =
               //             DateFormat('dd-MM-yyyy').format(pickedDate);
               //             });
-                           
+
               //         if (!context.mounted) return;
               //         await StatementFunctions.instance
               //             .getDayCollection(formattedDate, context);
@@ -101,7 +102,8 @@ class _ScreenDailyCollectionState extends State<ScreenDailyCollection> {
                     child: ValueListenableBuilder(
                         valueListenable: StatementFunctions
                             .instance.getDayCollectionNotifier,
-                        builder: (BuildContext context, DataCollection? data,Widget? _) {
+                        builder: (BuildContext context, DataCollection? data,
+                            Widget? _) {
                           final collectionList = data?.collection ?? [];
                           // final grandTotal = double.tryParse(data?.grandTotal??'0') ?? 0;
                           // final grandExpense = double.tryParse(data?.grandExpense??'0') ?? 0;
@@ -110,8 +112,7 @@ class _ScreenDailyCollectionState extends State<ScreenDailyCollection> {
                           final grandTotal = parseDouble(data?.grandTotal);
                           final grandExpense = parseDouble(data?.grandExpense);
                           final cash = grandTotal - grandExpense;
-                         // final cdate = data?.collection?.first.collectionDate??'';
-
+                          // final cdate = data?.collection?.first.collectionDate??'';
 
                           return Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -119,17 +120,18 @@ class _ScreenDailyCollectionState extends State<ScreenDailyCollection> {
                               if (collectionList.isNotEmpty) ...[
                                 Padding(
                                   padding: const EdgeInsets.all(6.0),
-                                  child: 
-                                  // Text(
-                                  //       'Date: $cDate',
-                                  //       style: TextStyle(
-                                  //         fontSize: 18,
-                                  //         fontWeight: FontWeight.bold,
-                                  //         color: Colors.black,
-                                  //       ),
-                                  //     ),
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  child:
+                                      // Text(
+                                      //       'Date: $cDate',
+                                      //       style: TextStyle(
+                                      //         fontSize: 18,
+                                      //         fontWeight: FontWeight.bold,
+                                      //         color: Colors.black,
+                                      //       ),
+                                      //     ),
+                                      Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
                                     children: [
                                       Text(
                                         'Date: $cDate',
@@ -139,41 +141,44 @@ class _ScreenDailyCollectionState extends State<ScreenDailyCollection> {
                                           color: Colors.black,
                                         ),
                                       ),
-                                   //   SizedBox(width: 20,),
+                                      //   SizedBox(width: 20,),
                                       IconButton(
-                                      icon: Icon(Icons.calendar_month,size:32, color: Colors.black),
-                                      onPressed: () async {
-                                        final DateTime? pickedDate = await showDatePicker(
-                                          context: context,
-                                          initialDate: DateTime.now(),
-                                          firstDate: DateTime(2000),
-                                          lastDate: DateTime.now(),
-                                        );
+                                        icon: Icon(Icons.calendar_month,
+                                            size: 32, color: Colors.black),
+                                        onPressed: () async {
+                                          final DateTime? pickedDate =
+                                              await showDatePicker(
+                                            context: context,
+                                            initialDate: DateTime.now(),
+                                            firstDate: DateTime(2000),
+                                            lastDate: DateTime.now(),
+                                          );
 
-                                        if (pickedDate != null) {
-                                          final formattedDate =
-                                              DateFormat('yyyy-MM-dd').format(pickedDate);
-                                              setState(() {
-                                                cDate =
-                                              DateFormat('dd-MM-yyyy').format(pickedDate);
-                                              });
-                                              
-                                          if (!context.mounted) return;
-                                          await StatementFunctions.instance
-                                              .getDayCollection(formattedDate, context);
-                                        }
-                                      },
-                                    ),
+                                          if (pickedDate != null) {
+                                            final formattedDate =
+                                                DateFormat('yyyy-MM-dd')
+                                                    .format(pickedDate);
+                                            setState(() {
+                                              cDate = DateFormat('dd-MM-yyyy')
+                                                  .format(pickedDate);
+                                            });
+
+                                            if (!context.mounted) return;
+                                            await StatementFunctions.instance
+                                                .getDayCollection(
+                                                    formattedDate, context);
+                                          }
+                                        },
+                                      ),
                                     ],
                                   ),
                                 ),
                                 Container(
                                   decoration: BoxDecoration(
-                                    border: Border.all(
-                                        color: Colors.black),
+                                    border: Border.all(color: Colors.black),
                                   ),
                                   child: DataTable(
-                                    showCheckboxColumn: false, 
+                                    showCheckboxColumn: false,
                                     dataRowMaxHeight: 35,
                                     dataRowMinHeight: 35,
                                     headingRowHeight: 35,
@@ -244,8 +249,8 @@ class _ScreenDailyCollectionState extends State<ScreenDailyCollection> {
                                           ),
                                           child: Text(
                                             'No data found',
-                                            style: TextStyle(
-                                                color: Colors.black),
+                                            style:
+                                                TextStyle(color: Colors.black),
                                           ),
                                         ),
                                       );
@@ -265,11 +270,15 @@ class _ScreenDailyCollectionState extends State<ScreenDailyCollection> {
       ),
     );
   }
-double parseDouble(dynamic value) {
-  if (value == null) return 0;
-  if (value is num) return value.toDouble();
-  return double.tryParse(value.toString().trim().replaceAll(RegExp(r'[^0-9.]'), '')) ?? 0;
-}
+
+  double parseDouble(dynamic value) {
+    if (value == null) return 0;
+    if (value is num) return value.toDouble();
+    return double.tryParse(
+            value.toString().trim().replaceAll(RegExp(r'[^0-9.]'), '')) ??
+        0;
+  }
+
   List<DataColumn> getColumns(List<String> columns) {
     return columns.map((String column) {
       return DataColumn(
@@ -288,48 +297,51 @@ double parseDouble(dynamic value) {
     return newList.asMap().entries.map((entry) {
       int index = entry.key + 1; // Serial number starts from 1
       Collection task = entry.value;
-      final totAmnt=double.tryParse(task.totalAmount??'0') ?? 0;
-      final expns= double.tryParse(task.totalExpense??'0') ?? 0;
-      final cashinhand=totAmnt - expns;
+      final totAmnt = double.tryParse(task.totalAmount ?? '0') ?? 0;
+      final expns = double.tryParse(task.totalExpense ?? '0') ?? 0;
+      final cashinhand = totAmnt - expns;
       cells = [
         task.registrationNo ?? '',
         task.busName ?? '',
         cashinhand.toString(),
-       // task.collectionDate ?? '',
+        // task.collectionDate ?? '',
       ];
       return DataRow(
-        onSelectChanged: (_) {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => ScreenCollectionDet(task: task,),
-          ),
-        );
-      },
-        cells: [
-        DataCell(
-          Center(
-            child: Text(
-              '$index', // Display the serial number
-              style: const TextStyle(
-                  fontWeight: FontWeight.bold, color: Colors.black),
+          onSelectChanged: (_) {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => ScreenCollectionDet(
+                  task: task,
+                ),
+              ),
+            );
+          },
+          cells: [
+            DataCell(
+              Center(
+                child: Text(
+                  '$index', // Display the serial number
+                  style: const TextStyle(
+                      fontWeight: FontWeight.bold, color: Colors.black),
+                ),
+              ),
             ),
-          ),
-        ),
-        ...Utils.modelBuilder(cells, (index, cell) {
-          final taskbold = index == 0;
-          return DataCell(
-            Center(
-              child: Text('$cell',
-                  style: taskbold
-                      ? const TextStyle(
-                          fontWeight: FontWeight.bold, color: Colors.black)
-                      : const TextStyle(
-                          fontWeight: FontWeight.normal, color: Colors.black)),
-            ),
-          );
-        }),
-      ]);
+            ...Utils.modelBuilder(cells, (index, cell) {
+              final taskbold = index == 0;
+              return DataCell(
+                Center(
+                  child: Text('$cell',
+                      style: taskbold
+                          ? const TextStyle(
+                              fontWeight: FontWeight.bold, color: Colors.black)
+                          : const TextStyle(
+                              fontWeight: FontWeight.normal,
+                              color: Colors.black)),
+                ),
+              );
+            }),
+          ]);
     }).toList();
   }
 }

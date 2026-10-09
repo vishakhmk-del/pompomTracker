@@ -1,4 +1,3 @@
-
 import 'dart:developer';
 
 import 'package:pompomtracker/core/hook/hook.dart';
@@ -21,15 +20,16 @@ class _ScreenListMyBusState extends State<ScreenListMyBus> {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) => _initialize(context));
   }
-   Future<void> _initialize(BuildContext context) async {
+
+  Future<void> _initialize(BuildContext context) async {
     final sharedValue = await SharedPrefManager.instance.getSharedData();
     final usrid = sharedValue!.userId;
     final value = BusListReq(userId: usrid);
     if (!context.mounted) return;
-          await BusTrackFunctions.instance.realbusdet(value, context);
+    await BusTrackFunctions.instance.realbusdet(value, context);
     if (!context.mounted) return;
 
-       Livelocationfun.instance.startTracking(
+    Livelocationfun.instance.startTracking(
       context: context,
       onLocationUpdate: (position) async {
         if (position.latitude != 0 && position.longitude != 0) {
@@ -38,18 +38,19 @@ class _ScreenListMyBusState extends State<ScreenListMyBus> {
           //   isLoading = false;
           //   _starting = LatLng(position.latitude, position.longitude);
           // });
-
         }
       },
-    );    
+    );
   }
+
   Future<bool?> popscreen(BuildContext context) async {
-    BusTrackFunctions.instance.getRealBusDetailsNotifier.value=[];
+    BusTrackFunctions.instance.getRealBusDetailsNotifier.value = [];
 
     Navigator.pushReplacement(context, Approutes().mainScreen);
     return true;
   }
-    messageBox(BuildContext context) async {
+
+  messageBox(BuildContext context) async {
     await showDialog(
       context: context,
       barrierDismissible: false,
@@ -90,6 +91,7 @@ class _ScreenListMyBusState extends State<ScreenListMyBus> {
       ),
     );
   }
+
   @override
   Widget build(BuildContext context) {
     return PopScope(
@@ -109,7 +111,8 @@ class _ScreenListMyBusState extends State<ScreenListMyBus> {
               backgroundColor: Theme.of(context).colorScheme.primary,
               leading: IconButton(
                   onPressed: () {
-                   BusTrackFunctions.instance.getRealBusDetailsNotifier.value=[];
+                    BusTrackFunctions.instance.getRealBusDetailsNotifier.value =
+                        [];
 
                     Navigator.pushReplacement(context, Approutes().mainScreen);
                   },
@@ -118,28 +121,26 @@ class _ScreenListMyBusState extends State<ScreenListMyBus> {
                 'My Bus',
                 style: TextStyle(color: Colors.white),
               ),
-              
             ),
             body: Column(
               children: [
                 Expanded(
                   child: ScrollableWidget(
                     child: ValueListenableBuilder(
-                        valueListenable: BusTrackFunctions.instance.getRealBusDetailsNotifier,
-                        builder: (BuildContext context, List<BusDetList> data ,Widget? _) {
-                          
+                        valueListenable: BusTrackFunctions
+                            .instance.getRealBusDetailsNotifier,
+                        builder: (BuildContext context, List<BusDetList> data,
+                            Widget? _) {
                           return Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               if (data.isNotEmpty) ...[
-                                
                                 Container(
                                   decoration: BoxDecoration(
-                                    border: Border.all(
-                                        color: Colors.black),
+                                    border: Border.all(color: Colors.black),
                                   ),
                                   child: DataTable(
-                                    showCheckboxColumn: false, 
+                                    showCheckboxColumn: false,
                                     dataRowMaxHeight: 35,
                                     dataRowMinHeight: 35,
                                     headingRowHeight: 35,
@@ -196,8 +197,8 @@ class _ScreenListMyBusState extends State<ScreenListMyBus> {
                                           ),
                                           child: Text(
                                             'No data found',
-                                            style: TextStyle(
-                                                color: Colors.black),
+                                            style:
+                                                TextStyle(color: Colors.black),
                                           ),
                                         ),
                                       );
@@ -236,55 +237,57 @@ class _ScreenListMyBusState extends State<ScreenListMyBus> {
     return newList.asMap().entries.map((entry) {
       int index = entry.key + 1; // Serial number starts from 1
       BusDetList task = entry.value;
-      
+
       cells = [
         task.registrationNo ?? '',
         task.busName ?? '',
       ];
       return DataRow(
-        onSelectChanged: (_) {
-        busId=task.busId;
-                 task.tripStatus=='0'? 
-                 messageBox(context): 
-                 Navigator.of(context).push(
-                                MaterialPageRoute(
-                                  builder: (context) =>  ScreenMapTrack(task:task,),
-                                ),
-                              );
-      },
-        cells: [
-        DataCell(
-          Center(
-            child: Text(
-              '$index', // Display the serial number
-              style: const TextStyle(
-                  fontWeight: FontWeight.bold, color: Colors.black),
+          onSelectChanged: (_) {
+            busId = task.busId;
+            task.tripStatus == '1'
+                ? Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => ScreenMapTrack(
+                        task: task,
+                      ),
+                    ),
+                  )
+                : messageBox(context);
+          },
+          cells: [
+            DataCell(
+              Center(
+                child: Text(
+                  '$index', // Display the serial number
+                  style: const TextStyle(
+                      fontWeight: FontWeight.bold, color: Colors.black),
+                ),
+              ),
             ),
-          ),
-        ),
-        ...Utils.modelBuilder(cells, (index, cell) {
-          final taskbold = index == 0;
-          return DataCell(
-            Center(
-              child: Text('$cell',
-                  style: taskbold
-                      ? const TextStyle(
-                          fontWeight: FontWeight.bold, color: Colors.black)
-                      : const TextStyle(
-                          fontWeight: FontWeight.normal, color: Colors.black)),
-            ),
-          );
-        }),
-        DataCell(
-          Center(
-            child: task.tripStatus=='0'? 
-                Icon(Icons.location_off_rounded,
-                          size: 20, color: Colors.red[600])
-                      : Icon(Icons.location_on_rounded,
+            ...Utils.modelBuilder(cells, (index, cell) {
+              final taskbold = index == 0;
+              return DataCell(
+                Center(
+                  child: Text('$cell',
+                      style: taskbold
+                          ? const TextStyle(
+                              fontWeight: FontWeight.bold, color: Colors.black)
+                          : const TextStyle(
+                              fontWeight: FontWeight.normal,
+                              color: Colors.black)),
+                ),
+              );
+            }),
+            DataCell(
+              Center(
+                  child: task.tripStatus == '1'
+                      ? Icon(Icons.location_on_rounded,
                           size: 20, color: Colors.green[600])
-          ),
-        ),
-      ]);
+                      : Icon(Icons.location_off_rounded,
+                          size: 20, color: Colors.red[600])),
+            ),
+          ]);
     }).toList();
   }
 }

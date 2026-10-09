@@ -1,4 +1,5 @@
 import 'package:pompomtracker/core/hook/hook.dart';
+import 'package:pompomtracker/screens/forgot/screenfrgtpswrd.dart';
 
 class ScreenLogin extends StatefulWidget {
   const ScreenLogin({super.key});
@@ -23,6 +24,7 @@ class _ScreenLoginState extends State<ScreenLogin> {
       // await SecurityCheck.checkAndExitIfCompromised(context);
     });
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -271,20 +273,21 @@ class _ScreenLoginState extends State<ScreenLogin> {
           ),
         );
       } else if (loginval.status == 'failed') {
-        if (loginval.data == null) {
-          if (!context.mounted) return;
-          Wklycollectfn.instance
-              .showApierror(context, "Username or password Incorrect");
-        } else if (loginval.data?.errorCode == 'VERSION001') {
+        if (loginval.errorCode == 'VERSION_UPDATE') {
           if (!context.mounted) return;
 
           Navigator.of(context).pushReplacement(
             MaterialPageRoute(
               builder: (context) => ScreenError(
-                message: loginval.message,
+                version: loginval,
               ),
             ),
           );
+          //   Navigator.of(context).pushReplacement(
+          //   MaterialPageRoute(
+          //     builder: (context) => const ScreenMainPage(),
+          //   ),
+          // );
         } else {
           if (!context.mounted) return;
           Wklycollectfn.instance

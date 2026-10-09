@@ -7,6 +7,7 @@ part of 'deviceinfo.dart';
 // **************************************************************************
 
 Deviceinfo _$DeviceinfoFromJson(Map<String, dynamic> json) => Deviceinfo(
+      userid: json['user_id'],
       userId: json['userId'],
       phone: json['phone'] as String?,
       devicetoken: json['devicetoken'] as String?,
@@ -23,6 +24,7 @@ Deviceinfo _$DeviceinfoFromJson(Map<String, dynamic> json) => Deviceinfo(
 
 Map<String, dynamic> _$DeviceinfoToJson(Deviceinfo instance) =>
     <String, dynamic>{
+      'user_id': instance.userid,
       'userId': instance.userId,
       'phone': instance.phone,
       'devicetoken': instance.devicetoken,

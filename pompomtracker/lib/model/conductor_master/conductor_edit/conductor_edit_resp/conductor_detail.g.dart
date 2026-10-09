@@ -13,7 +13,7 @@ ConductorDetail _$ConductorDetailFromJson(Map<String, dynamic> json) =>
       address: json['address'] as String?,
       accountNo: json['account_no'] as String?,
       mobileNo: json['mobile_no'] as String?,
-      status: json['status'] as String?,
+      status: json['status'],
       busName: json['bus_name'] as String?,
       registrationNo: json['registration_no'] as String?,
       emailId: json['email_id'] as String?,

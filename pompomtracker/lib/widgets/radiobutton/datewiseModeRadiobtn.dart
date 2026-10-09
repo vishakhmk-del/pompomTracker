@@ -19,6 +19,7 @@ class ModeRadioButton extends StatelessWidget {
                 value: type,
                 groupValue: newtask,
                 activeColor: Theme.of(context).colorScheme.secondary,
+                focusColor: Colors.black,
                 onChanged: (value) async {
                   if (value == null) {
                     return;
@@ -32,11 +33,28 @@ class ModeRadioButton extends StatelessWidget {
                   selectedModeNotifier.value = value;
                   selectedModeNotifier.notifyListeners();
                 },
+                fillColor: MaterialStateProperty.resolveWith<Color>((states) {
+                  if (states.contains(MaterialState.disabled)) {
+                    // Disabled radio - clearly visible on white background
+                    return Colors.grey;
+                  }
+
+                  if (states.contains(MaterialState.selected)) {
+                    // Enabled + selected
+                    return Theme.of(context).colorScheme.secondary;
+                  }
+
+                  // Enabled + unselected
+                  return Colors.black;
+                }),
               );
             }),
         Text(
           title,
-          style: Theme.of(context).textTheme.labelLarge,
+          style: Theme.of(context)
+              .textTheme
+              .labelLarge
+              ?.copyWith(color: Colors.black),
         ),
       ],
     );

@@ -1,6 +1,7 @@
 import 'dart:developer';
 import 'package:intl/intl.dart';
 import 'package:pompomtracker/core/hook/hook.dart';
+import 'package:pompomtracker/model/daycollection/collection_det/expensehead/expensehead.dart';
 
 class ScreenCollectionNew extends StatefulWidget {
   const ScreenCollectionNew({super.key});
@@ -18,24 +19,31 @@ class _ScreenCollectionNewState extends State<ScreenCollectionNew> {
   final _expdateToController = TextEditingController();
   final _cashFromController = TextEditingController();
   final _cashToController = TextEditingController();
+  final _dailyClctnFromController = TextEditingController();
+  final _dailyClctnToController = TextEditingController();
   final ScrollController _listViewController = ScrollController();
   // final ScrollController _verticalScrollController = ScrollController();
   // final ScrollController _horizontalScrollController = ScrollController();
 
   String? dropdownsearchvalue;
   String? dropdownbusvalue;
+  String? dropdownAllbusvalue;
   String? dropdowncashvalue;
   List<BusRegList>? busreglist = [];
   List<String> registarionlst = [];
+  List<String> registarionAllList = [];
   List<String> columns = [];
   List<String?> cells = [];
-
+  String crntDt = '';
   final _formkey1 = GlobalKey<FormState>();
   final _formkey2 = GlobalKey<FormState>();
   final _formkey3 = GlobalKey<FormState>();
   final _formkey4 = GlobalKey<FormState>();
-
-  final _list = [dtWise, bsWise, chStatmnt, exStatmnt];
+  final _formkey5 = GlobalKey<FormState>();
+  dynamic totalexpense;
+  dynamic grandtotal;
+  List<Expensehead> expensehead = [];
+  final _list = [dailyCollectn, dtWise, bsWise, chStatmnt, exStatmnt];
   //final _list1 = [exStatmnt, chStatmnt];
   @override
   void initState() {
@@ -43,7 +51,7 @@ class _ScreenCollectionNewState extends State<ScreenCollectionNew> {
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       final datenw = DateTime.now();
-      final crntDt = DateFormat('d-M-yyyy').format(datenw);
+      crntDt = DateFormat('d-M-yyyy').format(datenw);
       // final dt= "${crntDt.toLocal().day}-${crntDt.toLocal().month}-${crntDt.toLocal().year}";
       Future.delayed(Duration.zero, () {
         if (!mounted) return;
@@ -73,20 +81,25 @@ class _ScreenCollectionNewState extends State<ScreenCollectionNew> {
         _expdateFromController.text = crntDt;
         _expdateToController.text = crntDt;
 
+        _dailyClctnFromController.text = crntDt;
+        _dailyClctnToController.text = crntDt;
+
         dropdownsearchvalue = _list.first;
 
         registarionlst = busreglist!
             .map((bus) => bus.registrationNo ?? "")
             .toList(); //calling registarion list  from main model
+        registarionAllList = ['All', ...registarionlst];
         dropdownbusvalue = registarionlst.first;
+        dropdownAllbusvalue = 'All';
       });
     });
   }
 
   Future<bool?> popscreen(BuildContext context) async {
     //selectedTaskNotifier.value = StatementType.collectionType;
-    context.read<CollectionDrpDwnProvider>().changeSelectedVal(dtWise);
-
+    context.read<CollectionDrpDwnProvider>().changeSelectedVal(dailyCollectn);
+    StatementFunctions.instance.getDatewiseStmntNotifier.value = [];
     selectedModeNotifier.value = StatementType.both;
     Navigator.of(context).pushAndRemoveUntil(
         MaterialPageRoute(builder: (context) => const ScreenMainPage()),
@@ -109,7 +122,7 @@ class _ScreenCollectionNewState extends State<ScreenCollectionNew> {
         children: [
           BackgroundColorGradient(),
           Scaffold(
-              backgroundColor: Colors.transparent,
+              backgroundColor: Colors.white,
               appBar: AppBar(
                 backgroundColor: Theme.of(context).colorScheme.primary,
                 title: Text(
@@ -121,12 +134,13 @@ class _ScreenCollectionNewState extends State<ScreenCollectionNew> {
                 ),
                 leading: IconButton(
                     onPressed: () {
-                      // selectedTaskNotifier.value = StatementType.collectionType;
                       context
                           .read<CollectionDrpDwnProvider>()
-                          .changeSelectedVal(dtWise);
+                          .changeSelectedVal(dailyCollectn);
 
                       selectedModeNotifier.value = StatementType.both;
+                      StatementFunctions
+                          .instance.getDatewiseStmntNotifier.value = [];
 
                       Navigator.of(context).pushAndRemoveUntil(
                           MaterialPageRoute(
@@ -150,9 +164,18 @@ class _ScreenCollectionNewState extends State<ScreenCollectionNew> {
                       //     title: 'Cash Statement',
                       //     type: StatementType.cashType),
                       Card(
+                        color: Colors.white,
                         margin: const EdgeInsets.only(
                             top: 10, left: 10, right: 10, bottom: 10),
                         elevation: 3,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                          side: BorderSide(
+                            color:
+                                Colors.black.withOpacity(0.25), // light black
+                            width: 1,
+                          ),
+                        ),
                         child: Column(
                           children: [
                             Container(
@@ -202,7 +225,10 @@ class _ScreenCollectionNewState extends State<ScreenCollectionNew> {
       children: [
         Text(
           'All Statements',
-          style: Theme.of(context).textTheme.titleLarge,
+          style: Theme.of(context)
+              .textTheme
+              .titleLarge
+              ?.copyWith(color: Colors.black),
         ),
         SizedBox(
           width: MediaQuery.of(context).size.width,
@@ -210,11 +236,10 @@ class _ScreenCollectionNewState extends State<ScreenCollectionNew> {
             padding: const EdgeInsets.only(top: 30, left: 5, right: 5),
             child: DropdownButtonFormField(
               //controller: _selectsearchtypedropdwn,
-              dropdownColor: Theme.of(context).colorScheme.tertiary,
-              icon: Icon(Icons.arrow_drop_down,
-                  color: Theme.of(context).colorScheme.onSecondary),
+              dropdownColor: Colors.white,
+              icon: Icon(Icons.arrow_drop_down, color: Colors.black),
               style: TextStyle(
-                color: Theme.of(context).colorScheme.onSecondary,
+                color: Colors.black,
               ),
               decoration: InputDecoration(
                 floatingLabelBehavior: FloatingLabelBehavior.auto,
@@ -243,7 +268,10 @@ class _ScreenCollectionNewState extends State<ScreenCollectionNew> {
                   borderRadius: BorderRadius.all(Radius.circular(4.0)),
                 ),
                 labelText: 'Select Search Type',
-                labelStyle: Theme.of(context).textTheme.labelLarge,
+                labelStyle: Theme.of(context)
+                    .textTheme
+                    .labelLarge
+                    ?.copyWith(color: Colors.black),
               ),
               items: _list.map((e) {
                 return DropdownMenuItem(value: e, child: Text(e));
@@ -260,10 +288,20 @@ class _ScreenCollectionNewState extends State<ScreenCollectionNew> {
 
                 setState(() {
                   dropdownsearchvalue = newvalue;
-                  // _clbusFromController.clear();
-                  // _clbusToController.clear();
-                  // _cldateFromController.clear();
-                  // _cldateToController.clear();
+                  _cldateFromController.text = crntDt;
+                  _cldateToController.text = crntDt;
+
+                  _clbusFromController.text = crntDt;
+                  _clbusToController.text = crntDt;
+
+                  _cashFromController.text = crntDt;
+                  _cashToController.text = crntDt;
+
+                  _expdateFromController.text = crntDt;
+                  _expdateToController.text = crntDt;
+
+                  _dailyClctnFromController.text = crntDt;
+                  _dailyClctnToController.text = crntDt;
                 });
               },
               value: dropdownsearchvalue,
@@ -275,7 +313,9 @@ class _ScreenCollectionNewState extends State<ScreenCollectionNew> {
         ),
         Consumer<CollectionDrpDwnProvider>(
           builder: (context, provider, child) {
-            if (provider.selectedVal == dtWise) {
+            if (provider.selectedVal == dailyCollectn) {
+              return dailyCollectnForm(context);
+            } else if (provider.selectedVal == dtWise) {
               return Column(
                 children: [
                   const Row(
@@ -333,12 +373,18 @@ class _ScreenCollectionNewState extends State<ScreenCollectionNew> {
                   padding: const EdgeInsets.only(top: 20, left: 5, right: 5),
                   child: TextFormField(
                     controller: _cldateFromController,
-                    style: Theme.of(context).textTheme.labelLarge,
+                    style: Theme.of(context)
+                        .textTheme
+                        .labelLarge
+                        ?.copyWith(color: Colors.black),
                     decoration: InputDecoration(
                       labelText: 'From Date',
-                      labelStyle: Theme.of(context).textTheme.labelLarge,
-                      suffixIcon: Icon(Icons.calendar_today,
-                          color: Theme.of(context).colorScheme.onSecondary),
+                      labelStyle: Theme.of(context)
+                          .textTheme
+                          .labelLarge
+                          ?.copyWith(color: Colors.black),
+                      suffixIcon:
+                          Icon(Icons.calendar_today, color: Colors.black),
                     ),
                     onTap: () => _selectDate(context, _cldateFromController),
                     validator: (value) {
@@ -357,12 +403,18 @@ class _ScreenCollectionNewState extends State<ScreenCollectionNew> {
                   padding: const EdgeInsets.only(top: 20, left: 5, right: 5),
                   child: TextFormField(
                     controller: _cldateToController,
-                    style: Theme.of(context).textTheme.labelLarge,
+                    style: Theme.of(context)
+                        .textTheme
+                        .labelLarge
+                        ?.copyWith(color: Colors.black),
                     decoration: InputDecoration(
                       labelText: 'To Date',
-                      labelStyle: Theme.of(context).textTheme.labelLarge,
-                      suffixIcon: Icon(Icons.calendar_today,
-                          color: Theme.of(context).colorScheme.onSecondary),
+                      labelStyle: Theme.of(context)
+                          .textTheme
+                          .labelLarge
+                          ?.copyWith(color: Colors.black),
+                      suffixIcon:
+                          Icon(Icons.calendar_today, color: Colors.black),
                     ),
                     onTap: () => _selectDate(context, _cldateToController),
                     validator: (value) {
@@ -393,7 +445,10 @@ class _ScreenCollectionNewState extends State<ScreenCollectionNew> {
                         child: Text(
                       "Summary",
                       textAlign: TextAlign.left,
-                      style: Theme.of(context).textTheme.labelLarge,
+                      style: Theme.of(context)
+                          .textTheme
+                          .labelLarge
+                          ?.copyWith(color: Colors.black),
                     ))
                   ],
                 ),
@@ -474,15 +529,17 @@ class _ScreenCollectionNewState extends State<ScreenCollectionNew> {
                   padding: const EdgeInsets.only(top: 10, left: 5, right: 5),
                   child: DropdownButtonFormField(
                     //controller: _selectsearchtypedropdwn,
-                    dropdownColor: Theme.of(context).colorScheme.tertiary,
-                    icon: Icon(Icons.arrow_drop_down,
-                        color: Theme.of(context).colorScheme.onSecondary),
+                    dropdownColor: Colors.white,
+                    icon: Icon(Icons.arrow_drop_down, color: Colors.black),
                     style: TextStyle(
-                      color: Theme.of(context).colorScheme.onSecondary,
+                      color: Colors.black,
                     ),
                     decoration: InputDecoration(
                       labelText: 'Select Bus',
-                      labelStyle: Theme.of(context).textTheme.labelLarge,
+                      labelStyle: Theme.of(context)
+                          .textTheme
+                          .labelLarge
+                          ?.copyWith(color: Colors.black),
                     ),
                     items: registarionlst.map((e) {
                       return DropdownMenuItem(value: e, child: Text(e));
@@ -506,12 +563,18 @@ class _ScreenCollectionNewState extends State<ScreenCollectionNew> {
                   padding: const EdgeInsets.only(top: 20, left: 5, right: 5),
                   child: TextFormField(
                     controller: _clbusFromController,
-                    style: Theme.of(context).textTheme.labelLarge,
+                    style: Theme.of(context)
+                        .textTheme
+                        .labelLarge
+                        ?.copyWith(color: Colors.black),
                     decoration: InputDecoration(
                       labelText: 'From Date',
-                      labelStyle: Theme.of(context).textTheme.labelLarge,
-                      suffixIcon: Icon(Icons.calendar_today,
-                          color: Theme.of(context).colorScheme.onSecondary),
+                      labelStyle: Theme.of(context)
+                          .textTheme
+                          .labelLarge
+                          ?.copyWith(color: Colors.black),
+                      suffixIcon:
+                          Icon(Icons.calendar_today, color: Colors.black),
                     ),
                     onTap: () => _selectDate(context, _clbusFromController),
                     validator: (value) {
@@ -530,12 +593,18 @@ class _ScreenCollectionNewState extends State<ScreenCollectionNew> {
                   padding: const EdgeInsets.only(top: 20, left: 5, right: 5),
                   child: TextFormField(
                     controller: _clbusToController,
-                    style: Theme.of(context).textTheme.labelLarge,
+                    style: Theme.of(context)
+                        .textTheme
+                        .labelLarge
+                        ?.copyWith(color: Colors.black),
                     decoration: InputDecoration(
                       labelText: 'To Date',
-                      labelStyle: Theme.of(context).textTheme.labelLarge,
-                      suffixIcon: Icon(Icons.calendar_today,
-                          color: Theme.of(context).colorScheme.onSecondary),
+                      labelStyle: Theme.of(context)
+                          .textTheme
+                          .labelLarge
+                          ?.copyWith(color: Colors.black),
+                      suffixIcon:
+                          Icon(Icons.calendar_today, color: Colors.black),
                     ),
                     onTap: () => _selectDate(context, _clbusToController),
                     validator: (value) {
@@ -568,7 +637,9 @@ class _ScreenCollectionNewState extends State<ScreenCollectionNew> {
                     data: MyTheme.buttonStyleTheme,
                     child: ElevatedButton(
                       onPressed: () async {
-                        context.read<ElevatedBtnProvider>().changeSelectedVal(true);
+                        context
+                            .read<ElevatedBtnProvider>()
+                            .changeSelectedVal(true);
 
                         if (_formkey2.currentState!.validate()) {
                           final frmdt = _clbusFromController.text;
@@ -620,24 +691,26 @@ class _ScreenCollectionNewState extends State<ScreenCollectionNew> {
                   padding: const EdgeInsets.only(top: 10, left: 5, right: 5),
                   child: DropdownButtonFormField(
                     //controller: _selectsearchtypedropdwn,
-                    dropdownColor: Theme.of(context).colorScheme.tertiary,
-                    icon: Icon(Icons.arrow_drop_down,
-                        color: Theme.of(context).colorScheme.onSecondary),
+                    dropdownColor: Colors.white,
+                    icon: Icon(Icons.arrow_drop_down, color: Colors.black),
                     style: TextStyle(
-                      color: Theme.of(context).colorScheme.onSecondary,
+                      color: Colors.black,
                     ),
                     decoration: InputDecoration(
                       labelText: 'Select Bus',
-                      labelStyle: Theme.of(context).textTheme.labelLarge,
+                      labelStyle: Theme.of(context)
+                          .textTheme
+                          .labelLarge
+                          ?.copyWith(color: Colors.black),
                     ),
                     items: [
-                      ...registarionlst.map((e) {
+                      // const DropdownMenuItem(
+                      //   value: 'all',
+                      //   child: Text('All'),
+                      // ),
+                      ...registarionAllList.map((e) {
                         return DropdownMenuItem(value: e, child: Text(e));
                       }).toList(),
-                      const DropdownMenuItem(
-                        value: 'all',
-                        child: Text('All'),
-                      ),
                     ],
                     onChanged: (newvalue) {
                       log('Bus :$newvalue');
@@ -645,10 +718,10 @@ class _ScreenCollectionNewState extends State<ScreenCollectionNew> {
                       //context.read<CollectionDrpDwnProvider>().changeSelectedVal(newvalue);
 
                       setState(() {
-                        dropdownbusvalue = newvalue;
+                        dropdownAllbusvalue = newvalue;
                       });
                     },
-                    value: dropdownbusvalue,
+                    value: dropdownAllbusvalue,
                   ),
                 ),
               ),
@@ -658,12 +731,18 @@ class _ScreenCollectionNewState extends State<ScreenCollectionNew> {
                   padding: const EdgeInsets.only(top: 20, left: 5, right: 5),
                   child: TextFormField(
                     controller: _expdateFromController,
-                    style: Theme.of(context).textTheme.labelLarge,
+                    style: Theme.of(context)
+                        .textTheme
+                        .labelLarge
+                        ?.copyWith(color: Colors.black),
                     decoration: InputDecoration(
                       labelText: 'From Date',
-                      labelStyle: Theme.of(context).textTheme.labelLarge,
-                      suffixIcon: Icon(Icons.calendar_today,
-                          color: Theme.of(context).colorScheme.onSecondary),
+                      labelStyle: Theme.of(context)
+                          .textTheme
+                          .labelLarge
+                          ?.copyWith(color: Colors.black),
+                      suffixIcon:
+                          Icon(Icons.calendar_today, color: Colors.black),
                     ),
                     onTap: () => _selectDate(context, _expdateFromController),
                     validator: (value) {
@@ -682,12 +761,18 @@ class _ScreenCollectionNewState extends State<ScreenCollectionNew> {
                   padding: const EdgeInsets.only(top: 20, left: 5, right: 5),
                   child: TextFormField(
                     controller: _expdateToController,
-                    style: Theme.of(context).textTheme.labelLarge,
+                    style: Theme.of(context)
+                        .textTheme
+                        .labelLarge
+                        ?.copyWith(color: Colors.black),
                     decoration: InputDecoration(
                       labelText: 'To Date',
-                      labelStyle: Theme.of(context).textTheme.labelLarge,
-                      suffixIcon: Icon(Icons.calendar_today,
-                          color: Theme.of(context).colorScheme.onSecondary),
+                      labelStyle: Theme.of(context)
+                          .textTheme
+                          .labelLarge
+                          ?.copyWith(color: Colors.black),
+                      suffixIcon:
+                          Icon(Icons.calendar_today, color: Colors.black),
                     ),
                     onTap: () => _selectDate(context, _expdateToController),
                     validator: (value) {
@@ -718,7 +803,10 @@ class _ScreenCollectionNewState extends State<ScreenCollectionNew> {
                         child: Text(
                       "Summary",
                       textAlign: TextAlign.left,
-                      style: Theme.of(context).textTheme.labelLarge,
+                      style: Theme.of(context)
+                          .textTheme
+                          .labelLarge
+                          ?.copyWith(color: Colors.black),
                     ))
                   ],
                 ),
@@ -752,7 +840,7 @@ class _ScreenCollectionNewState extends State<ScreenCollectionNew> {
                           final todt = _expdateToController.text;
                           var pro = context.read<CheckProvider>();
                           final val = pro.isAccepted;
-                          final regno = dropdownbusvalue;
+                          final regno = dropdownAllbusvalue;
 
                           final value = Stmntfnparameter(
                               fromdate: frmdt,
@@ -789,12 +877,18 @@ class _ScreenCollectionNewState extends State<ScreenCollectionNew> {
                   padding: const EdgeInsets.only(top: 20, left: 5, right: 5),
                   child: TextFormField(
                     controller: _cashFromController,
-                    style: Theme.of(context).textTheme.labelLarge,
+                    style: Theme.of(context)
+                        .textTheme
+                        .labelLarge
+                        ?.copyWith(color: Colors.black),
                     decoration: InputDecoration(
                       labelText: 'From Date',
-                      labelStyle: Theme.of(context).textTheme.labelLarge,
-                      suffixIcon: Icon(Icons.calendar_today,
-                          color: Theme.of(context).colorScheme.onSecondary),
+                      labelStyle: Theme.of(context)
+                          .textTheme
+                          .labelLarge
+                          ?.copyWith(color: Colors.black),
+                      suffixIcon:
+                          Icon(Icons.calendar_today, color: Colors.black),
                     ),
                     onTap: () => _selectDate(context, _cashFromController),
                     validator: (value) {
@@ -813,12 +907,18 @@ class _ScreenCollectionNewState extends State<ScreenCollectionNew> {
                   padding: const EdgeInsets.only(top: 20, left: 5, right: 5),
                   child: TextFormField(
                     controller: _cashToController,
-                    style: Theme.of(context).textTheme.labelLarge,
+                    style: Theme.of(context)
+                        .textTheme
+                        .labelLarge
+                        ?.copyWith(color: Colors.black),
                     decoration: InputDecoration(
                       labelText: 'To Date',
-                      labelStyle: Theme.of(context).textTheme.labelLarge,
-                      suffixIcon: Icon(Icons.calendar_today,
-                          color: Theme.of(context).colorScheme.onSecondary),
+                      labelStyle: Theme.of(context)
+                          .textTheme
+                          .labelLarge
+                          ?.copyWith(color: Colors.black),
+                      suffixIcon:
+                          Icon(Icons.calendar_today, color: Colors.black),
                     ),
                     onTap: () => _selectDate(context, _cashToController),
                     validator: (value) {
@@ -829,6 +929,32 @@ class _ScreenCollectionNewState extends State<ScreenCollectionNew> {
                       }
                     },
                   ),
+                ),
+              ),
+              SizedBox(
+                width: MediaQuery.of(context).size.width,
+                child: Row(
+                  children: <Widget>[
+                    Theme(
+                      data: Theme.of(context),
+                      child: Consumer<CheckProvider>(
+                        builder: (context, check, _) => Checkbox(
+                            value: check.isAccepted,
+                            onChanged: (value) {
+                              check.setAccepted(value);
+                            }),
+                      ),
+                    ),
+                    Expanded(
+                        child: Text(
+                      "Summary",
+                      textAlign: TextAlign.left,
+                      style: Theme.of(context)
+                          .textTheme
+                          .labelLarge
+                          ?.copyWith(color: Colors.black),
+                    ))
+                  ],
                 ),
               ),
               Padding(
@@ -858,13 +984,14 @@ class _ScreenCollectionNewState extends State<ScreenCollectionNew> {
                         if (_formkey4.currentState!.validate()) {
                           final frmdt = _cashFromController.text;
                           final todt = _cashToController.text;
-                          // var pro = context.read<CheckProvider>();
-                          // final val = pro.isAccepted;
+                          var pro = context.read<CheckProvider>();
+                          final val = pro.isAccepted;
                           // final regno=dropdownbusvalue;
 
                           final value = Stmntfnparameter(
                             fromdate: frmdt,
                             todate: todt,
+                            summary: val,
                           );
 
                           fetchclstatement(context, value);
@@ -884,6 +1011,195 @@ class _ScreenCollectionNewState extends State<ScreenCollectionNew> {
   }
 
   /// **************************** Cash Form end *********************************
+  Widget dailyCollectnForm(BuildContext context) {
+    return Form(
+        key: _formkey5,
+        child: Theme(
+          data: MyTheme.googleFormTheme,
+          child: Column(
+            children: [
+              SizedBox(
+                width: MediaQuery.of(context).size.width,
+                child: Padding(
+                  padding: const EdgeInsets.only(top: 10, left: 5, right: 5),
+                  child: DropdownButtonFormField(
+                    //controller: _selectsearchtypedropdwn,
+                    dropdownColor: Colors.white,
+                    icon: Icon(Icons.arrow_drop_down, color: Colors.black),
+                    style: TextStyle(
+                      color: Colors.black,
+                    ),
+                    decoration: InputDecoration(
+                      labelText: 'Select Bus',
+                      labelStyle: Theme.of(context)
+                          .textTheme
+                          .labelLarge
+                          ?.copyWith(color: Colors.black),
+                    ),
+                    items: [
+                      // const DropdownMenuItem(
+                      //   value: 'all',
+                      //   child: Text('All'),
+                      // ),
+                      ...registarionAllList.map((e) {
+                        return DropdownMenuItem(value: e, child: Text(e));
+                      }).toList(),
+                    ],
+                    onChanged: (newvalue) {
+                      log('Bus :$newvalue');
+                      //context.read<CollectionDrpDwnProvider>().changeSelectedVal(newvalue);
+                      StatementFunctions
+                          .instance.getDatewiseStmntNotifier.value = [];
+                      setState(() {
+                        dropdownAllbusvalue = newvalue;
+                      });
+                    },
+                    value: dropdownAllbusvalue,
+                  ),
+                ),
+              ),
+              SizedBox(
+                width: MediaQuery.of(context).size.width,
+                child: Padding(
+                  padding: const EdgeInsets.only(top: 20, left: 5, right: 5),
+                  child: TextFormField(
+                    controller: _dailyClctnFromController,
+                    style: Theme.of(context)
+                        .textTheme
+                        .labelLarge
+                        ?.copyWith(color: Colors.black),
+                    decoration: InputDecoration(
+                      labelText: 'From Date',
+                      labelStyle: Theme.of(context)
+                          .textTheme
+                          .labelLarge
+                          ?.copyWith(color: Colors.black),
+                      suffixIcon:
+                          Icon(Icons.calendar_today, color: Colors.black),
+                    ),
+                    onTap: () =>
+                        _selectDate(context, _dailyClctnFromController),
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        return 'Please Select Date';
+                      } else {
+                        return null;
+                      }
+                    },
+                  ),
+                ),
+              ),
+              if (dropdownAllbusvalue == 'All')
+                SizedBox(
+                  width: MediaQuery.of(context).size.width,
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 20, left: 5, right: 5),
+                    child: TextFormField(
+                      controller: _dailyClctnToController,
+                      style: Theme.of(context)
+                          .textTheme
+                          .labelLarge
+                          ?.copyWith(color: Colors.black),
+                      decoration: InputDecoration(
+                        labelText: 'To Date',
+                        labelStyle: Theme.of(context)
+                            .textTheme
+                            .labelLarge
+                            ?.copyWith(color: Colors.black),
+                        suffixIcon:
+                            Icon(Icons.calendar_today, color: Colors.black),
+                      ),
+                      onTap: () =>
+                          _selectDate(context, _dailyClctnToController),
+                      validator: (value) {
+                        if (value!.isEmpty) {
+                          return 'Please Select Date';
+                        } else {
+                          return null;
+                        }
+                      },
+                    ),
+                  ),
+                ),
+              if (dropdownAllbusvalue == 'All')
+                SizedBox(
+                  width: MediaQuery.of(context).size.width,
+                  child: Row(
+                    children: <Widget>[
+                      Theme(
+                        data: Theme.of(context),
+                        child: Consumer<CheckProvider>(
+                          builder: (context, check, _) => Checkbox(
+                              value: check.isAccepted,
+                              onChanged: (value) {
+                                check.setAccepted(value);
+                              }),
+                        ),
+                      ),
+                      Expanded(
+                          child: Text(
+                        "Details",
+                        textAlign: TextAlign.left,
+                        style: Theme.of(context)
+                            .textTheme
+                            .labelLarge
+                            ?.copyWith(color: Colors.black),
+                      ))
+                    ],
+                  ),
+                ),
+              Padding(
+                padding: const EdgeInsets.all(25.0),
+                child: Container(
+                  height: 45,
+                  width: 200,
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                      colors: [
+                        Theme.of(context).colorScheme.primary,
+                        Theme.of(context).colorScheme.secondary
+                      ],
+                    ),
+                    borderRadius: BorderRadius.circular(12.0),
+                  ),
+                  child: Theme(
+                    data: MyTheme.buttonStyleTheme,
+                    child: ElevatedButton(
+                      onPressed: () async {
+                        context
+                            .read<ElevatedBtnProvider>()
+                            .changeSelectedVal(true);
+
+                        if (_formkey5.currentState!.validate()) {
+                          final frmdt = _dailyClctnFromController.text;
+                          final todt = _dailyClctnToController.text;
+                          var pro = context.read<CheckProvider>();
+                          final val = pro.isAccepted;
+                          final regno = dropdownAllbusvalue;
+
+                          final value = Stmntfnparameter(
+                              fromdate: frmdt,
+                              todate: todt,
+                              summary: val,
+                              type: regno);
+
+                          fetchclstatement(context, value);
+                        }
+                      },
+                      child: Text(
+                        'Show',
+                        style: Theme.of(context).textTheme.titleMedium,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ));
+  }
 
   /// ****************************Collection Statement Table **********************************
 
@@ -909,72 +1225,160 @@ class _ScreenCollectionNewState extends State<ScreenCollectionNew> {
                 child: Text(
                   'No data found',
                   style: TextStyle(
-                    color: Colors.white,
+                    color: Colors.black,
                   ),
                 ),
               ),
             );
           }
-          return Container(
-            decoration: BoxDecoration(
-              border:
-                  Border.all(color: Theme.of(context).colorScheme.onSecondary),
-              //borderRadius:const BorderRadius.only(topLeft: Radius.circular(12),topRight: Radius.circular(12)),
-            ),
-            child: DataTable(
-              dataRowMaxHeight: 35,
-              dataRowMinHeight: 35,
-              headingRowHeight: 35,
-              columnSpacing: 15,
-              headingRowColor:
-                  WidgetStateProperty.all(Color.fromARGB(255, 204, 123, 2)),
-              columns: getColumns(dropdownsearchvalue == dtWise ||
-                      dropdownsearchvalue == bsWise
-                  ? Provider.of<CollectionDrpDwnProvider>(context,
-                                  listen: false)
-                              .selectedVal ==
-                          dtWise
-                      ? Provider.of<CheckProvider>(context, listen: false)
-                                  .isAccepted ==
-                              false
-                          ? columns = [
-                              'Reg No',
-                              'Date',
-                              'Mode',
-                              'Amount',
-                            ]
-                          : columns = [
-                              'Payment Date',
-                              'Amount',
-                            ]
-                      : columns = [
+          final List<String> activeColumns = dropdownsearchvalue == dtWise ||
+                  dropdownsearchvalue == bsWise
+              ? Provider.of<CollectionDrpDwnProvider>(context, listen: false)
+                          .selectedVal ==
+                      dtWise
+                  ? Provider.of<CheckProvider>(context, listen: false).isAccepted ==
+                          false
+                      ? columns = [
                           'Reg No',
                           'Date',
+                          'Mode',
                           'Amount',
                         ]
-                  : Provider.of<CollectionDrpDwnProvider>(context,
-                                  listen: false)
+                      : columns = [
+                          'Payment Date',
+                          'Amount',
+                        ]
+                  : columns = [
+                      'Reg No',
+                      'Date',
+                      'Amount',
+                    ]
+              : Provider.of<CollectionDrpDwnProvider>(context, listen: false)
+                          .selectedVal ==
+                      exStatmnt
+                  ? Provider.of<CheckProvider>(context, listen: false).isAccepted ==
+                          false
+                      ? columns = [
+                          'Date',
+                          'Reg No',
+                          'Category',
+                          'Expense',
+                        ]
+                      : columns = [
+                          'Date',
+                          'Reg No',
+                          'Expense',
+                        ]
+                  : Provider.of<CollectionDrpDwnProvider>(context, listen: false)
                               .selectedVal ==
-                          exStatmnt
+                          chStatmnt
                       ? Provider.of<CheckProvider>(context, listen: false)
                                   .isAccepted ==
                               false
                           ? columns = [
-                              'Date',
                               'Reg No',
-                              'Category',
+                              'Date',
+                              'Income',
                               'Expense',
                             ]
                           : columns = [
                               'Date',
+                              'Income',
                               'Expense',
                             ]
-                      : columns = [
-                          'Date',
-                          'Income',
-                          'Expense',
-                        ]),
-              rows: getRows(newList),
+                      : Provider.of<CollectionDrpDwnProvider>(context,
+                                      listen: false)
+                                  .selectedVal ==
+                              dailyCollectn
+                          ? dropdownAllbusvalue == 'All'
+                              ? Provider.of<CheckProvider>(context, listen: false).isAccepted == false
+                                  ? columns = ['Reg No', 'Date', 'Income', 'Expense', 'Balance']
+                                  : columns = ['Reg No', 'Income', 'Expense', 'Balance']
+                              : columns = ['Trip', 'Collection']
+                          : columns = ['Trip', 'Income', 'Expense', 'Balance'];
+          return Card(
+            color: Colors.white,
+            child: Container(
+              decoration: BoxDecoration(
+                border: Border.all(color: Colors.black),
+                //borderRadius:const BorderRadius.only(topLeft: Radius.circular(12),topRight: Radius.circular(12)),
+              ),
+              child: DataTable(
+                dataRowMaxHeight: 40,
+                dataRowMinHeight: 40,
+                headingRowHeight: 35,
+                columnSpacing: 15,
+                border: TableBorder.all(color: Colors.black54),
+                headingRowColor:
+                    WidgetStateProperty.all(Color.fromARGB(255, 204, 123, 2)),
+                columns: getColumns(activeColumns),
+                // dropdownsearchvalue == dtWise ||
+                //       dropdownsearchvalue == bsWise
+                //   ? Provider.of<CollectionDrpDwnProvider>(context, listen: false)
+                //               .selectedVal ==
+                //           dtWise
+                //       ? Provider.of<CheckProvider>(context, listen: false).isAccepted ==
+                //               false
+                //           ? columns = [
+                //               'Reg No',
+                //               'Date',
+                //               'Mode',
+                //               'Amount',
+                //             ]
+                //           : columns = [
+                //               'Payment Date',
+                //               'Amount',
+                //             ]
+                //       : columns = [
+                //           'Reg No',
+                //           'Date',
+                //           'Amount',
+                //         ]
+                //   : Provider.of<CollectionDrpDwnProvider>(context, listen: false)
+                //               .selectedVal ==
+                //           exStatmnt
+                //       ? Provider.of<CheckProvider>(context, listen: false)
+                //                   .isAccepted ==
+                //               false
+                //           ? columns = [
+                //               'Date',
+                //               'Reg No',
+                //               'Category',
+                //               'Expense',
+                //             ]
+                //           : columns = [
+                //               'Date',
+                //               'Reg No',
+                //               'Expense',
+                //             ]
+                //       : Provider.of<CollectionDrpDwnProvider>(context, listen: false)
+                //                   .selectedVal ==
+                //               chStatmnt
+                //           ? Provider.of<CheckProvider>(context, listen: false)
+                //                       .isAccepted ==
+                //                   false
+                //               ? columns = [
+                //                   'Reg No',
+                //                   'Date',
+                //                   'Income',
+                //                   'Expense',
+                //                 ]
+                //               : columns = [
+                //                   'Date',
+                //                   'Income',
+                //                   'Expense',
+                //                 ]
+                //           : Provider.of<CollectionDrpDwnProvider>(context, listen: false)
+                //                       .selectedVal ==
+                //                   dailyCollectn
+                //               ? dropdownAllbusvalue == 'All'
+                //                   ? Provider.of<CheckProvider>(context, listen: false).isAccepted == false
+                //                       ? columns = ['Reg No', 'Income', 'Expense', 'Balance']
+                //                       : columns = ['Reg No', 'Date', 'Income', 'Expense', 'Balance']
+                //                   : columns = ['Trip', 'Collection']
+                //               : columns = ['Trip', 'Income', 'Expense', 'Balance']),
+                rows: getRows(newList, activeColumns),
+              ),
             ),
           );
         });
@@ -983,85 +1387,407 @@ class _ScreenCollectionNewState extends State<ScreenCollectionNew> {
   List<DataColumn> getColumns(List<String> columns) {
     return columns.map((String column) {
       return DataColumn(
-        label: Text(
-          column,
-          style: Theme.of(context).textTheme.bodyLarge,
+        label: Align(
+          alignment: isRightAlignedColumn(column)
+              ? Alignment.centerRight
+              : Alignment.centerLeft,
+          child: Text(
+            column,
+            style: Theme.of(context).textTheme.bodyLarge,
+          ),
         ),
       );
     }).toList();
   }
 
-  List<DataRow> getRows(List<TicketList> newList) =>
-      newList.map((TicketList task) {
-        dropdownsearchvalue == dtWise || dropdownsearchvalue == bsWise
-            ? Provider.of<CollectionDrpDwnProvider>(context, listen: false)
-                        .selectedVal ==
-                    dtWise
-                ? Provider.of<CheckProvider>(context, listen: false)
-                            .isAccepted ==
-                        false
-                    ? cells = [
-                        task.regNo ?? '',
-                        task.payDate ?? '',
-                        task.mode ?? '',
-                        task.amount,
-                      ]
-                    : cells = [
-                        task.payDate ?? '',
-                        task.amount ?? '',
-                      ]
-                : cells = [
-                    task.regNo ?? '',
-                    task.payDate ?? '',
-                    task.amount ?? '',
-                  ]
-            : Provider.of<CollectionDrpDwnProvider>(context, listen: false)
-                        .selectedVal ==
-                    exStatmnt
-                ? Provider.of<CheckProvider>(context, listen: false)
-                            .isAccepted ==
-                        false
-                    ? cells = [
-                        task.payDate ?? '',
-                        task.regNo ?? '',
-                        task.expensehead ?? '',
-                        task.expense ?? '',
-                      ]
-                    : cells = [
-                        task.payDate ?? '',
-                        task.expense ?? '',
-                      ]
-                : cells = [
-                    task.payDate ?? '',
-                    task.totalIncome ?? '',
-                    task.totalExpense ?? '',
-                  ];
+  List<DataRow> getRows(List<TicketList> newList, List<String> columns) {
+    final List<DataRow> rows = [];
+    int tripSlNo = 1;
+    for (final TicketList task in newList) {
+      /// ---------------- YOUR EXISTING CELL LOGIC ----------------
+      dropdownsearchvalue == dtWise || dropdownsearchvalue == bsWise
+          ? Provider.of<CollectionDrpDwnProvider>(context, listen: false)
+                      .selectedVal ==
+                  dtWise
+              ? Provider.of<CheckProvider>(context, listen: false).isAccepted ==
+                      false
+                  ? cells = [
+                      task.regNo ?? '',
+                      task.payDate ?? '',
+                      task.mode ?? '',
+                      task.amount ?? '',
+                    ]
+                  : cells = [
+                      task.payDate ?? '',
+                      task.amount ?? '',
+                    ]
+              : cells = [
+                  task.regNo ?? '',
+                  task.payDate ?? '',
+                  task.amount ?? '',
+                ]
+          : Provider.of<CollectionDrpDwnProvider>(context, listen: false)
+                      .selectedVal ==
+                  exStatmnt
+              ? Provider.of<CheckProvider>(context, listen: false).isAccepted ==
+                      false
+                  ? cells = [
+                      task.payDate ?? '',
+                      task.regNo ?? '',
+                      task.expensehead ?? '',
+                      task.expense ?? '',
+                    ]
+                  : cells = [
+                      task.payDate ?? '',
+                      task.regNo ?? '',
+                      task.totalExpense ?? '',
+                    ]
+              : Provider.of<CollectionDrpDwnProvider>(context, listen: false)
+                          .selectedVal ==
+                      chStatmnt
+                  ? Provider.of<CheckProvider>(context, listen: false)
+                              .isAccepted ==
+                          false
+                      ? cells = [
+                          task.regNo ?? '',
+                          task.payDate ?? '',
+                          task.totalIncome ?? '',
+                          task.totalExpense ?? '',
+                        ]
+                      : cells = [
+                          task.payDate ?? '',
+                          task.totalIncome ?? '',
+                          task.totalExpense ?? '',
+                        ]
+                  : Provider.of<CollectionDrpDwnProvider>(context,
+                                  listen: false)
+                              .selectedVal ==
+                          dailyCollectn
+                      ? dropdownAllbusvalue == 'All'
+                          ? Provider.of<CheckProvider>(context, listen: false)
+                                      .isAccepted ==
+                                  false
+                              ? cells = [
+                                  task.regNo ?? '',
+                                  task.payDate ?? '',
+                                  task.totalIncome ?? '',
+                                  task.totalExpense ?? '',
+                                  ((double.tryParse(task.totalIncome ?? '0') ??
+                                              0) -
+                                          (double.tryParse(
+                                                  task.totalExpense ?? '0') ??
+                                              0))
+                                      .toStringAsFixed(2),
+                                ]
+                              : cells = [
+                                  task.regNo ?? '',
+                                  task.totalIncome ?? '',
+                                  task.totalExpense ?? '',
+                                  ((double.tryParse(task.totalIncome ?? '0') ??
+                                              0) -
+                                          (double.tryParse(
+                                                  task.totalExpense ?? '0') ??
+                                              0))
+                                      .toStringAsFixed(2),
+                                ]
+                          : cells = [
+                              '${task.tripName ?? ''}\n     (${task.startTime ?? ''}-${task.endTime ?? ''})',
+                              task.totalCollection ?? '0',
+                            ]
+                      : cells = [
+                          task.payDate ?? '',
+                          task.totalIncome ?? '',
+                          task.totalExpense ?? '',
+                        ];
 
-        return DataRow(
+      /// ---------------- ADD NORMAL ROW ----------------
+      rows.add(
+        DataRow(
           cells: Utils.modelBuilder(cells, (index, cell) {
-            bool modpay = false;
-            final taskbold = index == 0;
-            final val = cells[1];
-            //print(val);
-            modpay = val == "Off" ? modpay : !modpay;
-            print(modpay);
-            //final remarkclr = index == 6;
+            final displayValue = (index == 0 &&
+                    Provider.of<CollectionDrpDwnProvider>(context,
+                                listen: false)
+                            .selectedVal ==
+                        dailyCollectn &&
+                    dropdownAllbusvalue != 'All')
+                ? '$tripSlNo.  ${cells[index] ?? ''}'
+                : cells[index] ?? '';
             return DataCell(
-              Center(
-                child: Text('$cell',
-                    style: taskbold
-                        ? const TextStyle(
-                            fontWeight: FontWeight.bold,
-                          )
-                        : const TextStyle(fontWeight: FontWeight.normal)),
+              Align(
+                alignment: isRightAlignedColumn(columns[index])
+                    ? Alignment.centerRight
+                    : Alignment.centerLeft,
+                child: Text(
+                  displayValue,
+                  textAlign: isRightAlignedColumn(columns[index])
+                      ? TextAlign.right
+                      : TextAlign.left,
+                  style: index == 0
+                      ? const TextStyle(
+                          fontWeight: FontWeight.bold, color: Colors.black)
+                      : const TextStyle(color: Colors.black),
+                ),
               ),
-              //onTap: () {}
             );
           }),
+        ),
+      );
+      if (Provider.of<CollectionDrpDwnProvider>(context, listen: false)
+                  .selectedVal ==
+              dailyCollectn &&
+          dropdownAllbusvalue != 'All') {
+        tripSlNo++;
+      }
+    }
+
+    /// ---------------- ADD SUMMARY ROWS ----------------
+    final isTripCollectionMode =
+        Provider.of<CollectionDrpDwnProvider>(context, listen: false)
+                    .selectedVal ==
+                dailyCollectn &&
+            dropdownAllbusvalue != 'All';
+
+    if (isTripCollectionMode) {
+      rows.add(
+        _tripSummaryRow('Total', grandtotal, 1),
+      );
+
+      for (final Expensehead exp in expensehead) {
+        rows.add(
+          _tripSummaryRow(exp.expenseHead ?? '', exp.amount ?? '0', 2),
         );
-      }).toList();
+      }
+
+      rows.addAll([
+        _tripSummaryRow('Total Expense', totalexpense, 1),
+        _tripSummaryRow(
+            'Balance',
+            ((double.tryParse(grandtotal ?? '0') ?? 0) -
+                    (double.tryParse(totalexpense ?? '0') ?? 0))
+                .toStringAsFixed(2),
+            1),
+      ]);
+    }
+
+    return rows;
+  }
 
   /// ***************************** Statement Table end ***************************************
+  // List<DataColumn> getColumns(List<String> columns) {
+  //   return columns.map((String column) {
+  //     return DataColumn(
+  //       label: Text(
+  //         column,
+  //         style: Theme.of(context).textTheme.bodyLarge,
+  //       ),
+  //     );
+  //   }).toList();
+  // }
+
+  // List<DataRow> getRows(List<TicketList> newList) =>
+  //     newList.map((TicketList task) {
+  //       dropdownsearchvalue == dtWise || dropdownsearchvalue == bsWise
+  //           ? Provider.of<CollectionDrpDwnProvider>(context, listen: false)
+  //                       .selectedVal ==
+  //                   dtWise
+  //               ? Provider.of<CheckProvider>(context, listen: false)
+  //                           .isAccepted == false
+  //                   ? cells = [
+  //                       task.regNo ?? '',
+  //                       task.payDate ?? '',
+  //                       task.mode ?? '',
+  //                       task.amount,
+  //                     ]
+  //                   : cells = [
+  //                       task.payDate ?? '',
+  //                       task.amount ?? '',
+  //                     ]
+  //               : cells = [
+  //                   task.regNo ?? '',
+  //                   task.payDate ?? '',
+  //                   task.amount ?? '',
+  //                 ]
+  //           : Provider.of<CollectionDrpDwnProvider>(context, listen: false)
+  //                       .selectedVal ==
+  //                   exStatmnt
+  //               ? Provider.of<CheckProvider>(context, listen: false)
+  //                           .isAccepted ==
+  //                       false
+  //                   ? cells = [
+  //                       task.payDate ?? '',
+  //                       task.regNo ?? '',
+  //                       task.expensehead ?? '',
+  //                       task.expense ?? '',
+  //                     ]
+  //                   : cells = [
+  //                       task.payDate ?? '',
+  //                       task.regNo ?? '',
+  //                       task.totalExpense ?? '',
+  //                     ]
+  //               : Provider.of<CollectionDrpDwnProvider>(context, listen: false)
+  //                           .selectedVal ==
+  //                       chStatmnt
+  //                   ? Provider.of<CheckProvider>(context, listen: false)
+  //                               .isAccepted ==
+  //                           false
+  //                       ? cells = [
+  //                           task.regNo ?? '',
+  //                           task.payDate ?? '',
+  //                           task.totalIncome ?? '',
+  //                           task.totalExpense ?? '',
+  //                         ]
+  //                       : cells = [
+  //                           task.payDate ?? '',
+  //                           task.totalIncome ?? '',
+  //                           task.totalExpense ?? '',
+  //                         ]
+  //                   : Provider.of<CollectionDrpDwnProvider>(context,
+  //                                   listen: false)
+  //                               .selectedVal ==
+  //                           dailyCollectn
+  //                       ? dropdownAllbusvalue == 'All'
+  //                           ?
+  //                            Provider.of<CheckProvider>(context, listen: false).isAccepted ==false
+  //                               ?cells = [
+  //                               task.regNo ?? '',
+  //                               task.payDate ?? '',
+  //                               task.totalIncome ?? '',
+  //                               task.totalExpense ?? '',
+  //                               ((double.tryParse(task.totalIncome ?? '0') ??
+  //                                           0) -
+  //                                       (double.tryParse(
+  //                                               task.totalExpense ?? '0') ??
+  //                                           0))
+  //                                   .toStringAsFixed(2),
+  //                             ]:cells = [
+  //                               task.regNo ?? '',
+  //                               task.totalIncome ?? '',
+  //                               task.totalExpense ?? '',
+  //                               ((double.tryParse(task.totalIncome ?? '0') ??
+  //                                           0) -
+  //                                       (double.tryParse(
+  //                                               task.totalExpense ?? '0') ??
+  //                                           0))
+  //                                   .toStringAsFixed(2),
+  //                             ]
+  //                           : cells = [
+  //                              '${task.tripName ?? ''} \n(${task.startTime ?? ''}-${task.endTime ?? ''})',
+  //                               task.totalCollection ?? '0',
+  //                               // task.totalExpense ?? '0',
+  //                               // ((double.tryParse(task.totalCollection ?? '0') ??
+  //                               //             0) -
+  //                               //         (double.tryParse(
+  //                               //                 task.totalExpense ?? '0') ??
+  //                               //             0))
+  //                               //     .toStringAsFixed(2),
+  //                             ]
+  //                       : cells = [
+  //                           task.payDate ?? '',
+  //                           task.totalIncome ?? '',
+  //                           task.totalExpense ?? '',
+  //                         ];
+
+  //       return DataRow(
+  //         cells: Utils.modelBuilder(cells, (index, cell) {
+  //           bool modpay = false;
+  //           final taskbold = index == 0;
+  //           final val = cells[1];
+  //           //print(val);
+  //           modpay = val == "Off" ? modpay : !modpay;
+  //           print(modpay);
+  //           //final remarkclr = index == 6;
+  //           return DataCell(
+  //             Center(
+  //               child: Text('$cell',
+  //                   style: taskbold
+  //                       ? const TextStyle(
+  //                           fontWeight: FontWeight.bold,
+  //                           color: Colors.black
+  //                         )
+  //                       : const TextStyle(fontWeight: FontWeight.normal,color: Colors.black),
+  //                       textAlign: TextAlign.center,),
+  //             ),
+  //             //onTap: () {}
+  //           );
+  //         }),
+  //       );
+  //     }).toList();
+
+  Future<void> fetchclstatement(
+      BuildContext context, Stmntfnparameter val) async {
+    final provider = Provider.of<LoadingProvider>(context, listen: false);
+    provider.toggleLoading();
+
+    StatementFunctions.instance.getDatewiseStmntNotifier.value = [];
+
+    String? selectedValue =
+        Provider.of<CollectionDrpDwnProvider>(context, listen: false)
+            .selectedVal;
+
+    log('collection type=$selectedValue');
+
+    //  List<TicketList>? value;
+
+    if (selectedValue == dailyCollectn && dropdownAllbusvalue != 'All') {
+      final value = await StatementFunctions.instance
+          .collectionStmntFn(selectedValue, val);
+      grandtotal = value?.grandTotal ?? '0';
+      totalexpense = value?.totalExpense ?? '0';
+      expensehead = value?.expenseHead ?? [];
+      // log(grandtotal);
+      // log(totalexpense);
+    } else {
+      await StatementFunctions.instance.collectionStmntFn(selectedValue, val);
+    }
+
+    provider.reset();
+  }
+
+  Future<void> fetchcashstatement(
+      BuildContext context, Stmntfnparameter val) async {
+    String? selectedValue =
+        Provider.of<CashstmntDrpDwnProvider>(context, listen: false)
+            .selectedVal;
+
+    log('cash type=$selectedValue');
+
+    await StatementFunctions.instance.collectionStmntFn(selectedValue, val);
+  }
+
+  /// ************************ Statement fetch Function end *******************************
+
+  DataRow _tripSummaryRow(String title, String value, int flag) {
+    return DataRow(
+      color: WidgetStateProperty.all(
+          flag == 1 ? Colors.grey.shade300 : Colors.white),
+      cells: [
+        DataCell(
+          Center(
+            child: Text(
+              title,
+              style: TextStyle(
+                  fontWeight: flag == 1 ? FontWeight.bold : FontWeight.w500,
+                  color: Colors.black,
+                  fontSize: flag == 1 ? 18 : 16),
+            ),
+          ),
+        ),
+        DataCell(
+          Align(
+            alignment: Alignment.centerRight,
+            child: Text(
+              value,
+              style: TextStyle(
+                  fontWeight: flag == 1 ? FontWeight.bold : FontWeight.normal,
+                  color: Colors.black,
+                  fontSize: flag == 1 ? 18 : 16),
+              textAlign: TextAlign.right,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
 
   /// ************************ Date selection function *************************
 
@@ -1084,35 +1810,16 @@ class _ScreenCollectionNewState extends State<ScreenCollectionNew> {
     }
   }
 
+  bool isRightAlignedColumn(String columnName) {
+    const rightAlignedFields = [
+      'Amount',
+      'Income',
+      'Expense',
+      'Collection',
+      'Balance',
+    ];
+    return rightAlignedFields.contains(columnName);
+  }
+
   /// ************************ Date selection Function end *******************************
-
-  /// ************************ Statement fetch function *************************
-
-  Future<void> fetchclstatement(
-      BuildContext context, Stmntfnparameter val) async {
-    final provider = Provider.of<LoadingProvider>(context, listen: false);
-    provider.toggleLoading();
-    StatementFunctions.instance.getDatewiseStmntNotifier.value = [];
-    String? selectedValue =
-        Provider.of<CollectionDrpDwnProvider>(context, listen: false)
-            .selectedVal;
-
-    log('collection type=$selectedValue');
-
-    await StatementFunctions.instance.collectionStmntFn(selectedValue, val);
-    provider.reset();
-  }
-
-  Future<void> fetchcashstatement(
-      BuildContext context, Stmntfnparameter val) async {
-    String? selectedValue =
-        Provider.of<CashstmntDrpDwnProvider>(context, listen: false)
-            .selectedVal;
-
-    log('cash type=$selectedValue');
-
-    await StatementFunctions.instance.collectionStmntFn(selectedValue, val);
-  }
-
-  /// ************************ Statement fetch Function end *******************************
 }

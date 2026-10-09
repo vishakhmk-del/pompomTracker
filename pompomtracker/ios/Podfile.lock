@@ -1,47 +1,22 @@
 PODS:
-  - app_settings (5.1.1):
-    - Flutter
-  - device_info_plus (0.0.1):
-    - Flutter
   - Flutter (1.0.0)
-  - fluttertoast (0.0.2):
+  - flutter_tts (0.0.1):
     - Flutter
-  - package_info_plus (0.4.5):
-    - Flutter
-  - shared_preferences_foundation (0.0.1):
-    - Flutter
-    - FlutterMacOS
 
 DEPENDENCIES:
-  - app_settings (from `.symlinks/plugins/app_settings/ios`)
-  - device_info_plus (from `.symlinks/plugins/device_info_plus/ios`)
   - Flutter (from `Flutter`)
-  - fluttertoast (from `.symlinks/plugins/fluttertoast/ios`)
-  - package_info_plus (from `.symlinks/plugins/package_info_plus/ios`)
-  - shared_preferences_foundation (from `.symlinks/plugins/shared_preferences_foundation/darwin`)
+  - flutter_tts (from `.symlinks/plugins/flutter_tts/ios`)
 
 EXTERNAL SOURCES:
-  app_settings:
-    :path: ".symlinks/plugins/app_settings/ios"
-  device_info_plus:
-    :path: ".symlinks/plugins/device_info_plus/ios"
   Flutter:
     :path: Flutter
-  fluttertoast:
-    :path: ".symlinks/plugins/fluttertoast/ios"
-  package_info_plus:
-    :path: ".symlinks/plugins/package_info_plus/ios"
-  shared_preferences_foundation:
-    :path: ".symlinks/plugins/shared_preferences_foundation/darwin"
+  flutter_tts:
+    :path: ".symlinks/plugins/flutter_tts/ios"
 
 SPEC CHECKSUMS:
-  app_settings: 5127ae0678de1dcc19f2293271c51d37c89428b2
-  device_info_plus: 21fcca2080fbcd348be798aa36c3e5ed849eefbe
-  Flutter: e0871f40cf51350855a761d2e70bf5af5b9b5de7
-  fluttertoast: 2c67e14dce98bbdb200df9e1acf610d7a6264ea1
-  package_info_plus: af8e2ca6888548050f16fa2f1938db7b5a5df499
-  shared_preferences_foundation: 9e1978ff2562383bd5676f64ec4e9aa8fa06a6f7
+  Flutter: cabc95a1d2626b1b06e7179b784ebcf0c0cde467
+  flutter_tts: 35ac3c7d42412733e795ea96ad2d7e05d0a75113
 
-PODFILE CHECKSUM: 20e260c9bb3f61194c661a4ba028da86e4f3ed96
+PODFILE CHECKSUM: 56d411bfb58461a6f1f71f3f683e8656d95156d3
 
 COCOAPODS: 1.16.2

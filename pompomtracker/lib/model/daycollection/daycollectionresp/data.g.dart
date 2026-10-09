@@ -11,9 +11,8 @@ DataCollection _$DataCollectionFromJson(Map<String, dynamic> json) =>
       collection: (json['collection'] as List<dynamic>?)
           ?.map((e) => Collection.fromJson(e as Map<String, dynamic>))
           .toList(),
-      grandTotal: json['grand_total'] as dynamic,
-      grandExpense: json['grand_expense'] as dynamic,
-
+      grandTotal: json['grand_total'],
+      grandExpense: json['grand_expense'],
       collectionDate: json['collection_date'] as String?,
     );
 
@@ -21,6 +20,6 @@ Map<String, dynamic> _$DataCollectionToJson(DataCollection instance) =>
     <String, dynamic>{
       'collection': instance.collection,
       'grand_total': instance.grandTotal,
+      'grand_expense': instance.grandExpense,
       'collection_date': instance.collectionDate,
-      'grand_expense':instance.grandExpense
     };

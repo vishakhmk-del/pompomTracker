@@ -17,14 +17,13 @@ class Collection {
   @JsonKey(name: 'total_expense')
   dynamic totalExpense;
 
-  Collection({
-    this.busId,
-    this.busName,
-    this.registrationNo,
-    this.totalAmount,
-    this.collectionDate,
-    this.totalExpense
-  });
+  Collection(
+      {this.busId,
+      this.busName,
+      this.registrationNo,
+      this.totalAmount,
+      this.collectionDate,
+      this.totalExpense});
 
   factory Collection.fromJson(Map<String, dynamic> json) {
     return _$CollectionFromJson(json);

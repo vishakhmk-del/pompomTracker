@@ -14,7 +14,11 @@ class DataCollection {
   @JsonKey(name: 'collection_date')
   String? collectionDate;
 
-  DataCollection({this.collection, this.grandTotal,this.grandExpense, this.collectionDate});
+  DataCollection(
+      {this.collection,
+      this.grandTotal,
+      this.grandExpense,
+      this.collectionDate});
 
   factory DataCollection.fromJson(Map<String, dynamic> json) =>
       _$DataCollectionFromJson(json);

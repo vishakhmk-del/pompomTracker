@@ -4,14 +4,14 @@ import 'package:dio/dio.dart' as dio;
 import 'package:pompomtracker/core/hook/hook.dart';
 import 'package:pompomtracker/model/forget/frgtreq/frgtreq.dart';
 
-class ScreenForgotPswrd extends StatefulWidget {
-  const ScreenForgotPswrd({super.key});
+class ScreenForgotPswrdOld extends StatefulWidget {
+  const ScreenForgotPswrdOld({super.key});
 
   @override
-  State<ScreenForgotPswrd> createState() => _ScreenForgotPswrdState();
+  State<ScreenForgotPswrdOld> createState() => _ScreenForgotPswrdOldState();
 }
 
-class _ScreenForgotPswrdState extends State<ScreenForgotPswrd> {
+class _ScreenForgotPswrdOldState extends State<ScreenForgotPswrdOld> {
   final _formkey = GlobalKey<FormState>();
   final _scafoldkey = GlobalKey<ScaffoldState>();
   final _usernamecontroller = TextEditingController();
@@ -52,10 +52,11 @@ class _ScreenForgotPswrdState extends State<ScreenForgotPswrd> {
         log('BackButton pressed!');
       },
       child: Scaffold(
+        backgroundColor: Color(0xff16324f),
         key: _scafoldkey,
         //backgroundColor: Theme.of(context).colorScheme.primaryFixed,
         appBar: AppBar(
-          // backgroundColor: Theme.of(context).colorScheme.primary,
+          backgroundColor: Color(0xff16324f),
           leading: IconButton(
             icon: const Icon(Icons.arrow_back),
             onPressed: () {

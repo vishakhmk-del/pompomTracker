@@ -15,7 +15,6 @@ StopMasterReq _$StopMasterReqFromJson(Map<String, dynamic> json) =>
       userId: json['user_id'] as String?,
       arrivingTime: json['arriving_time'] as String?,
       departureTime: json['departure_time'] as String?,
-
     );
 
 Map<String, dynamic> _$StopMasterReqToJson(StopMasterReq instance) =>
@@ -26,5 +25,5 @@ Map<String, dynamic> _$StopMasterReqToJson(StopMasterReq instance) =>
       'stop': instance.stop,
       'user_id': instance.userId,
       'arriving_time': instance.arrivingTime,
-      'departure_time':instance.departureTime
+      'departure_time': instance.departureTime,
     };

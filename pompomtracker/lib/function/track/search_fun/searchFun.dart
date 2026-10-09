@@ -1,7 +1,5 @@
-
 import 'dart:developer';
 import 'package:pompomtracker/core/hook/hook.dart';
-
 
 class SearchFun {
   SearchFun._internal();

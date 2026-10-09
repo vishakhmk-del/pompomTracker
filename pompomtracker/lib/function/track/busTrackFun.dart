@@ -6,6 +6,7 @@ class BusTrackFunctions {
   BusTrackFunctions factory() {
     return instance;
   }
+
   ValueNotifier<List<BusDetList>> getRealBusDetailsNotifier = ValueNotifier([]);
 
   Future<List<BusDetList>?> realbusdet(
@@ -14,7 +15,7 @@ class BusTrackFunctions {
       final bnkLstresp = await Busdata().realBusDet(req);
       String? message;
       if (bnkLstresp == null) {
-         getRealBusDetailsNotifier.value.clear();
+        getRealBusDetailsNotifier.value.clear();
         getRealBusDetailsNotifier.value.addAll([]);
         getRealBusDetailsNotifier.notifyListeners();
         if (!context.mounted) return [];
@@ -25,11 +26,10 @@ class BusTrackFunctions {
           resultAsJson as Map<String, dynamic>,
         );
         if (bnklstVal.status == 'success') {
-
           final cpaymob = bnklstVal.busList;
           getRealBusDetailsNotifier.value.clear();
-        getRealBusDetailsNotifier.value.addAll(cpaymob??[]);
-        getRealBusDetailsNotifier.notifyListeners();
+          getRealBusDetailsNotifier.value.addAll(cpaymob ?? []);
+          getRealBusDetailsNotifier.notifyListeners();
           return cpaymob;
         } else if (bnklstVal.status == 'failed') {
           getRealBusDetailsNotifier.value.clear();

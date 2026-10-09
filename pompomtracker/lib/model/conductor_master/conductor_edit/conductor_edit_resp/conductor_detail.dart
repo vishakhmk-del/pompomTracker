@@ -12,7 +12,7 @@ class ConductorDetail {
   String? accountNo;
   @JsonKey(name: 'mobile_no')
   String? mobileNo;
-  String? status;
+  dynamic status;
   @JsonKey(name: 'bus_name')
   String? busName;
   @JsonKey(name: 'registration_no')

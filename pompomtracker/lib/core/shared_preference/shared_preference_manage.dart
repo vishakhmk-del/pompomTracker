@@ -10,8 +10,9 @@ class SharedPrefManager {
   SharedPrefManager factory() {
     return instance;
   }
+
   //----end singleton
-final FlutterSecureStorage _secureStorage = const FlutterSecureStorage();
+  final FlutterSecureStorage _secureStorage = const FlutterSecureStorage();
 
   Future<void> addSharedData(Sharedpref value) async {
     final sharedprefes = await SharedPreferences.getInstance();
@@ -19,12 +20,11 @@ final FlutterSecureStorage _secureStorage = const FlutterSecureStorage();
     // await sharedprefes.setString('USERID', value.userId!);
     await _secureStorage.write(key: 'USERID', value: value.userId ?? '');
 
-    await sharedprefes.setString('USERTYPE', value.userType??'');
-    await sharedprefes.setString('USERNAME', value.userName??'');
-    await sharedprefes.setString('OWNERNAME', value.ownerName??'');
+    await sharedprefes.setString('USERTYPE', value.userType ?? '');
+    await sharedprefes.setString('USERNAME', value.userName ?? '');
+    await sharedprefes.setString('OWNERNAME', value.ownerName ?? '');
     // await sharedprefes.setString('TOKEN', value.token??'');
-        await _secureStorage.write(key: 'TOKEN', value: value.token ?? '');
-
+    await _secureStorage.write(key: 'TOKEN', value: value.token ?? '');
 
     //final jsonString = json.encode(value.toJson());
     // await prefs.setStringList(_key, login);
@@ -36,7 +36,6 @@ final FlutterSecureStorage _secureStorage = const FlutterSecureStorage();
     // final userid = sharedprefs.getString('USERID') ?? '';
     final userid = await _secureStorage.read(key: 'USERID') ?? '';
 
-
     final usertype = sharedprefs.getString('USERTYPE') ?? '';
 
     final username = sharedprefs.getString('USERNAME') ?? '';
@@ -45,7 +44,6 @@ final FlutterSecureStorage _secureStorage = const FlutterSecureStorage();
 
     // final token = sharedprefs.getString('TOKEN') ?? '';
     final token = await _secureStorage.read(key: 'TOKEN') ?? '';
-
 
     final valshared = Sharedpref.value(
         userId: userid,

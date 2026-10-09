@@ -40,6 +40,7 @@ class MyApp extends StatelessWidget {
               ).copyWith(textScaler: TextScaler.noScaling),
               child: Sizer(builder: (context, orientation, screenType) {
                 return MaterialApp(
+                  debugShowCheckedModeBanner: false,
                   title: 'PomPomTracker',
                   themeMode: themeProvider.themeMode,
                   theme: themeProvider.lightScheme,

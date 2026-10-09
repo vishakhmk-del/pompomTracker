@@ -1,7 +1,46 @@
 import 'package:pompomtracker/core/hook/hook.dart';
-
+import 'package:pompomtracker/screens/documents/screenDoc.dart';
+import 'package:pompomtracker/screens/documents/screenDocList.dart';
+import 'package:pompomtracker/screens/wallet/screenWallet.dart';
+import 'package:pompomtracker/screens/track/announcement/announcement_screen.dart';
+import 'package:pompomtracker/widgets/privacypolicy/ScreenPrivacySec.dart';
 
 class Approutes {
+  PageTransition docListScreen = PageTransition(
+    child: ScreenDocList(),
+    type: PageTransitionType.fade,
+    alignment: Alignment.center,
+    curve: Curves.easeInOutBack,
+    duration: const Duration(microseconds: 500),
+  );
+  PageTransition docScreen = PageTransition(
+    child: ScreenDoc(),
+    type: PageTransitionType.fade,
+    alignment: Alignment.center,
+    curve: Curves.easeInOutBack,
+    duration: const Duration(microseconds: 500),
+  );
+  PageTransition privacyScreen = PageTransition(
+    child: ScreenPrivacySec(),
+    type: PageTransitionType.fade,
+    alignment: Alignment.center,
+    curve: Curves.easeInOutBack,
+    duration: const Duration(microseconds: 500),
+  );
+  PageTransition announcement = PageTransition(
+    child: const AnnouncementScreen(),
+    type: PageTransitionType.fade,
+    alignment: Alignment.center,
+    curve: Curves.easeInOutBack,
+    duration: const Duration(microseconds: 500),
+  );
+  PageTransition wallet = PageTransition(
+    child: const WalletScreen(),
+    type: PageTransitionType.fade,
+    alignment: Alignment.center,
+    curve: Curves.easeInOutBack,
+    duration: const Duration(microseconds: 500),
+  );
   PageTransition loginscreen = PageTransition(
     child: const ScreenLogin(),
     type: PageTransitionType.fade,
@@ -239,7 +278,7 @@ class Approutes {
     curve: Curves.easeInOutBack,
     duration: const Duration(microseconds: 500),
   );
-   PageTransition dailycollectionScreen = PageTransition(
+  PageTransition dailycollectionScreen = PageTransition(
     child: const ScreenDailyCollection(),
     type: PageTransitionType.fade,
     alignment: Alignment.center,
@@ -253,5 +292,4 @@ class Approutes {
     curve: Curves.easeInOutBack,
     duration: const Duration(microseconds: 500),
   );
-  
 }

@@ -3,11 +3,22 @@ class Url {
 
   // String baseUrl = 'http://117.221.68.183:81/Qrpayuser/index.php';
 
-  String baseUrl = 'http://117.221.68.183:81/Qrpay/index.php';
-  // String baseUrl = 'http://117.221.68.183:81/Qrpaylive_test/index.php';
+  // String baseUrl = 'http://117.221.68.183:81/Qrpay/index.php';
 
+  // String baseUrl = 'http://117.221.68.183:81/Qrpay_test_vadakkan/index.php';
+
+  // String baseUrl = 'http://pompay.in:81/Qrpay/index.php';
+
+  String baseUrl = 'http://pompay.in:8005/bus_management/public/api';
+
+  // String baseUrl = 'http://10.101.204.111:8000/api';
 
   String loginUrl = '/Home_C/owner_login_v';
+  String rsndOtpUrl = '/Home_C/resend_otp';
+  String frgtOtpUrl = '/Home_C/forgotpassword';
+  String frgtOtpvrfyUrl = '/Home_C/reset_password';
+  String regvrfyUrl = '/Home_C/verify_mobile';
+
   String getBusUrl = '/Master_C/get_bustype';
   String busSave = '/Master_C/bus_save';
   String routeSave = '/Master_C/route_save';
@@ -25,11 +36,11 @@ class Url {
   String fetchBusList = '/Owner_C/bus_view';
   String fetchBusEditList = '/Owner_C/bus_details';
   String updateBus = '/Owner_C/update_bus';
-  String fetchCondutorList = '/Owner_C/conductor_view';
+  // String fetchCondutorList = '/Owner_C/conductor_view';
   String getTripdetUrl = '/RouteMaster_C/get_trip_name_list';
   String getStopUrl = '/Master_C/get_stop_details';
-  String updateCon = '/Owner_C/update_conductor';
-  String fetchBusRouteList = '/Owner_C/bus_route_view';
+  // String updateCon = '/Owner_C/update_conductor';
+  String fetchBusRouteList = '/Owner_C/bus_permit_route_view';
   String updateBusRouteList = '/Master_C/bus_route_link_update';
   String fetchTripList = '/Owner_C/trip_view';
   String fetchTripEdit = '/Master_C/get_routeTripEdit';
@@ -51,7 +62,6 @@ class Url {
   // String driverSaveUrl = '/Master_C/driver_save';
   String driverViewUrl = '/Owner_C/driver_view';
   String busDetailsUrl = '/Master_C/get_bus_trip_details';
-
   String updateDriverUrl = '/Owner_C/update_driver';
   String employeeAsgnUrl = '/Master_C/duty_assign_save';
   String empStatusUrl = '/Master_C/assign_duty';
@@ -66,5 +76,17 @@ class Url {
   String busLiveLocUrl = '/Home_C/bus_location';
   String dayCollectionUrl = '/Master_C/bus_collection';
   String collectDetUrl = '/Master_C/trip_collection_by_bus';
-  String collectDetNwUrl='/Master_C/trip_collection_by_bus_new';
+  String collectDetNwUrl = '/Master_C/trip_collection_by_bus_new';
+  String dailyCollectionUrl = '/Master_C/daily_collection_by_bus';
+  String getPermitListUrl = '/Master_C/get_permit_list';
+  String permitBusLinkUrl = '/Master_C/permit_bus_link';
+  String permitBusLinkUpdateUrl = '/Master_C/permit_bus_link_update';
+  String getDocTypeListUrl = '/Master_C/get_doc_type_list';
+  String docSaveUrl = '/Master_C/document_save';
+  String docListUrl = '/Master_C/document_list';
+  String docUpdtUrl = '/Master_C/document_update';
+  String docDltUrl = '/Master_C/document_delete';
+  String docNotifyUrl = '/Master_C/document_expiry_notification';
+
+
 }

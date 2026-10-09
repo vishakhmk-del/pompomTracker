@@ -1,4 +1,3 @@
-
 import 'dart:developer';
 import 'package:intl/intl.dart';
 import 'package:pompomtracker/core/hook/hook.dart';
@@ -6,8 +5,8 @@ import 'package:pompomtracker/model/daycollection/collection_det/collection_det.
 import 'package:pompomtracker/model/daycollection/daycollectionresp/daycollectionresp.dart';
 
 class StatementFunctions {
-
   StatementFunctions._internal();
+
   static StatementFunctions instance = StatementFunctions._internal();
 
   StatementFunctions factory() {
@@ -15,15 +14,18 @@ class StatementFunctions {
   }
 
   ValueNotifier<List<TicketList>> getDatewiseStmntNotifier = ValueNotifier([]);
+
   //ValueNotifier<List<Listdet>> getDayCollectionNotifier = ValueNotifier([]);
+
   ValueNotifier<DataCollection?> getDayCollectionNotifier = ValueNotifier(null);
+
   ValueNotifier<DataDetails?> getCollectDetNotifier = ValueNotifier(null);
 
-  Future collectionStmntFn(String? selectedValue, Stmntfnparameter val) async {
+  Future<DataDetails?> collectionStmntFn(
+      String? selectedValue, Stmntfnparameter val) async {
     final sharevalue = await SharedPrefManager.instance.getSharedData();
-
+    List<TicketList> dtwiselist;
     Response<dynamic>? dtwiseresp;
-
     String? dateString = val.fromdate;
     DateFormat format = DateFormat("dd-MM-yyyy");
     DateTime dateTime = format.parse(dateString!);
@@ -48,8 +50,9 @@ class StatementFunctions {
         regNo: val.type,
         summary: val.summary,
         mode: val.mode);
-
-    if (selectedValue == dtWise) {
+    if (selectedValue == dailyCollectn) {
+      dtwiseresp = await Busdata().getDailyStmnt(dtwiserqst);
+    } else if (selectedValue == dtWise) {
       dtwiseresp = await Busdata().getDatewiseStmnt(dtwiserqst);
     } else if (selectedValue == bsWise) {
       dtwiseresp = await Busdata().getBuswiseStmnt(dtwiserqst);
@@ -70,8 +73,19 @@ class StatementFunctions {
           DatewiseStmnt.fromJson(resultAsjson as Map<String, dynamic>);
       if (dtwiserspval.status == 'success') {
         log('weeklycollection data fetch success');
-
-        final dtwiselist = dtwiserspval.ticketDet;
+        if (selectedValue == dailyCollectn) {
+          if (val.type == 'All') {
+            dtwiselist = dtwiserspval.ticketDet;
+          } else {
+            dtwiselist = dtwiserspval.data?.ticketDet ?? [];
+            getDatewiseStmntNotifier.value.clear();
+            getDatewiseStmntNotifier.value.addAll(dtwiselist);
+            getDatewiseStmntNotifier.notifyListeners();
+            return dtwiserspval.data;
+          }
+        } else {
+          dtwiselist = dtwiserspval.ticketDet;
+        }
 
         getDatewiseStmntNotifier.value.clear();
         getDatewiseStmntNotifier.value.addAll(dtwiselist);
@@ -89,6 +103,7 @@ class StatementFunctions {
       getDatewiseStmntNotifier.value.addAll([]);
       getDatewiseStmntNotifier.notifyListeners();
     }
+    return null;
   }
 
   Future getDayCollection(String collectDt, BuildContext context) async {
@@ -104,7 +119,6 @@ class StatementFunctions {
         getDayCollectionNotifier.value = null;
         getDayCollectionNotifier.notifyListeners();
       } else if (conductorListRespVar.statusCode == 200) {
-
         final resultAsJson = jsonDecode(conductorListRespVar.toString());
         final conductorListRespVal =
             Daycollectionresp.fromJson(resultAsJson as Map<String, dynamic>);
@@ -116,17 +130,12 @@ class StatementFunctions {
           getDayCollectionNotifier.value = null;
           getDayCollectionNotifier.notifyListeners();
         }
-
       } else if (conductorListRespVar.statusCode == 401) {
-
         if (!context.mounted) return;
         Wklycollectfn.instance.showApierror(context, "Unauthenticated");
-
       } else if (conductorListRespVar.statusCode == 500) {
-
         if (!context.mounted) return;
         Wklycollectfn.instance.showApierror(context, "Server Not reached");
-
       } else if (conductorListRespVar.statusCode == 408) {
         if (!context.mounted) return;
         Wklycollectfn.instance.showApierror(context, "Connection time out");
@@ -142,12 +151,12 @@ class StatementFunctions {
     }
   }
 
-  Future getCollectionDet(String? busid,String? collectDt, BuildContext context) async {
+  Future getCollectionDet(
+      String? busid, String? collectDt, BuildContext context) async {
     try {
       Response<dynamic>? conductorListRespVar;
-     
-      final condutorReq =
-          BusListReq(busId: busid, collectionDt: collectDt);
+
+      final condutorReq = BusListReq(busId: busid, collectionDt: collectDt);
 
       conductorListRespVar = await Busdata().collectDetails(condutorReq);
 
@@ -156,7 +165,8 @@ class StatementFunctions {
         getCollectDetNotifier.notifyListeners();
       } else if (conductorListRespVar.statusCode == 200) {
         final resultAsJson = jsonDecode(conductorListRespVar.toString());
-        final conductorListRespVal =CollectionDet.fromJson(resultAsJson as Map<String, dynamic>);
+        final conductorListRespVal =
+            CollectionDet.fromJson(resultAsJson as Map<String, dynamic>);
 
         if (conductorListRespVal.status == 'success') {
           // final data=conductorListRespVal.data;

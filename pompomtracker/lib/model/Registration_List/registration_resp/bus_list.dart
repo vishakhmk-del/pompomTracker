@@ -9,7 +9,7 @@ class BusRegList {
   @JsonKey(name: 'bus_id')
   String? busId;
 
-  BusRegList({this.registrationNo,this.busId});
+  BusRegList({this.registrationNo, this.busId});
 
   factory BusRegList.fromJson(Map<String, dynamic> json) {
     return _$BusRegListFromJson(json);

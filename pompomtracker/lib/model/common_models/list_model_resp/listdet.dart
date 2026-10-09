@@ -38,7 +38,7 @@ class Listdet {
   @JsonKey(name: 'lisecnce_no')
   String? lisecnceNo;
   @JsonKey(name: 'status')
-  String? status;
+  dynamic status;
   @JsonKey(name: 'registration_no')
   String? registratioNo;
   @JsonKey(name: 'route_name')
@@ -49,6 +49,10 @@ class Listdet {
   String? busId;
   @JsonKey(name: 'lisence_no')
   String? lisenceNo;
+  @JsonKey(name: 'permit_id')
+  String? permitId;
+  @JsonKey(name: 'permit_no')
+  String? permitNo;
   @JsonKey(name: 'end_time')
   String? endTime;
   @JsonKey(name: 'from_station')
@@ -83,6 +87,8 @@ class Listdet {
       this.routeName,
       this.routeId,
       this.busId,
+      this.permitId,
+      this.permitNo,
       this.endTime,
       this.fromStation,
       this.toStation,
